@@ -5,14 +5,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/IniSes"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".MainActivity"
+    android:background="@drawable/gradientbackground">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textview_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/TextLogin"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="44dp" />
+
+    <Button
+        android:id="@+id/button_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/P1"
+        android:text="@string/IniSes"
+        android:onClick="Direccion1"
+        android:backgroundTint="@color/P5"
+        app:layout_constraintBottom_toTopOf="@+id/button_third"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
+        app:layout_constraintVertical_bias="0.715" />
+
+    <EditText
+        android:id="@+id/editTextTextPassword"
+        android:layout_width="383dp"
+        android:layout_height="42dp"
+        android:background="@color/P3"
+        android:ems="10"
+        android:hint="@string/PASSWORD"
+        android:inputType="textPassword"
+        android:textColorHint="@color/P1"
+        app:layout_constraintBottom_toTopOf="@+id/button_third"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_first"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="384dp"
+        android:layout_height="41dp"
+        android:background="#D5ABFF"
+        android:ems="10"
+        android:hint="@string/EMAIL"
+        android:inputType="textPersonName"
+        android:textColorHint="#6900C6"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_first"
+        app:layout_constraintVertical_bias="0.812" />
+
+    <Button
+        android:id="@+id/button_third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:hint="@string/SinCuenta"
+        android:backgroundTint="@android:color/transparent"
+        android:textColorHint="#A47CCB"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_first"
+        app:layout_constraintVertical_bias="1" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="164dp"
+        android:layout_height="159dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
+        app:layout_constraintTop_toTopOf="@+id/textview_first"
+        app:srcCompat="@drawable/logo"
+        tools:layout_editor_absoluteX="116dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,11 +5,13 @@
     <!-- Login & Profile -->
     <string name="IniSes">Iniciar Sesión</string>
     <string name="SinCuenta">No tengo cuenta</string>
-    <string name="TextLogin">¡Inicia Sesión en SaveTrack</string>
+    <string name="TextLogin">¡Inicia Sesión en SaveTrack!</string>
     <string name="TextRegister">¡Crea tu cuenta de SaveTrack!</string>
 
     <string name="Email"> Email</string>
+    <string name="EMAIL"> EMAIL</string>
     <string name="Password"> Contraseña</string>
+    <string name="PASSWORD"> CONTRASEÑA</string>
     <string name="CPassword">Confirmar Contraseña</string>
 
     <string name="Nombre">Nombre</string>

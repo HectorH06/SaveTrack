@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,12 +13,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
-        android:text="@string/TextLogin"
+        android:text="@string/TextRegister"
         android:textAlignment="center"
         android:textSize="36sp"
-        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="44dp" />
+        tools:layout_editor_absoluteY="44dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/button_first"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
         android:textColor="@color/P1"
-        android:text="@string/IniSes"
+        android:text="@string/IniReg"
         android:onClick="Direccion1"
         android:backgroundTint="@color/P5"
         app:layout_constraintBottom_toTopOf="@+id/button_third"
@@ -38,7 +38,8 @@
     <EditText
         android:id="@+id/editTextTextPassword"
         android:layout_width="383dp"
-        android:layout_height="42dp"
+        android:layout_height="48dp"
+        android:autofillHints="@string/PASSWORD"
         android:background="@color/P5"
         android:ems="10"
         android:hint="@string/PASSWORD"
@@ -49,8 +50,24 @@
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_first"
-        tools:ignore="MissingConstraints"
-        android:autofillHints="@string/PASSWORD" />
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/editTextTextConfirmPassword"
+        android:layout_width="383dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="40dp"
+        android:autofillHints="@string/CPASSWORD"
+        android:background="@color/P5"
+        android:ems="10"
+        android:hint="@string/CPASSWORD"
+        android:inputType="textPassword"
+        android:textColorHint="@color/P1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
@@ -74,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
-        android:hint="@string/SinCuenta"
+        android:hint="@string/ConCuenta"
         android:backgroundTint="@android:color/transparent"
         android:textColorHint="@color/P5"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -93,5 +110,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textview_first"
         app:srcCompat="@drawable/logo"
-        android:contentDescription="@string/TextLogin" />
+        android:contentDescription="@string/TextRegister" />
 </androidx.constraintlayout.widget.ConstraintLayout>

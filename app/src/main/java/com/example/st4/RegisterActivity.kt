@@ -5,14 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
-class MainActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_register)
 
-        val buttonSinCuenta = findViewById<Button>(R.id.button_sinCuenta)
-        buttonSinCuenta.setOnClickListener{
-            val intent = Intent(this, RegisterActivity::class.java)
+        val buttonConCuenta = findViewById<Button>(R.id.button_conCuenta)
+        buttonConCuenta.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }

@@ -9,7 +9,7 @@
     android:background="@drawable/gradient_background_reg">
 
     <TextView
-        android:id="@+id/textview_first"
+        android:id="@+id/textview_Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
@@ -21,15 +21,14 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/button_first"
+        android:id="@+id/button_Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
         android:textColor="@color/P1"
         android:text="@string/IniReg"
-        android:onClick="Direccion1"
         android:backgroundTint="@color/P5"
-        app:layout_constraintBottom_toTopOf="@+id/button_third"
+        app:layout_constraintBottom_toTopOf="@+id/button_conCuenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
@@ -47,11 +46,11 @@
         android:inputType="textPassword"
         android:textColorHint="@color/P1"
         android:textColor="@color/P1"
-        app:layout_constraintBottom_toTopOf="@+id/button_third"
+        app:layout_constraintBottom_toTopOf="@+id/button_conCuenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_first"
+        app:layout_constraintTop_toBottomOf="@+id/textview_Register"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -89,11 +88,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_first"
+        app:layout_constraintTop_toBottomOf="@+id/textview_Register"
         app:layout_constraintVertical_bias="0.812" />
 
     <Button
-        android:id="@+id/button_third"
+        android:id="@+id/button_conCuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
@@ -104,7 +103,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first"
+        app:layout_constraintTop_toBottomOf="@id/textview_Register"
         app:layout_constraintVertical_bias="1" />
 
     <ImageView
@@ -114,7 +113,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textview_first"
+        app:layout_constraintTop_toTopOf="@+id/textview_Register"
         app:srcCompat="@drawable/logo"
         android:contentDescription="@string/TextRegister" />
 </androidx.constraintlayout.widget.ConstraintLayout>

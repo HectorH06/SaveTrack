@@ -36,11 +36,12 @@
         app:layout_constraintVertical_bias="0.715" />
 
     <EditText
+        android:background="@drawable/shapetext1"
+        android:padding="10sp"
         android:id="@+id/editTextTextPassword"
         android:layout_width="383dp"
         android:layout_height="48dp"
         android:autofillHints="@string/PASSWORD"
-        android:background="@color/P5"
         android:ems="10"
         android:hint="@string/PASSWORD"
         android:inputType="textPassword"
@@ -53,12 +54,13 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
+        android:background="@drawable/shapetext1"
+        android:padding="10sp"
         android:id="@+id/editTextTextConfirmPassword"
         android:layout_width="383dp"
         android:layout_height="48dp"
         android:layout_marginTop="40dp"
         android:autofillHints="@string/CPASSWORD"
-        android:background="@color/P5"
         android:ems="10"
         android:hint="@string/CPASSWORD"
         android:inputType="textPassword"
@@ -70,11 +72,12 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
+        android:background="@drawable/shapetext1"
+        android:padding="10sp"
         android:id="@+id/editTextTextPersonName"
         android:layout_width="384dp"
         android:layout_height="48dp"
         android:autofillHints="@string/EMAIL"
-        android:background="@color/P5"
         android:ems="10"
         android:hint="@string/EMAIL"
         android:inputType="textPersonName"

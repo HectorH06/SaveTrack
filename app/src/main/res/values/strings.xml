@@ -5,8 +5,8 @@
     <!-- Login & Profile -->
     <string name="IniSes">Iniciar Sesión</string>
     <string name="IniReg">Registrarse</string>
-    <string name="SinCuenta">No tengo cuenta</string>
-    <string name="ConCuenta">Ya tengo cuenta</string>
+    <string name="SinCuenta">NO TENGO CUENTA</string>
+    <string name="ConCuenta">YA TENGO CUENTA</string>
     <string name="TextLogin">¡Inicia Sesión en SaveTrack!</string>
     <string name="TextRegister">¡Crea tu cuenta de SaveTrack!</string>
 

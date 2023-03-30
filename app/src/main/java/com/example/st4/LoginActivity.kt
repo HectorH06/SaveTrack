@@ -7,10 +7,12 @@ import android.widget.Button
 import android.widget.Toast
 import java.sql.PreparedStatement
 import java.sql.SQLException
+import com.example.st4.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
+    lateinit var connectSql: ConexionSQL
+    lateinit var binding: ActivityLoginBinding
+    public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -19,33 +21,29 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
-        lateinit var binding: LoginActivity
 
-        // lateinit var connectSql: ConnectSql
+        connectSql = ConexionSQL()
 
-        var connectSql = ConexionSQL()
-
-        binding = MainActivity.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.button_IniSes.setOnClickListener { onBackPressed() }  //regresar
-
-        binding.setOnClickListener {
+        binding.buttonIniSes.setOnClickListener {
             agregarUsuario()
             binding.editTextTextPersonName.text.clear()
             binding.editTextTextPassword.text.clear()
         }
 
-        fun agregarUsuario(){
-            try {
-                val usuario: PreparedStatement =  connectSql.dbConn()?.prepareStatement("insert into Usuario values (?,?)")!!
-                usuario.setString(1, binding.editTextTextPersonName.text.toString())
-                usuario.setString(2, binding.editTextTextPassword.text.toString())
-                usuario.executeUpdate()
-                Toast.makeText(this, "INSERTADO CORRECTAMENTE", Toast.LENGTH_SHORT).show()
-            } catch (ex: SQLException){
-                Toast.makeText(this, "ERROR AL INSERTAR", Toast.LENGTH_SHORT).show()
-            }
+
+    }
+    fun agregarUsuario(){
+        try {
+            val usuario: PreparedStatement =  connectSql.dbConn()?.prepareStatement("INSERT INTO Login_ST values (?,?)")!!
+            usuario.setString(1, binding.editTextTextPersonName.text.toString())
+            usuario.setString(2, binding.editTextTextPassword.text.toString())
+            usuario.executeUpdate()
+            Toast.makeText(this, "INSERTADO CORRECTAMENTE", Toast.LENGTH_SHORT).show()
+        } catch (ex: SQLException){
+            Toast.makeText(this, "ERROR AL INSERTAR", Toast.LENGTH_SHORT).show()
         }
     }
 }

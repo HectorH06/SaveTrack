@@ -1,19 +1,16 @@
 package com.example.st4
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import java.sql.PreparedStatement
+import java.sql.SQLException
+import com.example.st4.ConexionSQL
+
 
 class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val buttonSinCuenta = findViewById<Button>(R.id.button_sinCuenta)
-        buttonSinCuenta.setOnClickListener{
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
-    }
+
 }

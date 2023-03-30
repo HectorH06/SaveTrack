@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Purple -->
+    <color name="P0">#FF400060</color>
     <color name="P1">#FF6900C6</color>
     <color name="P2">#FFA47CCB</color>
     <color name="P3">#FFD5ABFF</color>

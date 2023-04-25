@@ -1,3 +1,76 @@
 <resources>
     <string name="app_name">ST5</string>
+    <string name="HELLO">Hola Dr. Mundo</string>
+
+    <!-- Login & Profile -->
+    <string name="IniSes">Iniciar Sesión</string>
+    <string name="IniReg">Registrarse</string>
+    <string name="SinCuenta">NO TENGO CUENTA</string>
+    <string name="ConCuenta">YA TENGO CUENTA</string>
+    <string name="TextLogin">¡Inicia Sesión en SaveTrack!</string>
+    <string name="TextRegister">¡Crea tu cuenta de SaveTrack!</string>
+
+    <string name="Email">Email</string>
+    <string name="EMAIL">EMAIL</string>
+    <string name="Password">Contraseña</string>
+    <string name="PASSWORD">CONTRASEÑA</string>
+    <string name="CPassword">Confirmar Contraseña</string>
+    <string name="CPASSWORD">CONFIRMAR CONTRASEÑA</string>
+
+    <string name="Nombre">Nombre</string>
+    <string name="Apellido">Apellido</string>
+    <string name="Edad">Edad</string>
+    <string name="SEXO">Género</string>
+    <string name="TipoChamba">Tipo de Ingreso</string>
+
+    <string name="FotoPerfil">Foto de Perfil</string>
+    <string name="Grupos">Grupos</string>
+    <string name="Grupo1">Fiesta</string>
+    <string name="Grupo2">Familia</string>
+    <string name="Grupo3">Trabajo</string>
+
+    <string name="NewGrupo">Grupo nuevo</string>
+    <string name="NomGrupo">Nombre del Grupo</string>
+    <string name="TipoGrupo">Tipo</string>
+    <string name="Miembros">Miembros</string>
+
+    <!-- Record -->
+    <string name="Dia">Día</string>
+    <string name="Mes">Mes</string>
+    <string name="Anyo">Año</string>
+    <string name="Fecha">Fecha</string>
+    <string name="Label">Etiquetas</string>
+
+    <!-- Index -->
+    <string name="Ingreso">Ingreso</string>
+    <string name="Gasto">Gasto</string>
+    <string name="Monto">Monto</string>
+    <string name="NewMonto">Nuevo Monto</string>
+    <string name="Debt">Por pagar</string>
+    <string name="ToDoList">Mandados</string>
+
+    <string name="Salario">Salario</string>
+    <string name="Beca">Beca</string>
+    <string name="Pension">Pensión</string>
+
+    <string name="NomMonto">Nombre del nuevo Monto</string>
+    <string name="QuaMonto">Cantidad del nuevo Monto</string>
+    <string name="TipoMonto">Tipo del nuevo Monto</string>
+
+    <!-- Savetracks -->
+    <string name="PPP">Producto por pagar</string>
+    <string name="EPP">En proceso de pago</string>
+
+    <!-- Finances -->
+    <string name="CyS">Consejos y Sugerencias</string>
+    <string name="Consejos">Consejos</string>
+    <string name="Sugerencias">Sugerencias</string>
+    <string name="Stats">Información Ahorro</string>
+    <string name="ESTATICO">Estático</string>
+    <string name="INVERSION">Inversión</string>
+    <string name="MONEDA">Moneda</string>
+    <string name="DIVISA">Divisa</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

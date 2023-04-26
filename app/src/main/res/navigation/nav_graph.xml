@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/noteListFragment">
+
+    <fragment
+        android:id="@+id/noteListFragment"
+        android:name="com.kulnois.notesapp.ui.list.NoteListFragment"
+        android:label="NoteListFragment"
+        tools:layout="@layout/fragment_list_note">
+        <action
+            android:id="@+id/action_noteListFragment_to_noteEditorFragment"
+            app:destination="@id/noteEditorFragment" />
+        <action
+            android:id="@+id/action_noteListFragment_to_noteEditorFragment2"
+            app:destination="@id/noteEditorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteEditorFragment"
+        android:name="com.kulnois.notesapp.ui.editor.NoteEditorFragment"
+        android:label="NoteEditorFragment"
+        tools:layout="@layout/fragment_note_editor">
+
+        <argument
+            android:name="noteKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_noteEditorFragment_to_noteListFragment"
+            app:destination="@id/noteListFragment"
+            app:popUpTo="@+id/noteListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

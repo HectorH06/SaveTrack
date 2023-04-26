@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layout_margin_default">16dp</dimen>
+    <dimen name="title_edit_text_size">22sp</dimen>
+    <dimen name="content_edit_text_size">18sp</dimen>
+    <dimen name="radius_edit_text">15dp</dimen>
+    <dimen name="nested_scroll_padding_bottom">100dp</dimen>
+    <dimen name="title_text_size">22sp</dimen>
+    <dimen name="content_text_size">16sp</dimen>
+    <dimen name="radius_button_editor">6dp</dimen>
+    <dimen name="padding_button_editor">6dp</dimen>
+    <dimen name="date_text_size">12sp</dimen>
+
+    <dimen name="message_list_text_size">14sp</dimen>
+</resources>

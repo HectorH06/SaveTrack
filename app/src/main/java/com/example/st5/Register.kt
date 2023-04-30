@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -42,41 +43,88 @@ class Register : Fragment() {
             val queue = Volley.newRequestQueue(requireContext())
             var url = "http://savetrack.com.mx/usrpost.php?"
 
-            var username = binding.RegCorreo.text.toString()
-            var password = binding.RegPass.text.toString()
-            var password2 = binding.RegConPass.text.toString()
+            val username = binding.RegCorreo.text.toString()
+            val password = binding.RegPass.text.toString()
+            val password2 = binding.RegConPass.text.toString()
 
-            if (password == password2 && password != "" && username != "" )
-            {
-                Log.e("username", username)
-                Log.e("password", password)
-                //val jsonObject = JSONObject(params as Map<*, *>?)
-                var requestBody = "username=$username&password=$password"
-                url = url + requestBody
+            if (password == password2 && password != "" && username != "") {
+                if (username.length in 6..32 && password.length in 4..18) {
+                    val checkUserUrl = "http://savetrack.com.mx/usrget.php?username=$username"
 
-                val stringReq: StringRequest =
-                    object : StringRequest(Method.POST, url,
-                        Response.Listener { response ->
-                            // response
-                            var strResp = response.toString()
+                    val checkUserReq = StringRequest(
+                        Request.Method.GET, checkUserUrl,
+                        { response ->
+                            val strResp = response.toString()
                             Log.d("API", strResp)
+                            if (response == "exist") {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "El usuario ya existe",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                // Usuario no existe, registrar nuevo usuario
+                                Log.e("username", username)
+                                Log.e("password", password)
+                                val requestBody = "username=$username&password=$password"
+                                url += requestBody
 
+                                val stringReq: StringRequest =
+                                    object : StringRequest(Method.POST, url,
+                                        Response.Listener { response ->
+                                            // response
+                                            val strResp = response.toString()
+                                            Log.d("API", strResp)
+
+                                        },
+                                        Response.ErrorListener { error ->
+                                            Log.d("API", "error => $error")
+                                        }
+                                    ) {
+                                        override fun getBody(): ByteArray {
+                                            return requestBody.toByteArray(Charset.defaultCharset())
+                                        }
+                                    }
+                                Log.e("stringReq", stringReq.toString())
+                                queue.add(stringReq)
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Usuario creado correctamente",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                val fragment_login = Login()
+                                parentFragmentManager.beginTransaction()
+                                    .replace(R.id.FragContainer, fragment_login)
+                                    .addToBackStack(null)
+                                    .commit()
+                            }
                         },
-                        Response.ErrorListener { error ->
+                        { error ->
                             Log.d("API", "error => $error")
                         }
-                    ) {
-                        override fun getBody(): ByteArray {
-                            return requestBody.toByteArray(Charset.defaultCharset())
-                        }
-                    }
-                Log.e("stringReq", stringReq.toString())
-                queue.add(stringReq)
+                    )
+                    Log.e("checkUserReq", checkUserReq.toString())
+                    queue.add(checkUserReq)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Nombre: entre 6 y 32 caracteres, Cotraseña: entre 4 y 18 caracteres",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             } else {
                 if (binding.RegCorreo.text.isEmpty() || binding.RegPass.text.isEmpty() || binding.RegConPass.text.isEmpty()) {
-                    Toast.makeText(requireContext(), "No puede haber campos vacíos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "No puede haber campos vacíos",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
-                    Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Las contraseñas no coinciden",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

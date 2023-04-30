@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background_finanzas">
+
+    <CalendarView
+        android:id="@+id/FinanzasCalendar"
+        android:layout_width="240dp"
+        android:layout_height="322dp"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="267dp" />
+
+    <ProgressBar
+        android:id="@+id/FinanzasPB"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="170dp"
+        android:layout_height="144dp"
+        tools:layout_editor_absoluteX="220dp"
+        tools:layout_editor_absoluteY="105dp" />
+
+    <ImageButton
+        android:id="@+id/FinanzasConfig"
+        android:layout_width="66dp"
+        android:layout_height="64dp"
+        app:srcCompat="@android:drawable/ic_menu_manage"
+        tools:layout_editor_absoluteX="324dp"
+        tools:layout_editor_absoluteY="17dp"
+        android:background="@color/N1"/>
+
+    <TableRow
+        android:id="@+id/TableRowNavigation"
+        android:layout_width="409dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="1dp">
+
+        <ImageButton
+            android:id="@+id/PerfilButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_menu_myplaces"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/HistorialButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_lock_idle_alarm"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/IndexButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_dialog_dialer"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/PlanesDeAhorroButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="?android:attr/actionModeFindDrawable"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/FinanzasButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/star_big_off"
+            android:background="@color/N4"/>
+    </TableRow>
+
+    <ImageView
+        android:id="@+id/FinanzasItemImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="377dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <RatingBar
+        android:id="@+id/FinanzasRatingBar"
+        android:layout_width="145dp"
+        android:layout_height="47dp"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="517dp" />
+
+    <ImageView
+        android:id="@+id/FinanzasConsejosySugerencias"
+        android:layout_width="221dp"
+        android:layout_height="270dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="-3dp"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

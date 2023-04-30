@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background_planes_de_ahorro">
+
+    <ImageButton
+        android:id="@+id/PAConfigButton"
+        android:layout_width="59dp"
+        android:layout_height="53dp"
+        app:srcCompat="@android:drawable/ic_menu_manage"
+        tools:layout_editor_absoluteX="331dp"
+        tools:layout_editor_absoluteY="17dp"
+        android:background="@color/N4"/>
+
+    <ImageButton
+        android:id="@+id/PACurrencyButton"
+        android:layout_width="72dp"
+        android:layout_height="64dp"
+        app:srcCompat="@android:drawable/ic_notification_clear_all"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="44dp"
+        android:background="@color/G3"/>
+
+    <ImageButton
+        android:id="@+id/PADiasAhorrandoButton"
+        android:layout_width="59dp"
+        android:layout_height="53dp"
+        app:srcCompat="@android:drawable/ic_menu_day"
+        tools:layout_editor_absoluteX="331dp"
+        tools:layout_editor_absoluteY="80dp"
+        android:background="@color/G3"/>
+
+
+    <ImageButton
+        android:id="@+id/PASaldoActual"
+        android:layout_width="235dp"
+        android:layout_height="198dp"
+        app:srcCompat="@android:drawable/ic_menu_today"
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="266dp"
+        android:background="@color/G3"/>
+
+    <TableRow
+        android:id="@+id/TableRowNavigation"
+        android:layout_width="409dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="1dp">
+
+        <ImageButton
+            android:id="@+id/PerfilButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_menu_myplaces"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/HistorialButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_lock_idle_alarm"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/IndexButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_dialog_dialer"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/PlanesDeAhorroButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="?android:attr/actionModeFindDrawable"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/FinanzasButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/star_big_off"
+            android:background="@color/N4"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/ProductoPorPagarTableRow"
+        android:layout_width="409dp"
+        android:layout_height="50dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="601dp">
+
+        <CheckBox
+            android:id="@+id/PAcheckBox1"
+            android:layout_width="136.3dp"
+            android:layout_height="match_parent"
+            android:text="PPP1"
+            android:background="@color/G5"/>
+
+        <CheckBox
+            android:id="@+id/PAcheckBox2"
+            android:layout_width="136.3dp"
+            android:layout_height="match_parent"
+            android:text="PPP2"
+            android:background="@color/G5"/>
+
+        <CheckBox
+            android:id="@+id/PAcheckBox3"
+            android:layout_width="136.3dp"
+            android:layout_height="match_parent"
+            android:text="PPP3"
+            android:background="@color/G5"/>
+    </TableRow>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

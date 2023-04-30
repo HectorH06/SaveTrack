@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background_index">
+
+    <ProgressBar
+        android:id="@+id/GraficoPastel"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="221dp"
+        android:layout_height="233dp"
+        tools:layout_editor_absoluteX="95dp"
+        tools:layout_editor_absoluteY="249dp" />
+
+    <ImageButton
+        android:id="@+id/AgregarIngresoButton"
+        android:layout_width="68dp"
+        android:layout_height="61dp"
+        app:srcCompat="@drawable/ic_add_24"
+        tools:layout_editor_absoluteX="331dp"
+        tools:layout_editor_absoluteY="532dp"
+        android:background="@color/B1"/>
+
+    <ImageButton
+        android:id="@+id/AgregarGastoButton"
+        android:layout_width="68dp"
+        android:layout_height="57dp"
+        app:srcCompat="@android:drawable/button_onoff_indicator_off"
+        tools:layout_editor_absoluteX="331dp"
+        tools:layout_editor_absoluteY="593dp"
+        android:background="@color/R1"/>
+
+    <Switch
+        android:id="@+id/SwitchGrupos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="182dp"
+        tools:layout_editor_absoluteY="482dp" />
+
+    <LinearLayout
+        android:id="@+id/LayoutPendientes"
+        android:layout_width="96dp"
+        android:layout_height="380dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="174dp">
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="match_parent"
+            android:layout_height="126.6dp"
+            android:text="CheckBox1"
+            android:textSize="12sp"
+            android:background="@color/R1"/>
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="match_parent"
+            android:layout_height="126.6dp"
+            android:text="CheckBox2"
+            android:textSize="12sp"
+            android:background="@color/O1"/>
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="match_parent"
+            android:layout_height="126.6dp"
+            android:text="CheckBox3"
+            android:textSize="12sp"
+            android:background="@color/G1"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/CalendarImage"
+        android:layout_width="62dp"
+        android:layout_height="63dp"
+        app:srcCompat="@android:drawable/ic_menu_my_calendar"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="98dp"
+        android:background="@color/N4"/>
+
+    <ImageButton
+        android:id="@+id/MedidorDeAhorroButton"
+        android:layout_width="62dp"
+        android:layout_height="85dp"
+        app:srcCompat="@drawable/ic_delete"
+        tools:layout_editor_absoluteX="333dp"
+        tools:layout_editor_absoluteY="323dp"
+        android:background="@color/P4"/>
+
+    <ImageButton
+        android:id="@+id/ConfigButton"
+        android:layout_width="64dp"
+        android:layout_height="61dp"
+        app:srcCompat="@android:drawable/ic_menu_manage"
+        tools:layout_editor_absoluteX="331dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:background="@color/N4"/>
+
+    <TableRow
+        android:id="@+id/TableRowNavigation"
+        android:layout_width="409dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="1dp">
+
+        <ImageButton
+            android:id="@+id/PerfilButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_menu_myplaces"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/HistorialButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_lock_idle_alarm"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/IndexButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_dialog_dialer"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/PlanesDeAhorroButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="?android:attr/actionModeFindDrawable"
+            android:background="@color/N4"/>
+
+        <ImageButton
+            android:id="@+id/FinanzasButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/star_big_off"
+            android:background="@color/N4"/>
+    </TableRow>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

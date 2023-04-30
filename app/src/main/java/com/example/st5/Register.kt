@@ -73,8 +73,8 @@ class Register : Fragment() {
                                     object : StringRequest(Method.POST, url,
                                         Response.Listener { response ->
                                             // response
-                                            val strResp = response.toString()
-                                            Log.d("API", strResp)
+                                            val strResp2 = response.toString()
+                                            Log.d("API", strResp2)
 
                                         },
                                         Response.ErrorListener { error ->

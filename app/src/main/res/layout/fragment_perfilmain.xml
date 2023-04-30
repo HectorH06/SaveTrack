@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".perfilmain"
+    android:background="@drawable/gradient_background_perfil">
+
+    <ImageView
+        android:id="@+id/ProfilePicture"
+        android:layout_width="164dp"
+        android:layout_height="182dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="115dp"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintBottom_toTopOf="@+id/UserDataLayout"
+        app:layout_constraintEnd_toStartOf="@+id/DiasAhorrandoTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/EditProfileButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="157dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="23dp"
+        app:layout_constraintBottom_toTopOf="@+id/DiasAhorrandoTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:background="@color/N4"
+        android:contentDescription="EditProfile Button"
+        android:hint="EditProfile Button"/>
+
+    <ImageButton
+        android:id="@+id/DaysSavingButton"
+        android:layout_width="50dp"
+        android:layout_height="117dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/DiasAhorrandoTV"
+        app:srcCompat="@android:drawable/ic_menu_today"
+        android:background="@color/R1"
+        android:contentDescription="DaysSaving Button"
+        android:hint="DaysSaving Button"/>
+
+    <LinearLayout
+        android:id="@+id/UserDataLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="180dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="184dp"
+        android:layout_marginBottom="41dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ProfilePicture">
+
+        <TextView
+            android:id="@+id/UsernameTV"
+            android:layout_width="209dp"
+            android:layout_height="60dp"
+            android:background="@color/B4"
+            android:text="username"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/AgeTV"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Age"
+            android:textSize="20sp"
+            android:background="@color/B4"/>
+
+        <TextView
+            android:id="@+id/OcupationTV"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Ocupation"
+            android:textSize="20sp"
+            android:background="@color/B4"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="209dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="18dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ProfilePicture"
+        tools:layout_editor_absoluteY="448dp">
+
+        <Button
+            android:id="@+id/Group1Button"
+            android:layout_width="209dp"
+            android:layout_height="60dp"
+            android:text="Group 1"
+            android:background="@color/B0"
+            android:textColor="@color/N5"/>
+
+        <Button
+            android:id="@+id/Group2Button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Group 2"
+            android:background="@color/B0"
+            android:textColor="@color/N5"/>
+
+        <Button
+            android:id="@+id/Group3Button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Group 3"
+            android:background="@color/B0"
+            android:textColor="@color/N5"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/DiasAhorrandoTV"
+        android:layout_width="98dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="329dp"
+        android:text="Dias Ahorrando"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/DaysSavingButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
+        app:layout_constraintTop_toBottomOf="@+id/EditProfileButton"
+        android:background="@color/Y2"/>
+
+    <TableRow
+        android:id="@+id/TableRowNavigation"
+        android:layout_width="409dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        tools:layout_editor_absoluteX="1dp"
+        tools:ignore="MissingConstraints">
+
+        <ImageButton
+            android:id="@+id/PerfilButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_menu_myplaces"
+            android:background="@color/N4"
+            android:contentDescription="Perfil Button"
+            android:hint="Perfil Button"/>
+
+        <ImageButton
+            android:id="@+id/HistorialButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_lock_idle_alarm"
+            android:background="@color/N4"
+            android:contentDescription="Historial Button"
+            android:hint="Historial Button"/>
+
+        <ImageButton
+            android:id="@+id/IndexButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_dialog_dialer"
+            android:background="@color/N4"
+            android:contentDescription="Index Button"
+            android:hint="Index Button"/>
+
+        <ImageButton
+            android:id="@+id/PlanesDeAhorroButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="?android:attr/actionModeFindDrawable"
+            android:background="@color/N4"
+            android:contentDescription="Ahorros Button"
+            android:hint="Ahorros Button"/>
+
+        <ImageButton
+            android:id="@+id/FinanzasButton"
+            android:layout_width="81.8dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/star_big_off"
+            android:background="@color/N4"
+            android:contentDescription="Finanzas Button"
+            android:hint="Finanzas Button"/>
+    </TableRow>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

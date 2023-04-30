@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ST5</string>
+    <string name="app_name">SaveTrack</string>
     <string name="HELLO">Hola Dr. Mundo</string>
 
     <!-- Login & Profile -->

@@ -8,7 +8,8 @@
     android:name="androidx.navigation.fragment.NavHostFragment"
     tools:ignore="MissingClass"
     app:defaultNavHost="true"
-    app:navGraph="@navigation/nav_graph">
+    app:navGraph="@navigation/nav_graph"
+    android:background="@drawable/gradient_background">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/FragContainer"

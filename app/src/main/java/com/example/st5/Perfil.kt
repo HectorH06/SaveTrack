@@ -3,7 +3,6 @@ package com.example.st5
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 
 class Perfil : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,10 +10,10 @@ class Perfil : AppCompatActivity() {
         setContentView(R.layout.activity_perfil)
 
         supportFragmentManager.commit {
-            replace<perfilmain>(R.id.ContainerPerfil, "perfilmain")
+            replace(R.id.ContainerPerfil, perfilmain())
             setReorderingAllowed(true)
             addToBackStack(null)
         }
-        val fragment: Perfil? = supportFragmentManager.findFragmentByTag("perfilmain") as Perfil?
+        val fragment: perfilmain? = supportFragmentManager.findFragmentByTag("perfilmain") as perfilmain?
     }
 }

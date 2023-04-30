@@ -1,17 +1,18 @@
 package com.example.st5
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.android.volley.Response
+import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.st5.databinding.FragmentLoginBinding
-import java.nio.charset.Charset
 
 class Login : Fragment() {
     private lateinit var binding: FragmentLoginBinding
@@ -38,34 +39,53 @@ class Login : Fragment() {
 
         binding.buttonIniSes.setOnClickListener {
             val queue = Volley.newRequestQueue(requireContext())
-            var url = "http://savetrack.com.mx/usrget.php?"
+            val url = "http://savetrack.com.mx/usrlogin.php"
 
-            var username = binding.editTextTextPersonName.text.toString()
-            var password = binding.editTextTextPassword.text.toString()
-            Log.e("username", username)
-            Log.e("password", password)
-            //val jsonObject = JSONObject(params as Map<*, *>?)
-            var requestBody = "username=$username&password=$password"
-            url = url + requestBody
+            val username = binding.editTextTextPersonName.text.toString()
+            val password = binding.editTextTextPassword.text.toString()
 
-            val stringReq: StringRequest =
-                object : StringRequest(Method.GET, url,
-                    Response.Listener { response ->
-                        // response
-                        var strResp = response.toString()
+            if (username != "" && password != "") {
+                val checkUserUrl = "$url?username=$username&password=$password"
+                Log.e("checkUserUrl", checkUserUrl)
+                val checkUserReq = StringRequest(
+                    Request.Method.GET, checkUserUrl,
+                    { response ->
+                        val strResp = response.toString()
                         Log.d("API", strResp)
+                        if (response != "exist") {
+                            Toast.makeText(
+                                requireContext(),
+                                "Usuario y/o contraseña incorrectos",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            // Usuario y contraseña correctos, redirigir a la actividad de perfil
+                            Log.e("username", username)
+                            Log.e("password", password)
 
+                            Toast.makeText(
+                                requireContext(),
+                                "Bienvenido, $username",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            val intent = Intent(activity, Perfil::class.java)
+                            startActivity(intent)
+                        }
                     },
-                    Response.ErrorListener { error ->
+                    { error ->
                         Log.d("API", "error => $error")
                     }
-                ) {
-                    override fun getBody(): ByteArray {
-                        return requestBody.toByteArray(Charset.defaultCharset())
-                    }
-                }
-            Log.e("stringReq", stringReq.toString())
-            queue.add(stringReq)
+                )
+                Log.e("checkUserReq", checkUserReq.toString())
+                queue.add(checkUserReq)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Los campos no pueden estar vacíos",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }

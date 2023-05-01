@@ -8,13 +8,13 @@ import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 import java.sql.Date
 
-@Entity(tableName = "monto")
+@Entity(tableName = "monto", foreignKeys = [ForeignKey(entity = Usuario::class, parentColumns = ["iduser"], childColumns = ["iduser"])])
 @Parcelize
 data class Monto(
     @PrimaryKey(autoGenerate = true)
     var idmonto: Long,
 
-    @ForeignKey(entity = Usuario::class, parentColumns = ["iduser"], childColumns = ["iduser"])
+    @ColumnInfo(name = "iduser")
     var iduser: Long,
 
     @ColumnInfo(name = "concepto")

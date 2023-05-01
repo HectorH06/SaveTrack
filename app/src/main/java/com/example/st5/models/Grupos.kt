@@ -7,7 +7,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
-@Entity(tableName = "grupos")
+@Entity(tableName = "grupos", foreignKeys = [ForeignKey(entity = Usuario::class, parentColumns = ["iduser"], childColumns = ["admin"])])
 @Parcelize
 data class Grupos(
     @PrimaryKey(autoGenerate = true)
@@ -19,7 +19,7 @@ data class Grupos(
     @ColumnInfo(name = "description")
     var description: String,
 
-    @ForeignKey(entity = Usuario::class, parentColumns = ["iduser"], childColumns = ["admin"])
+    @ColumnInfo(name = "admin")
     var admin: String,
 
     @ColumnInfo(name = "nmembers")

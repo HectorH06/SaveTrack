@@ -7,11 +7,10 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
-@Entity(tableName = "ingresosgastos")
+@Entity(tableName = "ingresosgastos", foreignKeys = [ForeignKey(entity = Usuario::class, parentColumns = ["iduser"], childColumns = ["iduser"])])
 @Parcelize
 data class IngresosGastos(
     @ColumnInfo(name = "iduser")
-    @ForeignKey(entity = Usuario::class, parentColumns = ["iduser"], childColumns = ["iduser"])
     @PrimaryKey(autoGenerate = true)
     var iduser: Long,
 

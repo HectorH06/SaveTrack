@@ -8,17 +8,17 @@ import com.example.st5.models.IngresosGastos
 @Dao
 interface stlitedao {
     //Gastos
-    @Insert
-    fun insertGasto(note: IngresosGastos)
-
-    @Update
-    fun updateGasto(note: IngresosGastos)
 
     //Grupos
 
     //Ingresos
 
     //IngresosGastos
+    @Insert
+    fun insertGasto(note: IngresosGastos)
+
+    @Update
+    fun updateGasto(note: IngresosGastos)
 
     //Usuario
 

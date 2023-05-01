@@ -82,6 +82,19 @@ class Login : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
+                            //MANDAR A LLAMAR LA FUNCIÓN DE BACKUP respaldarDatos
+                            /*
+                            if (response != null){
+                                restore from ionos
+                            } else {
+                                create and backup on ionos
+                            }
+                             */
+
+
+                            //CREAR CLASE PARA HACER BACKUP EN CASO DE CERRAR SESIÓN O QUE SE CIERRE SÚBITAMENTE LA APP
+                            //CREAR MÉTODOS PARA MANTENER LA SESIÓN INICIADA
+
                             val intent = Intent(activity, Perfil::class.java)
                             startActivity(intent)
                         }

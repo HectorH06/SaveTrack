@@ -40,7 +40,7 @@
 
     <EditText
         android:id="@+id/editTextTextPassword"
-        android:background="@drawable/shapetext1"
+        android:background="@drawable/p1backbox"
         android:padding="10sp"
         android:layout_width="383dp"
         android:layout_height="48dp"
@@ -62,7 +62,7 @@
         android:layout_width="384dp"
         android:layout_height="48dp"
         android:autofillHints="@string/EMAIL"
-        android:background="@drawable/shapetext1"
+        android:background="@drawable/p1backbox"
         android:ems="10"
         android:hint="@string/EMAIL"
         android:inputType="textPersonName"

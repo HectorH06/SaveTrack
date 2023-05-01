@@ -37,7 +37,7 @@
         app:layout_constraintVertical_bias="0.715" />
 
     <EditText
-        android:background="@drawable/shapetext1"
+        android:background="@drawable/p1backbox"
         android:padding="10sp"
         android:id="@+id/RegPass"
         android:layout_width="383dp"
@@ -57,7 +57,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:background="@drawable/shapetext1"
+        android:background="@drawable/p1backbox"
         android:padding="10sp"
         android:id="@+id/RegConPass"
         android:layout_width="383dp"
@@ -76,7 +76,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:background="@drawable/shapetext1"
+        android:background="@drawable/p1backbox"
         android:padding="10sp"
         android:id="@+id/RegCorreo"
         android:layout_width="384dp"

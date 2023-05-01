@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
@@ -17,7 +18,19 @@ import java.nio.charset.Charset
 
 class Register : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val prev = Login()
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                    .replace(R.id.FragContainer, prev)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        })
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +47,7 @@ class Register : Fragment() {
         binding.buttonConCuenta.setOnClickListener {
             val fragment_login = Login()
             parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.FragContainer, fragment_login)
                 .addToBackStack(null)
                 .commit()
@@ -94,6 +108,7 @@ class Register : Fragment() {
                                 ).show()
                                 val fragment_login = Login()
                                 parentFragmentManager.beginTransaction()
+                                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                                     .replace(R.id.FragContainer, fragment_login)
                                     .addToBackStack(null)
                                     .commit()

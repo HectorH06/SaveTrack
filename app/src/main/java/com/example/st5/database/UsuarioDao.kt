@@ -5,28 +5,17 @@ import com.example.st5.models.Usuario
 
 @Dao
 interface UsuarioDao {
-    //Grupos
-
-    //Ingresos
-
-    //IngresosGastos
-
-    //Usuario
-    @Query("SELECT * FROM Usuario")
-    fun getUserData(): List<Usuario>
+    @Query("SELECT * FROM usuario")
+    suspend fun getUserData(): List<Usuario>
 
     @Insert
-    fun insertUsuario(usuario: Usuario)
+    suspend fun insertUsuario(usuario: Usuario)
 
     @Update
-    fun updateUsuario(usuario: Usuario)
+    suspend fun updateUsuario(usuario: Usuario)
 
     @Delete
-    fun deleteUsuario(usuario: Usuario)
-    //Monto
-
-    //MontoGrupo
-
+    suspend fun deleteUsuario(usuario: Usuario)
     /*
     @Query("SELECT * FROM note_table ORDER BY noteId DESC")
     fun getAllNotes(): LiveData<List<Note>>

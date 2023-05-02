@@ -12,22 +12,30 @@ import com.example.st5.models.*
 abstract class Stlite : RoomDatabase() {
 
     abstract fun getUsuarioDao(): UsuarioDao
+    abstract fun getIngresosGastosDao(): IngresosGastosDao
+    abstract fun getMontoDao(): MontoDao
+    abstract fun getMontoGrupoDao(): MontoGrupoDao
+    abstract fun getGruposDao(): GruposDao
 
     companion object {
         @Volatile
-        private lateinit var INSTANCE: Stlite
+        private var INSTANCE: Stlite? = null
 
-        fun getInstance(context: Context): Stlite {
-            synchronized(this) {
-                return INSTANCE ?: Room.databaseBuilder(
-                    context.applicationContext,
-                    Stlite::class.java,
-                    "stdata"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build().also {
-                        INSTANCE = it
-                    }
+        fun getInstance(context: Context) : Stlite {
+            synchronized(this) { // should be asynchronized, don´t know where, don't know when (we'll meet again)
+                var instance = INSTANCE
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        Stlite::class.java,
+                        "stdata"
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
+
+                    INSTANCE = instance
+                }
+                return instance
             }
         }
     }

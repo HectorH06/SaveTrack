@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -17,6 +18,9 @@ import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentLoginBinding
 import com.example.st5.models.Usuario
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.nio.charset.Charset
 
 class Login : Fragment() {
@@ -74,7 +78,7 @@ class Login : Fragment() {
                     Request.Method.GET, checkUserUrl,
                     { response ->
                         val strResp = response.toString()
-                        Log.d("API", strResp)
+                        Log.d("API checkuser", strResp)
                         if (response != "exist") {
                             Toast.makeText(
                                 requireContext(),
@@ -90,43 +94,54 @@ class Login : Fragment() {
                                 // De no ser así, se crea a partir de los datos insertados y por construir, y luego se sube
                                 // Si sí, se extrae e inserta en la room
                             var checkbackupurl = "http://savetrack.com.mx/backuget.php"
-                            checkbackupurl += "username=$username"
+                            checkbackupurl += "?username=$username"
                             /*
                             CHECK BACKUP REQUEST
                             */
                             val backReq: StringRequest =
                                 object : StringRequest(Method.GET, checkbackupurl,
                                     Response.Listener { response ->
-
+                                        val backReq2 = response.toString()
+                                        Log.d("API backupreq", backReq2)
                                         var idurl = "http://savetrack.com.mx/idget.php"
-                                        idurl += "username=$username"
+                                        idurl += "?username=$username"
                                         /*
                                         CHECK ID REQUEST
                                         */
+                                        if (response.toString() == "null"){
+                                        // CHECK ID AND CREATE BACKUP
                                         val idReq: StringRequest =
                                             object : StringRequest(Method.GET, idurl,
                                                 Response.Listener { response ->
                                                     val id: Long = response.toLong()
                                                     val idReq2 = response.toString()
-                                                    Log.d("API", idReq2)
-                                                    if (response == null){
+                                                    Log.d("API id bnull", idReq2)
 
                                                         // Create and backup
-                                                        val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
-                                                        val nuevoUsuario = Usuario(iduser = id, nombre = username, edad = null, chamba = null, foto = null, diasaho = 0, balance = 0)
-                                                        usuarioDao.insertUsuario(nuevoUsuario)
+                                                        suspend fun insertarNuevoUsuario(id: Long, username: String) {
+                                                            withContext(Dispatchers.IO) {
+                                                                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+                                                                val nuevoUsuario = Usuario(
+                                                                    iduser = id,
+                                                                    nombre = username,
+                                                                    edad = null,
+                                                                    chamba = null,
+                                                                    foto = null,
+                                                                    diasaho = 0,
+                                                                    balance = 0
+                                                                )
+                                                                usuarioDao.insertUsuario(nuevoUsuario)
 
-                                                    } else {
-
-                                                        // Restore
-
-                                                        //CREAR CLASE PARA HACER BACKUP EN CASO DE CERRAR SESIÓN O QUE SE CIERRE SÚBITAMENTE LA APP
-                                                        //CREAR MÉTODOS PARA MANTENER LA SESIÓN INICIADA
-
+                                                                val selected = usuarioDao.getUserData()
+                                                                Log.e("SELECTED USERS", selected.toString())
+                                                            }
+                                                        }
+                                                    lifecycleScope.launch {
+                                                        insertarNuevoUsuario(id, username)
                                                     }
                                                 },
                                                 Response.ErrorListener { error ->
-                                                    Log.d("API", "error => $error")
+                                                    Log.d("API error", "error => $error")
                                                 }
                                             ) {
                                                 override fun getBody(): ByteArray {
@@ -135,9 +150,36 @@ class Login : Fragment() {
                                             }
                                         Log.e("idReq", idReq.toString())
                                         queue.add(idReq)
+
+                                        // CHECK ID AND RESTORE
+                                        } else {
+
+                                            val idReq: StringRequest =
+                                                object : StringRequest(Method.GET, idurl,
+                                                    Response.Listener { response ->
+                                                        val id: Long = response.toLong()
+                                                        val idReq2 = response.toString()
+                                                        Log.d("API id bnotnull", idReq2)
+
+                                                        // Restore
+
+                                                        //CREAR CLASE PARA HACER BACKUP EN CASO DE CERRAR SESIÓN O QUE SE CIERRE SÚBITAMENTE LA APP
+                                                        //CREAR MÉTODOS PARA MANTENER LA SESIÓN INICIADA
+                                                    },
+                                                    Response.ErrorListener { error ->
+                                                        Log.d("API id", "error => $error")
+                                                    }
+                                                ) {
+                                                    override fun getBody(): ByteArray {
+                                                        return idurl.toByteArray(Charset.defaultCharset())
+                                                    }
+                                                }
+                                            Log.e("idReq", idReq.toString())
+                                            queue.add(idReq)
+                                        }
                                     },
                                     Response.ErrorListener { error ->
-                                        Log.d("API", "error => $error")
+                                        Log.d("API backupreq", "error => $error")
                                     }
                                 ) {
                                     override fun getBody(): ByteArray {

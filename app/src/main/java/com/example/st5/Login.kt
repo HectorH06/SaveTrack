@@ -61,6 +61,15 @@ class Login : Fragment() {
                 .commit()
         }
 
+        binding.buttonOlviContra.setOnClickListener {
+            val fragmentRecupeContra = Olvido()
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .replace(R.id.FragContainer, fragmentRecupeContra)
+                .addToBackStack(null)
+                .commit()
+        }
+
         binding.buttonIniSes.setOnClickListener {
             val queue = Volley.newRequestQueue(requireContext())
             val url = "http://savetrack.com.mx/usrlogin.php"

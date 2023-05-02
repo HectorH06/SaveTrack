@@ -5,43 +5,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login"
-    android:background="@drawable/gradient_background">
-
-    <!-- TODO: Update blank fragment layout -->
+    tools:context=".Register"
+    android:background="@drawable/gradient_background_reg">
 
     <TextView
         android:paddingTop="10dp"
-        android:id="@+id/textview_IniSes"
+        android:id="@+id/textview_Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
-        android:text="@string/TextLogin"
-        android:textColor="@color/P5"
+        android:text="@string/TextOlvido"
+        android:textColor="@color/P1"
         android:textAlignment="center"
         android:textSize="36sp"
-        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="44dp" />
+        tools:layout_editor_absoluteY="44dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/buttonIniSes"
+        android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
         android:textColor="@color/P1"
-        android:text="@string/IniSes"
+        android:text="@string/CAPASSWORD"
         android:backgroundTint="@color/P5"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSinCuenta"
+        app:layout_constraintBottom_toTopOf="@+id/buttonConCuenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/CamPass"
         app:layout_constraintVertical_bias="0.715" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
         android:background="@drawable/p1backbox"
         android:padding="10sp"
+        android:id="@+id/CamPass"
         android:layout_width="383dp"
         android:layout_height="48dp"
         android:autofillHints="@string/PASSWORD"
@@ -50,71 +48,77 @@
         android:inputType="textPassword"
         android:textColorHint="@color/P1"
         android:textColor="@color/P1"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSinCuenta"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/buttonConCuenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_IniSes"
+        app:layout_constraintTop_toBottomOf="@+id/textview_Register"
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:background="@drawable/p1backbox"
+        android:padding="10sp"
+        android:id="@+id/RegConPass"
+        android:layout_width="383dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="40dp"
+        android:autofillHints="@string/CPASSWORD"
+        android:ems="10"
+        android:hint="@string/CPASSWORD"
+        android:inputType="textPassword"
+        android:textColorHint="@color/P1"
+        android:textColor="@color/P1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CamPass"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:background="@drawable/p1backbox"
+        android:padding="10sp"
+        android:id="@+id/textID"
         android:layout_width="384dp"
         android:layout_height="48dp"
-        android:autofillHints="@string/EMAIL"
-        android:background="@drawable/p1backbox"
+        android:autofillHints="@string/ID"
         android:ems="10"
-        android:hint="@string/EMAIL"
+        android:hint="@string/ID"
         android:inputType="textPersonName"
-        android:padding="10sp"
-        android:textColor="@color/P1"
         android:textColorHint="@color/P1"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
+        android:textColor="@color/P1"
+        app:layout_constraintBottom_toTopOf="@+id/CamPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_IniSes"
+        app:layout_constraintTop_toBottomOf="@+id/textview_Register"
         app:layout_constraintVertical_bias="0.812" />
 
     <Button
-        android:id="@+id/buttonSinCuenta"
+        android:id="@+id/buttonConCuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
         android:fontFamily="sans-serif-black"
-        android:hint="@string/SinCuenta"
-        android:textColorHint="@color/P5"
+        android:hint="@string/INISES"
+        android:background="@android:color/transparent"
+        android:textColorHint="@color/P0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_IniSes"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/buttonOlviContra"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:fontFamily="sans-serif-black"
-        android:hint="@string/OlviContra"
-        android:textColorHint="@color/P5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_IniSes"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@id/textview_Register"
+        app:layout_constraintVertical_bias="1" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="164dp"
         android:layout_height="159dp"
-        android:contentDescription="@string/TextLogin"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
+        android:contentDescription="@string/TextRegister"
+        app:layout_constraintBottom_toTopOf="@+id/CamPass"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textview_IniSes"
-        app:srcCompat="@drawable/logo1" />
-
+        app:layout_constraintTop_toTopOf="@+id/textview_Register"
+        app:layout_constraintVertical_bias="0.578"
+        app:srcCompat="@drawable/logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

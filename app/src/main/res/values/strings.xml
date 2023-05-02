@@ -4,19 +4,26 @@
 
     <!-- Login & Profile -->
     <string name="IniSes">Iniciar Sesión</string>
+    <string name="INISES">INICIAR SESIÓN</string>
     <string name="IniReg">Registrarse</string>
     <string name="SinCuenta">NO TENGO CUENTA</string>
     <string name="ConCuenta">YA TENGO CUENTA</string>
+    <string name="OlviContra">OLVIDÉ MI CONTRASEÑA</string>
     <string name="TextLogin">¡Inicia Sesión en SaveTrack!</string>
     <string name="TextRegister">¡Crea tu cuenta de SaveTrack!</string>
+    <string name="TextOlvido">¡Reestablece tu contraseña de SaveTrack!</string>
     <string name="perfil">Perfil</string>
 
     <string name="Email">Usuario</string>
     <string name="EMAIL">USUARIO</string>
     <string name="Password">Contraseña</string>
     <string name="PASSWORD">CONTRASEÑA</string>
+    <string name="id">id</string>
+    <string name="ID">ID</string>
     <string name="CPassword">Confirmar Contraseña</string>
     <string name="CPASSWORD">CONFIRMAR CONTRASEÑA</string>
+    <string name="CaPassword">Reestablecer Contraseña</string>
+    <string name="CAPASSWORD">REESTABLECER CONTRASEÑA</string>
 
     <string name="Nombre">Nombre</string>
     <string name="Apellido">Apellido</string>

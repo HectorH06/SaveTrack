@@ -75,7 +75,7 @@
             android:layout_width="209dp"
             android:layout_height="60dp"
             android:background="@color/B4"
-            android:text="username"
+            android:text="user"
             android:textSize="20sp" />
 
         <TextView

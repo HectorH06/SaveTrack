@@ -1,27 +1,28 @@
 package com.example.st5.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Update
-import com.example.st5.models.IngresosGastos
+import androidx.room.*
+import com.example.st5.models.Usuario
 
 @Dao
-interface stlitedao {
-    //Gastos
-
+interface UsuarioDao {
     //Grupos
 
     //Ingresos
 
     //IngresosGastos
-    @Insert
-    fun insertGasto(note: IngresosGastos)
-
-    @Update
-    fun updateGasto(note: IngresosGastos)
 
     //Usuario
+    @Query("SELECT * FROM Usuario")
+    fun getUserData(): List<Usuario>
 
+    @Insert
+    fun insertUsuario(usuario: Usuario)
+
+    @Update
+    fun updateUsuario(usuario: Usuario)
+
+    @Delete
+    fun deleteUsuario(usuario: Usuario)
     //Monto
 
     //MontoGrupo

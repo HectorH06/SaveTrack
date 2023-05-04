@@ -19,5 +19,6 @@ class Olvido : Fragment() {
 
     }
 
-    // UPDATE para la contraseña del usuario según su id y fecha de creación de cuenta, pues se pedirá para comprobar que sí es él
+    // UPDATE para la contraseña del usuario
+    // SMS para recuperar contraseña
 }

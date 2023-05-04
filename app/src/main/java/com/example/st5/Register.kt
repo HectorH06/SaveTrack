@@ -115,6 +115,9 @@ class Register : Fragment() {
                             }
                         },
                         { error ->
+                            Toast.makeText(
+                                requireContext(), "No se ha podido conectar a la red", Toast.LENGTH_SHORT
+                            ).show()
                             Log.d("API", "error => $error")
                         }
                     )

@@ -326,10 +326,15 @@ class Login : Fragment() {
                                                 extraerDatosBackup(username)
                                             }
 
+                                            //CREAR ADVERTENCIAS EN CASO DE QUE NO HAYA CONEXIÓN A INTERNET
                                             //CREAR CLASE PARA HACER BACKUP EN CASO DE CERRAR SESIÓN O QUE SE CIERRE SÚBITAMENTE LA APP
                                             //CREAR MÉTODOS PARA MANTENER LA SESIÓN INICIADA
+                                            //CREAR TIMESTAMP PARA REVISAR DATOS MÁS RECIENTES CON FECHA DE ÚLTIMA MODIFICACIÓN
                                         },
                                         Response.ErrorListener { error ->
+                                            Toast.makeText(
+                                                requireContext(), "No se ha podido conectar a la red", Toast.LENGTH_SHORT
+                                            ).show()
                                             Log.e("API id", "error => $error")
                                         }) {
                                         override fun getBody(): ByteArray {
@@ -358,6 +363,9 @@ class Login : Fragment() {
                         startActivity(intent)
                     }
                 }, { error ->
+                    Toast.makeText(
+                        requireContext(), "No se ha podido conectar a la red", Toast.LENGTH_SHORT
+                    ).show()
                     Log.e("API", "error => $error")
                 })
                 Log.d("checkUserReq", checkUserReq.toString())

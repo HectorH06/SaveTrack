@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background_finanzas">
+
+    <CalendarView
+        android:id="@+id/FinanzasCalendar"
+        android:layout_width="240dp"
+        android:layout_height="322dp"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="267dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="142dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/FinanzasPB"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="170dp"
+        android:layout_height="144dp"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="105dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="482dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/FinanzasConfig"
+        android:layout_width="66dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="324dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="650dp"
+        android:background="@color/N1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
+
+
+    <ImageView
+        android:id="@+id/FinanzasItemImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="377dp"
+        android:layout_marginEnd="267dp"
+        android:layout_marginBottom="226dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <RatingBar
+        android:id="@+id/FinanzasRatingBar"
+        android:layout_width="145dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="517dp"
+        android:layout_marginEnd="256dp"
+        android:layout_marginBottom="167dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/FinanzasConsejosySugerencias"
+        android:layout_width="221dp"
+        android:layout_height="270dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="189dp"
+        android:layout_marginBottom="461dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background_perfil">
+
+
+    <TextView
+        android:id="@+id/GruponamegroupeditTV"
+        android:layout_width="213dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="139dp"
+        android:layout_marginEnd="99dp"
+        android:layout_marginBottom="552dp"
+        android:text="Group Name"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/GrouptipegroupeditTV"
+        android:layout_width="215dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="179dp"
+        android:layout_marginEnd="97dp"
+        android:layout_marginBottom="507dp"
+        android:text="Type"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/MembersgroupeditTV"
+        android:layout_width="217dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="224dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="462dp"
+        android:text="Members"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/Addgroupeditbtn"
+        android:layout_width="65dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="330dp"
+        android:layout_marginTop="567dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="98dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_add_24" />
+
+    <ImageButton
+        android:id="@+id/Deletegroupeditbtn"
+        android:layout_width="68dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="330dp"
+        android:layout_marginTop="630dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="43dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/button_onoff_indicator_off" />
+
+    <ImageButton
+        android:id="@+id/configgroueditbtn"
+        android:layout_width="60dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="330dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="650dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
+
+    <ImageButton
+        android:id="@+id/gobackgroupeditbtn"
+        android:layout_width="60dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="331dp"
+        android:layout_marginBottom="660dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back" />
+
+    <TextView
+        android:id="@+id/gobackgroupeditTV"
+        android:layout_width="154dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="180dp"
+        android:layout_marginBottom="668dp"
+        android:text="Grupo"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

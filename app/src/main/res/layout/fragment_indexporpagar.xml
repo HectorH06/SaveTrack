@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background_index">
+
+    <ImageButton
+        android:id="@+id/gobackindexporpagarbtn"
+        android:layout_width="61dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="331dp"
+        android:layout_marginBottom="652dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back" />
+
+    <TextView
+        android:id="@+id/gobackindexporpagarTV"
+        android:layout_width="174dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="157dp"
+        android:layout_marginBottom="656dp"
+        android:text="Por Pagar"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/configindesporpagarbtn"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="325dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="645dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
+
+    <Button
+        android:id="@+id/pp1indexporpagarbtn"
+        android:layout_width="86dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="132dp"
+        android:layout_marginEnd="306dp"
+        android:layout_marginBottom="524dp"
+        android:text="Por Pagar 1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/pp2indexporpagarbtn"
+        android:layout_width="90dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="133dp"
+        android:layout_marginEnd="185dp"
+        android:layout_marginBottom="524dp"
+        android:text="Por Pagar 2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/pp3indexporpagarbtn"
+        android:layout_width="88dp"
+        android:layout_height="73dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="225dp"
+        android:layout_marginEnd="304dp"
+        android:layout_marginBottom="433dp"
+        android:text="Por Pagar 3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/deleteindexporpagarbtn"
+        android:layout_width="78dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="647dp"
+        android:layout_marginEnd="317dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/button_onoff_indicator_off" />
+
+    <ImageButton
+        android:id="@+id/addindexporpagarbtn"
+        android:layout_width="68dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="327dp"
+        android:layout_marginTop="651dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_add_24" />
+</androidx.constraintlayout.widget.ConstraintLayout>

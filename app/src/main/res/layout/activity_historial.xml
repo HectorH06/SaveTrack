@@ -6,71 +6,60 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background_historial">
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="382dp"
-        android:layout_height="495dp"
-        tools:layout_editor_absoluteX="12dp"
-        tools:layout_editor_absoluteY="96dp" />
-
-    <ImageButton
-        android:id="@+id/ConfigButton"
-        android:layout_width="47dp"
-        android:layout_height="48dp"
-        android:background="@color/N4"
-        app:srcCompat="@android:drawable/ic_menu_manage"
-        tools:layout_editor_absoluteX="338dp"
-        tools:layout_editor_absoluteY="16dp" />
-
-    <ImageButton
-        android:id="@+id/TagsButton"
-        android:layout_width="60dp"
-        android:layout_height="51dp"
-        app:srcCompat="@android:drawable/stat_notify_chat"
-        tools:layout_editor_absoluteX="266dp"
-        tools:layout_editor_absoluteY="16dp"
-        android:background="@color/N4"/>
-
     <TableRow
         android:id="@+id/TableRowNavigation"
         android:layout_width="409dp"
         android:layout_height="80dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="651dp"
+        android:layout_marginEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/PerfilButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/ic_menu_myplaces"
-            android:background="@color/N4"/>
+            android:background="@color/N4"
+            app:srcCompat="@android:drawable/ic_menu_myplaces" />
 
         <ImageButton
             android:id="@+id/HistorialButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/ic_lock_idle_alarm"
-            android:background="@color/N4"/>
+            android:background="@color/N4"
+            app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
 
         <ImageButton
             android:id="@+id/IndexButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/ic_dialog_dialer"
-            android:background="@color/N4"/>
+            android:background="@color/N4"
+            app:srcCompat="@android:drawable/ic_dialog_dialer" />
 
         <ImageButton
             android:id="@+id/PlanesDeAhorroButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            app:srcCompat="?android:attr/actionModeFindDrawable"
-            android:background="@color/N4"/>
+            android:background="@color/N4"
+            app:srcCompat="?android:attr/actionModeFindDrawable" />
 
         <ImageButton
             android:id="@+id/FinanzasButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/star_big_off"
-            android:background="@color/N4"/>
+            android:background="@color/N4"
+            app:srcCompat="@android:drawable/star_big_off" />
     </TableRow>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/ContainerHistorial"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="81dp"
+        app:layout_constraintBottom_toTopOf="@id/TableRowNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

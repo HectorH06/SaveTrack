@@ -24,7 +24,23 @@
         </activity>
         <activity
             android:name=".Perfil"
-            android:label="@string/perfil">
+            android:label="perfil">
+        </activity>
+        <activity
+            android:name=".Historial"
+            android:label="historial">
+        </activity>
+        <activity
+            android:name=".Index"
+            android:label="index">
+        </activity>
+        <activity
+            android:name=".PlanesDeAhorro"
+            android:label="planesdeahorro">
+        </activity>
+        <activity
+            android:name=".Finanzas"
+            android:label="finanzas">
         </activity>
     </application>
 

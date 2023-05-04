@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.st5.models.*
 
-@Database(entities = [Grupos::class, IngresosGastos::class, Usuario::class, Monto::class, MontoGrupo::class], version = 1, exportSchema = false)
+@Database(entities = [Grupos::class, IngresosGastos::class, Usuario::class, Monto::class, MontoGrupo::class], version = 2, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class Stlite : RoomDatabase() {
 
@@ -22,7 +22,7 @@ abstract class Stlite : RoomDatabase() {
         private var INSTANCE: Stlite? = null
 
         fun getInstance(context: Context) : Stlite {
-            synchronized(this) { // should be asynchronized, don´t know where, don't know when (we'll meet again)
+            synchronized(this) { // should be asynchronized, don´t know where, don't know when (we'll meet again) Atte. Ruy
                 var instance = INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(

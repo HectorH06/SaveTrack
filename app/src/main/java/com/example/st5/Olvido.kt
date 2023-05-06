@@ -78,7 +78,7 @@ class Olvido : Fragment() {
                         return PasswordAuthentication("pingenerator@savetrack.com.mx", "c#zeWjRbk42uZG#")
                     }
                 })
-
+                // SEGUIR CON LOS CIFRADOS DE DATOS
                 try {
                     val message = MimeMessage(session)
                     message.setFrom(InternetAddress("pingenerator@savetrack.com.mx"))

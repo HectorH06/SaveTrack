@@ -59,14 +59,10 @@ class Login : Fragment() {
         }
 
         binding.buttonOlviContra.setOnClickListener {
-            //CREAR LA REQUEST PARA VER EL NÚMERO DE TELÉFONO Y ENVIAR UN SMS
             val fragmentRecupeContra = Olvido()
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.FragContainer, fragmentRecupeContra).addToBackStack(null).commit()
-            Toast.makeText(
-                requireContext(), "Enviamos un pin de confirmación a tu número de teléfono, revisa tu SMS", Toast.LENGTH_SHORT
-            ).show()
         }
 
         binding.buttonIniSes.setOnClickListener {

@@ -18,14 +18,18 @@
     <string name="EMAIL">USUARIO</string>
     <string name="Password">Contraseña</string>
     <string name="PASSWORD">CONTRASEÑA</string>
-    <string name="phone">Teléfono</string>
-    <string name="PHONE">TELÉFONO</string>
+    <string name="phone">E-Mail</string>
+    <string name="PHONE">E-MAIL</string>
     <string name="pin">Pin de Confirmación</string>
     <string name="PIN">PIN DE CONFIRMACIÓN</string>
     <string name="CPassword">Confirmar Contraseña</string>
     <string name="CPASSWORD">CONFIRMAR CONTRASEÑA</string>
     <string name="CaPassword">Reestablecer Contraseña</string>
     <string name="CAPASSWORD">REESTABLECER CONTRASEÑA</string>
+    <string name="EnvSMS">Enviar Correo</string>
+    <string name="ENVSMS">ENVIAR CORREO</string>
+    <string name="Regresar">Regresar</string>
+    <string name="REGRESAR">REGRESAR</string>
 
     <string name="Nombre">Nombre</string>
     <string name="Apellido">Apellido</string>

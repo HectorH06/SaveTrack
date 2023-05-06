@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register"
+    tools:context=".Olvido"
     android:background="@drawable/gradient_background_reg">
 
     <TextView
@@ -23,102 +23,65 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/buttonRegister"
+        android:id="@+id/buttonOlviContra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:textColor="@color/P1"
-        android:text="@string/CAPASSWORD"
         android:backgroundTint="@color/P5"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/ENVSMS"
+        android:textColor="@color/P1"
         app:layout_constraintBottom_toTopOf="@+id/buttonConCuenta"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CamPass"
-        app:layout_constraintVertical_bias="0.715" />
+        app:layout_constraintTop_toBottomOf="@+id/Usuario"
+        app:layout_constraintVertical_bias="0.711" />
 
     <EditText
-        android:background="@drawable/p1backbox"
-        android:padding="10sp"
-        android:id="@+id/CamPass"
-        android:layout_width="383dp"
-        android:layout_height="48dp"
-        android:autofillHints="@string/PASSWORD"
-        android:ems="10"
-        android:hint="@string/PASSWORD"
-        android:inputType="textPassword"
-        android:textColorHint="@color/P1"
-        android:textColor="@color/P1"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/buttonConCuenta"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_Register"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:background="@drawable/p1backbox"
-        android:padding="10sp"
-        android:id="@+id/RegConPass"
-        android:layout_width="383dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="40dp"
-        android:autofillHints="@string/CPASSWORD"
-        android:ems="10"
-        android:hint="@string/CPASSWORD"
-        android:inputType="textPassword"
-        android:textColorHint="@color/P1"
-        android:textColor="@color/P1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CamPass"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:background="@drawable/p1backbox"
-        android:padding="10sp"
-        android:id="@+id/textPhone"
+        android:id="@+id/Usuario"
         android:layout_width="384dp"
         android:layout_height="48dp"
-        android:autofillHints="@string/phone"
+        android:layout_marginBottom="101dp"
+        android:autofillHints="@string/EMAIL"
+        android:background="@drawable/p1backbox"
         android:ems="10"
-        android:hint="@string/PIN"
-        android:inputType="phone"
-        android:textColorHint="@color/P1"
+        android:hint="@string/EMAIL"
+        android:inputType="textPersonName"
+        android:padding="10sp"
         android:textColor="@color/P1"
-        app:layout_constraintBottom_toTopOf="@+id/CamPass"
+        android:textColorHint="@color/P1"
+        app:layout_constraintBottom_toTopOf="@+id/buttonOlviContra"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_Register"
-        app:layout_constraintVertical_bias="0.812" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.241" />
 
     <Button
         android:id="@+id/buttonConCuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:hint="@string/INISES"
         android:background="@android:color/transparent"
+        android:fontFamily="sans-serif-black"
+        android:hint="@string/REGRESAR"
         android:textColorHint="@color/P0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview_Register"
-        app:layout_constraintVertical_bias="1" />
+        app:layout_constraintVertical_bias="0.989" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="164dp"
         android:layout_height="159dp"
         android:contentDescription="@string/TextRegister"
-        app:layout_constraintBottom_toTopOf="@+id/CamPass"
+        app:layout_constraintBottom_toTopOf="@+id/Usuario"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textview_Register"
-        app:layout_constraintVertical_bias="0.578"
+        app:layout_constraintTop_toBottomOf="@+id/textview_Register"
+        app:layout_constraintVertical_bias="0.382"
         app:srcCompat="@drawable/logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

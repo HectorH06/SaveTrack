@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register"
+    tools:context=".Olvido2"
     android:background="@drawable/gradient_background_reg">
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
-        android:text="@string/TextRegister"
+        android:text="@string/TextOlvido"
         android:textColor="@color/P1"
         android:textAlignment="center"
         android:textSize="36sp"
@@ -23,12 +23,12 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/buttonRegister"
+        android:id="@+id/buttonReestablecer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/P5"
         android:fontFamily="sans-serif-black"
-        android:text="@string/IniReg"
+        android:text="@string/CAPASSWORD"
         android:textColor="@color/P1"
         app:layout_constraintBottom_toTopOf="@+id/buttonConCuenta"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,18 +53,18 @@
         app:layout_constraintBottom_toTopOf="@+id/RegConPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textPin"
         app:layout_constraintVertical_bias="0.584" />
 
     <EditText
-        android:id="@+id/textEmail"
+        android:id="@+id/textPin"
         android:layout_width="384dp"
         android:layout_height="48dp"
-        android:autofillHints="@string/phone"
+        android:autofillHints="@string/PIN"
         android:background="@drawable/p1backbox"
         android:ems="10"
-        android:hint="@string/PHONE"
-        android:inputType="textEmailAddress"
+        android:hint="@string/PIN"
+        android:inputType="phone"
         android:padding="10sp"
         android:textColor="@color/P1"
         android:textColorHint="@color/P1"
@@ -72,8 +72,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RegCorreo"
-        app:layout_constraintVertical_bias="0.467" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.467"
+        tools:ignore="TextFields" />
 
     <EditText
         android:id="@+id/RegConPass"
@@ -87,31 +88,12 @@
         android:padding="10sp"
         android:textColor="@color/P1"
         android:textColorHint="@color/P1"
-        app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
+        app:layout_constraintBottom_toTopOf="@+id/buttonReestablecer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RegPass"
         tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/RegCorreo"
-        android:layout_width="384dp"
-        android:layout_height="48dp"
-        android:autofillHints="@string/EMAIL"
-        android:background="@drawable/p1backbox"
-        android:ems="10"
-        android:hint="@string/EMAIL"
-        android:inputType="textPersonName"
-        android:padding="10sp"
-        android:textColor="@color/P1"
-        android:textColorHint="@color/P1"
-        app:layout_constraintBottom_toTopOf="@+id/textEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.241" />
 
     <Button
         android:id="@+id/buttonConCuenta"
@@ -119,7 +101,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:fontFamily="sans-serif-black"
-        android:hint="@string/ConCuenta"
+        android:hint="@string/REGRESAR"
         android:textColorHint="@color/P0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -133,7 +115,7 @@
         android:layout_width="164dp"
         android:layout_height="159dp"
         android:contentDescription="@string/TextRegister"
-        app:layout_constraintBottom_toTopOf="@+id/RegCorreo"
+        app:layout_constraintBottom_toTopOf="@+id/textPin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"

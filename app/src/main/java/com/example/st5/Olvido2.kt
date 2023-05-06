@@ -9,15 +9,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.st5.databinding.FragmentRegisterBinding
+import com.example.st5.Olvido.Companion.truepin
+import com.example.st5.databinding.FragmentOlvido2Binding
 import java.nio.charset.Charset
 
-class Register : Fragment() {
-    private lateinit var binding: FragmentRegisterBinding
+class Olvido2 : Fragment() {
+    private lateinit var binding: FragmentOlvido2Binding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -35,7 +35,7 @@ class Register : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        binding = FragmentOlvido2Binding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -53,40 +53,25 @@ class Register : Fragment() {
                 .commit()
         }
 
-        binding.buttonRegister.setOnClickListener {
+        binding.buttonReestablecer.setOnClickListener {
             val queue = Volley.newRequestQueue(requireContext())
-            var url = "http://savetrack.com.mx/usrpost.php?"
+            var url = "http://savetrack.com.mx/passupdate.php?"
 
-            val username = binding.RegCorreo.text.toString()
+            val truepinval = truepin.toString()
+            val pin = binding.textPin.text.toString()
             val password = binding.RegPass.text.toString()
-            val email = binding.textEmail.text.toString()
             val password2 = binding.RegConPass.text.toString()
 
-            if (password == password2 && password != "" && username != "" && email != "") {
-                if (username.length in 6..32 && password.length in 4..18) {
-                    val checkUserUrl = "http://savetrack.com.mx/usrget.php?username=$username"
-
-                    val checkUserReq = StringRequest(
-                        Request.Method.GET, checkUserUrl,
-                        { response ->
-                            val strResp = response.toString()
-                            Log.d("API", strResp)
-                            if (response == "exist") {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "El usuario ya existe",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                // Usuario no existe, registrar nuevo usuario
-                                Log.v("username", username)
-                                Log.v("password", password)
-                                Log.v("email", email)
-                                val requestBody = "username=$username&password=$password&email=$email"
+            if (password == password2 && password != "" && pin == truepinval) {
+                if (password.length in 4..18) {
+                                Log.d("Pin", truepin.toString())
+                                Log.d("password", password)
+                                val email = arguments?.getString("Email")
+                                val requestBody = "email=$email&newpassword=$password"
                                 url += requestBody
 
                                 val stringReq: StringRequest =
-                                    object : StringRequest(Method.POST, url,
+                                    object : StringRequest(Method.PUT, url,
                                         Response.Listener { response ->
                                             // response
                                             val strResp2 = response.toString()
@@ -105,7 +90,7 @@ class Register : Fragment() {
                                 queue.add(stringReq)
                                 Toast.makeText(
                                     requireContext(),
-                                    "Usuario creado correctamente",
+                                    "Contraseña actualizada correctamente",
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 val fragmentlogin = Login()
@@ -114,26 +99,15 @@ class Register : Fragment() {
                                     .replace(R.id.FragContainer, fragmentlogin)
                                     .addToBackStack(null)
                                     .commit()
-                            }
-                        },
-                        { error ->
-                            Toast.makeText(
-                                requireContext(), "No se ha podido conectar a la red", Toast.LENGTH_SHORT
-                            ).show()
-                            Log.d("API", "error => $error")
-                        }
-                    )
-                    Log.e("checkUserReq", checkUserReq.toString())
-                    queue.add(checkUserReq)
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Nombre: entre 6 y 32 caracteres, Contraseña: entre 4 y 18 caracteres",
+                        "Contraseña: entre 4 y 18 caracteres",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             } else {
-                if (binding.RegCorreo.text.isEmpty() || binding.RegPass.text.isEmpty() || binding.RegConPass.text.isEmpty()) {
+                if (binding.textPin.text.isEmpty() || binding.RegPass.text.isEmpty() || binding.RegConPass.text.isEmpty()) {
                     Toast.makeText(
                         requireContext(),
                         "No puede haber campos vacíos",
@@ -142,7 +116,7 @@ class Register : Fragment() {
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Las contraseñas no coinciden",
+                        "Las contraseñas no coinciden o el pin es incorrecto",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

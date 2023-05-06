@@ -21,14 +21,15 @@
         android:layout_width="164dp"
         android:layout_height="182dp"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="115dp"
-        android:layout_marginBottom="28dp"
-        app:layout_constraintBottom_toTopOf="@+id/UserDataLayout"
-        app:layout_constraintEnd_toStartOf="@+id/DiasAhorrandoTV"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="229dp"
+        android:layout_marginBottom="533dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:contentDescription="@string/FotoPerfil"/>
 
     <ImageButton
         android:id="@+id/EditProfileButton"
@@ -73,28 +74,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ProfilePicture">
 
-        <TextView
+        <EditText
             android:id="@+id/UsernameTV"
             android:layout_width="209dp"
             android:layout_height="60dp"
             android:background="@color/B4"
-            android:text="Username"
+            android:hint="Username"
+            android:autofillHints="Username"
             android:textSize="20sp" />
 
-        <TextView
+        <EditText
             android:id="@+id/AgeTV"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/B4"
-            android:text="Age"
+            android:hint="Age"
+            android:autofillHints="Age"
             android:textSize="20sp" />
 
-        <TextView
+        <EditText
             android:id="@+id/OcupationTV"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/B4"
-            android:text="Ocupation"
+            android:hint="Ocupation"
+            android:autofillHints="Ocupation"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -150,6 +154,37 @@
         app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
         app:layout_constraintTop_toBottomOf="@+id/EditProfileButton" />
 
+    <Button
+        android:id="@+id/cerrarsesionperfilmainbtn"
+        android:layout_width="91dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="301dp"
+        android:layout_marginTop="553dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="103dp"
+        android:background="@color/black"
+        android:text="Cerrar Sesión"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/savechangesperfilmainnbtn"
+        android:layout_width="55dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="238dp"
+        android:layout_marginTop="371dp"
+        android:layout_marginEnd="118dp"
+        android:layout_marginBottom="308dp"
+        android:background="@color/G2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_save"
+        tools:ignore="ContentDescription" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

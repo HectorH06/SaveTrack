@@ -75,7 +75,7 @@ class Olvido : Fragment() {
 
                 val session = Session.getInstance(props, object : Authenticator() {
                     override fun getPasswordAuthentication(): PasswordAuthentication {
-                        return PasswordAuthentication("pingenerator@savetrack.com.mx", "#EnginE2004")
+                        return PasswordAuthentication("pingenerator@savetrack.com.mx", "c#zeWjRbk42uZG#")
                     }
                 })
 

@@ -1,9 +1,11 @@
 package com.example.st5
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.example.st5.databinding.ActivityHistorialBinding
 import com.example.st5.databinding.ActivityPerfilBinding
 
 class Perfil : AppCompatActivity() {
@@ -17,7 +19,31 @@ class Perfil : AppCompatActivity() {
             setReorderingAllowed(true)
             addToBackStack(null)
 
+            binding = ActivityPerfilBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+
+            binding.PerfilButton.setOnClickListener {
+                val intent = Intent(this@Perfil, Perfil::class.java)
+                startActivity(intent)
+            }
+
+            binding.HistorialButton.setOnClickListener{
+                val intent = Intent(this@Perfil, Historial::class.java)
+                startActivity(intent)
+            }
+            binding.IndexButton.setOnClickListener{
+                val intent = Intent(this@Perfil, Index::class.java)
+                startActivity(intent)
+            }
+            binding.PlanesDeAhorroButton.setOnClickListener{
+                val intent = Intent(this@Perfil, PlanesDeAhorro::class.java)
+                startActivity(intent)
+            }
+            binding.FinanzasButton.setOnClickListener{
+                val intent = Intent(this@Perfil, Finanzas::class.java)
+                startActivity(intent)
+            }
+        }
             val fragment: perfilmain? = supportFragmentManager.findFragmentByTag("perfilmain") as perfilmain?
         }
     }
-}

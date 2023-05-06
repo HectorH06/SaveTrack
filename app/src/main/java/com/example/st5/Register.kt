@@ -45,10 +45,10 @@ class Register : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonConCuenta.setOnClickListener {
-            val fragment_login = Login()
+            val fragmentlogin = Login()
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.FragContainer, fragment_login)
+                .replace(R.id.FragContainer, fragmentlogin)
                 .addToBackStack(null)
                 .commit()
         }
@@ -106,10 +106,10 @@ class Register : Fragment() {
                                     "Usuario creado correctamente",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                val fragment_login = Login()
+                                val fragmentlogin = Login()
                                 parentFragmentManager.beginTransaction()
                                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                                    .replace(R.id.FragContainer, fragment_login)
+                                    .replace(R.id.FragContainer, fragmentlogin)
                                     .addToBackStack(null)
                                     .commit()
                             }

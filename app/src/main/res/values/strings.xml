@@ -18,8 +18,10 @@
     <string name="EMAIL">USUARIO</string>
     <string name="Password">Contraseña</string>
     <string name="PASSWORD">CONTRASEÑA</string>
-    <string name="id">id</string>
-    <string name="ID">ID</string>
+    <string name="phone">Teléfono</string>
+    <string name="PHONE">TELÉFONO</string>
+    <string name="pin">Pin de Confirmación</string>
+    <string name="PIN">PIN DE CONFIRMACIÓN</string>
     <string name="CPassword">Confirmar Contraseña</string>
     <string name="CPASSWORD">CONFIRMAR CONTRASEÑA</string>
     <string name="CaPassword">Reestablecer Contraseña</string>

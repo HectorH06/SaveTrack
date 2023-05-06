@@ -21,3 +21,5 @@ class MainActivity : AppCompatActivity() { //redirigir activities
         }
     }
 }
+// METER IF PARA REDIRIGIR A INDEX SI LA BASE DE DATOS NO ESTÁ VACÍA
+// SI SE CIERRA SESIÓN, QUE SE HAGA BACKUP DE TODAS LAS TABLAS Y SE VACÍE LA BD

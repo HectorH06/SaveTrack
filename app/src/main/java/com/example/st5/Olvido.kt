@@ -79,6 +79,7 @@ class Olvido : Fragment() {
                     }
                 })
                 // SEGUIR CON LOS CIFRADOS DE DATOS
+                // HICE LA BRANCH UN CAGADERO
                 try {
                     val message = MimeMessage(session)
                     message.setFrom(InternetAddress("pingenerator@savetrack.com.mx"))

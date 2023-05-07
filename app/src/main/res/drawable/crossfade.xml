@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/background" android:drawable="@drawable/ring" />
+    <item android:id="@+id/progress">
+        <rotate
+            android:drawable="@drawable/progresscolor"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:fromDegrees="0"
+            android:toDegrees="360"
+            android:duration="2500"
+            android:interpolator="@android:anim/linear_interpolator"
+            android:repeatCount="infinite" />
+    </item>
+</layer-list>

@@ -1,5 +1,6 @@
 package com.example.st5
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,5 +18,13 @@ class indexmain : Fragment() {
         binding = FragmentIndexmainBinding.inflate(inflater, container, false)
         return binding.root
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val progressBar = binding.GraficoPastel
+        val progressDrawable = progressBar.indeterminateDrawable as AnimationDrawable
+        progressDrawable.start()
     }
 }

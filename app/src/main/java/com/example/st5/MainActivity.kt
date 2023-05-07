@@ -13,13 +13,11 @@ class MainActivity : AppCompatActivity() { //redirigir activities
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.commit {
-            replace<Login>(R.id.FragContainer, "Login")
+            replace<Starter>(R.id.FragContainer, "Starter")
             setReorderingAllowed(true)
             addToBackStack(null)
 
-            val fragment: Login? = supportFragmentManager.findFragmentByTag("Login") as Login?
+            val fragment: Starter? = supportFragmentManager.findFragmentByTag("Starter") as Starter?
         }
     }
 }
-// METER IF PARA REDIRIGIR A INDEX SI LA BASE DE DATOS NO ESTÁ VACÍA
-// SI SE CIERRA SESIÓN, QUE SE HAGA BACKUP DE TODAS LAS TABLAS Y SE VACÍE LA BD

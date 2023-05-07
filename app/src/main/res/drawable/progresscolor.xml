@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:duration="500" android:drawable="@color/P3" android:shape="ring"/>
+    <item android:duration="500" android:drawable="@color/B3" android:shape="ring"/>
+    <item android:duration="500" android:drawable="@color/G3" android:shape="ring"/>
+    <item android:duration="500" android:drawable="@color/Y3" android:shape="ring"/>
+    <item android:duration="500" android:drawable="@color/R3" android:shape="ring"/>
+</animation-list>

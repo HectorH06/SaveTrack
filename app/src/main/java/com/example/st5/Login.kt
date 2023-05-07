@@ -325,11 +325,6 @@ class Login : Fragment() {
                                             lifecycleScope.launch {
                                                 extraerDatosBackup(username)
                                             }
-
-                                            //CREAR ADVERTENCIAS EN CASO DE QUE NO HAYA CONEXIÓN A INTERNET
-                                            //CREAR CLASE PARA HACER BACKUP EN CASO DE CERRAR SESIÓN O QUE SE CIERRE SÚBITAMENTE LA APP
-                                            //CREAR MÉTODOS PARA MANTENER LA SESIÓN INICIADA
-                                            //CREAR TIMESTAMP PARA REVISAR DATOS MÁS RECIENTES CON FECHA DE ÚLTIMA MODIFICACIÓN
                                         },
                                         Response.ErrorListener { error ->
                                             Toast.makeText(

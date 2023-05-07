@@ -6,21 +6,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background_perfil">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/ContainerPerfil"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
     <ImageView
         android:id="@+id/ProfilePicture"
-        android:layout_width="164dp"
-        android:layout_height="182dp"
-        android:layout_marginStart="18dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="229dp"
         android:layout_marginBottom="533dp"
@@ -28,8 +18,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="@string/FotoPerfil"/>
+        android:background="@drawable/picshape"
+        android:contentDescription="@string/FotoPerfil"
+        app:srcCompat="@drawable/ic_add_24"/>
 
     <ImageButton
         android:id="@+id/EditProfileButton"
@@ -140,9 +131,9 @@
 
     <TextView
         android:id="@+id/DiasAhorrandoTV"
-        android:layout_width="98dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="23dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="329dp"
@@ -166,25 +157,9 @@
         android:text="Cerrar Sesión"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="HardcodedText" />
-
-    <ImageButton
-        android:id="@+id/savechangesperfilmainnbtn"
-        android:layout_width="55dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="238dp"
-        android:layout_marginTop="371dp"
-        android:layout_marginEnd="118dp"
-        android:layout_marginBottom="308dp"
-        android:background="@color/G2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_save"
-        tools:ignore="ContentDescription" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

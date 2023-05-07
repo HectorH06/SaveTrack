@@ -64,4 +64,7 @@ dependencies {
     // Email
     implementation 'com.sun.mail:android-mail:1.6.4'
     implementation 'com.sun.mail:android-activation:1.6.4'
+
+    // Coil
+    implementation "io.coil-kt:coil:1.1.1"
 }

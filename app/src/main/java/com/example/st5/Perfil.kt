@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.st5.databinding.ActivityHistorialBinding
 import com.example.st5.databinding.ActivityPerfilBinding
 
 class Perfil : AppCompatActivity() {

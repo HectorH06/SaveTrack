@@ -13,6 +13,7 @@ import kotlinx.parcelize.Parcelize
 @TypeConverters(Converters::class)
 data class Usuario(
     @PrimaryKey
+    @ColumnInfo(name = "iduser")
     var iduser: Long,
 
     @ColumnInfo(name = "nombre")
@@ -28,10 +29,10 @@ data class Usuario(
     var foto: String?, // CAMBIAR A BLOB, acceder mediante url
 
     @ColumnInfo(name = "diasaho")
-    var diasaho: Long,
+    var diasaho: Long?,
 
     @ColumnInfo(name = "balance")
-    var balance: Long,
+    var balance: Long?,
 ) : Parcelable {
     constructor() : this(0L,"", 0L, 0L, null, 0L, 0L)
 }

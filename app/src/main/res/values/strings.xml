@@ -89,5 +89,9 @@
     <string name="username">Username</string>
     <string name="textview">TextView</string>
     <string name="ocupation">Ocupation</string>
+    <string name="dias_ahorrando">Dias Ahorrando</string>
+    <string name="editar">Editar</string>
+    <string name="balance">Balance</string>
+    <string name="starting">Starting</string>
 
 </resources>

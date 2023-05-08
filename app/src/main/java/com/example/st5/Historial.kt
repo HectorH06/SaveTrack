@@ -26,23 +26,25 @@ class Historial : AppCompatActivity() {
             binding.PerfilButton.setOnClickListener {
                 val intent = Intent(this@Historial, Perfil::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
             }
 
             binding.HistorialButton.setOnClickListener{
-                val intent = Intent(this@Historial, Historial::class.java)
-                startActivity(intent)
             }
             binding.IndexButton.setOnClickListener{
                 val intent = Intent(this@Historial, Index::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
             binding.PlanesDeAhorroButton.setOnClickListener{
                 val intent = Intent(this@Historial, PlanesDeAhorro::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
             binding.FinanzasButton.setOnClickListener{
                 val intent = Intent(this@Historial, Finanzas::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
         }
         val fragment: Historial? = supportFragmentManager.findFragmentByTag("historialmain") as Historial?

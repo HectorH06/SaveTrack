@@ -22,25 +22,27 @@ class Perfil : AppCompatActivity() {
             setContentView(binding.root)
 
             binding.PerfilButton.setOnClickListener {
-                val intent = Intent(this@Perfil, Perfil::class.java)
-                startActivity(intent)
             }
 
             binding.HistorialButton.setOnClickListener{
                 val intent = Intent(this@Perfil, Historial::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
             binding.IndexButton.setOnClickListener{
                 val intent = Intent(this@Perfil, Index::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
             binding.PlanesDeAhorroButton.setOnClickListener{
                 val intent = Intent(this@Perfil, PlanesDeAhorro::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
             binding.FinanzasButton.setOnClickListener{
                 val intent = Intent(this@Perfil, Finanzas::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
         }
             val fragment: perfilmain? = supportFragmentManager.findFragmentByTag("perfilmain") as perfilmain?

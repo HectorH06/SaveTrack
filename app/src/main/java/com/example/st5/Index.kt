@@ -26,23 +26,25 @@ class Index : AppCompatActivity() {
             binding.PerfilButton.setOnClickListener {
                 val intent = Intent(this@Index, Perfil::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
             }
 
             binding.HistorialButton.setOnClickListener{
                 val intent = Intent(this@Index, Historial::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
             }
             binding.IndexButton.setOnClickListener{
-                val intent = Intent(this@Index, Index::class.java)
-                startActivity(intent)
             }
             binding.PlanesDeAhorroButton.setOnClickListener{
                 val intent = Intent(this@Index, PlanesDeAhorro::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
             binding.FinanzasButton.setOnClickListener{
                 val intent = Intent(this@Index, Finanzas::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
         }
         val fragment: Index? = supportFragmentManager.findFragmentByTag("indexmain") as Index?

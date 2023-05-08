@@ -55,6 +55,8 @@ class perfilmain : Fragment() {
         }
         binding.cerrarsesionperfilmainbtn.setOnClickListener {
             suspend fun cerrarSesion() {
+                //SUBIR TODAS LAS TABLAS A LA BD, PERO ANTES HACER TABLA EXCLUSIVA PARA RESPALDOS y el campo para la foto
+                // CIFRADOS de contraseñas aprovechando que voy a tocar los php
                 withContext(Dispatchers.IO) {
                     val usuarioDao = Stlite.getInstance(
                         requireContext()
@@ -87,20 +89,66 @@ class perfilmain : Fragment() {
             bajarfoto(linkfoto)
         }
 
-    }
-    /*
-override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    val db = context?.let {
-        Room.databaseBuilder(
-            it.applicationContext,
-            Stlite::class.java, "Stlite"
-        ).build()
+        suspend fun mostrarDatos() {
+            withContext(Dispatchers.IO) {
+                val usuarioDao = Stlite.getInstance(
+                    requireContext()
+                ).getUsuarioDao()
+
+                Log.v(
+                    "id", id.toString()
+                )
+                val nombre = usuarioDao.checkName()
+                val edad = usuarioDao.checkAge()
+                val chamba = usuarioDao.checkChamba()
+                val diasaho = usuarioDao.checkDiasaho()
+                val balance = usuarioDao.checkBalance()
+
+                Log.v("Name", nombre)
+                Log.v("Age", edad.toString())
+                Log.v("Chamba", chamba.toString())
+                Log.v("Diasaho", diasaho.toString())
+                Log.v("Balance", balance.toString())
+
+                binding.UsernameTV.text = nombre
+                binding.AgeTV.text = buildString {
+                    append(edad.toString())
+                    append(" años")
+                }
+                binding.OcupationTV.text = buildString {
+                    append("Tipo de trabajo: ")
+                    append(chamba.toString())
+                }
+                binding.DaysSavingButton.text = buildString {
+                    append("¡")
+                    append(diasaho.toString())
+                    append(" días ahorrando!")
+                }
+                binding.BalanceTV.text = buildString {
+                    append("Balance: ")
+                    append(balance.toString())
+                }
+            }
+        }
+        lifecycleScope.launch {
+            mostrarDatos()
+        }
+
     }
 
+}
+/*
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+val db = context?.let {
+    Room.databaseBuilder(
+        it.applicationContext,
+        Stlite::class.java, "Stlite"
+    ).build()
+}
+
 // Llamar a un método de consulta en la instancia de la base de datos para obtener los datos que deseas mostrar
-    val nombre = db.UsuarioDao(requireContext()).getUserById(id)
-    super.onViewCreated(view, savedInstanceState)
-    binding.UsernameTV.setText(Usuario.nombre)
+val nombre = db.UsuarioDao(requireContext()).getUserById(id)
+super.onViewCreated(view, savedInstanceState)
+binding.UsernameTV.setText(Usuario.nombre)
 }
 */
-}

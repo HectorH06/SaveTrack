@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.st5.databinding.ActivityFinanzasBinding
 import com.example.st5.databinding.ActivityPlanesdeahorroBinding
 
 class PlanesDeAhorro : AppCompatActivity() {
@@ -27,23 +26,25 @@ class PlanesDeAhorro : AppCompatActivity() {
             binding.PerfilButton.setOnClickListener {
                 val intent = Intent(this@PlanesDeAhorro, Perfil::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
             }
 
             binding.HistorialButton.setOnClickListener{
                 val intent = Intent(this@PlanesDeAhorro, Historial::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
             }
             binding.IndexButton.setOnClickListener{
                 val intent = Intent(this@PlanesDeAhorro, Index::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
             }
             binding.PlanesDeAhorroButton.setOnClickListener{
-                val intent = Intent(this@PlanesDeAhorro, PlanesDeAhorro::class.java)
-                startActivity(intent)
             }
             binding.FinanzasButton.setOnClickListener{
                 val intent = Intent(this@PlanesDeAhorro, Finanzas::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromright, R.anim.toleft)
             }
         }
         val fragment: PlanesDeAhorro? = supportFragmentManager.findFragmentByTag("planesdeahorromain") as PlanesDeAhorro?

@@ -112,15 +112,13 @@
         android:layout_height="60dp"
         android:layout_marginStart="300dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginTop="666dp"
-        android:layout_marginBottom="70dp"
         android:background="@drawable/confshape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.449"
+        app:layout_constraintVertical_bias="0.805"
         app:srcCompat="@drawable/ic_confirm" />
 
     <ImageButton
@@ -129,8 +127,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="300dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginTop="666dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="60dp"
         android:background="@drawable/cancshape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -27,23 +27,25 @@ class Finanzas : AppCompatActivity() {
             binding.PerfilButton.setOnClickListener {
                 val intent = Intent(this@Finanzas, Perfil::class.java)
                 startActivity(intent)
-                }
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
+            }
 
             binding.HistorialButton.setOnClickListener{
                 val intent = Intent(this@Finanzas, Historial::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
             }
             binding.IndexButton.setOnClickListener{
                 val intent = Intent(this@Finanzas, Index::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
             }
             binding.PlanesDeAhorroButton.setOnClickListener{
                 val intent = Intent(this@Finanzas, PlanesDeAhorro::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.fromleft, R.anim.toright)
             }
             binding.FinanzasButton.setOnClickListener{
-                val intent = Intent(this@Finanzas, Finanzas::class.java)
-                startActivity(intent)
             }
         }
         val fragment: Finanzas? = supportFragmentManager.findFragmentByTag("finanzasmain") as Finanzas?

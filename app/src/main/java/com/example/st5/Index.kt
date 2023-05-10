@@ -16,7 +16,7 @@ class Index : AppCompatActivity() {
         setContentView(R.layout.activity_index)
 
         supportFragmentManager.commit {
-            replace<indexmain>(R.id.ContainerIndex, "indexmain")
+            replace<indexmain>(R.id.ViewContainer, "indexmain")
             setReorderingAllowed(true)
             addToBackStack(null)
 
@@ -24,27 +24,35 @@ class Index : AppCompatActivity() {
             setContentView(binding.root)
 
             binding.PerfilButton.setOnClickListener {
-                val intent = Intent(this@Index, Perfil::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.fromleft, R.anim.toright)
+                val perfil = perfilmain()
+                supportFragmentManager.beginTransaction()
+                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.ViewContainer, perfil).addToBackStack(null).commit()
             }
 
             binding.HistorialButton.setOnClickListener{
-                val intent = Intent(this@Index, Historial::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.fromleft, R.anim.toright)
+                val historial = historialmain()
+                supportFragmentManager.beginTransaction()
+                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.ViewContainer, historial).addToBackStack(null).commit()
             }
             binding.IndexButton.setOnClickListener{
+                val index = indexmain()
+                supportFragmentManager.beginTransaction()
+                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.ViewContainer, index).addToBackStack(null).commit()
             }
             binding.PlanesDeAhorroButton.setOnClickListener{
-                val intent = Intent(this@Index, PlanesDeAhorro::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.fromright, R.anim.toleft)
+                val pda = planesdeahorromain()
+                supportFragmentManager.beginTransaction()
+                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.ViewContainer, pda).addToBackStack(null).commit()
             }
             binding.FinanzasButton.setOnClickListener{
-                val intent = Intent(this@Index, Finanzas::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.fromright, R.anim.toleft)
+                val finanzas = finanzasmain()
+                supportFragmentManager.beginTransaction()
+                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.ViewContainer, finanzas).addToBackStack(null).commit()
             }
         }
         val fragment: Index? = supportFragmentManager.findFragmentByTag("indexmain") as Index?

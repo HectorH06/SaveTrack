@@ -35,7 +35,23 @@
     <string name="Apellido">Apellido</string>
     <string name="Edad">Edad</string>
     <string name="SEXO">Género</string>
+
     <string name="TipoChamba">Tipo de Ingreso</string>
+    <string-array name="chamba_options">
+        <item>1. Salario</item>
+        <item>2. Ingreso irregular</item>
+        <item>3. Beca</item>
+        <item>4. Pensión</item>
+        <item>5. Manutención</item>
+        <item>6. Ingreso pasivo</item>
+    </string-array>
+    <string name="Salario">Salario</string>
+    <string name="Ingresoirregular">Ingreso irregular</string>
+    <string name="Beca">Beca</string>
+    <string name="Pension">Pensión</string>
+    <string name="Manutencion">Manutención</string>
+    <string name="Ingresopasivo">Ingreso pasivo</string>
+
 
     <string name="FotoPerfil">Foto de Perfil</string>
     <string name="Grupos">Grupos</string>
@@ -62,10 +78,6 @@
     <string name="NewMonto">Nuevo Monto</string>
     <string name="Debt">Por pagar</string>
     <string name="ToDoList">Mandados</string>
-
-    <string name="Salario">Salario</string>
-    <string name="Beca">Beca</string>
-    <string name="Pension">Pensión</string>
 
     <string name="NomMonto">Nombre del nuevo Monto</string>
     <string name="QuaMonto">Cantidad del nuevo Monto</string>

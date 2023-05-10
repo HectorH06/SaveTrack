@@ -20,7 +20,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/picshape"
         android:contentDescription="@string/FotoPerfil"
-        app:srcCompat="@drawable/ic_add_24"/>
+        app:srcCompat="@drawable/ic_add_24"
+        android:elevation="15dp"/>
 
     <ImageButton
         android:id="@+id/EditProfileButton"
@@ -38,7 +39,8 @@
         app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.104"
-        app:srcCompat="@drawable/ic_config" />
+        app:srcCompat="@drawable/ic_config"
+        android:elevation="15dp"/>
 
     <Button
         android:id="@+id/DaysSavingButton"

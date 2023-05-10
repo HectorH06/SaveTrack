@@ -11,6 +11,8 @@ interface UsuarioDao {
 
 
 
+    @Query("SELECT iduser FROM usuario")
+    suspend fun checkId(): Int
     @Query("SELECT nombre FROM usuario")
     suspend fun checkName(): String
     @Query("SELECT edad FROM usuario")

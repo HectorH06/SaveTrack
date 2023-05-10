@@ -113,8 +113,8 @@ class perfilmain : Fragment() {
                     append(" años")
                 }
                 binding.OcupationTV.text = buildString {
-                    append("Tipo de trabajo: ")
-                    append(chamba.toString())
+                    append("Trabajo: ")
+                    append(chamba.toString()) // HACER EL CONVERTIDOR SEGÚN EL ÁRBOL ESE
                 }
                 binding.DaysSavingButton.text = buildString {
                     append("¡")
@@ -134,18 +134,3 @@ class perfilmain : Fragment() {
     }
 
 }
-/*
-override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-val db = context?.let {
-    Room.databaseBuilder(
-        it.applicationContext,
-        Stlite::class.java, "Stlite"
-    ).build()
-}
-
-// Llamar a un método de consulta en la instancia de la base de datos para obtener los datos que deseas mostrar
-val nombre = db.UsuarioDao(requireContext()).getUserById(id)
-super.onViewCreated(view, savedInstanceState)
-binding.UsernameTV.setText(Usuario.nombre)
-}
-*/

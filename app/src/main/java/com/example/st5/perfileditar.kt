@@ -95,6 +95,7 @@ class perfileditar : Fragment() {
 
 
     }
+
     private suspend fun mostrarDatos() {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(
@@ -125,33 +126,46 @@ class perfileditar : Fragment() {
             val nuevoNombre = binding.UsernameeditperfTV.text.toString()
             val nuevaEdad = binding.AgeeditperfTV.text.toString()
 
-            var c1 = "0"
-            var c2 = "0"
-            var c3 = "0"
-            var c4 = "0"
-            var c5 = "0"
-            var c6 = "0"
+            // ARBOL DE DECISIONES PARA CADA CASO DE CHAMBA
+            // AUTÓMATA FINITO o algo así
+            /*
+            CHAMBAS
+                1. Salario
+                2. Vendedor
+                3. Pensionado
+                4. Becado
+                5. Mantenido
+                6. Inversionista
+            */
+
+            val c = arrayOf("0", "0", "0", "0", "0", "0")
 
             if (binding.chamba1.isChecked) {
-                c1 = "1"
+                c[0] = "1"
             }
-            if (binding.chamba1.isChecked) {
-                c2 = "2"
+            if (binding.chamba2.isChecked) {
+                c[1] = "2"
             }
             if (binding.chamba3.isChecked) {
-                c3 = "3"
+                c[2] = "3"
             }
             if (binding.chamba4.isChecked) {
-                c4 = "4"
+                c[3] = "4"
             }
             if (binding.chamba5.isChecked) {
-                c5 = "5"
+                c[4] = "5"
             }
             if (binding.chamba6.isChecked) {
-                c6 = "6"
+                c[5] = "6"
             }
-            val cFinal = c1 + c2 + c3 + c4 + c5 + c6
-            // ARBOL DE DECISIONES PARA CADA CASO DE CHAMBA
+
+            var cFinal = ""
+            for (v in c) {
+                cFinal += v
+            }
+
+            val nuevaChamba = cFinal.toLong()
+
             if (nuevoNombre.isEmpty() || nuevaEdad.isEmpty() || cFinal.isEmpty()) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
@@ -162,8 +176,6 @@ class perfileditar : Fragment() {
                 }
                 return@withContext
             }
-
-            val nuevaChamba = cFinal.toLong()
 
             usuarioDao.updateAge(idt, nuevaEdad.toLong())
             usuarioDao.updateChamba(idt, nuevaChamba)

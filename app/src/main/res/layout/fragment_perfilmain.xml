@@ -59,7 +59,7 @@
     <LinearLayout
         android:id="@+id/UserDataLayout"
         android:layout_width="wrap_content"
-        android:layout_height="176dp"
+        android:layout_height="216dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="184dp"
@@ -105,7 +105,7 @@
         <TextView
             android:id="@+id/OcupationTV"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="100dp"
             android:background="@drawable/b1bottomcell"
             android:hint="@string/TipoChamba"
             android:paddingStart="10dp"

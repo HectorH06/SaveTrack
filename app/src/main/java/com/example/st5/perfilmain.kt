@@ -23,7 +23,8 @@ class perfilmain : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                 }
@@ -97,13 +98,37 @@ class perfilmain : Fragment() {
                 )
                 val nombre = usuarioDao.checkName()
                 val edad = usuarioDao.checkAge()
-                val chamba = usuarioDao.checkChamba()
+                val lachamba = usuarioDao.checkChamba()
                 val diasaho = usuarioDao.checkDiasaho()
                 val balance = usuarioDao.checkBalance()
 
+                var chamba = ""
+                val c = String.format("%06d", lachamba).toCharArray()
+                if (c[0] == '1') {
+                    chamba += "asalariado "
+                }
+                if (c[1] == '2') {
+                    chamba += "vendedor "
+                }
+                if (c[2] == '3') {
+                    chamba += "pensionado "
+                }
+                if (c[3] == '4') {
+                    chamba += "becado "
+                }
+                if (c[4] == '5') {
+                    chamba += "mantenido "
+                }
+                if (c[5] == '6') {
+                    chamba += "inversionista "
+                }
+
+                chamba = chamba.replaceFirstChar { it.uppercaseChar() }
+
                 Log.v("Name", nombre)
                 Log.v("Age", edad.toString())
-                Log.v("Chamba", chamba.toString())
+                Log.v("Código de Chamba", lachamba.toString())
+                Log.v("Descripción de Chamba ", chamba)
                 Log.v("Diasaho", diasaho.toString())
                 Log.v("Balance", balance.toString())
 
@@ -113,8 +138,7 @@ class perfilmain : Fragment() {
                     append(" años")
                 }
                 binding.OcupationTV.text = buildString {
-                    append("Trabajo: ")
-                    append(chamba.toString()) // HACER EL CONVERTIDOR SEGÚN EL ÁRBOL ESE
+                    append(chamba) // HACER EL CONVERTIDOR SEGÚN EL ÁRBOL ESE
                 }
                 binding.DaysSavingButton.text = buildString {
                     append("¡")

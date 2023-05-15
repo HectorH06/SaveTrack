@@ -82,7 +82,7 @@ class perfilmain : Fragment() {
                 .replace(R.id.ViewContainer, edit).addToBackStack(null).commit()
         }
 
-        val linkfoto = "https://i.pinimg.com/474x/8f/cf/e4/8fcfe4e3ef67949eac587526db013da9.jpg"
+        val linkfoto = "http://savetrack.com.mx/images/Bojji.jpg"
         lifecycleScope.launch {
             bajarfoto(linkfoto)
         }

@@ -3,11 +3,10 @@ package com.example.st5.models
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "grupos", foreignKeys = [ForeignKey(entity = Usuario::class, parentColumns = ["iduser"], childColumns = ["admin"])])
+@Entity(tableName = "grupos")
 @Parcelize
 data class Grupos(
     @PrimaryKey(autoGenerate = true)
@@ -20,7 +19,7 @@ data class Grupos(
     var description: String,
 
     @ColumnInfo(name = "admin")
-    var admin: String,
+    var admin: Long,
 
     @ColumnInfo(name = "nmembers")
     var nmembers: Long,
@@ -28,5 +27,5 @@ data class Grupos(
     @ColumnInfo(name = "enlace")
     var enlace: String,
 ) : Parcelable {
-    constructor() : this(0L, "", "", "", 0L, "")
+    constructor() : this(0L, "", "", 0L, 0L, "")
 }

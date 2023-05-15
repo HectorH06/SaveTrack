@@ -10,7 +10,6 @@ interface UsuarioDao {
     suspend fun getUserData(): List<Usuario>
 
 
-
     @Query("SELECT iduser FROM usuario")
     suspend fun checkId(): Int
     @Query("SELECT nombre FROM usuario")
@@ -27,9 +26,9 @@ interface UsuarioDao {
     suspend fun checkBalance(): Int
 
 
-
     @Query("DELETE FROM usuario")
     suspend fun clean()
+
 
     @Insert
     suspend fun insertUsuario(usuario: Usuario)
@@ -37,6 +36,7 @@ interface UsuarioDao {
     suspend fun updateUsuario(usuario: Usuario)
     @Delete
     suspend fun deleteUsuario(usuario: Usuario)
+
 
     @Query("UPDATE usuario SET edad = :age WHERE iduser = :id")
     suspend fun updateAge(id: Int, age: Long?)

@@ -8,6 +8,12 @@ interface GruposDao {
     @Query("SELECT * FROM grupos")
     fun getGrupo(): List<Grupos>
 
+
+
+
+    @Query("DELETE FROM grupos")
+    suspend fun clean()
+
     @Insert
     fun insertGrupo(grupo: Grupos)
 

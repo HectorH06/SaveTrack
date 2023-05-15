@@ -3,11 +3,10 @@ package com.example.st5.models
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "ingresosgastos", foreignKeys = [ForeignKey(entity = Usuario::class, parentColumns = ["iduser"], childColumns = ["iduser"])])
+@Entity(tableName = "ingresosgastos")
 @Parcelize
 data class IngresosGastos(
     @ColumnInfo(name = "iduser")

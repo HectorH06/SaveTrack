@@ -7,6 +7,8 @@ import com.example.st5.models.MontoGrupo
 interface MontoGrupoDao {
     @Query("SELECT * FROM montogrupo")
     fun getMontoG(): List<MontoGrupo>
+    @Query("DELETE FROM montogrupo")
+    suspend fun clean()
 
     @Insert
     fun insertMontoG(montoGrupo: MontoGrupo)

@@ -83,6 +83,7 @@ class perfilmain : Fragment() {
                     val summaryingresos = ingresosGastosDao.checkSummaryI()
                     val summarygastos = ingresosGastosDao.checkSummaryG()
 
+
                     val viejoUsuario = Usuario(
                         iduser = iduser,
                         nombre = username,
@@ -121,12 +122,6 @@ class perfilmain : Fragment() {
                         enlace = ""
                     )
 
-
-                    usuarioDao.insertUsuario(viejoUsuario)
-                    ingresosGastosDao.insertIngresosGastos(viejosIG)
-                    montoDao.insertMonto(viejoMonto)
-                    montoGrupoDao.insertMontoG(viejoMontoGrupo)
-                    gruposDao.insertGrupo(viejoGrupo)
 
                     val selectedbefore = usuarioDao.getUserData()
                     Log.v("PRE SELECTED USERS", selectedbefore.toString())
@@ -355,8 +350,7 @@ class perfilmain : Fragment() {
                 val usuarioDao = Stlite.getInstance(
                     requireContext()
                 ).getUsuarioDao()
-                val iduser = usuarioDao.checkId()
-                Log.v("id", iduser.toString())
+
 
                 val nombre = usuarioDao.checkName()
                 val edad = usuarioDao.checkAge()

@@ -5,7 +5,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
-import java.util.*
 
 @Entity(tableName = "monto")
 @Parcelize
@@ -22,8 +21,8 @@ data class Monto(
     @ColumnInfo(name = "valor")
     var valor: Double,
 
-    @ColumnInfo(name = "fecha") // , typeAffinity = ColumnInfo.TEXT
-    var fecha: Date?,
+    @ColumnInfo(name = "fecha")
+    var fecha: String?,
 
     @ColumnInfo(name = "frecuencia")
     var frecuencia: Long,

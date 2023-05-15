@@ -25,7 +25,6 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.net.URL
 import java.nio.charset.Charset
-import java.sql.Date
 
 class Login : Fragment() {
     private lateinit var binding: FragmentLoginBinding
@@ -433,7 +432,7 @@ class Login : Fragment() {
                                                     val iduse: Long = jsonObject3.getLong("iduser")
                                                     val concepto: String = jsonObject3.optString("concepto")
                                                     val valor: Double = jsonObject3.optDouble("valor")
-                                                    val fecha: Date = jsonObject3.optDate("fecha") as Date
+                                                    val fecha: String = jsonObject3.optString("fecha")
                                                     val frecuencia: Long = jsonObject3.optLong("frecuencia")
                                                     val tipo: String = jsonObject3.optString("tipo")
                                                     val etiqueta: Long = jsonObject3.optLong("etiqueta")

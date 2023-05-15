@@ -102,9 +102,6 @@ class perfileditar : Fragment() {
                 requireContext()
             ).getUsuarioDao()
 
-            val iduser = usuarioDao.checkId()
-            Log.v("id", iduser.toString())
-
             val nombre = usuarioDao.checkName()
             val edad = usuarioDao.checkAge()
             val chamba = usuarioDao.checkChamba()

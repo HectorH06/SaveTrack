@@ -65,7 +65,7 @@ class Olvido : Fragment() {
                 .commit()
         }
 
-        suspend fun correoo(strEmail: String){
+        suspend fun correoo(strEmail: String, strUsername: String){
             withContext(Dispatchers.IO){
                 val props = Properties()
                 props["mail.smtp.auth"] = "true"
@@ -78,8 +78,7 @@ class Olvido : Fragment() {
                         return PasswordAuthentication("pingenerator@savetrack.com.mx", "c#zeWjRbk42uZG#")
                     }
                 })
-                // SEGUIR CON LOS CIFRADOS DE DATOS
-                // HICE LA BRANCH UN CAGADERO
+
                 try {
                     val message = MimeMessage(session)
                     message.setFrom(InternetAddress("pingenerator@savetrack.com.mx"))
@@ -102,7 +101,7 @@ class Olvido : Fragment() {
 
                     val fragmentrecupe = Olvido2()
                     val bundle = Bundle()
-                    bundle.putString("Email", strEmail)
+                    bundle.putString("Username", strUsername)
                     fragmentrecupe.arguments = bundle
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
@@ -140,7 +139,7 @@ class Olvido : Fragment() {
 
                                         // Enviar correo electrónico al usuario con su pin de confirmación
                                         lifecycleScope.launch {
-                                            correoo(strEmail)
+                                            correoo(strEmail, username)
                                         }
                                     },
                                     { error ->

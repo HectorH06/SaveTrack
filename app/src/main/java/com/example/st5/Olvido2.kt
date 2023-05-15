@@ -66,8 +66,8 @@ class Olvido2 : Fragment() {
                 if (password.length in 4..18) {
                                 Log.d("Pin", truepin.toString())
                                 Log.d("password", password)
-                                val email = arguments?.getString("Email")
-                                val requestBody = "email=$email&newpassword=$password"
+                                val username = arguments?.getString("Username")
+                                val requestBody = "username=$username&newpassword=$password"
                                 url += requestBody
 
                                 val stringReq: StringRequest =

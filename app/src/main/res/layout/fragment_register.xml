@@ -53,12 +53,11 @@
         app:layout_constraintBottom_toTopOf="@+id/RegConPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEmail"
-        app:layout_constraintVertical_bias="0.584" />
+        app:layout_constraintTop_toBottomOf="@+id/textEmail" />
 
     <EditText
         android:id="@+id/textEmail"
-        android:layout_width="384dp"
+        android:layout_width="380dp"
         android:layout_height="48dp"
         android:autofillHints="@string/phone"
         android:background="@drawable/p1backbox"
@@ -71,8 +70,7 @@
         app:layout_constraintBottom_toTopOf="@+id/RegPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RegCorreo"
-        app:layout_constraintVertical_bias="0.584" />
+        app:layout_constraintTop_toBottomOf="@+id/RegCorreo" />
 
     <EditText
         android:id="@+id/RegConPass"
@@ -88,14 +86,13 @@
         android:textColorHint="@color/P1"
         app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RegPass"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/RegCorreo"
-        android:layout_width="384dp"
+        android:layout_width="380dp"
         android:layout_height="48dp"
         android:autofillHints="@string/EMAIL"
         android:background="@drawable/p1backbox"
@@ -107,10 +104,8 @@
         android:textColorHint="@color/P1"
         app:layout_constraintBottom_toTopOf="@+id/textEmail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.241" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/buttonConCuenta"

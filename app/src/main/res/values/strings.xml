@@ -96,6 +96,7 @@
     <string name="INVERSION">Inversión</string>
     <string name="MONEDA">Moneda</string>
     <string name="DIVISA">Divisa</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="username">Username</string>
@@ -105,5 +106,9 @@
     <string name="editar">Editar</string>
     <string name="balance">Balance</string>
     <string name="starting">Starting</string>
+    <string name="medidor_de_ahorro">Medidor de Ahorro</string>
+    <string name="configuracion">Configuracion</string>
+    <string name="nuevo_ingreso">Nuevo Ingreso</string>
+    <string name="nuevo_gasto">Nuevo Gasto</string>
 
 </resources>

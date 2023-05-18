@@ -27,19 +27,13 @@
         android:id="@+id/EditProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="157dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="23dp"
-        android:background="@drawable/picshape"
+        android:background="@drawable/configshape"
         android:contentDescription="@string/editar"
-        app:layout_constraintBottom_toTopOf="@+id/DaysSavingButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.104"
-        app:srcCompat="@drawable/ic_config"
+        app:srcCompat="@drawable/ic_settings"
         android:elevation="15dp"/>
 
     <Button

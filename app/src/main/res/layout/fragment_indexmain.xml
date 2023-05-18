@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background_index">
-
+<!--
     <ProgressBar
         android:id="@+id/GraficoPastel"
         style="?android:attr/progressBarStyle"
@@ -21,37 +21,43 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/ring"
         android:indeterminateDrawable="@drawable/progresscolor"/>
+-->
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/PieChart"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:contentDescription=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
         android:id="@+id/AgregarIngresoButton"
-        android:layout_width="68dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="331dp"
-        android:layout_marginTop="532dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="138dp"
-        android:background="@color/B1"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="96dp"
+        android:background="@drawable/confshape"
+        app:tint="@color/G1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_add_24" />
+        app:srcCompat="@drawable/ic_add_24"
+        android:contentDescription="@string/nuevo_ingreso" />
 
     <ImageButton
         android:id="@+id/AgregarGastoButton"
-        android:layout_width="68dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="331dp"
-        android:layout_marginTop="593dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="81dp"
-        android:background="@color/R1"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/cancshape"
+        app:tint="@color/R1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/button_onoff_indicator_off" />
-
+        app:srcCompat="@drawable/ic_remove"
+        android:contentDescription="@string/nuevo_gasto"/>
+<!--
     <Switch
         android:id="@+id/SwitchGrupos"
         android:layout_width="wrap_content"
@@ -64,17 +70,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+-->
 
     <LinearLayout
         android:id="@+id/LayoutPendientes"
-        android:layout_width="96dp"
+        android:layout_width="60dp"
         android:layout_height="380dp"
         android:layout_marginTop="174dp"
-        android:layout_marginEnd="315dp"
         android:layout_marginBottom="177dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -90,7 +95,7 @@
             android:id="@+id/checkBox2"
             android:layout_width="match_parent"
             android:layout_height="126.6dp"
-            android:background="@color/O1"
+            android:background="@color/O0"
             android:text="CheckBox2"
             android:textSize="12sp" />
 
@@ -98,13 +103,13 @@
             android:id="@+id/checkBox3"
             android:layout_width="match_parent"
             android:layout_height="126.6dp"
-            android:background="@color/G1"
+            android:background="@color/G0"
             android:text="CheckBox3"
             android:textSize="12sp" />
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/CalendarImage"
+        android:id="@+id/Calendario"
         android:layout_width="62dp"
         android:layout_height="63dp"
         android:layout_marginStart="16dp"
@@ -116,37 +121,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+        app:srcCompat="@android:drawable/ic_menu_my_calendar"
+        android:contentDescription="@string/dias_ahorrando"/>
 
     <ImageButton
         android:id="@+id/MedidorDeAhorroButton"
         android:layout_width="62dp"
         android:layout_height="85dp"
-        android:layout_marginStart="333dp"
         android:layout_marginTop="323dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="323dp"
-        android:background="@color/P4"
+        android:background="@drawable/confshape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete" />
+        app:srcCompat="@drawable/ic_delete"
+        android:contentDescription="@string/medidor_de_ahorro"/>
 
     <ImageButton
         android:id="@+id/ConfigButton"
-        android:layout_width="64dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="331dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="654dp"
-        android:background="@color/N4"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/configshape"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_manage" />
+        app:srcCompat="@drawable/ic_settings"
+        android:contentDescription="@string/configuracion"/>
 
 
 

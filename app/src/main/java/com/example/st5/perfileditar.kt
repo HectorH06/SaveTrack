@@ -1,23 +1,41 @@
 package com.example.st5
 
 import android.app.AlertDialog
+import android.content.Context
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import coil.load
+import coil.size.Scale
+import coil.transform.CircleCropTransformation
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentPerfileditarBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+
 
 class perfileditar : Fragment() {
     private lateinit var binding: FragmentPerfileditarBinding
+    private lateinit var galleryLauncher: ActivityResultLauncher<String>
+    private var actualBitmap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +64,30 @@ class perfileditar : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val back = perfilmain()
+
+        galleryLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                uri?.let { selectedImageUri ->
+                    val picturePath: String =
+                        getPath(requireActivity().applicationContext, selectedImageUri)
+                    binding.agregarfotobtn.load(selectedImageUri) {
+                        crossfade(true)
+                        placeholder(R.drawable.ic_add_24)
+                        transformations(CircleCropTransformation())
+                        scale(Scale.FILL)
+                    }
+                    Log.v("Path", picturePath)
+
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    val bm = BitmapFactory.decodeFile(picturePath)
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+                    val imageBytes: ByteArray = byteArrayOutputStream.toByteArray()
+                    val imageString: String = Base64.encodeToString(imageBytes, Base64.DEFAULT)
+                    Log.v("Image", imageString)
+
+                }
+            }
+
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
@@ -72,6 +114,23 @@ class perfileditar : Fragment() {
             confirmDialog.show()
         }
 
+        suspend fun getU() {
+            withContext(Dispatchers.IO) {
+                val usuarioDao = Stlite.getInstance(
+                    requireContext()
+                ).getUsuarioDao()
+                val user = usuarioDao.checkName()
+                binding.agregarfotobtn.setOnClickListener {
+                    galleryLauncher.launch("image/*")
+                    actualBitmap?.let { it1 -> uploadImage(it1, user) }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            getU()
+        }
+
         binding.Cancel.setOnClickListener {
             val cancelDialog = AlertDialog.Builder(requireContext())
                 .setTitle("¿Seguro que quieres descartar cambios?")
@@ -94,6 +153,63 @@ class perfileditar : Fragment() {
         }
 
 
+    }
+
+    private fun getPath(context: Context, uri: Uri?): String {
+        var result: String? = null
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor? =
+            uri?.let { context.contentResolver.query(it, proj, null, null, null) }
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                val columnindex: Int = cursor.getColumnIndexOrThrow(proj[0])
+                result = cursor.getString(columnindex)
+            }
+            cursor.close()
+        }
+        if (result == null) {
+            result = "Not found"
+        }
+        return result
+    }
+
+    private fun uploadImage(imageBitmap: Bitmap, username: String) {
+        val url = "http://www.savetrack.com.mx/images/$username.jpg"
+
+        val requestQueue = Volley.newRequestQueue(requireContext())
+
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val imageBytes = byteArrayOutputStream.toByteArray()
+
+
+        fun getByteData(): MutableMap<String, DataPart> {
+            val params = HashMap<String, DataPart>()
+            params["image"] = DataPart("$username.jpg", imageBytes, "image/jpeg")
+            return params
+        }
+
+        // Crear la solicitud POST para subir la imagen
+        val request = object : MultipartRequest(
+            Method.POST, url,
+            params = getByteData(),
+            Response.Listener { response ->
+                Toast.makeText(
+                    requireContext(),
+                    "La imagen se ha subido correctamente",
+                    Toast.LENGTH_SHORT
+                ).show()
+                Log.v("Response", response.toString())
+            },
+            Response.ErrorListener { error ->
+                Toast.makeText(
+                    requireContext(),
+                    "Error subiendo la imagen: ${error.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        ) {}
+        requestQueue.add(request)
     }
 
     private suspend fun mostrarDatos() {

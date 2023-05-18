@@ -378,7 +378,7 @@ class perfilmain : Fragment() {
                 if (c[5] == '6') {
                     chamba += "inversionista "
                 }
-
+                // CAPITALIZE YA NO EXISTE >:C
                 chamba = chamba.replaceFirstChar { it.uppercaseChar() }
 
                 Log.v("Name", nombre)

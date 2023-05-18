@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-    <solid android:color="@color/R1" />
-    <gradient
-        android:startColor="@color/R4"
-        android:endColor="@color/R2"
-        android:type="linear"
-        android:angle="0"/>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/R0" />
+            <gradient
+                android:startColor="@color/R3"
+                android:endColor="@color/R1"
+                android:type="linear"
+                android:angle="0"/>
 
-    <stroke
-        android:width="6dp"
-        android:color="@color/R1"/>
+            <stroke
+                android:width="6dp"
+                android:color="@color/R0"/>
 
-    <padding android:left="1dp"
-        android:top="1dp"
-        android:right="1dp"
-        android:bottom="1dp"/>
+            <padding android:left="1dp"
+                android:top="1dp"
+                android:right="1dp"
+                android:bottom="1dp"/>
 
-    <corners android:radius="30px"/>
-</shape>
+            <corners android:radius="30px"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/R1" />
+            <gradient
+                android:startColor="@color/R4"
+                android:endColor="@color/R2"
+                android:type="linear"
+                android:angle="0"/>
+
+            <stroke
+                android:width="6dp"
+                android:color="@color/R1"/>
+
+            <padding android:left="1dp"
+                android:top="1dp"
+                android:right="1dp"
+                android:bottom="1dp"/>
+
+            <corners android:radius="30px"/>
+        </shape>
+    </item>
+</selector>

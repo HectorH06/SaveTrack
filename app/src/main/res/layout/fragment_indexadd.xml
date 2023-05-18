@@ -4,22 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background_perfil">
-
-
-    <ImageView
-        android:id="@+id/agregarfotobtn"
-        android:layout_width="255dp"
-        android:layout_height="255dp"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/picshape"
-        app:layout_constraintBottom_toTopOf="@id/UsernameeditperfTV"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_add_24"
-        android:contentDescription="@string/FotoPerfil"
-        android:elevation="15dp"/>
+    android:background="@drawable/gradient_background_index">
 
     <ImageButton
         android:id="@+id/ConfigButton"
@@ -66,7 +51,7 @@
         app:layout_constraintBottom_toTopOf="@+id/AgeeditperfTV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/agregarfotobtn"
+        app:layout_constraintTop_toTopOf="parent"
         android:elevation="15dp" />
 
     <EditText
@@ -128,6 +113,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.679"
         android:elevation="15dp" />
+
+    <Switch
+        android:id="@+id/updownSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <CheckBox
         android:id="@+id/chamba3"

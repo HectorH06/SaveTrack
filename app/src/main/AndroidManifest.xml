@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -25,24 +26,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Perfil"
-            android:label="perfil">
-        </activity>
-        <activity
-            android:name=".Historial"
-            android:label="historial">
-        </activity>
-        <activity
             android:name=".Index"
             android:label="index">
-        </activity>
-        <activity
-            android:name=".PlanesDeAhorro"
-            android:label="planesdeahorro">
-        </activity>
-        <activity
-            android:name=".Finanzas"
-            android:label="finanzas">
         </activity>
     </application>
 

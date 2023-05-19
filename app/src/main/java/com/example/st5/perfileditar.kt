@@ -1,10 +1,9 @@
 package com.example.st5
 
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
-import android.content.Context
-import android.database.Cursor
+import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,27 +14,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
-import com.android.volley.Response
+import com.android.volley.*
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentPerfileditarBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.util.*
 
 
 class perfileditar : Fragment() {
     private lateinit var binding: FragmentPerfileditarBinding
-    private lateinit var galleryLauncher: ActivityResultLauncher<String>
-    private var actualBitmap: Bitmap? = null
+    private val pickImageRequest = 1
+    private lateinit var username: String
+    var fotochanged = false
+    var edadchanged = false
+    var chambachanged = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,29 +70,6 @@ class perfileditar : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val back = perfilmain()
 
-        galleryLauncher =
-            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                uri?.let { selectedImageUri ->
-                    val picturePath: String =
-                        getPath(requireActivity().applicationContext, selectedImageUri)
-                    binding.agregarfotobtn.load(selectedImageUri) {
-                        crossfade(true)
-                        placeholder(R.drawable.ic_add_24)
-                        transformations(CircleCropTransformation())
-                        scale(Scale.FILL)
-                    }
-                    Log.v("Path", picturePath)
-
-                    val byteArrayOutputStream = ByteArrayOutputStream()
-                    val bm = BitmapFactory.decodeFile(picturePath)
-                    bm.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-                    val imageBytes: ByteArray = byteArrayOutputStream.toByteArray()
-                    val imageString: String = Base64.encodeToString(imageBytes, Base64.DEFAULT)
-                    Log.v("Image", imageString)
-
-                }
-            }
-
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
@@ -114,23 +96,6 @@ class perfileditar : Fragment() {
             confirmDialog.show()
         }
 
-        suspend fun getU() {
-            withContext(Dispatchers.IO) {
-                val usuarioDao = Stlite.getInstance(
-                    requireContext()
-                ).getUsuarioDao()
-                val user = usuarioDao.checkName()
-                binding.agregarfotobtn.setOnClickListener {
-                    galleryLauncher.launch("image/*")
-                    actualBitmap?.let { it1 -> uploadImage(it1, user) }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            getU()
-        }
-
         binding.Cancel.setOnClickListener {
             val cancelDialog = AlertDialog.Builder(requireContext())
                 .setTitle("¿Seguro que quieres descartar cambios?")
@@ -152,64 +117,124 @@ class perfileditar : Fragment() {
             mostrarDatos()
         }
 
+        binding.agregarfotobtn.setOnClickListener {
+            showFileChooser()
+        }
+
 
     }
 
-    private fun getPath(context: Context, uri: Uri?): String {
-        var result: String? = null
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor: Cursor? =
-            uri?.let { context.contentResolver.query(it, proj, null, null, null) }
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                val columnindex: Int = cursor.getColumnIndexOrThrow(proj[0])
-                result = cursor.getString(columnindex)
+    // TODO: IMAGELOAD REQUEST PARA SUBIR DIRECTAMENTE COMO IMAGEN, si no se puede intentar con chunks y que sea lo que Dios quiera
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == pickImageRequest && resultCode == RESULT_OK && data != null && data.data != null) {
+            val filePath: Uri? = data.data
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, filePath)
+                var lastBitmap: Bitmap?
+                lastBitmap = bitmap
+
+                val image: String = getStringImage(lastBitmap)
+                Log.d("image", image)
+
+
+                sendImage(image, username)
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-            cursor.close()
         }
-        if (result == null) {
-            result = "Not found"
-        }
-        return result
+    }
+    private fun getStringImage(bmp: Bitmap): String {
+        val baos = ByteArrayOutputStream()
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val imageBytes: ByteArray = baos.toByteArray()
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
 
-    private fun uploadImage(imageBitmap: Bitmap, username: String) {
-        val url = "http://www.savetrack.com.mx/images/$username.jpg"
 
-        val requestQueue = Volley.newRequestQueue(requireContext())
-
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-        val imageBytes = byteArrayOutputStream.toByteArray()
-
-
-        fun getByteData(): MutableMap<String, DataPart> {
-            val params = HashMap<String, DataPart>()
-            params["image"] = DataPart("$username.jpg", imageBytes, "image/jpeg")
-            return params
+    private fun sendImage(image: String, username: String) {
+        binding.agregarfotobtn.load(image) {
+            crossfade(true)
+            placeholder(R.drawable.ic_add_24)
+            transformations(CircleCropTransformation())
+            scale(Scale.FILL)
         }
 
-        // Crear la solicitud POST para subir la imagen
-        val request = object : MultipartRequest(
-            Method.POST, url,
-            params = getByteData(),
-            Response.Listener { response ->
-                Toast.makeText(
-                    requireContext(),
-                    "La imagen se ha subido correctamente",
-                    Toast.LENGTH_SHORT
-                ).show()
-                Log.v("Response", response.toString())
-            },
-            Response.ErrorListener { error ->
-                Toast.makeText(
-                    requireContext(),
-                    "Error subiendo la imagen: ${error.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+        val baseUrl = "http://savetrack.com.mx/chunkpic.php"
+        val chunkSize = 1000 // Tamaño máximo de cada chunk en caracteres
+
+        val chunks = image.chunked(chunkSize)
+
+        for (i in chunks.indices) {
+            val chunk = chunks[i]
+            val params = hashMapOf<String, String>()
+            params["username"] = username
+            params["chunkIndex"] = i.toString()
+            params["totalChunks"] = chunks.size.toString()
+            params["imageChunk"] = chunk
+            val url =
+                "$baseUrl?username=$username&chunkIndex=$i&totalChunks=${chunks.size}&imageChunk=$chunk"
+            val stringRequest = object : StringRequest(
+                Method.POST, url,
+                Response.Listener { response ->
+                    Log.d("UPLOAD SUCCESS", response)
+                    try {
+                        val jsonObject = JSONObject(response)
+
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                Response.ErrorListener { error ->
+                    Log.e("UPLOAD API ERROR", error.toString())
+                    Toast.makeText(requireContext(), error.toString(), Toast.LENGTH_LONG).show()
+                }) {
+                @Throws(AuthFailureError::class)
+                override fun getParams(): Map<String, String> {
+                    val paramo: MutableMap<String, String> = Hashtable()
+                    paramo["image"] = image
+                    return paramo
+                }
             }
-        ) {}
-        requestQueue.add(request)
+
+
+            val socketTimeout = 30000
+            val policy: RetryPolicy = DefaultRetryPolicy(
+                socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+            stringRequest.retryPolicy = policy
+            val requestQueue = Volley.newRequestQueue(requireContext())
+            requestQueue.add(stringRequest)
+        }
+    }
+
+    private fun showFileChooser() {
+        val pickImageIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        pickImageIntent.type = "image/*"
+        pickImageIntent.putExtra("aspectX", 1)
+        pickImageIntent.putExtra("aspectY", 1)
+        pickImageIntent.putExtra("scale", true)
+        pickImageIntent.putExtra(
+            "outputFormat",
+            Bitmap.CompressFormat.JPEG.toString()
+        )
+        startActivityForResult(pickImageIntent, pickImageRequest)
+    }
+    private suspend fun bajarfoto(link: String) {
+        withContext(Dispatchers.IO) {
+            binding.agregarfotobtn.load(link) {
+                crossfade(true)
+                placeholder(R.drawable.ic_add_24)
+                transformations(CircleCropTransformation())
+                scale(Scale.FILL)
+            }
+        }
     }
 
     private suspend fun mostrarDatos() {
@@ -221,13 +246,18 @@ class perfileditar : Fragment() {
             val nombre = usuarioDao.checkName()
             val edad = usuarioDao.checkAge()
             val chamba = usuarioDao.checkChamba()
-
+            username = nombre
             Log.v("Name", nombre)
             Log.v("Age", edad.toString())
             Log.v("Chamba", chamba.toString())
 
             binding.UsernameeditperfTV.text = nombre
             binding.AgeeditperfTV.setText(edad.toString())
+
+            val linkfoto = "http://savetrack.com.mx/images/$nombre.jpg"
+            lifecycleScope.launch {
+                bajarfoto(linkfoto)
+            }
         }
     }
 
@@ -290,6 +320,7 @@ class perfileditar : Fragment() {
                 return@withContext
             }
 
+            //actualBitmap?.let { uploadImage(nuevoNombre, it) }
             usuarioDao.updateAge(idt, nuevaEdad.toLong())
             usuarioDao.updateChamba(idt, nuevaChamba)
 

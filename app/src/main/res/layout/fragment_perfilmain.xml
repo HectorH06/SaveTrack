@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/picshape"
         android:contentDescription="@string/FotoPerfil"
-        app:srcCompat="@drawable/ic_add_24"
+        app:srcCompat="@drawable/ic_person"
         android:elevation="15dp"/>
 
     <ImageButton

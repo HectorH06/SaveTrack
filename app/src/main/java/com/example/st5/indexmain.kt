@@ -107,6 +107,7 @@ class indexmain : Fragment() {
             val percentHormiga: Float = totalHormiga.toFloat() / totalisimo.toFloat()
             val percentOcio: Float = totalOcio.toFloat() / totalisimo.toFloat()
 
+
             val entries = listOf(
                 PieEntry(percentAlimento, "Alimentos"),
                 PieEntry(percentHogar, "Hogar"),

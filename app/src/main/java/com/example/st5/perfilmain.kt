@@ -340,11 +340,6 @@ class perfilmain : Fragment() {
                 .replace(R.id.ViewContainer, edit).addToBackStack(null).commit()
         }
 
-        val linkfoto = "http://savetrack.com.mx/images/Bojji.jpg"
-        lifecycleScope.launch {
-            bajarfoto(linkfoto)
-        }
-
         suspend fun mostrarDatos() {
             withContext(Dispatchers.IO) {
                 val usuarioDao = Stlite.getInstance(
@@ -378,7 +373,7 @@ class perfilmain : Fragment() {
                 if (c[5] == '6') {
                     chamba += "inversionista "
                 }
-                // CAPITALIZE YA NO EXISTE >:C
+
                 chamba = chamba.replaceFirstChar { it.uppercaseChar() }
 
                 Log.v("Name", nombre)
@@ -404,6 +399,11 @@ class perfilmain : Fragment() {
                 binding.BalanceTV.text = buildString {
                     append("Balance: ")
                     append(balance.toString())
+                }
+
+                val linkfoto = "http://savetrack.com.mx/images/$nombre.jpg"
+                lifecycleScope.launch {
+                    bajarfoto(linkfoto)
                 }
             }
         }

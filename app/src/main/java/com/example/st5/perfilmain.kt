@@ -49,12 +49,48 @@ class perfilmain : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         suspend fun bajarfoto(link: String) {
             withContext(Dispatchers.IO) {
+                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+                val id = usuarioDao.checkId()
+                val foto = usuarioDao.checkFoto()
                 binding.ProfilePicture.load(link) {
                     crossfade(true)
-                    placeholder(R.drawable.ic_add_24)
+                    placeholder(R.drawable.ic_person)
                     transformations(CircleCropTransformation())
                     scale(Scale.FILL)
                 }
+                /*
+                try {
+                    if (foto.isNotEmpty()) {
+                        val file = File(foto)
+                        if (file.exists()) {
+                            binding.ProfilePicture.load(file) {
+                                crossfade(true)
+                                placeholder(R.drawable.ic_person)
+                                transformations(CircleCropTransformation())
+                                scale(Scale.FILL)
+                            }
+                        } else {
+                            binding.ProfilePicture.load(link) {
+                                crossfade(true)
+                                placeholder(R.drawable.ic_person)
+                                transformations(CircleCropTransformation())
+                                scale(Scale.FILL)
+                            }
+                            usuarioDao.updatePhoto(id, link)
+                        }
+                    } else {
+                        binding.ProfilePicture.load(R.drawable.ic_person) {
+                            crossfade(true)
+                            placeholder(R.drawable.ic_person)
+                            transformations(CircleCropTransformation())
+                            scale(Scale.FILL)
+                        }
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                 */
             }
         }
 
@@ -76,10 +112,9 @@ class perfilmain : Fragment() {
                     val username = usuarioDao.checkName()
                     val edad = usuarioDao.checkAge().toLong()
                     val lachamba = usuarioDao.checkChamba().toLong()
-                    // val foto = usuarioDao.checkFoto()
                     val diasaho = usuarioDao.checkDiasaho().toLong()
                     val balance = usuarioDao.checkBalance().toLong()
-
+                    val foto = usuarioDao.checkFoto()
                     val summaryingresos = ingresosGastosDao.checkSummaryI()
                     val summarygastos = ingresosGastosDao.checkSummaryG()
 
@@ -89,7 +124,7 @@ class perfilmain : Fragment() {
                         nombre = username,
                         edad = edad,
                         chamba = lachamba,
-                        foto = "",
+                        foto = foto,
                         diasaho = diasaho,
                         balance = balance
                     )
@@ -350,6 +385,7 @@ class perfilmain : Fragment() {
                 val nombre = usuarioDao.checkName()
                 val edad = usuarioDao.checkAge()
                 val lachamba = usuarioDao.checkChamba()
+                val foto = usuarioDao.checkFoto()
                 val diasaho = usuarioDao.checkDiasaho()
                 val balance = usuarioDao.checkBalance()
 
@@ -379,7 +415,8 @@ class perfilmain : Fragment() {
                 Log.v("Name", nombre)
                 Log.v("Age", edad.toString())
                 Log.v("Código de Chamba", lachamba.toString())
-                Log.v("Descripción de Chamba ", chamba)
+                Log.v("Descripción de Chamba", chamba)
+                Log.v("Foto ", foto)
                 Log.v("Diasaho", diasaho.toString())
                 Log.v("Balance", balance.toString())
 
@@ -412,5 +449,4 @@ class perfilmain : Fragment() {
         }
 
     }
-
 }

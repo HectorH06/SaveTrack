@@ -1,11 +1,15 @@
 package com.example.st5
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
@@ -24,12 +28,10 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentPerfileditarBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONException
-import org.json.JSONObject
+import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 
@@ -119,12 +121,11 @@ class perfileditar : Fragment() {
 
         binding.agregarfotobtn.setOnClickListener {
             showFileChooser()
+            fotochanged = true
         }
 
 
     }
-
-    // TODO: IMAGELOAD REQUEST PARA SUBIR DIRECTAMENTE COMO IMAGEN, si no se puede intentar con chunks y que sea lo que Dios quiera
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -132,14 +133,20 @@ class perfileditar : Fragment() {
             val filePath: Uri? = data.data
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, filePath)
-                var lastBitmap: Bitmap?
-                lastBitmap = bitmap
+                val fo = filePath.toString()
 
-                val image: String = getStringImage(lastBitmap)
-                Log.d("image", image)
+                val compressedBitmap = compressImage(bitmap)
 
+                val image: String = getStringImage(compressedBitmap)
+                Log.d("bytes", compressedBitmap.byteCount.toString())
+                Log.d("actual image size", image.length.toString())
 
-                sendImage(image, username)
+                lifecycleScope.launch{
+                    sendImage(image, username)
+                }
+                lifecycleScope.launch{
+                    cambiarFoto(fo)
+                }
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -151,66 +158,108 @@ class perfileditar : Fragment() {
         val imageBytes: ByteArray = baos.toByteArray()
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
+    private fun compressImage(image: Bitmap): Bitmap {
+        val maxFileSize = 75000
+        val tempo: String = getStringImage(image)
+        val outputStream = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        var compressedSize = tempo.length
 
-
-    private fun sendImage(image: String, username: String) {
-        binding.agregarfotobtn.load(image) {
-            crossfade(true)
-            placeholder(R.drawable.ic_add_24)
-            transformations(CircleCropTransformation())
-            scale(Scale.FILL)
+        var quality = 90
+        while (compressedSize > maxFileSize && quality > 10) {
+            outputStream.reset()
+            image.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+            compressedSize = outputStream.toByteArray().toString().length
+            Log.v("reducing size to", compressedSize.toString())
+            quality -= 10
         }
 
-        val baseUrl = "http://savetrack.com.mx/chunkpic.php"
-        val chunkSize = 1000 // Tamaño máximo de cada chunk en caracteres
+        val compressedBitmap = BitmapFactory.decodeByteArray(outputStream.toByteArray(), 0, outputStream.size())
+        outputStream.close()
 
-        val chunks = image.chunked(chunkSize)
+        return compressedBitmap
+    }
+    private suspend fun cambiarFoto(nfo: String) {
+        withContext(Dispatchers.IO) {
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
-        for (i in chunks.indices) {
-            val chunk = chunks[i]
-            val params = hashMapOf<String, String>()
-            params["username"] = username
-            params["chunkIndex"] = i.toString()
-            params["totalChunks"] = chunks.size.toString()
-            params["imageChunk"] = chunk
-            val url =
-                "$baseUrl?username=$username&chunkIndex=$i&totalChunks=${chunks.size}&imageChunk=$chunk"
-            val stringRequest = object : StringRequest(
-                Method.POST, url,
-                Response.Listener { response ->
-                    Log.d("UPLOAD SUCCESS", response)
-                    try {
-                        val jsonObject = JSONObject(response)
+            val id = usuarioDao.checkId()
+            usuarioDao.updatePhoto(id, nfo)
 
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+            lifecycleScope.launch(){
+                bajarfoto(nfo)
+            }
+        }
+    }
+    private fun saveImageToFile(bitmap: Bitmap): String {
+        val directory = requireContext().getDir("/storage/emulated/0/Pictures/Savetrack", Context.MODE_PRIVATE)
+        val fileName = "image_${System.currentTimeMillis()}.jpg"
+        val file = File(directory, fileName)
+
+        val outputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        outputStream.flush()
+        outputStream.close()
+
+        return file.absolutePath
+    }
+    private suspend fun sendImage(image: String, username: String) {
+        withContext(Dispatchers.IO) {
+            Looper.prepare()
+            val baseUrl = "http://savetrack.com.mx/images/chunkpic.php"
+            val chunkSize = 2000
+
+            val chunks = image.chunked(chunkSize)
+            Log.w("TAMAÑO", (chunks.size * chunkSize).toString())
+            Log.w("CHUNKS", chunks.size.toString())
+
+            if (chunks.size <= 200) {
+                for ((index, i) in chunks.indices.withIndex()) {
+                    val chunk = chunks[i]
+                    val params = hashMapOf<String, String>()
+                    params["username"] = username
+                    params["chunkIndex"] = index.toString()
+                    params["totalChunks"] = chunks.size.toString()
+                    params["imageChunk"] = chunk
+                    val url =
+                        "$baseUrl?username=$username&chunkIndex=$i&totalChunks=${chunks.size}&imageChunk=$chunk"
+                    Log.v("CurrURL", url)
+                    val stringRequest = object : StringRequest(
+                        Method.PUT, url,
+                        Response.Listener { response ->
+                            Log.d("UPLOAD SUCCESS", i.toString())
+                        },
+                        Response.ErrorListener { error ->
+                            Log.e("UPLOAD API ERROR", error.toString())
+                        }) {
+                        @Throws(AuthFailureError::class)
+                        override fun getParams(): Map<String, String> {
+                            val paramo: MutableMap<String, String> = Hashtable()
+                            paramo["image"] = image
+                            return paramo
+                        }
                     }
-                },
-                Response.ErrorListener { error ->
-                    Log.e("UPLOAD API ERROR", error.toString())
-                    Toast.makeText(requireContext(), error.toString(), Toast.LENGTH_LONG).show()
-                }) {
-                @Throws(AuthFailureError::class)
-                override fun getParams(): Map<String, String> {
-                    val paramo: MutableMap<String, String> = Hashtable()
-                    paramo["image"] = image
-                    return paramo
+
+                    val socketTimeout = 20000
+                    val policy: RetryPolicy = DefaultRetryPolicy(
+                        socketTimeout,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                    )
+                    stringRequest.retryPolicy = policy
+                    val requestQueue = Volley.newRequestQueue(requireContext())
+                    requestQueue.add(stringRequest)
+
+                    delay(6000)
                 }
+            } else {
+                Toast.makeText(requireContext(), "La imagen es demasiado grande, intente con una más pequeña", Toast.LENGTH_SHORT).show()
             }
 
-
-            val socketTimeout = 30000
-            val policy: RetryPolicy = DefaultRetryPolicy(
-                socketTimeout,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-            )
-            stringRequest.retryPolicy = policy
-            val requestQueue = Volley.newRequestQueue(requireContext())
-            requestQueue.add(stringRequest)
         }
     }
 
+    @SuppressLint("IntentReset")
     private fun showFileChooser() {
         val pickImageIntent = Intent(
             Intent.ACTION_PICK,
@@ -224,18 +273,57 @@ class perfileditar : Fragment() {
             "outputFormat",
             Bitmap.CompressFormat.JPEG.toString()
         )
+
         startActivityForResult(pickImageIntent, pickImageRequest)
     }
     private suspend fun bajarfoto(link: String) {
         withContext(Dispatchers.IO) {
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+            val id = usuarioDao.checkId()
+            val foto = usuarioDao.checkFoto()
             binding.agregarfotobtn.load(link) {
                 crossfade(true)
-                placeholder(R.drawable.ic_add_24)
+                placeholder(R.drawable.ic_person)
                 transformations(CircleCropTransformation())
                 scale(Scale.FILL)
             }
+            usuarioDao.updatePhoto(id, link)
+            /*
+            try {
+                if (foto.isNotEmpty()) {
+                    val file = File(foto)
+                    if (file.exists()) {
+                        binding.agregarfotobtn.load(file) {
+                            crossfade(true)
+                            placeholder(R.drawable.ic_person)
+                            transformations(CircleCropTransformation())
+                            scale(Scale.FILL)
+                        }
+                    } else {
+                        binding.agregarfotobtn.load(link) {
+                            crossfade(true)
+                            placeholder(R.drawable.ic_person)
+                            transformations(CircleCropTransformation())
+                            scale(Scale.FILL)
+                        }
+                        usuarioDao.updatePhoto(id, link)
+                    }
+                } else {
+                    binding.agregarfotobtn.load(R.drawable.ic_person) {
+                        crossfade(true)
+                        placeholder(R.drawable.ic_person)
+                        transformations(CircleCropTransformation())
+                        scale(Scale.FILL)
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+             */
         }
     }
+
 
     private suspend fun mostrarDatos() {
         withContext(Dispatchers.IO) {
@@ -320,7 +408,6 @@ class perfileditar : Fragment() {
                 return@withContext
             }
 
-            //actualBitmap?.let { uploadImage(nuevoNombre, it) }
             usuarioDao.updateAge(idt, nuevaEdad.toLong())
             usuarioDao.updateChamba(idt, nuevaChamba)
 

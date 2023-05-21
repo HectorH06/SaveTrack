@@ -26,7 +26,7 @@ data class Usuario(
     var chamba: Long?,
 
     @ColumnInfo(name = "foto")
-    var foto: String?, // CAMBIAR A BLOB, acceder mediante url
+    var foto: String?,
 
     @ColumnInfo(name = "diasaho")
     var diasaho: Long?,

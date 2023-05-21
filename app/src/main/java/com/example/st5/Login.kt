@@ -2,7 +2,6 @@ package com.example.st5
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +11,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.android.volley.Request
-import com.android.volley.Response
+import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
@@ -22,9 +20,11 @@ import com.example.st5.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
 import java.nio.charset.Charset
+import java.util.*
 
 class Login : Fragment() {
     private lateinit var binding: FragmentLoginBinding
@@ -51,16 +51,6 @@ class Login : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        @SuppressLint("SimpleDateFormat")
-        fun JSONObject.optDate(name: String): java.util.Date? {
-            val dateString = this.optString(name)
-            return if (dateString.isNullOrEmpty()) {
-                null
-            } else {
-                SimpleDateFormat("yyyy-MM-dd").parse(dateString)
-            }
-        }
 
         binding.buttonSinCuenta.setOnClickListener {
             val fragmentregister = Register()
@@ -204,7 +194,6 @@ class Login : Fragment() {
                                                     jsonObjectUsuario.put("edad", nuevoUsuario.edad)
                                                     jsonObjectUsuario.put("nombre", nuevoUsuario.nombre)
                                                     jsonObjectUsuario.put("chamba", nuevoUsuario.chamba)
-                                                    jsonObjectUsuario.put("foto", nuevoUsuario.foto)
                                                     jsonObjectUsuario.put("diasaho", nuevoUsuario.diasaho)
                                                     jsonObjectUsuario.put("balance", nuevoUsuario.balance)
 
@@ -374,6 +363,38 @@ class Login : Fragment() {
                                                     )
                                                     queue.add(upload5Req)
 
+                                                    val url6 =
+                                                        "http://savetrack.com.mx/images/inipic.php?username=$username"
+                                                    val stringRequest = object : StringRequest(
+                                                        Method.POST, url6,
+                                                        Response.Listener { response ->
+                                                            try {
+                                                                Log.d("UPLOAD SUCCESS", response)
+                                                            } catch (e: JSONException) {
+                                                                e.printStackTrace()
+                                                            }
+                                                        },
+                                                        Response.ErrorListener { error ->
+                                                            Log.e("UPLOAD API ERROR", error.toString())
+                                                            Toast.makeText(requireContext(), "No se ha podido establecer conexión a Internet", Toast.LENGTH_LONG).show()
+                                                        }) {
+                                                        override fun getBody(): ByteArray {
+                                                            return idurl.toByteArray(
+                                                                Charset.defaultCharset()
+                                                            )
+                                                        }
+                                                    }
+
+
+                                                    val socketTimeout = 5000
+                                                    val policy: RetryPolicy = DefaultRetryPolicy(
+                                                        socketTimeout,
+                                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                                                    )
+                                                    stringRequest.retryPolicy = policy
+                                                    val requestQueue = Volley.newRequestQueue(requireContext())
+                                                    requestQueue.add(stringRequest)
 
                                                 }
                                             }
@@ -410,7 +431,6 @@ class Login : Fragment() {
                                                     val nombre: String = jsonObject1.getString("nombre")
                                                     val edad: Long = jsonObject1.optLong("edad")
                                                     val chamba: Long = jsonObject1.optLong("chamba")
-                                                    val foto: String? = jsonObject1.optString("foto")
                                                     val diasaho: Long = jsonObject1.optLong("diasaho")
                                                     val balance: Long = jsonObject1.optLong("balance")
                                                     val usuarioDao = Stlite.getInstance(
@@ -466,7 +486,7 @@ class Login : Fragment() {
                                                         nombre = nombre,
                                                         edad = edad,
                                                         chamba = chamba,
-                                                        foto = foto,
+                                                        foto = "",
                                                         diasaho = diasaho,
                                                         balance = balance
                                                     )

@@ -49,48 +49,12 @@ class perfilmain : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         suspend fun bajarfoto(link: String) {
             withContext(Dispatchers.IO) {
-                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
-
-                val id = usuarioDao.checkId()
-                val foto = usuarioDao.checkFoto()
                 binding.ProfilePicture.load(link) {
                     crossfade(true)
                     placeholder(R.drawable.ic_person)
                     transformations(CircleCropTransformation())
                     scale(Scale.FILL)
                 }
-                /*
-                try {
-                    if (foto.isNotEmpty()) {
-                        val file = File(foto)
-                        if (file.exists()) {
-                            binding.ProfilePicture.load(file) {
-                                crossfade(true)
-                                placeholder(R.drawable.ic_person)
-                                transformations(CircleCropTransformation())
-                                scale(Scale.FILL)
-                            }
-                        } else {
-                            binding.ProfilePicture.load(link) {
-                                crossfade(true)
-                                placeholder(R.drawable.ic_person)
-                                transformations(CircleCropTransformation())
-                                scale(Scale.FILL)
-                            }
-                            usuarioDao.updatePhoto(id, link)
-                        }
-                    } else {
-                        binding.ProfilePicture.load(R.drawable.ic_person) {
-                            crossfade(true)
-                            placeholder(R.drawable.ic_person)
-                            transformations(CircleCropTransformation())
-                            scale(Scale.FILL)
-                        }
-                    }
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-                 */
             }
         }
 

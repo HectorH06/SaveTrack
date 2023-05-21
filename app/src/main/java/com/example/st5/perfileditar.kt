@@ -3,7 +3,6 @@ package com.example.st5
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -30,8 +29,6 @@ import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentPerfileditarBinding
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 
@@ -40,9 +37,8 @@ class perfileditar : Fragment() {
     private lateinit var binding: FragmentPerfileditarBinding
     private val pickImageRequest = 1
     private lateinit var username: String
-    var fotochanged = false
-    var edadchanged = false
-    var chambachanged = false
+    private var edadchanged = true
+    private var chambachanged = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,12 +117,12 @@ class perfileditar : Fragment() {
 
         binding.agregarfotobtn.setOnClickListener {
             showFileChooser()
-            fotochanged = true
         }
 
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == pickImageRequest && resultCode == RESULT_OK && data != null && data.data != null) {
@@ -186,22 +182,10 @@ class perfileditar : Fragment() {
             val id = usuarioDao.checkId()
             usuarioDao.updatePhoto(id, nfo)
 
-            lifecycleScope.launch(){
+            lifecycleScope.launch{
                 bajarfoto(nfo)
             }
         }
-    }
-    private fun saveImageToFile(bitmap: Bitmap): String {
-        val directory = requireContext().getDir("/storage/emulated/0/Pictures/Savetrack", Context.MODE_PRIVATE)
-        val fileName = "image_${System.currentTimeMillis()}.jpg"
-        val file = File(directory, fileName)
-
-        val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.flush()
-        outputStream.close()
-
-        return file.absolutePath
     }
     private suspend fun sendImage(image: String, username: String) {
         withContext(Dispatchers.IO) {
@@ -228,6 +212,7 @@ class perfileditar : Fragment() {
                         Method.PUT, url,
                         Response.Listener { response ->
                             Log.d("UPLOAD SUCCESS", i.toString())
+                            Log.i("response", response)
                         },
                         Response.ErrorListener { error ->
                             Log.e("UPLOAD API ERROR", error.toString())
@@ -281,7 +266,6 @@ class perfileditar : Fragment() {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
             val id = usuarioDao.checkId()
-            val foto = usuarioDao.checkFoto()
             binding.agregarfotobtn.load(link) {
                 crossfade(true)
                 placeholder(R.drawable.ic_person)
@@ -289,38 +273,6 @@ class perfileditar : Fragment() {
                 scale(Scale.FILL)
             }
             usuarioDao.updatePhoto(id, link)
-            /*
-            try {
-                if (foto.isNotEmpty()) {
-                    val file = File(foto)
-                    if (file.exists()) {
-                        binding.agregarfotobtn.load(file) {
-                            crossfade(true)
-                            placeholder(R.drawable.ic_person)
-                            transformations(CircleCropTransformation())
-                            scale(Scale.FILL)
-                        }
-                    } else {
-                        binding.agregarfotobtn.load(link) {
-                            crossfade(true)
-                            placeholder(R.drawable.ic_person)
-                            transformations(CircleCropTransformation())
-                            scale(Scale.FILL)
-                        }
-                        usuarioDao.updatePhoto(id, link)
-                    }
-                } else {
-                    binding.agregarfotobtn.load(R.drawable.ic_person) {
-                        crossfade(true)
-                        placeholder(R.drawable.ic_person)
-                        transformations(CircleCropTransformation())
-                        scale(Scale.FILL)
-                    }
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-             */
         }
     }
 
@@ -354,7 +306,6 @@ class perfileditar : Fragment() {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
             val idt = usuarioDao.checkId()
-            val nuevoNombre = binding.UsernameeditperfTV.text.toString()
             val nuevaEdad = binding.AgeeditperfTV.text.toString()
 
             // ARBOL DE DECISIONES PARA CADA CASO DE CHAMBA
@@ -395,28 +346,39 @@ class perfileditar : Fragment() {
                 cFinal += v
             }
 
+            if (cFinal == "000000"){
+                chambachanged = false
+            }
+
             val nuevaChamba = cFinal.toLong()
 
-            if (nuevoNombre.isEmpty() || nuevaEdad.isEmpty() || cFinal.isEmpty()) {
-                withContext(Dispatchers.Main) {
+            val edadlong = nuevaEdad.toLong()
+            if (edadlong <= 5 || edadlong >= 121) {
+                edadchanged = false
+                withContext(Dispatchers.Default) {
+                    Looper.prepare()
+                    Toast.makeText(requireContext(), "La edad ingresada no es válida", Toast.LENGTH_SHORT).show()
+                }
+                Dispatchers.Default.cancel()
+            }
+
+            if (edadchanged){
+                usuarioDao.updateAge(idt, edadlong)
+            }
+            if (chambachanged){
+                usuarioDao.updateChamba(idt, nuevaChamba)
+            }
+
+
+            withContext(Dispatchers.Main) {
+                if (edadchanged || chambachanged){
                     Toast.makeText(
                         requireContext(),
-                        "Todos los campos deben ser completados",
+                        "Cambios guardados correctamente",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                return@withContext
-            }
-
-            usuarioDao.updateAge(idt, nuevaEdad.toLong())
-            usuarioDao.updateChamba(idt, nuevaChamba)
-
-            withContext(Dispatchers.Main) {
-                Toast.makeText(
-                    requireContext(),
-                    "Cambios guardados correctamente",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Dispatchers.Main.cancel()
             }
         }
     }

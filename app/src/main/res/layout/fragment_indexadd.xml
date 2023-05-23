@@ -33,181 +33,174 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.218"
         app:srcCompat="@drawable/ic_back"
-        android:background="@color/transparent"/>
+        android:background="@color/transparent"
+        android:contentDescription="@string/goback" />
 
-    <TextView
-        android:id="@+id/UsernameeditperfTV"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/b1topcell"
-        android:hint="@string/username"
-        android:paddingStart="6dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="6dp"
-        android:textColor="@color/B0"
-        android:textColorHint="@color/B2"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/AgeeditperfTV"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="15dp" />
+
 
     <EditText
-        android:id="@+id/AgeeditperfTV"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:background="@drawable/b1bottomcell"
-        android:paddingStart="6dp"
-        android:paddingEnd="6dp"
-        android:hint="@string/Edad"
-        android:textColorHint="@color/B2"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/chamba1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/UsernameeditperfTV"
-        android:elevation="15dp" />
-
-
-    <CheckBox
-        android:id="@+id/chamba1"
+        android:id="@+id/ConceptoField"
         android:layout_width="250dp"
         android:layout_height="48dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/b1topcell"
-        android:hint="@string/Salario"
+        android:background="@drawable/p1topcell"
+        android:hint="@string/Concepto"
+        android:inputType="text"
         android:paddingStart="6dp"
         android:paddingTop="5dp"
         android:paddingEnd="6dp"
-        android:textColor="@color/B0"
-        android:textColorHint="@color/B0"
+        android:textColor="@color/P0"
+        android:textColorHint="@color/P0"
         android:textSize="24sp"
-        android:buttonTint="@color/B0"
-        app:layout_constraintBottom_toTopOf="@id/chamba2"
+        android:buttonTint="@color/P0"
+        app:layout_constraintBottom_toTopOf="@id/ValorField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/AgeeditperfTV"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.625"
-        android:elevation="15dp" />
+        android:elevation="15dp"
+        android:autofillHints="" />
 
-    <CheckBox
-        android:id="@+id/chamba2"
+    <EditText
+        android:id="@+id/ValorField"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:background="@drawable/b1midcell"
-        android:hint="@string/Ingresoirregular"
+        android:background="@drawable/p1midcell"
+        android:hint="@string/Valor"
+        android:inputType="numberDecimal"
         android:paddingStart="6dp"
         android:paddingTop="5dp"
         android:paddingEnd="6dp"
-        android:textColor="@color/B0"
-        android:textColorHint="@color/B0"
+        android:textColor="@color/P0"
+        android:textColorHint="@color/P0"
         android:textSize="24sp"
-        android:buttonTint="@color/B0"
-        app:layout_constraintTop_toBottomOf="@+id/chamba1"
-        app:layout_constraintBottom_toTopOf="@+id/chamba3"
+        android:buttonTint="@color/P0"
+        app:layout_constraintTop_toBottomOf="@+id/ConceptoField"
+        app:layout_constraintBottom_toTopOf="@+id/FechaField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.679"
-        android:elevation="15dp" />
+        android:elevation="15dp"
+        android:autofillHints="" />
 
-    <Switch
-        android:id="@+id/updownSwitch"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/switchpordelante"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="100dp"
+        android:translationZ="100dp"
+        app:layout_constraintTop_toBottomOf="@+id/ConceptoField"
+        app:layout_constraintBottom_toTopOf="@+id/FechaField"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <CheckBox
-        android:id="@+id/chamba3"
+        <com.polyak.iconswitch.IconSwitch
+            android:id="@+id/updownSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:thumbTint="@color/P0"
+            app:isw_icon_left="@drawable/ic_add"
+            app:isw_icon_right="@drawable/ic_remove"
+            android:backgroundTint="@color/P0"
+            android:trackTint="@color/P2"
+            app:isw_thumb_color_left="@color/G2"
+            app:isw_thumb_color_right="@color/R0"/>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/FechaField"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:background="@drawable/b1midcell"
-        android:hint="@string/Pension"
+        android:background="@drawable/p1midcell"
+        android:hint="@string/Fecha"
+        android:inputType="text"
         android:paddingStart="6dp"
         android:paddingTop="5dp"
         android:paddingEnd="6dp"
-        android:textColor="@color/B0"
-        android:textColorHint="@color/B0"
+        android:textColor="@color/P0"
+        android:textColorHint="@color/P0"
         android:textSize="24sp"
-        android:buttonTint="@color/B0"
-        app:layout_constraintTop_toBottomOf="@+id/chamba2"
-        app:layout_constraintBottom_toTopOf="@+id/chamba4"
+        android:buttonTint="@color/P0"
+        app:layout_constraintTop_toBottomOf="@+id/ValorField"
+        app:layout_constraintBottom_toTopOf="@+id/FrecuenciaField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.734"
-        android:elevation="15dp" />
+        android:elevation="15dp"
+        android:autofillHints="" />
 
-    <CheckBox
-        android:id="@+id/chamba4"
+    <EditText
+        android:id="@+id/FrecuenciaField"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:background="@drawable/b1midcell"
-        android:hint="@string/Beca"
+        android:background="@drawable/p1midcell"
+        android:hint="@string/Frecuencia"
+        android:inputType="text"
         android:paddingStart="6dp"
         android:paddingTop="5dp"
         android:paddingEnd="6dp"
-        android:textColor="@color/B0"
-        android:textColorHint="@color/B0"
+        android:textColor="@color/P0"
+        android:textColorHint="@color/P0"
         android:textSize="24sp"
-        android:buttonTint="@color/B0"
-        app:layout_constraintTop_toBottomOf="@+id/chamba3"
-        app:layout_constraintBottom_toTopOf="@+id/chamba5"
+        android:buttonTint="@color/P0"
+        app:layout_constraintTop_toBottomOf="@+id/FechaField"
+        app:layout_constraintBottom_toTopOf="@+id/TipoField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.788"
-        android:elevation="15dp" />
+        android:elevation="15dp"
+        android:autofillHints="" />
 
-    <CheckBox
-        android:id="@+id/chamba5"
+    <EditText
+        android:id="@+id/TipoField"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:background="@drawable/b1midcell"
-        android:hint="@string/Manutencion"
+        android:background="@drawable/p1midcell"
+        android:hint="@string/Tipo"
+        android:inputType="text"
         android:paddingStart="6dp"
         android:paddingTop="5dp"
         android:paddingEnd="6dp"
-        android:textColor="@color/B0"
-        android:textColorHint="@color/B0"
+        android:textColor="@color/P0"
+        android:textColorHint="@color/P0"
         android:textSize="24sp"
-        android:buttonTint="@color/B0"
-        app:layout_constraintTop_toBottomOf="@+id/chamba4"
-        app:layout_constraintBottom_toTopOf="@+id/chamba6"
+        android:buttonTint="@color/P0"
+        app:layout_constraintTop_toBottomOf="@+id/FrecuenciaField"
+        app:layout_constraintBottom_toTopOf="@+id/LabelField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.838"
-        android:elevation="15dp" />
+        android:elevation="15dp"
+        android:autofillHints="" />
 
-    <CheckBox
-        android:id="@+id/chamba6"
+    <Spinner
+        android:id="@+id/LabelField"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/b1bottomcell"
-        android:hint="@string/Ingresopasivo"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/p1bottomcell"
+        android:inputType="text"
         android:paddingStart="6dp"
         android:paddingTop="5dp"
         android:paddingEnd="6dp"
-        android:textColor="@color/B0"
-        android:textColorHint="@color/B0"
+        android:textColor="@color/P0"
+        android:textColorHint="@color/P0"
         android:textSize="24sp"
-        android:buttonTint="@color/B0"
-        app:layout_constraintTop_toBottomOf="@+id/chamba5"
+        android:buttonTint="@color/P0"
+        app:layout_constraintTop_toBottomOf="@+id/TipoField"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.892"
-        android:elevation="15dp" />
+        android:elevation="15dp"
+        android:entries="@array/etiquetaoptions"
+        android:outlineAmbientShadowColor="@color/B5"/>
 
     <ImageButton
         android:id="@+id/Confirm"
@@ -222,7 +215,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.767"
-        app:srcCompat="@drawable/ic_confirm" />
+        app:srcCompat="@drawable/ic_confirm"
+        android:contentDescription="@string/confirmar" />
 
     <ImageButton
         android:id="@+id/Cancel"
@@ -238,5 +232,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.949"
-        app:srcCompat="@drawable/ic_cancel" />
+        app:srcCompat="@drawable/ic_cancel"
+        android:contentDescription="@string/Cancelar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

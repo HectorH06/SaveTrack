@@ -40,10 +40,6 @@ class indexmain : Fragment() {
         colors.add(ContextCompat.getColor(requireContext(), R.color.R1))
     }
 
-    private suspend fun getIG() {
-
-    }
-
     private suspend fun setupPieChart() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(
@@ -136,8 +132,8 @@ class indexmain : Fragment() {
 
         val addWithSwitchOn = indexadd.newInstance(true)
         val addWithSwitchOff = indexadd.newInstance(false)
-        binding.AgregarIngresoButton.setOnClickListener {
 
+        binding.AgregarIngresoButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.ViewContainer, addWithSwitchOn).addToBackStack(null).commit()
@@ -148,7 +144,7 @@ class indexmain : Fragment() {
                 .replace(R.id.ViewContainer, addWithSwitchOff).addToBackStack(null).commit()
         }
 
-        lifecycleScope.launch() {
+        lifecycleScope.launch {
             setupPieChart()
         }
 

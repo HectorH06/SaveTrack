@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.st5"
-        minSdk 26
+        minSdk 28
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -70,5 +70,6 @@ dependencies {
     // Visuals
     implementation "io.coil-kt:coil:1.1.1"
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.polyak:icon-switch:1.0.0'
     implementation 'com.android.support:support-annotations:28.0.0'
 }

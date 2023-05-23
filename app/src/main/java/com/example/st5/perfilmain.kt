@@ -102,8 +102,8 @@ class perfilmain : Fragment() {
                         iduser = iduser,
                         concepto = "",
                         valor = 0.0,
-                        fecha = null,
-                        frecuencia = 0,
+                        fecha = "",
+                        frecuencia = null,
                         tipo = "",
                         etiqueta = 0
                     )

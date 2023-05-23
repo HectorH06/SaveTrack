@@ -97,7 +97,7 @@
     <string name="MONEDA">Moneda</string>
     <string name="DIVISA">Divisa</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Otros -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="username">Username</string>
     <string name="textview">TextView</string>
@@ -110,5 +110,22 @@
     <string name="configuracion">Configuracion</string>
     <string name="nuevo_ingreso">Nuevo Ingreso</string>
     <string name="nuevo_gasto">Nuevo Gasto</string>
+    <string name="Concepto">Concepto</string>
+    <string name="Valor">Valor</string>
+    <string name="Frecuencia">Frecuencia</string>
+    <string name="Tipo">Tipo</string>
+    <string name="Etiqueta">Etiqueta</string>
+    <string name="Cancelar">Cancelar</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="goback">Go back</string>
 
+    <!-- Spinners -->
+    <string-array name="etiquetaoptions">
+        <item>Alimento</item>
+        <item>Hogar</item>
+        <item>Bienestar</item>
+        <item>Otras necesidades</item>
+        <item>Gasto hormiga</item>
+        <item>Ocio y demás</item>
+    </string-array>
 </resources>

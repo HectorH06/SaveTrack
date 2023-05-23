@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Monto(
     @PrimaryKey(autoGenerate = true)
-    var idmonto: Long,
+    var idmonto: Long = 0L,
 
     @ColumnInfo(name = "iduser")
     var iduser: Long,
@@ -22,10 +22,10 @@ data class Monto(
     var valor: Double,
 
     @ColumnInfo(name = "fecha")
-    var fecha: String?,
+    var fecha: String,
 
     @ColumnInfo(name = "frecuencia")
-    var frecuencia: Long,
+    var frecuencia: Long?,
 
     @ColumnInfo(name = "tipo")
     var tipo: String,
@@ -33,5 +33,5 @@ data class Monto(
     @ColumnInfo(name = "etiqueta")
     var etiqueta: Long,
 ) : Parcelable {
-    constructor() : this(0L, 0L, "", 0.0, null, 0L, "", 0L)
+    constructor() : this(0L, 0L, "", 0.0, "", null, "", 0L)
 }

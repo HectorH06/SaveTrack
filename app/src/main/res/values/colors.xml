@@ -56,6 +56,8 @@
     <color name="N5">#FFE0E0E0</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="grey">#FFC9CCD6</color>
+
     <!-- Android -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

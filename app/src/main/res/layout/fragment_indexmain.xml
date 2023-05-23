@@ -42,7 +42,7 @@
         app:tint="@color/G1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add_24"
+        app:srcCompat="@drawable/ic_add"
         android:contentDescription="@string/nuevo_ingreso" />
 
     <ImageButton

@@ -20,10 +20,13 @@ class Starter : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-
+                    val actual = Login()
+                    parentFragmentManager.beginTransaction().replace(R.id.FragContainer, actual)
+                        .addToBackStack(null).commit()
                 }
             })
     }

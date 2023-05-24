@@ -335,7 +335,7 @@ class perfilmain : Fragment() {
         binding.EditProfileButton.setOnClickListener {
             val edit = perfileditar()
             parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.ViewContainer, edit).addToBackStack(null).commit()
         }
 

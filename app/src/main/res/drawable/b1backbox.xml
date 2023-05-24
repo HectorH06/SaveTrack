@@ -4,8 +4,8 @@
         <shape android:shape="rectangle">
             <solid android:color="@color/B0" />
             <gradient
-                android:startColor="@color/B4"
-                android:endColor="@color/B2"
+                android:startColor="@color/B5"
+                android:endColor="@color/B4"
                 android:type="linear"
                 android:angle="0"/>
 
@@ -23,16 +23,16 @@
     </item>
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/B1" />
+            <solid android:color="@color/B0" />
             <gradient
                 android:startColor="@color/B5"
-                android:endColor="@color/B3"
+                android:endColor="@color/B6"
                 android:type="linear"
                 android:angle="0"/>
 
             <stroke
                 android:width="4dp"
-                android:color="@color/B1"/>
+                android:color="@color/B0"/>
 
             <padding android:left="1dp"
                 android:top="1dp"

@@ -24,12 +24,13 @@
 
     <Button
         android:id="@+id/buttonOlviContra"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/P5"
         android:fontFamily="sans-serif-black"
         android:text="@string/ENVSMS"
         android:textColor="@color/P1"
+        android:background="@drawable/p1backbox"
         app:layout_constraintBottom_toTopOf="@+id/buttonConCuenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"

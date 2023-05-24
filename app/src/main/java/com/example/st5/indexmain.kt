@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,15 @@ class indexmain : Fragment() {
     private lateinit var binding: FragmentIndexmainBinding
     private val colors: MutableList<Int> = mutableListOf()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                }
+            })
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -136,12 +146,12 @@ class indexmain : Fragment() {
 
         binding.AgregarIngresoButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.ViewContainer, addWithSwitchOn).addToBackStack(null).commit()
         }
         binding.AgregarGastoButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.ViewContainer, addWithSwitchOff).addToBackStack(null).commit()
         }
 

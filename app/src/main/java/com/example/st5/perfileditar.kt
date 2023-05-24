@@ -70,7 +70,7 @@ class perfileditar : Fragment() {
 
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
         }
 
@@ -83,7 +83,7 @@ class perfileditar : Fragment() {
                     }
                     dialog.dismiss()
                     parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                         .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
                 }
                 .setNegativeButton("Cancelar") { dialog, _ ->
@@ -100,7 +100,7 @@ class perfileditar : Fragment() {
                 .setPositiveButton("Descartar") { dialog, _ ->
                     dialog.dismiss()
                     parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                         .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
                 }
                 .setNegativeButton("Cancelar") { dialog, _ ->

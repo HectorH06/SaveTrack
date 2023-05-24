@@ -1,8 +1,6 @@
 package com.example.st5
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -27,43 +25,141 @@ class Index : AppCompatActivity() {
 
             binding.PerfilButton.setOnClickListener {
                 val perfil = perfilmain()
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.ViewContainer, perfil).addToBackStack(null).commit()
-                }
+                val fragment = supportFragmentManager.findFragmentById(R.id.ViewContainer)
 
-            binding.HistorialButton.setOnClickListener{
+                val enterAnimation: Int
+                val exitAnimation: Int
+
+                when (fragment) {
+                    is historialmain, is indexmain, is planesdeahorromain, is finanzasmain -> {
+                        enterAnimation = R.anim.fromright
+                        exitAnimation = R.anim.toleft
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(enterAnimation, exitAnimation)
+                            .replace(R.id.ViewContainer, perfil)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    else -> {}
+                }
+            }
+
+            binding.HistorialButton.setOnClickListener {
                 val historial = historialmain()
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.ViewContainer, historial).addToBackStack(null).commit()
+                val fragment = supportFragmentManager.findFragmentById(R.id.ViewContainer)
+
+                val enterAnimation: Int
+                val exitAnimation: Int
+
+                when (fragment) {
+                    is indexmain, is planesdeahorromain, is finanzasmain -> {
+                        enterAnimation = R.anim.fromright
+                        exitAnimation = R.anim.toleft
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(enterAnimation, exitAnimation)
+                            .replace(R.id.ViewContainer, historial)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    is perfilmain -> {
+                        enterAnimation = R.anim.fromleft
+                        exitAnimation = R.anim.toright
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(enterAnimation, exitAnimation)
+                            .replace(R.id.ViewContainer, historial)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    else -> {}
+                }
             }
-            binding.IndexButton.setOnClickListener{
+            binding.IndexButton.setOnClickListener {
                 val index = indexmain()
-                supportFragmentManager.beginTransaction()
-                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.ViewContainer, index).addToBackStack(null).commit()
+                val fragment = supportFragmentManager.findFragmentById(R.id.ViewContainer)
+
+                val enterAnimation: Int
+                val exitAnimation: Int
+
+                when (fragment) {
+                    is planesdeahorromain, is finanzasmain -> {
+                        enterAnimation = R.anim.fromright
+                        exitAnimation = R.anim.toleft
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(enterAnimation, exitAnimation)
+                            .replace(R.id.ViewContainer, index)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    is perfilmain, is historialmain -> {
+                        enterAnimation = R.anim.fromleft
+                        exitAnimation = R.anim.toright
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(enterAnimation, exitAnimation)
+                            .replace(R.id.ViewContainer, index)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    else -> {}
+                }
             }
-            binding.PlanesDeAhorroButton.setOnClickListener{
+            binding.PlanesDeAhorroButton.setOnClickListener {
                 val pda = planesdeahorromain()
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                    .replace(R.id.ViewContainer, pda).addToBackStack(null).commit()
+                val fragment = supportFragmentManager.findFragmentById(R.id.ViewContainer)
+
+                val enterAnimation: Int
+                val exitAnimation: Int
+
+                when (fragment) {
+                    is finanzasmain -> {
+                        enterAnimation = R.anim.fromright
+                        exitAnimation = R.anim.toleft
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(enterAnimation, exitAnimation)
+                            .replace(R.id.ViewContainer, pda)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    is perfilmain, is historialmain, is indexmain -> {
+                        enterAnimation = R.anim.fromleft
+                        exitAnimation = R.anim.toright
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(enterAnimation, exitAnimation)
+                            .replace(R.id.ViewContainer, pda)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    else -> {}
+                }
             }
-            binding.FinanzasButton.setOnClickListener{
+            binding.FinanzasButton.setOnClickListener {
                 val finanzas = finanzasmain()
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                    .replace(R.id.ViewContainer, finanzas).addToBackStack(null).commit()
+                val fragment = supportFragmentManager.findFragmentById(R.id.ViewContainer)
+
+                val enterAnimation: Int
+                val exitAnimation: Int
+
+                when (fragment) {
+                    is perfilmain, is historialmain, is indexmain, is planesdeahorromain -> {
+                        enterAnimation = R.anim.fromleft
+                        exitAnimation = R.anim.toright
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(enterAnimation, exitAnimation)
+                            .replace(R.id.ViewContainer, finanzas)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    else -> {}
+                }
             }
         }
         val fragment: Index? = supportFragmentManager.findFragmentByTag("indexmain") as Index?
 
     }
-    private fun replaceFragment(fragment : Fragment) {
+
+    private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.FragContainer,fragment)
+        fragmentTransaction.replace(R.id.FragContainer, fragment)
         fragmentTransaction.commit()
     }
 }

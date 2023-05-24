@@ -27,12 +27,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="26dp"
         android:layout_marginBottom="667dp"
-        android:background="@color/N4"
+        android:background="@drawable/configshape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_manage" />
+        app:srcCompat="@drawable/ic_settings" />
 
     <ImageButton
         android:id="@+id/TagsButton"
@@ -42,12 +42,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="85dp"
         android:layout_marginBottom="664dp"
-        android:background="@color/N4"
+        android:background="@drawable/ic_etiquetahistorialbackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/stat_notify_chat" />
+        app:srcCompat="@drawable/ic_etiqueta" />
 
 
 

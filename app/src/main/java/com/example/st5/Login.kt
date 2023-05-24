@@ -152,8 +152,8 @@ class Login : Fragment() {
                                                         valor = 0.0,
                                                         fecha = "",
                                                         frecuencia =  null,
-                                                        tipo = "",
-                                                        etiqueta = 0
+                                                        etiqueta = 0,
+                                                        interes = 0.0
                                                     )
                                                     val nuevoMontoGrupo = MontoGrupo(
                                                         idmonto = 0,
@@ -211,8 +211,8 @@ class Login : Fragment() {
                                                     jsonObjectMonto.put("valor", nuevoMonto.valor)
                                                     jsonObjectMonto.put("fecha", nuevoMonto.fecha)
                                                     jsonObjectMonto.put("frecuencia", nuevoMonto.frecuencia)
-                                                    jsonObjectMonto.put("tipo", nuevoMonto.tipo)
                                                     jsonObjectMonto.put("etiqueta", nuevoMonto.etiqueta)
+                                                    jsonObjectMonto.put("interes", nuevoMonto.interes)
 
                                                     // Tabla MontoGrupo
                                                     val jsonObjectMontoGrupo = JSONObject()
@@ -454,8 +454,8 @@ class Login : Fragment() {
                                                     val valor: Double = jsonObject3.optDouble("valor")
                                                     val fecha: String = jsonObject3.optString("fecha")
                                                     val frecuencia: Long = jsonObject3.optLong("frecuencia")
-                                                    val tipo: String = jsonObject3.optString("tipo")
                                                     val etiqueta: Long = jsonObject3.optLong("etiqueta")
+                                                    val interes: Double = jsonObject3.optDouble("interes")
                                                     val montoDao = Stlite.getInstance(
                                                         requireContext()
                                                     ).getMontoDao()
@@ -503,8 +503,8 @@ class Login : Fragment() {
                                                         valor = valor,
                                                         fecha = fecha,
                                                         frecuencia = frecuencia,
-                                                        tipo = tipo,
-                                                        etiqueta = etiqueta
+                                                        etiqueta = etiqueta,
+                                                        interes = interes
                                                     )
                                                     val nuevoMontoGrupo = MontoGrupo(
                                                         idmonto = idmontog,

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -20,8 +21,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class indexadd : Fragment() {
+class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding: FragmentIndexaddBinding
+
+    private var label: Long = 0L
+    private var frecuencia: Long = 0L
+    private var fecha: String = ""
 
     companion object {
         private const val switchval = "switchValue"
@@ -64,16 +69,33 @@ class indexadd : Fragment() {
         val back = indexmain()
 
         val switchValue = arguments?.getBoolean(switchval) ?: false
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             masmenos(switchValue)
         }
-        val adapter = ArrayAdapter.createFromResource(
+
+        val adapterF = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.frecuenciaoptions,
+            android.R.layout.simple_spinner_item
+        )
+        val adapterI = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.tipooptions,
+            android.R.layout.simple_spinner_item
+        )
+        val adapterG = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.etiquetaoptions,
             android.R.layout.simple_spinner_item
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.LabelField.adapter = adapter
+        adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.FrecuenciaField.adapter = adapterF
+        binding.FrecuenciaField.alpha = 0f
+
+        // TODO SPINNER unificar, y hacer opciones para fecha, hacer filtros para la gráfica
 
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -81,62 +103,71 @@ class indexadd : Fragment() {
                 .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
         }
 
-        binding.updownSwitch.setCheckedChangeListener{
-            when (binding.updownSwitch.checked){
-                IconSwitch.Checked.LEFT -> binding.ValorField.hint = "Ingreso"
-                IconSwitch.Checked.RIGHT -> binding.ValorField.hint = "Gasto"
-                else -> {binding.ValorField.hint = "youputo"}
+        binding.updownSwitch.setCheckedChangeListener {
+            when (binding.updownSwitch.checked) {
+                IconSwitch.Checked.LEFT -> {
+                    binding.ValorField.hint = "Ingreso"
+                    binding.LabelField.adapter = adapterI
+                }
+                IconSwitch.Checked.RIGHT -> {
+                    binding.ValorField.hint = "Gasto"
+                    binding.LabelField.adapter = adapterG
+                }
+                else -> {}
             }
         }
 
-        binding.Confirm.setOnClickListener{
-            val concepto = binding.ConceptoField.text.toString()
-            val valor = binding.ValorField.text.toString().toDouble()
-            val fecha = binding.FechaField.text.toString()
-            val frecuencia = binding.FrecuenciaField.text.toString().toLong()
-            val tipo = binding.TipoField.text.toString()
-            var label: Long = 0
-            binding.LabelField.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    val selectedLabel = parent.getItemAtPosition(position).toString()
-                    Log.v("ETIQUETAA", selectedLabel)
+        binding.LabelField.onItemSelectedListener = this
 
-                    label = when (selectedLabel) {
-                        "Alimento" -> 1
-                        "Hogar" -> 2
-                        "Bienestar" -> 3
-                        "Otras necesidades" -> 4
-                        "Gasto hormiga" -> 5
-                        "Ocio y demás" -> 6
-                        else -> 0
+        binding.FrecuenciaField.onItemSelectedListener = this
+
+        binding.Confirm.setOnClickListener {
+            val concepto = binding.ConceptoField.text.toString()
+            val valorstr = binding.ValorField.text.toString()
+            fecha = binding.FechaField.text.toString()
+            var interes = 0.0
+
+            if (label != 0L && concepto != "" && valorstr != "") {
+                val confirmDialog = AlertDialog.Builder(requireContext())
+                    .setTitle("¿Seguro que quieres guardar cambios?")
+                    .setPositiveButton("Guardar") { dialog, _ ->
+                        var valor = valorstr.toDouble()
+                        if (!switchValue) {
+                            valor *= -1
+                        }
+
+                        if (label == 8L || label == 16L){
+                            interes = binding.InteresField.text.toString().toDouble()
+                        }
+
+
+                        Log.v("Concepto", concepto)
+                        Log.v("Valor", valor.toString())
+                        Log.v("Fecha", fecha)
+                        Log.v("Frecuencia", frecuencia.toString())
+                        Log.v("Etiqueta", label.toString())
+                        lifecycleScope.launch {
+                            montoadd(concepto, valor, fecha, frecuencia, label, interes)
+                        }
+                        dialog.dismiss()
+                        parentFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                            .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
                     }
-                }
-                override fun onNothingSelected(parent: AdapterView<*>) {}
+                    .setNegativeButton("Cancelar") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+
+                confirmDialog.show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "No pueden haber campos vacíos",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
-            val confirmDialog = AlertDialog.Builder(requireContext())
-                .setTitle("¿Seguro que quieres guardar cambios?")
-                .setPositiveButton("Guardar") { dialog, _ ->
-                    Log.v("Concepto", concepto)
-                    Log.v("Valor", valor.toString())
-                    Log.v("Fecha", fecha)
-                    Log.v("Frecuencia", frecuencia.toString())
-                    Log.v("Tipo", tipo)
-                    Log.v("Etiqueta", label.toString())
-                    lifecycleScope.launch{
-                        montoadd(concepto, valor, fecha, frecuencia, tipo, label)
-                    }
-                    dialog.dismiss()
-                    parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                        .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
-                }
-                .setNegativeButton("Cancelar") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .create()
-
-            confirmDialog.show()
         }
 
         binding.Cancel.setOnClickListener {
@@ -158,17 +189,39 @@ class indexadd : Fragment() {
 
     }
 
-    private fun masmenos(switchValue: Boolean){
+    private fun masmenos(switchValue: Boolean) {
         Log.v("masomenos", switchValue.toString())
-            if (switchValue){
-                binding.ValorField.hint = "Ingreso"
-            } else {
-                binding.ValorField.hint = "Gasto"
-                binding.updownSwitch.checked = IconSwitch.Checked.RIGHT
-            }
+
+        val adapterI = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.tipooptions,
+            android.R.layout.simple_spinner_item
+        )
+        val adapterG = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.etiquetaoptions,
+            android.R.layout.simple_spinner_item
+        )
+        adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (switchValue) {
+            binding.ValorField.hint = "Ingreso"
+            binding.LabelField.adapter = adapterI
+        } else {
+            binding.ValorField.hint = "Gasto"
+            binding.LabelField.adapter = adapterG
+            binding.updownSwitch.checked = IconSwitch.Checked.RIGHT
+        }
     }
 
-    private suspend fun montoadd(concepto: String, valor: Double, fecha: String, frecuencia: Long, tipo: String, etiqueta: Long) {
+    private suspend fun montoadd(
+        concepto: String,
+        valor: Double,
+        fecha: String,
+        frecuencia: Long,
+        etiqueta: Long,
+        interes: Double
+    ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
@@ -180,13 +233,192 @@ class indexadd : Fragment() {
                 valor = valor,
                 fecha = fecha,
                 frecuencia = frecuencia,
-                tipo = tipo,
-                etiqueta = etiqueta
+                etiqueta = etiqueta,
+                interes = interes
             )
 
             montoDao.insertMonto(nuevoMonto)
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
         }
+    }
+
+    private fun displayFrecField(){
+        binding.FrecuenciaField.animate()
+            .alpha(1f)
+            .translationY(-7f)
+            .translationZ(0f)
+            .setDuration(300)
+            .setStartDelay(200)
+            .setListener(null)
+            .start()
+        binding.LabelField.setBackgroundResource(R.drawable.p1midcell)
+        Log.v("LABEL", label.toString())
+    }
+
+    private fun hideFrecField(){
+        binding.FrecuenciaField.animate()
+            .alpha(0f)
+            .translationY(-50f)
+            .translationZ(-100f)
+            .setDuration(200)
+            .setStartDelay(0)
+            .setListener(null)
+            .start()
+        binding.LabelField.setBackgroundResource(R.drawable.p1bottomcell)
+        Log.v("LABEL", label.toString())
+    }
+    private fun displayFechaField(){
+        binding.FechaField.animate()
+            .alpha(1f)
+            .translationY(-7f)
+            .translationZ(150f)
+            .setDuration(300)
+            .setStartDelay(200)
+            .setListener(null)
+            .start()
+        binding.FrecuenciaField.setBackgroundResource(R.drawable.p1midcell)
+        Log.v("LABEL", frecuencia.toString())
+    }
+
+    private fun hideFechaField(){
+        binding.FechaField.animate()
+            .alpha(0f)
+            .translationY(-50f)
+            .translationZ(-150f)
+            .setDuration(200)
+            .setStartDelay(0)
+            .setListener(null)
+            .start()
+        binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
+        Log.v("FRECUENCIA", frecuencia.toString())
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        val selectedLabel = binding.LabelField.selectedItem?.toString()
+        if (selectedLabel != null) {
+            Log.v("ETIQUETA", selectedLabel)
+        }
+        when (selectedLabel) {
+            "Alimento" -> {
+                label = 1
+                displayFrecField()
+            }
+            "Hogar" -> {
+                label = 2
+                displayFrecField()
+            }
+            "Bienestar" -> {
+                label = 3
+                displayFrecField()
+            }
+            "Otras necesidades" -> {
+                label = 4
+                displayFrecField()
+            }
+            "Gasto hormiga" -> {
+                label = 5
+                displayFrecField()
+            }
+            "Ocio y demás" -> {
+                label = 6
+                displayFrecField()
+            }
+            "Obsequio" -> {
+                label = 7
+                hideFrecField()
+            }
+            "Deuda" -> {
+                label = 8
+                displayFrecField() //Justificar la deuda y condiciones con intereses, if (label != 8 || label != 16){interes = 0}
+            }
+
+
+            "Salario" -> {
+                label = 9
+                displayFrecField()
+            }
+            "Ingreso Irregular" -> {
+                label = 10
+                hideFrecField()
+            }
+            "Beca" -> {
+                label = 11
+                displayFrecField()
+            }
+            "Pensión" -> {
+                label = 12
+                displayFrecField()
+            }
+            "Manutención" -> {
+                label = 13
+                displayFrecField()
+            }
+            "Ingreso Pasivo" -> {
+                label = 14
+                hideFrecField()
+            }
+            "Regalo" -> {
+                label = 15
+                hideFrecField()
+            }
+            "Préstamo" -> {
+                label = 16
+                displayFrecField() //Justificar préstamo con reglas de deudas, e intereses
+            }
+
+            else -> label = 0
+        }
+
+
+
+        val selectedfr = binding.FrecuenciaField.selectedItem?.toString()
+
+        if (selectedfr != null) {
+            Log.v("ETIQUETA", selectedfr)
+        }
+        when (selectedfr) {
+            "Única vez" -> {
+                frecuencia = 0
+                hideFechaField()
+            }
+            "Diario" -> {
+                frecuencia = 1
+                hideFechaField()
+            }
+            "Semanal" -> {
+                frecuencia = 7
+                displayFechaField()
+            }
+            "Quincenal" -> {
+                frecuencia = 14
+                displayFechaField()
+            }
+            "Mensual" -> {
+                frecuencia = 30 // TODO: revisar lo de meses irregulares a partir de aquí
+            }
+            "Bimestral" -> {
+                frecuencia = 61
+            }
+            "Trimestral" -> {
+                frecuencia = 91
+            }
+            "Cuatrimestral" -> {
+                frecuencia = 122
+            }
+            "Semestral" -> {
+                frecuencia = 183
+            }
+            "Anual" -> {
+                frecuencia = 365
+            }
+
+            else -> frecuencia = 0
+        }
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        label = 0
+        frecuencia = 0
     }
 }

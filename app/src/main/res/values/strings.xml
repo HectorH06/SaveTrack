@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">SaveTrack</string>
     <string name="HELLO">Hola Dr. Mundo</string>
 
@@ -37,14 +37,6 @@
     <string name="SEXO">Género</string>
 
     <string name="TipoChamba">Tipo de Ingreso</string>
-    <string-array name="chamba_options">
-        <item>1. Salario</item>
-        <item>2. Ingreso irregular</item>
-        <item>3. Beca</item>
-        <item>4. Pensión</item>
-        <item>5. Manutención</item>
-        <item>6. Ingreso pasivo</item>
-    </string-array>
     <string name="Salario">Salario</string>
     <string name="Ingresoirregular">Ingreso irregular</string>
     <string name="Beca">Beca</string>
@@ -121,11 +113,37 @@
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">
+        <item>Seleccionar</item>
         <item>Alimento</item>
         <item>Hogar</item>
         <item>Bienestar</item>
         <item>Otras necesidades</item>
         <item>Gasto hormiga</item>
         <item>Ocio y demás</item>
+        <item>Obsequio</item>
+        <item>Deuda</item>
+    </string-array>
+    <string-array name="tipooptions">
+        <item>Seleccionar</item>
+        <item>Salario</item>
+        <item>Ingreso irregular</item>
+        <item>Beca</item>
+        <item>Pensión</item>
+        <item>Manutención</item>
+        <item>Ingreso pasivo</item>
+        <item>Regalo</item>
+        <item>Préstamo</item>
+    </string-array>
+    <string-array name="frecuenciaoptions">
+        <item>Única vez</item>
+        <item>Diario</item>
+        <item>Semanal</item>
+        <item>Quincenal</item>
+        <item>Mensual</item>
+        <item>Bimestral</item>
+        <item>Trimestral</item>
+        <item>Cuatrimestral</item>
+        <item>Semestral</item>
+        <item tools:ignore="Typos">Anual</item>
     </string-array>
 </resources>

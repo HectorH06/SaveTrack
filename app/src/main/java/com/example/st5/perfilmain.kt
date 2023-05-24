@@ -104,8 +104,8 @@ class perfilmain : Fragment() {
                         valor = 0.0,
                         fecha = "",
                         frecuencia = null,
-                        tipo = "",
-                        etiqueta = 0
+                        etiqueta = 0,
+                        interes = 0.0
                     )
                     val viejoMontoGrupo = MontoGrupo(
                         idmonto = 0,
@@ -153,8 +153,8 @@ class perfilmain : Fragment() {
                     jsonObjectMonto.put("valor", viejoMonto.valor)
                     jsonObjectMonto.put("fecha", viejoMonto.fecha)
                     jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
-                    jsonObjectMonto.put("tipo", viejoMonto.tipo)
                     jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
+                    jsonObjectMonto.put("interes", viejoMonto.interes)
 
                     // Tabla MontoGrupo
                     val jsonObjectMontoGrupo = JSONObject()

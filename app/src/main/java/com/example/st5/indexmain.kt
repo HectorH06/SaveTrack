@@ -32,10 +32,11 @@ class indexmain : Fragment() {
     }
 
     private fun setupColors() {
-        colors.add(ContextCompat.getColor(requireContext(), R.color.P1))
+        colors.add(ContextCompat.getColor(requireContext(), R.color.Y3))
         colors.add(ContextCompat.getColor(requireContext(), R.color.B2))
         colors.add(ContextCompat.getColor(requireContext(), R.color.G2))
-        colors.add(ContextCompat.getColor(requireContext(), R.color.Y3))
+        colors.add(ContextCompat.getColor(requireContext(), R.color.P1))
+        colors.add(ContextCompat.getColor(requireContext(), R.color.B0))
         colors.add(ContextCompat.getColor(requireContext(), R.color.O1))
         colors.add(ContextCompat.getColor(requireContext(), R.color.R1))
     }
@@ -110,7 +111,7 @@ class indexmain : Fragment() {
                 PieEntry(percentBienestar, "Bienestar"),
                 PieEntry(percentNecesidades, "Otras necesidades"),
                 PieEntry(percentHormiga, "Hormiga"),
-                PieEntry(percentOcio, "Ocio y demás")
+                PieEntry(percentOcio, "Ocio y demás"),
             )
 
             val dataSet = PieDataSet(entries, "Gastos")
@@ -142,6 +143,9 @@ class indexmain : Fragment() {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.ViewContainer, addWithSwitchOff).addToBackStack(null).commit()
+        }
+
+        binding.MedidorDeAhorroButton.setOnClickListener{
         }
 
         lifecycleScope.launch {

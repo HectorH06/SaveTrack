@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- AlexTest -->
+    <color name="gris">#C9CCD6</color>
+    <color name="amarilloetiquetas">#E6D780</color>
     <!-- Purple -->
     <color name="P0">#FF400060</color>
     <color name="P1">#FF6900C6</color>

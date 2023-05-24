@@ -2,6 +2,7 @@ package com.example.st5
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -11,6 +12,7 @@ import com.example.st5.databinding.ActivityIndexBinding
 class Index : AppCompatActivity() {
 
     lateinit var binding: ActivityIndexBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_index)
@@ -26,14 +28,14 @@ class Index : AppCompatActivity() {
             binding.PerfilButton.setOnClickListener {
                 val perfil = perfilmain()
                 supportFragmentManager.beginTransaction()
-                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                     .replace(R.id.ViewContainer, perfil).addToBackStack(null).commit()
-            }
+                }
 
             binding.HistorialButton.setOnClickListener{
                 val historial = historialmain()
                 supportFragmentManager.beginTransaction()
-                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                     .replace(R.id.ViewContainer, historial).addToBackStack(null).commit()
             }
             binding.IndexButton.setOnClickListener{
@@ -45,13 +47,13 @@ class Index : AppCompatActivity() {
             binding.PlanesDeAhorroButton.setOnClickListener{
                 val pda = planesdeahorromain()
                 supportFragmentManager.beginTransaction()
-                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                     .replace(R.id.ViewContainer, pda).addToBackStack(null).commit()
             }
             binding.FinanzasButton.setOnClickListener{
                 val finanzas = finanzasmain()
                 supportFragmentManager.beginTransaction()
-                    //.setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                     .replace(R.id.ViewContainer, finanzas).addToBackStack(null).commit()
             }
         }

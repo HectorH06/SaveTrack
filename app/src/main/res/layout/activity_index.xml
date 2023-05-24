@@ -29,36 +29,36 @@
             android:id="@+id/PerfilButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            android:background="@color/N4"
-            app:srcCompat="@android:drawable/ic_menu_myplaces" />
+            android:background="@drawable/ic_iconbackground"
+            app:srcCompat="@drawable/ic_person" />
 
         <ImageButton
             android:id="@+id/HistorialButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            android:background="@color/N4"
-            app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+            android:background="@drawable/ic_iconbackground"
+            app:srcCompat="@drawable/ic_history" />
 
         <ImageButton
             android:id="@+id/IndexButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            android:background="@color/N4"
-            app:srcCompat="@android:drawable/ic_dialog_dialer" />
+            android:background="@drawable/ic_iconbackground"
+            app:srcCompat="@drawable/ic_index" />
 
         <ImageButton
             android:id="@+id/PlanesDeAhorroButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            android:background="@color/N4"
-            app:srcCompat="?android:attr/actionModeFindDrawable" />
+            android:background="@drawable/ic_iconbackground"
+            app:srcCompat="@drawable/ic_savingplans" />
 
         <ImageButton
             android:id="@+id/FinanzasButton"
             android:layout_width="81.8dp"
             android:layout_height="match_parent"
-            android:background="@color/N4"
-            app:srcCompat="@android:drawable/star_big_off" />
+            android:background="@drawable/ic_iconbackground"
+            app:srcCompat="@drawable/ic_finance" />
     </TableRow>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

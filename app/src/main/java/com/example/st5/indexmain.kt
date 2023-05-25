@@ -31,6 +31,7 @@ class indexmain : Fragment() {
                 }
             })
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,10 +45,11 @@ class indexmain : Fragment() {
         colors.add(ContextCompat.getColor(requireContext(), R.color.Y3))
         colors.add(ContextCompat.getColor(requireContext(), R.color.B2))
         colors.add(ContextCompat.getColor(requireContext(), R.color.G2))
-        colors.add(ContextCompat.getColor(requireContext(), R.color.P1))
         colors.add(ContextCompat.getColor(requireContext(), R.color.B0))
         colors.add(ContextCompat.getColor(requireContext(), R.color.O1))
         colors.add(ContextCompat.getColor(requireContext(), R.color.R1))
+        colors.add(ContextCompat.getColor(requireContext(), R.color.P1))
+        colors.add(ContextCompat.getColor(requireContext(), R.color.R0))
     }
 
     private suspend fun setupPieChart() {
@@ -62,6 +64,11 @@ class indexmain : Fragment() {
             val necesidades = montoDao.getNecesidades()
             val hormiga = montoDao.getHormiga()
             val ocio = montoDao.getOcio()
+            val obsequios = montoDao.getObsequios()
+            val deudas = montoDao.getDeudas()
+
+            val totalI = montoDao.getIngresos()
+            val totalG = montoDao.getGastos()
             val totalis = montoDao.getMonto()
 
             var totalAlimentos = 0.0
@@ -100,27 +107,80 @@ class indexmain : Fragment() {
             }
             Log.v("Ocio", totalOcio.toString())
 
+            var totalObsequios = 0.0
+            for (monto in obsequios) {
+                totalObsequios += monto.valor
+            }
+            Log.v("Obsequios", totalObsequios.toString())
+
+            var totalDeudas = 0.0
+            for (monto in deudas) {
+                totalDeudas += monto.valor
+            }
+            Log.v("Deudas", totalDeudas.toString())
+
+
+            var totalIngresos = 0.0
+            for (monto in totalI){
+                totalIngresos += monto.valor
+            }
+            Log.v("INGRESOS", totalI.toString())
+
+            var totalGastos = 0.0
+            for (monto in totalG){
+                totalGastos += monto.valor
+            }
+            Log.v("GASTOS", totalG.toString())
+
             var totalisimo = 0.0
             for (monto in totalis) {
                 totalisimo += monto.valor
             }
             Log.v("GRAN TOTAL", totalisimo.toString())
 
-            val percentAlimento: Float = totalAlimentos.toFloat() / totalisimo.toFloat()
-            val percentHogar: Float = totalHogar.toFloat() / totalisimo.toFloat()
-            val percentBienestar: Float = totalBienestar.toFloat() / totalisimo.toFloat()
-            val percentNecesidades: Float = totalNecesidades.toFloat() / totalisimo.toFloat()
-            val percentHormiga: Float = totalHormiga.toFloat() / totalisimo.toFloat()
-            val percentOcio: Float = totalOcio.toFloat() / totalisimo.toFloat()
+            var percentAlimento: Float? = 0f
+            var percentHogar: Float? = 0f
+            var percentBienestar: Float? = 0f
+            var percentNecesidades: Float? = 0f
+            var percentHormiga: Float? = 0f
+            var percentOcio: Float? = 0f
+            var percentObsequios: Float? = 0f
+            var percentDeudas: Float? = 0f
 
+            if (totalAlimentos != 0.0 || totalAlimentos != -0.0){
+                percentAlimento = (totalAlimentos.toFloat() / totalGastos.toFloat())*100
+            }
+            if (totalHogar != 0.0 || totalHogar != -0.0){
+                percentHogar = (totalHogar.toFloat() / totalGastos.toFloat())*100
+            }
+            if (totalBienestar != 0.0 || totalBienestar != -0.0){
+                percentBienestar = (totalBienestar.toFloat() / totalGastos.toFloat())*100
+            }
+            if (totalNecesidades != 0.0 || totalNecesidades != -0.0){
+                percentNecesidades = (totalNecesidades.toFloat() / totalGastos.toFloat())*100
+            }
+            if (totalHormiga != 0.0 || totalHormiga != -0.0){
+                percentHormiga = (totalHormiga.toFloat() / totalGastos.toFloat())*100
+            }
+            if (totalOcio != 0.0 || totalOcio != -0.0){
+                percentOcio = (totalOcio.toFloat() / totalGastos.toFloat())*100
+            }
+            if (totalObsequios != 0.0 || totalObsequios != -0.0){
+                percentObsequios = (totalObsequios.toFloat() / totalGastos.toFloat())*100
+            }
+            if (totalDeudas != 0.0 || totalDeudas != -0.0){
+                percentDeudas = (totalDeudas.toFloat() / totalGastos.toFloat())*100
+            }
 
             val entries = listOf(
-                PieEntry(percentAlimento, "Alimentos"),
-                PieEntry(percentHogar, "Hogar"),
-                PieEntry(percentBienestar, "Bienestar"),
-                PieEntry(percentNecesidades, "Otras necesidades"),
-                PieEntry(percentHormiga, "Hormiga"),
-                PieEntry(percentOcio, "Ocio y demás"),
+                percentAlimento?.let { PieEntry(it) },
+                percentHogar?.let { PieEntry(it) },
+                percentBienestar?.let { PieEntry(it) },
+                percentNecesidades?.let { PieEntry(it) },
+                percentHormiga?.let { PieEntry(it) },
+                percentOcio?.let { PieEntry(it) },
+                percentObsequios?.let { PieEntry(it) },
+                percentDeudas?.let { PieEntry(it) }
             )
 
             val dataSet = PieDataSet(entries, "Gastos")
@@ -129,9 +189,9 @@ class indexmain : Fragment() {
             val data = PieData(dataSet)
             binding.PieChart.data = data
 
-            binding.PieChart.centerText = totalisimo.toString()
+            binding.PieChart.centerText = "$totalIngresos$ - $totalGastos$ = $totalisimo$"
             binding.PieChart.setCenterTextSize(24f)
-            binding.PieChart.setCenterTextColor(R.color.black)
+            binding.PieChart.setCenterTextColor(R.color.white)
             binding.PieChart.description.isEnabled = false
             binding.PieChart.legend.isEnabled = false
         }
@@ -156,13 +216,15 @@ class indexmain : Fragment() {
                 .replace(R.id.index_container, addWithSwitchOff).addToBackStack(null).commit()
         }
 
-        binding.MedidorDeAhorroButton.setOnClickListener{
+        binding.MedidorDeAhorroButton.setOnClickListener {
+            lifecycleScope.launch{
+                limpiar()
+            }
         }
 
         lifecycleScope.launch {
             setupPieChart()
         }
-
 
 
         /*
@@ -177,5 +239,12 @@ class indexmain : Fragment() {
         // Cruds de monto para la modificación interna de los datos de la tabla ingresosgastos
         // Trabajo SERIO de frontend
         // Traer datos de otras vistas porque es el index xd (fechas del historial o deudas de planes de ahorro)
+    }
+
+    private suspend fun limpiar() {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            montoDao.clean()
+        }
     }
 }

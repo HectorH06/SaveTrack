@@ -14,7 +14,5 @@
         android:id="@+id/perfil_container"
         android:layout_width="match_parent"
         android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:name="com.example.st5.perfilmain"
-        tools:layout="@layout/fragment_perfilmain"/>
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

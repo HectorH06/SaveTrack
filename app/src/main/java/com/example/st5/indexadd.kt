@@ -127,12 +127,12 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             fecha = binding.FechaField.text.toString()
             var interes = 0.0
 
-            if (label != 0L && concepto != "" && valorstr != "") {
+            if (label != 0L && concepto != "" && valorstr != "" || valorstr != ".") {
                 val confirmDialog = AlertDialog.Builder(requireContext())
                     .setTitle("¿Seguro que quieres guardar cambios?")
                     .setPositiveButton("Guardar") { dialog, _ ->
                         var valor = valorstr.toDouble()
-                        if (!switchValue) {
+                        if (label <= 8) {
                             valor *= -1
                         }
 
@@ -146,6 +146,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Fecha", fecha)
                         Log.v("Frecuencia", frecuencia.toString())
                         Log.v("Etiqueta", label.toString())
+                        Log.v("Interes", interes.toString())
                         lifecycleScope.launch {
                             montoadd(concepto, valor, fecha, frecuencia, label, interes)
                         }

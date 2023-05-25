@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.size.Scale
@@ -19,7 +18,6 @@ import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentPerfilmainBinding
 import com.example.st5.models.*
-import com.example.st5.ui.main.PageViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,13 +26,9 @@ import java.nio.charset.Charset
 
 class perfilmain : Fragment() {
     private lateinit var binding: FragmentPerfilmainBinding
-    private lateinit var pageViewModel: PageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pageViewModel = ViewModelProvider(this)[PageViewModel::class.java].apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 0)
-        }
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -417,17 +411,5 @@ class perfilmain : Fragment() {
             mostrarDatos()
         }
 
-    }
-    companion object {
-        const val ARG_SECTION_NUMBER = "section_number"
-
-        @JvmStatic
-        fun newInstance(sectionNumber: Int): perfilmain {
-            return perfilmain().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }
-        }
     }
 }

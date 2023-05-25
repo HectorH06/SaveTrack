@@ -22,6 +22,15 @@ interface MontoDao {
     fun getHormiga(): List<Monto>
     @Query("SELECT * FROM monto WHERE etiqueta = 6")
     fun getOcio(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 7")
+    fun getObsequios(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 8")
+    fun getDeudas(): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE valor >= 0")
+    fun getIngresos(): List<Monto>
+    @Query("SELECT * FROM monto WHERE valor < 0")
+    fun getGastos(): List<Monto>
 
     @Insert
     fun insertMonto(monto: Monto)

@@ -235,7 +235,7 @@ class perfileditar : Fragment() {
                     val requestQueue = Volley.newRequestQueue(requireContext())
                     requestQueue.add(stringRequest)
 
-                    delay(6000)
+                    delay(8000)
                 }
             } else {
                 Toast.makeText(requireContext(), "La imagen es demasiado grande, intente con una más pequeña", Toast.LENGTH_SHORT).show()

@@ -1,64 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <androidx.fragment.app.FragmentContainerView
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/ViewContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="81dp"
-        app:layout_constraintBottom_toTopOf="@id/TableRowNavigation"
+        android:layout_marginBottom="79dp"
+        app:layout_constraintBottom_toTopOf="@id/tabs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/subContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="79dp"
+        android:translationZ="1000dp"
+        app:layout_constraintBottom_toTopOf="@id/tabs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TableRow
-        android:id="@+id/TableRowNavigation"
-        android:layout_width="409dp"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginStart="1dp"
+        android:background="@drawable/n1bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <ImageButton
-            android:id="@+id/PerfilButton"
-            android:layout_width="81.8dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_iconbackground"
-            app:srcCompat="@drawable/ic_person" />
-
-        <ImageButton
-            android:id="@+id/HistorialButton"
-            android:layout_width="81.8dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_iconbackground"
-            app:srcCompat="@drawable/ic_history" />
-
-        <ImageButton
-            android:id="@+id/IndexButton"
-            android:layout_width="81.8dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_iconbackground"
-            app:srcCompat="@drawable/ic_index" />
-
-        <ImageButton
-            android:id="@+id/PlanesDeAhorroButton"
-            android:layout_width="81.8dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_iconbackground"
-            app:srcCompat="@drawable/ic_savingplans" />
-
-        <ImageButton
-            android:id="@+id/FinanzasButton"
-            android:layout_width="81.8dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_iconbackground"
-            app:srcCompat="@drawable/ic_finance" />
-    </TableRow>
-
+    </com.google.android.material.tabs.TabLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

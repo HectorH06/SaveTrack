@@ -5,12 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentIndexmainBinding
+import com.example.st5.ui.main.PageViewModel
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -20,10 +23,14 @@ import kotlinx.coroutines.withContext
 
 class indexmain : Fragment() {
     private lateinit var binding: FragmentIndexmainBinding
+    private lateinit var pageViewModel: PageViewModel
     private val colors: MutableList<Int> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        pageViewModel = ViewModelProvider(this)[PageViewModel::class.java].apply {
+            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 2)
+        }
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -37,8 +44,12 @@ class indexmain : Fragment() {
     ): View {
         setupColors()
         binding = FragmentIndexmainBinding.inflate(inflater, container, false)
-        return binding.root
 
+        val textView: TextView = binding.checkBox1
+        pageViewModel.text.observe(viewLifecycleOwner) {
+            textView.text = it
+        }
+        return binding.root
     }
 
     private fun setupColors() {
@@ -144,15 +155,17 @@ class indexmain : Fragment() {
         val addWithSwitchOn = indexadd.newInstance(true)
         val addWithSwitchOff = indexadd.newInstance(false)
 
+        binding.ConfigButton.setOnClickListener {
+        }
         binding.AgregarIngresoButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.ViewContainer, addWithSwitchOn).addToBackStack(null).commit()
+                .replace(R.id.subContainer, addWithSwitchOn).addToBackStack(null).commit()
         }
         binding.AgregarGastoButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.ViewContainer, addWithSwitchOff).addToBackStack(null).commit()
+                .replace(R.id.subContainer, addWithSwitchOff).addToBackStack(null).commit()
         }
 
         binding.MedidorDeAhorroButton.setOnClickListener{
@@ -176,5 +189,17 @@ class indexmain : Fragment() {
         // Cruds de monto para la modificación interna de los datos de la tabla ingresosgastos
         // Trabajo SERIO de frontend
         // Traer datos de otras vistas porque es el index xd (fechas del historial o deudas de planes de ahorro)
+    }
+    companion object {
+        const val ARG_SECTION_NUMBER = "section_number"
+
+        @JvmStatic
+        fun newInstance(sectionNumber: Int): indexmain {
+            return indexmain().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_SECTION_NUMBER, sectionNumber)
+                }
+            }
+        }
     }
 }

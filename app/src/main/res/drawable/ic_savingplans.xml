@@ -1,9 +1,25 @@
-<vector android:height="24dp" android:tint="#15356B"
-    android:viewportHeight="24" android:viewportWidth="24"
-    android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="@android:color/white" android:pathData="M12.16,3l-0.32,0l-2.63,5.25l5.58,0z"/>
-    <path android:fillColor="@android:color/white" android:pathData="M16.46,8.25l5.16,0l-2.62,-5.25l-5.16,0z"/>
-    <path android:fillColor="@android:color/white" android:pathData="M21.38,9.75l-8.63,0l0,10.35z"/>
-    <path android:fillColor="@android:color/white" android:pathData="M11.25,20.1l0,-10.35l-8.63,0z"/>
-    <path android:fillColor="@android:color/white" android:pathData="M7.54,8.25l2.62,-5.25l-5.16,0l-2.62,5.25z"/>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <vector android:height="45dp" android:tint="@color/G1"
+            android:viewportHeight="24" android:viewportWidth="24"
+            android:width="45dp">
+            <path android:fillColor="@android:color/white" android:pathData="M12.16,3l-0.32,0l-2.63,5.25l5.58,0z"/>
+            <path android:fillColor="@android:color/white" android:pathData="M16.46,8.25l5.16,0l-2.62,-5.25l-5.16,0z"/>
+            <path android:fillColor="@android:color/white" android:pathData="M21.38,9.75l-8.63,0l0,10.35z"/>
+            <path android:fillColor="@android:color/white" android:pathData="M11.25,20.1l0,-10.35l-8.63,0z"/>
+            <path android:fillColor="@android:color/white" android:pathData="M7.54,8.25l2.62,-5.25l-5.16,0l-2.62,5.25z"/>
+        </vector>
+    </item>
+    <item>
+        <vector android:height="45dp" android:tint="@color/B0"
+            android:viewportHeight="24" android:viewportWidth="24"
+            android:width="45dp">
+            <path android:fillColor="@android:color/white" android:pathData="M12.16,3l-0.32,0l-2.63,5.25l5.58,0z"/>
+            <path android:fillColor="@android:color/white" android:pathData="M16.46,8.25l5.16,0l-2.62,-5.25l-5.16,0z"/>
+            <path android:fillColor="@android:color/white" android:pathData="M21.38,9.75l-8.63,0l0,10.35z"/>
+            <path android:fillColor="@android:color/white" android:pathData="M11.25,20.1l0,-10.35l-8.63,0z"/>
+            <path android:fillColor="@android:color/white" android:pathData="M7.54,8.25l2.62,-5.25l-5.16,0l-2.62,5.25z"/>
+        </vector>
+    </item>
+</selector>

@@ -78,6 +78,7 @@
         android:paddingEnd="6dp"
         android:hint="@string/Edad"
         android:textColorHint="@color/B1"
+        android:textColor="@color/B0"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/chamba1"
         app:layout_constraintEnd_toEndOf="parent"

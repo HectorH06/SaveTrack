@@ -35,6 +35,7 @@ import java.util.*
 
 class perfileditar : Fragment() {
     private lateinit var binding: FragmentPerfileditarBinding
+
     private val pickImageRequest = 1
     private lateinit var username: String
     private var edadchanged = true
@@ -61,7 +62,6 @@ class perfileditar : Fragment() {
     ): View {
         binding = FragmentPerfileditarBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -48,7 +48,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                     val prev = indexmain()
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.ViewContainer, prev)
+                        .replace(R.id.index_container, prev)
                         .addToBackStack(null).commit()
                 }
             })
@@ -100,7 +100,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
+                .replace(R.id.index_container, back).addToBackStack(null).commit()
         }
 
         binding.updownSwitch.setCheckedChangeListener {
@@ -152,7 +152,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
+                            .replace(R.id.index_container, back).addToBackStack(null).commit()
                     }
                     .setNegativeButton("Cancelar") { dialog, _ ->
                         dialog.dismiss()
@@ -177,7 +177,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                     dialog.dismiss()
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
+                        .replace(R.id.index_container, back).addToBackStack(null).commit()
                 }
                 .setNegativeButton("Cancelar") { dialog, _ ->
                     dialog.dismiss()

@@ -24,13 +24,13 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> perfilmain.newInstance(position)
+            0 -> containerPerfil.newInstance(position)
             1 -> historialmain.newInstance(position)
-            2 -> indexmain.newInstance(position)
+            2 -> containerIndex.newInstance(position)
             3 -> planesdeahorromain.newInstance(position)
             4 -> finanzasmain.newInstance(position)
 
-            else -> indexmain.newInstance(position)
+            else -> containerIndex.newInstance(position)
         }
     }
 

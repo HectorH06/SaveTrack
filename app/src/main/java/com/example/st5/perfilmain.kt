@@ -341,7 +341,7 @@ class perfilmain : Fragment() {
             val edit = perfileditar()
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.subContainer, edit).addToBackStack(null).commit()
+                .replace(R.id.perfil_container, edit).addToBackStack(null).commit()
         }
 
         suspend fun mostrarDatos() {

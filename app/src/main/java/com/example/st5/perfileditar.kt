@@ -50,7 +50,7 @@ class perfileditar : Fragment() {
                     val prev = perfilmain()
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                        .replace(R.id.ViewContainer, prev)
+                        .replace(R.id.perfil_container, prev)
                         .addToBackStack(null).commit()
                 }
             })
@@ -71,7 +71,7 @@ class perfileditar : Fragment() {
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
+                .replace(R.id.perfil_container, back).addToBackStack(null).commit()
         }
 
         binding.Confirm.setOnClickListener {
@@ -84,7 +84,7 @@ class perfileditar : Fragment() {
                     dialog.dismiss()
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
+                        .replace(R.id.perfil_container, back).addToBackStack(null).commit()
                 }
                 .setNegativeButton("Cancelar") { dialog, _ ->
                     dialog.dismiss()
@@ -101,7 +101,7 @@ class perfileditar : Fragment() {
                     dialog.dismiss()
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.ViewContainer, back).addToBackStack(null).commit()
+                        .replace(R.id.perfil_container, back).addToBackStack(null).commit()
                 }
                 .setNegativeButton("Cancelar") { dialog, _ ->
                     dialog.dismiss()

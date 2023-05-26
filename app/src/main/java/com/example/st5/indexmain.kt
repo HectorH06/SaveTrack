@@ -52,6 +52,16 @@ class indexmain : Fragment() {
         colors.add(ContextCompat.getColor(requireContext(), R.color.R0))
     }
 
+    private fun isNotZero(value: Float?): Boolean
+    {
+        return ((value != 0.0f) || (value != -0.0f))
+        // ehhh ehh ehh ehh ehh ehh ehh e
+    }
+
+    private fun isNotZero(value: Double?): Boolean
+    {
+        return ((value != 0.0) || (value != -0.0))
+    }
     private suspend fun setupPieChart() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(
@@ -147,28 +157,28 @@ class indexmain : Fragment() {
             var percentObsequios: Float? = 0f
             var percentDeudas: Float? = 0f
 
-            if (totalAlimentos != 0.0 || totalAlimentos != -0.0){
+            if (isNotZero(totalAlimentos)){
                 percentAlimento = (totalAlimentos.toFloat() / totalGastos.toFloat())*100
             }
-            if (totalHogar != 0.0 || totalHogar != -0.0){
+            if (isNotZero(totalHogar)){
                 percentHogar = (totalHogar.toFloat() / totalGastos.toFloat())*100
             }
-            if (totalBienestar != 0.0 || totalBienestar != -0.0){
+            if (isNotZero(totalBienestar)){
                 percentBienestar = (totalBienestar.toFloat() / totalGastos.toFloat())*100
             }
-            if (totalNecesidades != 0.0 || totalNecesidades != -0.0){
+            if (isNotZero(totalNecesidades)){
                 percentNecesidades = (totalNecesidades.toFloat() / totalGastos.toFloat())*100
             }
-            if (totalHormiga != 0.0 || totalHormiga != -0.0){
+            if (isNotZero(totalHormiga)){
                 percentHormiga = (totalHormiga.toFloat() / totalGastos.toFloat())*100
             }
-            if (totalOcio != 0.0 || totalOcio != -0.0){
+            if (isNotZero(totalOcio)){
                 percentOcio = (totalOcio.toFloat() / totalGastos.toFloat())*100
             }
-            if (totalObsequios != 0.0 || totalObsequios != -0.0){
+            if (isNotZero(totalObsequios)){
                 percentObsequios = (totalObsequios.toFloat() / totalGastos.toFloat())*100
             }
-            if (totalDeudas != 0.0 || totalDeudas != -0.0){
+            if (isNotZero(totalDeudas)){
                 percentDeudas = (totalDeudas.toFloat() / totalGastos.toFloat())*100
             }
 

@@ -206,10 +206,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (switchValue) {
-            binding.ValorField.hint = "Ingreso"
+            binding.ValorField.hint = "Ingreso en $"
             binding.LabelField.adapter = adapterI
         } else {
-            binding.ValorField.hint = "Gasto"
+            binding.ValorField.hint = "Gasto en $"
             binding.LabelField.adapter = adapterG
             binding.updownSwitch.checked = IconSwitch.Checked.RIGHT
         }

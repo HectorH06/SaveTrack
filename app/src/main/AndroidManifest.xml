@@ -33,7 +33,8 @@
         <activity
             android:name=".Index"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="index" />
+            android:label="index"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

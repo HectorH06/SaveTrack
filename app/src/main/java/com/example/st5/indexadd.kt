@@ -59,6 +59,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentIndexaddBinding.inflate(inflater, container, false)
+
         return binding.root
 
     }
@@ -124,7 +125,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.Confirm.setOnClickListener {
             val concepto = binding.ConceptoField.text.toString()
             val valorstr = binding.ValorField.text.toString()
-            fecha = binding.FechaField.text.toString()
+
+            fecha = binding.FechaField.drawingTime.toString()
+            // TODO fecha.length == 8, es única, if fecha,length == 16, fecha inicio y fecha final, poner barra superior en cada subvista y duplicar subvista para hacer edición de montos
+
             var interes = 0.0
 
             if (label != 0L && concepto != "" && valorstr != "" || valorstr != ".") {
@@ -247,16 +251,16 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private fun displayFrecField(){
         binding.FrecuenciaField.animate()
             .alpha(1f)
-            .translationY(-7f)
+            .translationY(0f)
             .translationZ(0f)
             .setDuration(300)
             .setStartDelay(200)
             .setListener(null)
             .start()
         binding.LabelField.setBackgroundResource(R.drawable.p1midcell)
+        hideInteresField()
         Log.v("LABEL", label.toString())
     }
-
     private fun hideFrecField(){
         binding.FrecuenciaField.animate()
             .alpha(0f)
@@ -267,21 +271,22 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setListener(null)
             .start()
         binding.LabelField.setBackgroundResource(R.drawable.p1bottomcell)
+        hideInteresField()
         Log.v("LABEL", label.toString())
     }
     private fun displayFechaField(){
         binding.FechaField.animate()
             .alpha(1f)
-            .translationY(-7f)
+            .translationY(0f)
             .translationZ(150f)
             .setDuration(300)
             .setStartDelay(200)
             .setListener(null)
             .start()
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1midcell)
-        Log.v("LABEL", frecuencia.toString())
+        hideInteresField()
+        Log.v("FRECUENCIA", frecuencia.toString())
     }
-
     private fun hideFechaField(){
         binding.FechaField.animate()
             .alpha(0f)
@@ -292,7 +297,48 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setListener(null)
             .start()
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
+        hideInteresField()
         Log.v("FRECUENCIA", frecuencia.toString())
+    }
+    private fun displayInteresField(){
+        binding.InteresField.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .translationZ(150f)
+            .setDuration(300)
+            .setStartDelay(200)
+            .setListener(null)
+            .start()
+        binding.InteresSeekbar.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .translationZ(150f)
+            .setDuration(300)
+            .setStartDelay(200)
+            .setListener(null)
+            .start()
+        //binding.FechaField.setBackgroundResource(R.drawable.p1midcell)
+        Log.v("FECHA", fecha.toString())
+    }
+    private fun hideInteresField(){
+        binding.InteresField.animate()
+            .alpha(0f)
+            .translationY(-50f)
+            .translationZ(-150f)
+            .setDuration(200)
+            .setStartDelay(0)
+            .setListener(null)
+            .start()
+        binding.InteresSeekbar.animate()
+            .alpha(0f)
+            .translationY(-50f)
+            .translationZ(-150f)
+            .setDuration(200)
+            .setStartDelay(0)
+            .setListener(null)
+            .start()
+        //binding.FechaField.setBackgroundResource(R.drawable.p1bottomcell)
+        Log.v("FECHA", fecha.toString())
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -331,7 +377,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             }
             "Deuda" -> {
                 label = 8
-                displayFrecField() //Justificar la deuda y condiciones con intereses, if (label != 8 || label != 16){interes = 0}
+                displayFrecField() //Justificar la deuda y condiciones con intereses
+                displayInteresField()
             }
 
 
@@ -366,6 +413,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             "Préstamo" -> {
                 label = 16
                 displayFrecField() //Justificar préstamo con reglas de deudas, e intereses
+                displayInteresField()
             }
 
             else -> label = 0

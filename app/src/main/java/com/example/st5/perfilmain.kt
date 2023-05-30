@@ -145,6 +145,7 @@ class perfilmain : Fragment() {
                     jsonObjectIngresosGastos.put("summarygastos", viejosIG.summarygastos)
 
                     // Tabla Monto
+                    // TODO meterlo en un jsonobjectarray
                     val jsonObjectMonto = JSONObject()
                     jsonObjectMonto.put("idmonto", viejoMonto.idmonto)
                     jsonObjectMonto.put("iduser", viejoMonto.iduser)

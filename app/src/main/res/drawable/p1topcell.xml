@@ -6,8 +6,8 @@
                 android:bottomLeftRadius="0dp" android:topLeftRadius="15dp"
                 android:topRightRadius="15dp" />
             <gradient
-                android:startColor="@color/P5"
-                android:endColor="@color/white"
+                android:startColor="@color/P3"
+                android:endColor="@color/transparent"
                 android:angle="45" />
             <stroke
                 android:width="2dp"
@@ -19,10 +19,6 @@
             <corners android:bottomRightRadius="0dp"
                 android:bottomLeftRadius="0dp" android:topLeftRadius="15dp"
                 android:topRightRadius="15dp" />
-            <gradient
-                android:startColor="@color/P5"
-                android:endColor="@color/white"
-                android:angle="45" />
             <stroke
                 android:width="2dp"
                 android:color="@color/P0" />

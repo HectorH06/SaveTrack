@@ -42,8 +42,10 @@
         android:id="@+id/editTextTextPassword"
         android:background="@drawable/p1backbox"
         android:padding="10sp"
-        android:layout_width="383dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:autofillHints="@string/PASSWORD"
         android:ems="10"
         android:hint="@string/PASSWORD"
@@ -59,8 +61,10 @@
 
     <EditText
         android:id="@+id/editTextTextPersonName"
-        android:layout_width="384dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:autofillHints="@string/EMAIL"
         android:background="@drawable/p1backbox"
         android:ems="10"
@@ -71,10 +75,10 @@
         android:textColorHint="@color/P0"
         app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_IniSes"
-        app:layout_constraintVertical_bias="0.812" />
+        app:layout_constraintVertical_bias="0.806" />
 
     <Button
         android:id="@+id/buttonSinCuenta"

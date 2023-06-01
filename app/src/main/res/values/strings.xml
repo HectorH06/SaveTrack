@@ -38,7 +38,7 @@
 
     <string name="TipoChamba">Tipo de Ingreso</string>
     <string name="Salario">Salario</string>
-    <string name="Ingresoirregular">Ingreso irregular</string>
+    <string name="Ingresoirregular">Venta</string>
     <string name="Beca">Beca</string>
     <string name="Pension">Pensión</string>
     <string name="Manutencion">Manutención</string>
@@ -110,6 +110,7 @@
     <string name="Cancelar">Cancelar</string>
     <string name="confirmar">Confirmar</string>
     <string name="goback">Go back</string>
+    <string name="Interes">Interés</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">
@@ -126,7 +127,7 @@
     <string-array name="tipooptions">
         <item>Seleccionar</item>
         <item>Salario</item>
-        <item>Ingreso irregular</item>
+        <item>Venta</item>
         <item>Beca</item>
         <item>Pensión</item>
         <item>Manutención</item>

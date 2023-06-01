@@ -40,8 +40,10 @@
 
     <EditText
         android:id="@+id/Usuario"
-        android:layout_width="384dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="101dp"
         android:autofillHints="@string/EMAIL"
         android:background="@drawable/p1backbox"

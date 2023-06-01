@@ -40,8 +40,10 @@
 
     <EditText
         android:id="@+id/RegPass"
-        android:layout_width="383dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:autofillHints="@string/PASSWORD"
         android:background="@drawable/p1backbox"
         android:ems="10"
@@ -59,8 +61,10 @@
 
     <EditText
         android:id="@+id/textPin"
-        android:layout_width="384dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:autofillHints="@string/PIN"
         android:background="@drawable/p1backbox"
         android:ems="10"
@@ -79,8 +83,10 @@
 
     <EditText
         android:id="@+id/RegConPass"
-        android:layout_width="383dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:autofillHints="@string/CPASSWORD"
         android:background="@drawable/p1backbox"
         android:ems="10"

@@ -10,12 +10,8 @@
         android:id="@+id/ProfilePicture"
         android:layout_width="180dp"
         android:layout_height="180dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="229dp"
-        android:layout_marginBottom="533dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/picshape"
@@ -51,11 +47,11 @@
 
     <LinearLayout
         android:id="@+id/UserDataLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="216dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="184dp"
+        android:layout_marginEnd="160dp"
         android:layout_marginBottom="41dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -67,7 +63,7 @@
 
         <TextView
             android:id="@+id/UsernameTV"
-            android:layout_width="209dp"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:autofillHints="Username"
             android:background="@drawable/b1topcell"
@@ -114,15 +110,11 @@
         android:id="@+id/linearLayout"
         android:layout_width="209dp"
         android:layout_height="180dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="448dp"
-        android:layout_marginEnd="184dp"
-        android:layout_marginBottom="103dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/Group1Button"
@@ -167,17 +159,13 @@
         android:id="@+id/cerrarsesionperfilmainbtn"
         android:layout_width="91dp"
         android:layout_height="75dp"
-        android:layout_marginStart="301dp"
-        android:layout_marginTop="553dp"
-        android:layout_marginEnd="19dp"
-        android:layout_marginBottom="103dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dp"
         android:background="@color/black"
         android:text="Cerrar Sesión"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="HardcodedText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

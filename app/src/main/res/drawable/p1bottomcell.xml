@@ -6,7 +6,7 @@
                 android:bottomLeftRadius="15dp" android:topLeftRadius="0dp"
                 android:topRightRadius="0dp" />
             <gradient
-                android:startColor="@color/P3"
+                android:startColor="@color/P2"
                 android:endColor="@color/transparent" />
             <stroke
                 android:width="2dp"

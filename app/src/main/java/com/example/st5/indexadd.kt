@@ -19,6 +19,7 @@ import com.polyak.iconswitch.IconSwitch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.sql.Date
 
 
 class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
@@ -27,6 +28,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private var label: Long = 0L
     private var frecuencia: Long = 0L
     private var fecha: String = ""
+    private var interes: Double = 0.0
 
     companion object {
         private const val switchval = "switchValue"
@@ -96,6 +98,9 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.adapter = adapterF
         binding.FrecuenciaField.alpha = 0f
 
+        hideFechaField()
+        hideInteresField()
+
         // TODO SPINNER unificar, y hacer opciones para fecha, hacer filtros para la gráfica
 
         binding.goback.setOnClickListener {
@@ -122,11 +127,21 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
         binding.FrecuenciaField.onItemSelectedListener = this
 
+        // TODO: INTERÉS de seekbar a textview
+
         binding.Confirm.setOnClickListener {
             val concepto = binding.ConceptoField.text.toString()
             val valorstr = binding.ValorField.text.toString()
 
-            fecha = binding.FechaField.drawingTime.toString()
+            val intyear = binding.FechaField.year - 1900
+            Log.w("YEAR", intyear.toString())
+            val intmonth = binding.FechaField.month
+            Log.w("MONTH", intmonth.toString())
+            val intday = binding.FechaField.dayOfMonth
+            Log.w("DAY", intday.toString())
+            val datedate = Date(intyear, intmonth, intday)
+            Log.w("DATE", datedate.toString())
+            fecha = datedate.toString()
             // TODO fecha.length == 8, es única, if fecha,length == 16, fecha inicio y fecha final, poner barra superior en cada subvista y duplicar subvista para hacer edición de montos
 
             var interes = 0.0
@@ -210,10 +225,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (switchValue) {
-            binding.ValorField.hint = "Ingreso en $"
+            binding.ValorField.hint = "$0.00"
             binding.LabelField.adapter = adapterI
         } else {
-            binding.ValorField.hint = "Gasto en $"
+            binding.ValorField.hint = "$0.00"
             binding.LabelField.adapter = adapterG
             binding.updownSwitch.checked = IconSwitch.Checked.RIGHT
         }
@@ -258,7 +273,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setListener(null)
             .start()
         binding.LabelField.setBackgroundResource(R.drawable.p1midcell)
-        hideInteresField()
         Log.v("LABEL", label.toString())
     }
     private fun hideFrecField(){
@@ -271,7 +285,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setListener(null)
             .start()
         binding.LabelField.setBackgroundResource(R.drawable.p1bottomcell)
-        hideInteresField()
         Log.v("LABEL", label.toString())
     }
     private fun displayFechaField(){
@@ -284,7 +297,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setListener(null)
             .start()
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1midcell)
-        hideInteresField()
         Log.v("FRECUENCIA", frecuencia.toString())
     }
     private fun hideFechaField(){
@@ -297,7 +309,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setListener(null)
             .start()
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
-        hideInteresField()
         Log.v("FRECUENCIA", frecuencia.toString())
     }
     private fun displayInteresField(){
@@ -317,8 +328,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setStartDelay(200)
             .setListener(null)
             .start()
-        //binding.FechaField.setBackgroundResource(R.drawable.p1midcell)
-        Log.v("FECHA", fecha.toString())
+        binding.FechaField.setBackgroundResource(R.drawable.p1midcell)
+        Log.v("INTERÉS", interes.toString())
     }
     private fun hideInteresField(){
         binding.InteresField.animate()
@@ -337,8 +348,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setStartDelay(0)
             .setListener(null)
             .start()
-        //binding.FechaField.setBackgroundResource(R.drawable.p1bottomcell)
-        Log.v("FECHA", fecha.toString())
+        binding.FechaField.setBackgroundResource(R.drawable.p1bottomcell)
+        Log.v("INTERÉS", interes.toString())
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -374,6 +385,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             "Obsequio" -> {
                 label = 7
                 hideFrecField()
+                displayFechaField()
             }
             "Deuda" -> {
                 label = 8

@@ -1,0 +1,50 @@
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cabezaingresos"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/p1midcell"
+    android:orientation="horizontal"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/IConcepto"
+        android:layout_width="wrap_content"
+        android:maxWidth="90dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:maxHeight="150dp"
+        android:hint="@string/Concepto"
+        android:paddingStart="7dp"
+        android:textColor="@color/P5"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/IValor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/Valor"
+        android:paddingStart="15dp"
+        android:textColor="@color/P5"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/IFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/Fecha"
+        android:paddingStart="15dp"
+        android:textColor="@color/P5"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/IEtiqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/Etiqueta"
+        android:textAlignment="textEnd"
+        android:paddingEnd="7dp"
+        android:textColor="@color/P5"
+        android:textSize="18sp" />
+</TableRow>

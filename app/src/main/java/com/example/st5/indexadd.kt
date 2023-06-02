@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.Date
+import java.text.DecimalFormat
 
 
 class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
@@ -151,6 +152,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                     .setTitle("¿Seguro que quieres guardar cambios?")
                     .setPositiveButton("Guardar") { dialog, _ ->
                         var valor = valorstr.toDouble()
+                        valor = truncateDouble(valor)
                         if (label <= 8) {
                             valor *= -1
                         }
@@ -274,6 +276,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .start()
         binding.LabelField.setBackgroundResource(R.drawable.p1midcell)
         Log.v("LABEL", label.toString())
+    }
+    fun truncateDouble(value: Double): Double {
+        val decimalFormat = DecimalFormat("#.##")
+        return decimalFormat.format(value).toDouble()
     }
     private fun hideFrecField(){
         binding.FrecuenciaField.animate()

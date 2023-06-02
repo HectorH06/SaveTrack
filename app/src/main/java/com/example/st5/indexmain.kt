@@ -22,6 +22,8 @@ class indexmain : Fragment() {
     private lateinit var binding: FragmentIndexmainBinding
     private val colors: MutableList<Int> = mutableListOf()
 
+    private var listamontos = Fragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -213,6 +215,12 @@ class indexmain : Fragment() {
         val addWithSwitchOn = indexadd.newInstance(true)
         val addWithSwitchOff = indexadd.newInstance(false)
 
+        val listaingresos = indexIngresosList()
+        //val listagastos = indexGastosList()
+        listamontos = listaingresos
+
+        // TODO SWITCH CON IF PARA CAMBIAR ENTRE LISTA DE GASTOS E INGRESOS
+
         binding.ConfigButton.setOnClickListener {
         }
         binding.AgregarIngresoButton.setOnClickListener {
@@ -230,6 +238,12 @@ class indexmain : Fragment() {
             lifecycleScope.launch{
                 limpiar()
             }
+        }
+
+        binding.ConfigButton.setOnClickListener() {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.index_container, listamontos).addToBackStack(null).commit()
         }
 
         lifecycleScope.launch {

@@ -32,7 +32,7 @@ data class Usuario(
     var diasaho: Long?,
 
     @ColumnInfo(name = "balance")
-    var balance: Long?,
+    var balance: Double?,
 ) : Parcelable {
-    constructor() : this(0L,"", 0L, 0L, null, 0L, 0L)
+    constructor() : this(0L,"", 0L, 0L, null, 0L, 0.0)
 }

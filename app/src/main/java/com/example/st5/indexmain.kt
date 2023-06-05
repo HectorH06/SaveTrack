@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -66,9 +67,9 @@ class indexmain : Fragment() {
     }
     private suspend fun setupPieChart() {
         withContext(Dispatchers.IO) {
-            val montoDao = Stlite.getInstance(
-                requireContext()
-            ).getMontoDao()
+            delay(1500)
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
             val alimentos = montoDao.getAlimentos()
             val hogar = montoDao.getHogar()
@@ -206,6 +207,9 @@ class indexmain : Fragment() {
             binding.PieChart.setCenterTextColor(R.color.white)
             binding.PieChart.description.isEnabled = false
             binding.PieChart.legend.isEnabled = false
+
+            val idus = usuarioDao.checkId()
+            usuarioDao.updateBalance(idus, totalisimo)
         }
     }
 
@@ -240,7 +244,7 @@ class indexmain : Fragment() {
             }
         }
 
-        binding.ConfigButton.setOnClickListener() {
+        binding.ConfigButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.index_container, listamontos).addToBackStack(null).commit()

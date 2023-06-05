@@ -28,7 +28,7 @@ import java.nio.charset.Charset
 class perfilmain : Fragment() {
     private lateinit var binding: FragmentPerfilmainBinding
 
-    val jsonArrayMonto = JSONArray()
+    private val jsonArrayMonto = JSONArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,24 +63,23 @@ class perfilmain : Fragment() {
         binding.cerrarsesionperfilmainbtn.setOnClickListener {
 
             suspend fun cerrarSesion() {
-                val listaMontos = mutableListOf<Monto>()
                 val queue = Volley.newRequestQueue(requireContext())
                 withContext(Dispatchers.IO) {
                     val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
-                    val ingresosGastosDao =
-                        Stlite.getInstance(requireContext()).getIngresosGastosDao()
+                    val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
                     val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
                     val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
                     val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
 
-                    val perocuantosmontos = montoDao.getMonto().size
+                    val perocuantosmontos = montoDao.getMaxMonto()
+                    Log.v("CUANTOS MONTOS", perocuantosmontos.toString())
 
                     val iduser = usuarioDao.checkId().toLong()
                     val username = usuarioDao.checkName()
                     val edad = usuarioDao.checkAge().toLong()
                     val lachamba = usuarioDao.checkChamba().toLong()
                     val diasaho = usuarioDao.checkDiasaho().toLong()
-                    val balance = usuarioDao.checkBalance().toLong()
+                    val balance = usuarioDao.checkBalance()
                     val foto = usuarioDao.checkFoto()
                     val summaryingresos = ingresosGastosDao.checkSummaryI()
                     val summarygastos = ingresosGastosDao.checkSummaryG()
@@ -100,12 +99,7 @@ class perfilmain : Fragment() {
                         summaryingresos = summaryingresos,
                         summarygastos = summarygastos
                     )
-                    val montosIds = listOf(perocuantosmontos)
 
-                    for (idmonto in montosIds) {
-                        val monto = montoDao.getM(id)
-                        listaMontos.add(monto)
-                    }
                     val viejoMontoGrupo = MontoGrupo(
                         idmonto = 0,
                         idgrupo = 0,
@@ -145,20 +139,38 @@ class perfilmain : Fragment() {
                     jsonObjectIngresosGastos.put("summarygastos", viejosIG.summarygastos)
 
                     // Tabla Monto
-                    for ((idmonto, iduser, concepto, valor, fecha, frecuencia, etiqueta, interes) in listaMontos) {
-                        val jsonObjectMonto = JSONObject()
-                        jsonObjectMonto.put("idmonto", idmonto)
-                        jsonObjectMonto.put("iduser", iduser)
-                        jsonObjectMonto.put("concepto", concepto)
-                        jsonObjectMonto.put("valor", valor)
-                        jsonObjectMonto.put("fecha", fecha)
-                        jsonObjectMonto.put("frecuencia", frecuencia)
-                        jsonObjectMonto.put("etiqueta", etiqueta)
-                        jsonObjectMonto.put("interes", interes)
+                    for (idmonto in 1..perocuantosmontos) {
+                        if (montoDao.getConcepto(idmonto) != null){
+                            Log.v("Current idmonto", idmonto.toString())
+                            val viejoMonto = Monto(
+                                idmonto = montoDao.getIdmonto(idmonto),
+                                iduser = montoDao.getIduser(idmonto),
+                                concepto = montoDao.getConcepto(idmonto),
+                                valor = montoDao.getValor(idmonto),
+                                fecha = montoDao.getFecha(idmonto),
+                                frecuencia = montoDao.getFrecuencia(idmonto),
+                                etiqueta = montoDao.getEtiqueta(idmonto),
+                                interes = montoDao.getInteres(idmonto)
+                            )
+                            Log.v("Current monto $idmonto", viejoMonto.toString())
+                            val jsonObjectMonto = JSONObject()
+                            jsonObjectMonto.put("idmonto", viejoMonto.idmonto)
+                            jsonObjectMonto.put("iduser", viejoMonto.iduser)
+                            jsonObjectMonto.put("concepto", viejoMonto.concepto)
+                            jsonObjectMonto.put("valor", viejoMonto.valor)
+                            jsonObjectMonto.put("fecha", viejoMonto.fecha)
+                            jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
+                            jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
+                            jsonObjectMonto.put("interes", viejoMonto.interes)
 
-                        jsonArrayMonto.put(jsonObjectMonto)
+                            jsonArrayMonto.put(jsonObjectMonto)
+
+                            Log.v("Current object", jsonObjectMonto.toString())
+                            Log.v("Current array", jsonArrayMonto.toString())
+                        } else {
+                            Log.v("Current monto $idmonto", "VACÍO")
+                        }
                     }
-
 
                     // Tabla MontoGrupo
                     val jsonObjectMontoGrupo = JSONObject()

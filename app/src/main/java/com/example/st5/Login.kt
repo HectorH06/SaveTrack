@@ -20,6 +20,7 @@ import com.example.st5.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
@@ -138,7 +139,7 @@ class Login : Fragment() {
                                                         chamba = 0,
                                                         foto = "",
                                                         diasaho = 0,
-                                                        balance = 0
+                                                        balance = 0.0
                                                     )
                                                     val nuevosIG = IngresosGastos(
                                                         iduser = id,
@@ -193,6 +194,7 @@ class Login : Fragment() {
                                                     jsonObjectIngresosGastos.put("summarygastos", nuevosIG.summarygastos)
 
                                                     // Tabla Monto
+                                                    val jsonObjectMonto = JSONObject()
 
                                                     // Tabla MontoGrupo
                                                     val jsonObjectMontoGrupo = JSONObject()
@@ -264,6 +266,32 @@ class Login : Fragment() {
                                                         "uploadReq", upload2Req.toString()
                                                     )
                                                     queue.add(upload2Req)
+
+                                                    val upload3url =
+                                                        "http://savetrack.com.mx/backupput3.php?username=$username&backup=$jsonObjectMonto"
+                                                    val upload3Req: StringRequest =
+                                                        object : StringRequest(Method.PUT,
+                                                            upload3url,
+                                                            Response.Listener { response ->
+                                                                Log.d(
+                                                                    "response", response
+                                                                )
+                                                            },
+                                                            Response.ErrorListener { error ->
+                                                                Log.e(
+                                                                    "API error", "error => $error"
+                                                                )
+                                                            }) {
+                                                            override fun getBody(): ByteArray {
+                                                                return idurl.toByteArray(
+                                                                    Charset.defaultCharset()
+                                                                )
+                                                            }
+                                                        }
+                                                    Log.d(
+                                                        "uploadReq", upload3Req.toString()
+                                                    )
+                                                    queue.add(upload3Req)
 
                                                     val upload4url =
                                                         "http://savetrack.com.mx/backupput4.php?username=$username&backup=$jsonObjectMontoGrupo"
@@ -386,7 +414,7 @@ class Login : Fragment() {
                                                     val edad: Long = jsonObject1.optLong("edad")
                                                     val chamba: Long = jsonObject1.optLong("chamba")
                                                     val diasaho: Long = jsonObject1.optLong("diasaho")
-                                                    val balance: Long = jsonObject1.optLong("balance")
+                                                    val balance: Double = jsonObject1.optDouble("balance")
                                                     val usuarioDao = Stlite.getInstance(
                                                         requireContext()
                                                     ).getUsuarioDao()
@@ -402,19 +430,49 @@ class Login : Fragment() {
 
 
                                                     // TODO ARRAY PARA EXTRAER PORQUE SI NO MUEREN TODOS LOS MONTOS
-                                                    val jsonObject3 =
-                                                        JSONObject(URL("http://savetrack.com.mx/backupget3.php?username=$username").readText())
-                                                    val idmonto: Long = jsonObject3.getLong("idmonto")
-                                                    val iduse: Long = jsonObject3.getLong("iduser")
-                                                    val concepto: String = jsonObject3.optString("concepto")
-                                                    val valor: Double = jsonObject3.optDouble("valor")
-                                                    val fecha: String = jsonObject3.optString("fecha")
-                                                    val frecuencia: Long = jsonObject3.optLong("frecuencia")
-                                                    val etiqueta: Long = jsonObject3.optLong("etiqueta")
-                                                    val interes: Double = jsonObject3.optDouble("interes")
-                                                    val montoDao = Stlite.getInstance(
-                                                        requireContext()
-                                                    ).getMontoDao()
+                                                    val jsonArray3 =
+                                                        JSONArray(URL("http://savetrack.com.mx/backupget3.php?username=$username").readText())
+                                                    val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+                                                    montoDao.clean()
+                                                    Log.v("jsonArray3", jsonArray3.toString())
+                                                    for (i in 0 until jsonArray3.length())
+                                                    {
+                                                        val jsonObject3 = jsonArray3.getJSONObject(i)
+                                                        if (jsonObject3.getLong("idmonto") != null) {
+                                                            val idmonto: Long =
+                                                                jsonObject3.getLong("idmonto")
+                                                            val iduse: Long =
+                                                                jsonObject3.getLong("iduser")
+                                                            val concepto: String =
+                                                                jsonObject3.optString("concepto")
+                                                            val valor: Double =
+                                                                jsonObject3.optDouble("valor")
+                                                            val fecha: String =
+                                                                jsonObject3.optString("fecha")
+                                                            val frecuencia: Long =
+                                                                jsonObject3.optLong("frecuencia")
+                                                            val etiqueta: Long =
+                                                                jsonObject3.optLong("etiqueta")
+                                                            val interes: Double =
+                                                                jsonObject3.optDouble("interes")
+
+                                                            val nuevoMonto = Monto(
+                                                                idmonto = idmonto,
+                                                                iduser = iduse,
+                                                                concepto = concepto,
+                                                                valor = valor,
+                                                                fecha = fecha,
+                                                                frecuencia = frecuencia,
+                                                                etiqueta = etiqueta,
+                                                                interes = interes
+                                                            )
+                                                            Log.v("Current monto $i", nuevoMonto.toString())
+
+                                                            montoDao.insertMonto(nuevoMonto)
+                                                        } else {
+                                                            Log.v("Current monto $i", "VACÍO")
+                                                        }
+                                                    }
 
                                                     val jsonObject4 =
                                                         JSONObject(URL("http://savetrack.com.mx/backupget4.php?username=$username").readText())
@@ -452,16 +510,7 @@ class Login : Fragment() {
                                                         summaryingresos = summaryingresos,
                                                         summarygastos = summarygastos
                                                     )
-                                                    val nuevoMonto = Monto(
-                                                        idmonto = idmonto,
-                                                        iduser = iduse,
-                                                        concepto = concepto,
-                                                        valor = valor,
-                                                        fecha = fecha,
-                                                        frecuencia = frecuencia,
-                                                        etiqueta = etiqueta,
-                                                        interes = interes
-                                                    )
+
                                                     val nuevoMontoGrupo = MontoGrupo(
                                                         idmonto = idmontog,
                                                         idgrupo = idg,
@@ -478,13 +527,11 @@ class Login : Fragment() {
 
                                                     usuarioDao.clean()
                                                     ingresosGastosDao.clean()
-                                                    montoDao.clean()
                                                     montoGrupoDao.clean()
                                                     gruposDao.clean()
 
                                                     usuarioDao.insertUsuario(nuevoUsuario)
                                                     ingresosGastosDao.insertIngresosGastos(nuevosIG)
-                                                    montoDao.insertMonto(nuevoMonto)
                                                     montoGrupoDao.insertMontoG(nuevoMontoGrupo)
                                                     gruposDao.insertGrupo(nuevoGrupo)
 

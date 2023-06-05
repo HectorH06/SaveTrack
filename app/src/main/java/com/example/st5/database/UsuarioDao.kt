@@ -23,7 +23,7 @@ interface UsuarioDao {
     @Query("SELECT diasaho FROM usuario")
     suspend fun checkDiasaho(): Int
     @Query("SELECT balance FROM usuario")
-    suspend fun checkBalance(): Int
+    suspend fun checkBalance(): Double
 
 
     @Query("DELETE FROM usuario")
@@ -47,5 +47,5 @@ interface UsuarioDao {
     @Query("UPDATE usuario SET diasaho = :days WHERE iduser = :id")
     suspend fun updateDiasaho(id: Int, days: Long)
     @Query("UPDATE usuario SET balance = :balance WHERE iduser = :id")
-    suspend fun updateBalance(id: Int, balance: Long)
+    suspend fun updateBalance(id: Int, balance: Double)
 }

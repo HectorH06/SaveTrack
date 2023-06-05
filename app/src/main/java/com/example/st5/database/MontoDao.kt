@@ -16,6 +16,8 @@ interface MontoDao {
     fun getMonto(): List<Monto>
     @Query("SELECT * FROM monto WHERE idmonto = :id")
     fun getM(id: Int): Monto
+    @Query("SELECT MAX(idmonto) FROM monto")
+    fun getMaxMonto(): Int
     @Query("DELETE FROM monto")
     suspend fun clean()
 
@@ -73,4 +75,22 @@ interface MontoDao {
     fun getIngresosEtiquetados(): List<Monto>
     @Query("SELECT * FROM monto WHERE valor >= 0 ORDER BY interes ASC")
     fun getIngresosInteres(): List<Monto>
+
+    // GET ATRIBUTOS
+    @Query("SELECT idmonto FROM monto WHERE idmonto = :id")
+    fun getIdmonto(id: Int): Long
+    @Query("SELECT iduser FROM monto WHERE idmonto = :id")
+    fun getIduser(id: Int): Long
+    @Query("SELECT concepto FROM monto WHERE idmonto = :id")
+    fun getConcepto(id: Int): String
+    @Query("SELECT valor FROM monto WHERE idmonto = :id")
+    fun getValor(id: Int): Double
+    @Query("SELECT fecha FROM monto WHERE idmonto = :id")
+    fun getFecha(id: Int): String
+    @Query("SELECT frecuencia FROM monto WHERE idmonto = :id")
+    fun getFrecuencia(id: Int): Long
+    @Query("SELECT etiqueta FROM monto WHERE idmonto = :id")
+    fun getEtiqueta(id: Int): Long
+    @Query("SELECT interes FROM monto WHERE idmonto = :id")
+    fun getInteres(id: Int): Double
 }

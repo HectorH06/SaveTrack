@@ -298,6 +298,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             montoDao.insertMonto(nuevoMonto)
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
+
         }
     }
 
@@ -456,7 +457,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 label = 13
                 displayFrecField()
             }
-            "Ingreso Pasivo" -> {
+            "Ingreso pasivo" -> {
                 label = 14
                 hideFrecField()
             }

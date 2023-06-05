@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/IConcepto"
         android:layout_width="wrap_content"
-        android:maxWidth="90dp"
+        android:maxWidth="75dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:maxHeight="150dp"
@@ -23,7 +23,10 @@
     <TextView
         android:id="@+id/IValor"
         android:layout_width="wrap_content"
+        android:maxWidth="60dp"
         android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:maxHeight="150dp"
         android:hint="@string/Valor"
         android:paddingStart="15dp"
         android:textColor="@color/P5"

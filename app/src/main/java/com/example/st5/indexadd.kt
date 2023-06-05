@@ -2,12 +2,15 @@ package com.example.st5
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -129,6 +132,39 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.onItemSelectedListener = this
 
         // TODO: INTERÉS de seekbar a textview
+
+        val max = 100
+        val min = 0
+        binding.InteresSeekbar.max = max
+        binding.InteresSeekbar.min = min
+
+
+        binding.InteresSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val value = progress.toFloat() / 10
+                binding.InteresField.setText(value.toString())
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+        binding.InteresField.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString()
+                if (text.isNotEmpty()) {
+                    val value = text.toFloat() * 10 // Si deseas que el valor sea decimal
+                    binding.InteresSeekbar.progress = value.toInt()
+                }
+            }
+        })
+
+
 
         binding.Confirm.setOnClickListener {
             val concepto = binding.ConceptoField.text.toString()

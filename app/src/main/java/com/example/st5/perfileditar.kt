@@ -225,7 +225,7 @@ class perfileditar : Fragment() {
                         }
                     }
 
-                    val socketTimeout = 20000
+                    val socketTimeout = 45000
                     val policy: RetryPolicy = DefaultRetryPolicy(
                         socketTimeout,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -235,7 +235,7 @@ class perfileditar : Fragment() {
                     val requestQueue = Volley.newRequestQueue(requireContext())
                     requestQueue.add(stringRequest)
 
-                    delay(8000)
+                    delay(10000)
                 }
             } else {
                 Toast.makeText(requireContext(), "La imagen es demasiado grande, intente con una más pequeña", Toast.LENGTH_SHORT).show()

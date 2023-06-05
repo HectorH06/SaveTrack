@@ -21,11 +21,14 @@ import com.example.st5.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.Charset
 
 class perfilmain : Fragment() {
     private lateinit var binding: FragmentPerfilmainBinding
+
+    val jsonArrayMonto = JSONArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +63,7 @@ class perfilmain : Fragment() {
         binding.cerrarsesionperfilmainbtn.setOnClickListener {
 
             suspend fun cerrarSesion() {
+                val listaMontos = mutableListOf<Monto>()
                 val queue = Volley.newRequestQueue(requireContext())
                 withContext(Dispatchers.IO) {
                     val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
@@ -69,7 +73,7 @@ class perfilmain : Fragment() {
                     val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
                     val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
 
-
+                    val perocuantosmontos = montoDao.getMonto().size
 
                     val iduser = usuarioDao.checkId().toLong()
                     val username = usuarioDao.checkName()
@@ -96,16 +100,12 @@ class perfilmain : Fragment() {
                         summaryingresos = summaryingresos,
                         summarygastos = summarygastos
                     )
-                    val viejoMonto = Monto(
-                        idmonto = 0,
-                        iduser = iduser,
-                        concepto = "",
-                        valor = 0.0,
-                        fecha = "",
-                        frecuencia = null,
-                        etiqueta = 0,
-                        interes = 0.0
-                    )
+                    val montosIds = listOf(perocuantosmontos)
+
+                    for (idmonto in montosIds) {
+                        val monto = montoDao.getM(id)
+                        listaMontos.add(monto)
+                    }
                     val viejoMontoGrupo = MontoGrupo(
                         idmonto = 0,
                         idgrupo = 0,
@@ -145,16 +145,20 @@ class perfilmain : Fragment() {
                     jsonObjectIngresosGastos.put("summarygastos", viejosIG.summarygastos)
 
                     // Tabla Monto
-                    // TODO meterlo en un jsonobjectarray
-                    val jsonObjectMonto = JSONObject()
-                    jsonObjectMonto.put("idmonto", viejoMonto.idmonto)
-                    jsonObjectMonto.put("iduser", viejoMonto.iduser)
-                    jsonObjectMonto.put("concepto", viejoMonto.concepto)
-                    jsonObjectMonto.put("valor", viejoMonto.valor)
-                    jsonObjectMonto.put("fecha", viejoMonto.fecha)
-                    jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
-                    jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
-                    jsonObjectMonto.put("interes", viejoMonto.interes)
+                    for ((idmonto, iduser, concepto, valor, fecha, frecuencia, etiqueta, interes) in listaMontos) {
+                        val jsonObjectMonto = JSONObject()
+                        jsonObjectMonto.put("idmonto", idmonto)
+                        jsonObjectMonto.put("iduser", iduser)
+                        jsonObjectMonto.put("concepto", concepto)
+                        jsonObjectMonto.put("valor", valor)
+                        jsonObjectMonto.put("fecha", fecha)
+                        jsonObjectMonto.put("frecuencia", frecuencia)
+                        jsonObjectMonto.put("etiqueta", etiqueta)
+                        jsonObjectMonto.put("interes", interes)
+
+                        jsonArrayMonto.put(jsonObjectMonto)
+                    }
+
 
                     // Tabla MontoGrupo
                     val jsonObjectMontoGrupo = JSONObject()
@@ -230,7 +234,7 @@ class perfilmain : Fragment() {
                     queue.add(upload2Req)
 
                     val upload3url =
-                        "http://savetrack.com.mx/backupput3.php?username=$username&backup=$jsonObjectMonto"
+                        "http://savetrack.com.mx/backupput3.php?username=$username&backup=$jsonArrayMonto"
                     val upload3Req: StringRequest =
                         object : StringRequest(
                             Method.PUT,

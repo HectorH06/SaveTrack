@@ -145,16 +145,6 @@ class Login : Fragment() {
                                                         summaryingresos = 0.0,
                                                         summarygastos = 0.0
                                                     )
-                                                    val nuevoMonto = Monto(
-                                                        idmonto = 0,
-                                                        iduser = id,
-                                                        concepto = "",
-                                                        valor = 0.0,
-                                                        fecha = "",
-                                                        frecuencia =  null,
-                                                        etiqueta = 0,
-                                                        interes = 0.0
-                                                    )
                                                     val nuevoMontoGrupo = MontoGrupo(
                                                         idmonto = 0,
                                                         idgrupo = 0,
@@ -177,7 +167,6 @@ class Login : Fragment() {
 
                                                     usuarioDao.insertUsuario(nuevoUsuario)
                                                     ingresosGastosDao.insertIngresosGastos(nuevosIG)
-                                                    montoDao.insertMonto(nuevoMonto)
                                                     montoGrupoDao.insertMontoG(nuevoMontoGrupo)
                                                     gruposDao.insertGrupo(nuevoGrupo)
 
@@ -204,15 +193,6 @@ class Login : Fragment() {
                                                     jsonObjectIngresosGastos.put("summarygastos", nuevosIG.summarygastos)
 
                                                     // Tabla Monto
-                                                    val jsonObjectMonto = JSONObject()
-                                                    jsonObjectMonto.put("idmonto", nuevoMonto.idmonto)
-                                                    jsonObjectMonto.put("iduser", nuevoMonto.iduser)
-                                                    jsonObjectMonto.put("concepto", nuevoMonto.concepto)
-                                                    jsonObjectMonto.put("valor", nuevoMonto.valor)
-                                                    jsonObjectMonto.put("fecha", nuevoMonto.fecha)
-                                                    jsonObjectMonto.put("frecuencia", nuevoMonto.frecuencia)
-                                                    jsonObjectMonto.put("etiqueta", nuevoMonto.etiqueta)
-                                                    jsonObjectMonto.put("interes", nuevoMonto.interes)
 
                                                     // Tabla MontoGrupo
                                                     val jsonObjectMontoGrupo = JSONObject()
@@ -284,32 +264,6 @@ class Login : Fragment() {
                                                         "uploadReq", upload2Req.toString()
                                                     )
                                                     queue.add(upload2Req)
-
-                                                    val upload3url =
-                                                        "http://savetrack.com.mx/backupput3.php?username=$username&backup=$jsonObjectMonto"
-                                                    val upload3Req: StringRequest =
-                                                        object : StringRequest(Method.PUT,
-                                                            upload3url,
-                                                            Response.Listener { response ->
-                                                                Log.d(
-                                                                    "response", response
-                                                                )
-                                                            },
-                                                            Response.ErrorListener { error ->
-                                                                Log.e(
-                                                                    "API error", "error => $error"
-                                                                )
-                                                            }) {
-                                                            override fun getBody(): ByteArray {
-                                                                return idurl.toByteArray(
-                                                                    Charset.defaultCharset()
-                                                                )
-                                                            }
-                                                        }
-                                                    Log.d(
-                                                        "uploadReq", upload3Req.toString()
-                                                    )
-                                                    queue.add(upload3Req)
 
                                                     val upload4url =
                                                         "http://savetrack.com.mx/backupput4.php?username=$username&backup=$jsonObjectMontoGrupo"
@@ -446,6 +400,8 @@ class Login : Fragment() {
                                                         requireContext()
                                                     ).getIngresosGastosDao()
 
+
+                                                    // TODO ARRAY PARA EXTRAER PORQUE SI NO MUEREN TODOS LOS MONTOS
                                                     val jsonObject3 =
                                                         JSONObject(URL("http://savetrack.com.mx/backupget3.php?username=$username").readText())
                                                     val idmonto: Long = jsonObject3.getLong("idmonto")

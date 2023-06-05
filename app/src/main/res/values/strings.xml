@@ -110,7 +110,7 @@
     <string name="Cancelar">Cancelar</string>
     <string name="confirmar">Confirmar</string>
     <string name="goback">Go back</string>
-    <string name="Interes">Interés</string>
+    <string name="Interes">Interés en %</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

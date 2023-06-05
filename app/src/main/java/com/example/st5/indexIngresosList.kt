@@ -58,10 +58,59 @@ class indexIngresosList : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val back = indexmain()
+        val addWithSwitchOn = indexadd.newInstance(true)
+
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.index_container, back).addToBackStack(null).commit()
+        }
+
+        binding.AgregarIngresoButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.index_container, addWithSwitchOn).addToBackStack(null).commit()
+        }
+
+        binding.HConcepto.setOnClickListener {
+            lifecycleScope.launch {
+                ingresos = montosgetAlfabetica()
+                if (ingresos != null) {
+                    binding.displayIngresos.adapter = MontoAdapter(ingresos)
+                } else {
+                    Log.e("INGRESOS", "No hay ingresos")
+                }
+            }
+        }
+        binding.HValor.setOnClickListener {
+            lifecycleScope.launch {
+                ingresos = montosgetValuados()
+                if (ingresos != null) {
+                    binding.displayIngresos.adapter = MontoAdapter(ingresos)
+                } else {
+                    Log.e("INGRESOS", "No hay ingresos")
+                }
+            }
+        }
+        binding.HFecha.setOnClickListener {
+            lifecycleScope.launch {
+                ingresos = montosgetFechados()
+                if (ingresos != null) {
+                    binding.displayIngresos.adapter = MontoAdapter(ingresos)
+                } else {
+                    Log.e("INGRESOS", "No hay ingresos")
+                }
+            }
+        }
+        binding.HEtiqueta.setOnClickListener {
+            lifecycleScope.launch {
+                ingresos = montosgetEtiquetados()
+                if (ingresos != null) {
+                    binding.displayIngresos.adapter = MontoAdapter(ingresos)
+                } else {
+                    Log.e("INGRESOS", "No hay ingresos")
+                }
+            }
         }
     }
 
@@ -70,6 +119,46 @@ class indexIngresosList : Fragment() {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
             ingresos = montoDao.getIngresos()
+            Log.i("ALL MONTOS", ingresos.toString())
+        }
+        return ingresos
+    }
+
+    private suspend fun montosgetAlfabetica(): List<Monto> {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+
+            ingresos = montoDao.getIngresosAlfabetica()
+            Log.i("ALL MONTOS", ingresos.toString())
+        }
+        return ingresos
+    }
+
+    private suspend fun montosgetValuados(): List<Monto> {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+
+            ingresos = montoDao.getIngresosValuados()
+            Log.i("ALL MONTOS", ingresos.toString())
+        }
+        return ingresos
+    }
+
+    private suspend fun montosgetFechados(): List<Monto> {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+
+            ingresos = montoDao.getIngresosFechados()
+            Log.i("ALL MONTOS", ingresos.toString())
+        }
+        return ingresos
+    }
+
+    private suspend fun montosgetEtiquetados(): List<Monto> {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+
+            ingresos = montoDao.getIngresosEtiquetados()
             Log.i("ALL MONTOS", ingresos.toString())
         }
         return ingresos

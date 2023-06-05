@@ -141,7 +141,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
         binding.InteresSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                val value = progress.toFloat() / 10
+                val value = progress.toFloat() / 100
                 binding.InteresField.setText(value.toString())
             }
 
@@ -158,7 +158,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString()
                 if (text.isNotEmpty()) {
-                    val value = text.toFloat() * 10 // Si deseas que el valor sea decimal
+                    val value = text.toFloat() * 100
                     binding.InteresSeekbar.progress = value.toInt()
                 }
             }
@@ -313,7 +313,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.LabelField.setBackgroundResource(R.drawable.p1midcell)
         Log.v("LABEL", label.toString())
     }
-    fun truncateDouble(value: Double): Double {
+    private fun truncateDouble(value: Double): Double {
         val decimalFormat = DecimalFormat("#.##")
         return decimalFormat.format(value).toDouble()
     }

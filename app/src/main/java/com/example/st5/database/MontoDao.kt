@@ -38,6 +38,22 @@ interface MontoDao {
     fun getObsequios(): List<Monto>
     @Query("SELECT * FROM monto WHERE etiqueta = 8")
     fun getDeudas(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 9")
+    fun getSalarios(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 10")
+    fun getIrregulares(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 11")
+    fun getBecas(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 12")
+    fun getPensiones(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 13")
+    fun getManutencion(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 14")
+    fun getPasivos(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 15")
+    fun getRegalos(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = 16")
+    fun getPrestamos(): List<Monto>
 
     // GET GASTOS/INGRESOS
     @Query("SELECT * FROM monto WHERE valor >= 0")
@@ -49,7 +65,7 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE fecha = :fecha")
     fun getMontoXFecha(fecha: String): List<Monto>
 
-    // GET POR FILTROS para listas
+    // GET POR FILTROS para listas de monto
     @Query("SELECT * FROM monto ORDER BY concepto ASC")
     fun getMontosAlfabetica(): List<Monto>
     @Query("SELECT * FROM monto ORDER BY fecha ASC")
@@ -63,7 +79,8 @@ interface MontoDao {
     @Query("SELECT * FROM monto ORDER BY interes ASC")
     fun getMontosInteres(): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE valor >= 0 ORDER BY concepto ASC ")
+    // GET POR FILTROS para listas de ingresos
+    @Query("SELECT * FROM monto WHERE valor >= 0 ORDER BY concepto ASC")
     fun getIngresosAlfabetica(): List<Monto>
     @Query("SELECT * FROM monto WHERE valor >= 0 ORDER BY fecha ASC")
     fun getIngresosFechados(): List<Monto>
@@ -75,6 +92,20 @@ interface MontoDao {
     fun getIngresosEtiquetados(): List<Monto>
     @Query("SELECT * FROM monto WHERE valor >= 0 ORDER BY interes ASC")
     fun getIngresosInteres(): List<Monto>
+
+    // GET POR FILTROS para listas de gastos
+    @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY concepto ASC")
+    fun getGastosAlfabetica(): List<Monto>
+    @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY fecha ASC")
+    fun getGastosFechados(): List<Monto>
+    @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY valor ASC")
+    fun getGastosValuados(): List<Monto>
+    @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY frecuencia ASC")
+    fun getGastosFrecuentes(): List<Monto>
+    @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY etiqueta ASC")
+    fun getGastosEtiquetados(): List<Monto>
+    @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY interes ASC")
+    fun getGastosInteres(): List<Monto>
 
     // GET ATRIBUTOS
     @Query("SELECT idmonto FROM monto WHERE idmonto = :id")

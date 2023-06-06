@@ -32,6 +32,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <RelativeLayout
+        android:id="@+id/switchpordelante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationZ="100dp"
+        app:layout_constraintTop_toBottomOf="@id/PieChart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp">
+
+        <com.polyak.iconswitch.IconSwitch
+            android:id="@+id/SultanOfSwing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:trackTint="@color/P2"
+            app:isw_icon_left="@drawable/ic_add"
+            app:isw_icon_right="@drawable/ic_remove"
+            app:isw_inactive_tint_icon_left="@color/G5"
+            app:isw_inactive_tint_icon_right="@color/R4"
+            app:isw_thumb_color_left="@color/G2"
+            app:isw_thumb_color_right="@color/R0" />
+    </RelativeLayout>
+
     <ImageButton
         android:id="@+id/AgregarIngresoButton"
         android:layout_width="64dp"

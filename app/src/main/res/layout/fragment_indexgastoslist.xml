@@ -15,13 +15,13 @@
             android:layout_height="wrap_content">
 
             <TableLayout
-                android:id="@+id/cabezaingresos"
+                android:id="@+id/cabezagastos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:stretchColumns="0,1,2,3"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="80dp"
-                android:layout_marginEnd="75dp"
+                android:layout_marginEnd="10dp"
+                android:stretchColumns="0,1,2,3"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TableRow
@@ -35,6 +35,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="@string/Concepto"
+                        android:maxWidth="100dp"
+                        android:paddingStart="7dp"
                         android:textColor="@color/P5"
                         android:textSize="18sp" />
 
@@ -43,6 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="@string/Valor"
+                        android:textAlignment="center"
                         android:textColor="@color/P5"
                         android:textSize="18sp" />
 
@@ -51,6 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="@string/Fecha"
+                        android:textAlignment="textEnd"
                         android:textColor="@color/P5"
                         android:textSize="18sp" />
 
@@ -59,18 +63,39 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="@string/Etiqueta"
+                        android:paddingEnd="7dp"
                         android:textAlignment="textEnd"
                         android:textColor="@color/P5"
                         android:textSize="18sp" />
 
                 </TableRow>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/displayGastos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintStart_toStartOf="@+id/cabezaingresos"
-                    app:layout_constraintTop_toBottomOf="@+id/cabezaingresos" />
+                    app:layout_constraintStart_toStartOf="@+id/cabezagastos"
+                    app:layout_constraintTop_toBottomOf="@+id/cabezagastos" />
+
+                <TableRow>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_marginTop="16dp">
+
+                        <ImageButton
+                            android:id="@+id/AgregarGastoButton"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="16dp"
+                            android:background="@drawable/cancshape"
+                            app:tint="@color/R1"
+                            app:srcCompat="@drawable/ic_remove"
+                            android:contentDescription="@string/nuevo_gasto"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </TableRow>
             </TableLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -102,33 +127,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back" />
-
-        <ImageButton
-            android:id="@+id/Confirm"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/confshape"
-            android:contentDescription="@string/confirmar"
-            app:layout_constraintBottom_toTopOf="@id/Cancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintVertical_bias="0.767"
-            app:srcCompat="@drawable/ic_confirm" />
-
-        <ImageButton
-            android:id="@+id/Cancel"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/cancshape"
-            android:contentDescription="@string/Cancelar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintVertical_bias="0.949"
-            app:srcCompat="@drawable/ic_cancel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

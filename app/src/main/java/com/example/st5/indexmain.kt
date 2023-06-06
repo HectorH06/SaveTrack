@@ -11,15 +11,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentIndexmainBinding
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.polyak.iconswitch.IconSwitch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class indexmain : Fragment() {
+class indexmain : Fragment(), OnChartValueSelectedListener {
     private lateinit var binding: FragmentIndexmainBinding
     private val colors: MutableList<Int> = mutableListOf()
 
@@ -39,7 +43,6 @@ class indexmain : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setupColors()
         binding = FragmentIndexmainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,19 +58,15 @@ class indexmain : Fragment() {
         colors.add(ContextCompat.getColor(requireContext(), R.color.R0))
     }
 
-    private fun isNotZero(value: Float?): Boolean
-    {
-        return ((value != 0.0f) || (value != -0.0f))
-        // ehhh ehh ehh ehh ehh ehh ehh e
-    }
-
     private fun isNotZero(value: Double?): Boolean
     {
         return ((value != 0.0) || (value != -0.0))
     }
-    private suspend fun setupPieChart() {
+    
+    //region PIECHARTS
+    private suspend fun setupPieChartG() {
+        setupColors()
         withContext(Dispatchers.IO) {
-            delay(1500)
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
@@ -210,8 +209,159 @@ class indexmain : Fragment() {
 
             val idus = usuarioDao.checkId()
             usuarioDao.updateBalance(idus, totalisimo)
+
         }
     }
+
+    private suspend fun setupPieChartI() {
+        setupColors()
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+            val salarios = montoDao.getSalarios()
+            val irregulares = montoDao.getIrregulares()
+            val becas = montoDao.getBecas()
+            val pensiones = montoDao.getPensiones()
+            val manutencion = montoDao.getManutencion()
+            val pasivos = montoDao.getPasivos()
+            val regalos = montoDao.getRegalos()
+            val prestamos = montoDao.getPrestamos()
+
+            val totalI = montoDao.getIngresos()
+            val totalG = montoDao.getGastos()
+            val totalis = montoDao.getMonto()
+
+            var totalSalarios = 0.0
+            for (monto in salarios) {
+                totalSalarios += monto.valor
+            }
+            Log.v("Salarios", totalSalarios.toString())
+
+            var totalIrregulares = 0.0
+            for (monto in irregulares) {
+                totalIrregulares += monto.valor
+            }
+            Log.v("Irregulares", totalIrregulares.toString())
+
+            var totalBecas = 0.0
+            for (monto in becas) {
+                totalBecas += monto.valor
+            }
+            Log.v("Becas", totalBecas.toString())
+
+            var totalPensiones = 0.0
+            for (monto in pensiones) {
+                totalPensiones += monto.valor
+            }
+            Log.v("Pensiones", totalPensiones.toString())
+
+            var totalManutencion = 0.0
+            for (monto in manutencion) {
+                totalManutencion += monto.valor
+            }
+            Log.v("Manutencion", totalManutencion.toString())
+
+            var totalPasivos = 0.0
+            for (monto in pasivos) {
+                totalPasivos += monto.valor
+            }
+            Log.v("Pasivos", totalPasivos.toString())
+
+            var totalRegalos = 0.0
+            for (monto in regalos) {
+                totalRegalos += monto.valor
+            }
+            Log.v("Regalos", totalRegalos.toString())
+
+            var totalPrestamos = 0.0
+            for (monto in prestamos) {
+                totalPrestamos += monto.valor
+            }
+            Log.v("Prestamos", totalPrestamos.toString())
+
+
+            var totalIngresos = 0.0
+            for (monto in totalI){
+                totalIngresos += monto.valor
+            }
+            Log.v("INGRESOS", totalI.toString())
+
+            var totalGastos = 0.0
+            for (monto in totalG){
+                totalGastos += monto.valor
+            }
+            Log.v("GASTOS", totalG.toString())
+
+            var totalisimo = 0.0
+            for (monto in totalis) {
+                totalisimo += monto.valor
+            }
+            Log.v("GRAN TOTAL", totalisimo.toString())
+
+            var percentSalario: Float? = 0f
+            var percentIrregulares: Float? = 0f
+            var percentBecas: Float? = 0f
+            var percentPensiones: Float? = 0f
+            var percentManutencion: Float? = 0f
+            var percentPasivos: Float? = 0f
+            var percentRegalos: Float? = 0f
+            var percentPrestamos: Float? = 0f
+
+            if (isNotZero(totalSalarios)){
+                percentSalario = (totalSalarios.toFloat() / totalIngresos.toFloat())*100
+            }
+            if (isNotZero(totalIrregulares)){
+                percentIrregulares = (totalIrregulares.toFloat() / totalIngresos.toFloat())*100
+            }
+            if (isNotZero(totalBecas)){
+                percentBecas = (totalBecas.toFloat() / totalIngresos.toFloat())*100
+            }
+            if (isNotZero(totalPensiones)){
+                percentPensiones = (totalPensiones.toFloat() / totalIngresos.toFloat())*100
+            }
+            if (isNotZero(totalManutencion)){
+                percentManutencion = (totalManutencion.toFloat() / totalIngresos.toFloat())*100
+            }
+            if (isNotZero(totalPasivos)){
+                percentPasivos = (totalPasivos.toFloat() / totalIngresos.toFloat())*100
+            }
+            if (isNotZero(totalRegalos)){
+                percentRegalos = (totalRegalos.toFloat() / totalIngresos.toFloat())*100
+            }
+            if (isNotZero(totalPrestamos)){
+                percentPrestamos = (totalPrestamos.toFloat() / totalIngresos.toFloat())*100
+            }
+
+            val entries = listOf(
+                percentSalario?.let { PieEntry(it) },
+                percentIrregulares?.let { PieEntry(it) },
+                percentBecas?.let { PieEntry(it) },
+                percentPensiones?.let { PieEntry(it) },
+                percentManutencion?.let { PieEntry(it) },
+                percentPasivos?.let { PieEntry(it) },
+                percentRegalos?.let { PieEntry(it) },
+                percentPrestamos?.let { PieEntry(it) }
+            )
+
+            val dataSet = PieDataSet(entries, "Gastos")
+            dataSet.colors = colors
+
+            val data = PieData(dataSet)
+            binding.PieChart.data = data
+
+            binding.PieChart.centerText = "$totalIngresos$ - $totalGastos$ = $totalisimo$"
+            binding.PieChart.setCenterTextSize(24f)
+            binding.PieChart.setCenterTextColor(R.color.white)
+            binding.PieChart.description.isEnabled = false
+            binding.PieChart.legend.isEnabled = false
+
+            val idus = usuarioDao.checkId()
+            usuarioDao.updateBalance(idus, totalisimo)
+        }
+    }
+
+    //endregion
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -219,14 +369,43 @@ class indexmain : Fragment() {
         val addWithSwitchOn = indexadd.newInstance(true)
         val addWithSwitchOff = indexadd.newInstance(false)
 
-        val listaingresos = indexIngresosList()
-        //val listagastos = indexGastosList()
-        listamontos = listaingresos
-
-        // TODO SWITCH CON IF PARA CAMBIAR ENTRE LISTA DE GASTOS E INGRESOS
-
-        binding.ConfigButton.setOnClickListener {
+        var lista : Fragment
+        
+        var switchVal = false
+        lifecycleScope.launch {
+            delay(1500)
+            gi(!switchVal)
         }
+
+        binding.MedidorDeAhorroButton.setOnClickListener {
+            lista = if (switchVal){
+                indexIngresosList()
+            } else {
+                indexGastosList()
+            }
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.index_container, lista).addToBackStack(null).commit()
+
+        }
+
+        binding.PieChart.setOnChartValueSelectedListener(pieChartOnChartValueSelectedListener())
+
+        binding.SultanOfSwing.setCheckedChangeListener {
+            when (binding.SultanOfSwing.checked) {
+                IconSwitch.Checked.LEFT -> {
+                    switchVal = true
+                }
+                IconSwitch.Checked.RIGHT -> {
+                    switchVal = false
+                }
+                else -> {}
+            }
+            lifecycleScope.launch {
+                gi(switchVal)
+            }
+        }
+
         binding.AgregarIngresoButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
@@ -238,22 +417,19 @@ class indexmain : Fragment() {
                 .replace(R.id.index_container, addWithSwitchOff).addToBackStack(null).commit()
         }
 
+        /*
         binding.MedidorDeAhorroButton.setOnClickListener {
             lifecycleScope.launch{
                 limpiar()
             }
         }
+         */
 
         binding.ConfigButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.index_container, listamontos).addToBackStack(null).commit()
         }
-
-        lifecycleScope.launch {
-            setupPieChart()
-        }
-
 
         /*
                 val progressBar = binding.GraficoPastel
@@ -274,5 +450,42 @@ class indexmain : Fragment() {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             montoDao.clean()
         }
+    }
+
+    private fun gi(switchVal: Boolean) {
+        Log.v("masomenos", switchVal.toString())
+
+        if (!switchVal) {
+            lifecycleScope.launch {
+                setupPieChartG()
+            }
+        } else {
+            lifecycleScope.launch {
+                setupPieChartI()
+            }
+        }
+    }
+
+    inner class pieChartOnChartValueSelectedListener : OnChartValueSelectedListener {
+        override fun onValueSelected(e: Entry, h: Highlight) {
+            if (e == null) return
+            Log.i(
+                "VAL SELECTED",
+                "Value: " + e.y + ", index: " + h.x + ", DataSet index: " + h.dataSetIndex
+            )
+        }
+        override fun onNothingSelected() {
+            Log.i("PieChart", "nothing selected")
+        }
+    }
+    override fun onValueSelected(e: Entry, h: Highlight) {
+        if (e == null) return
+        Log.i(
+            "VAL SELECTED",
+            "Value: " + e.y + ", index: " + h.x + ", DataSet index: " + h.dataSetIndex
+        )
+    }
+    override fun onNothingSelected() {
+        Log.i("PieChart", "nothing selected")
     }
 }

@@ -440,7 +440,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 label = 9
                 displayFrecField()
             }
-            "Ingreso Irregular" -> {
+            "Venta" -> {
                 label = 10
                 hideFrecField()
             }

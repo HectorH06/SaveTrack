@@ -44,6 +44,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentIndexmainBinding.inflate(inflater, container, false)
+        binding.SultanOfSwing.checked = IconSwitch.Checked.RIGHT
         return binding.root
     }
 
@@ -209,7 +210,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             val idus = usuarioDao.checkId()
             usuarioDao.updateBalance(idus, totalisimo)
-
         }
     }
 
@@ -426,9 +426,9 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
          */
 
         binding.ConfigButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.index_container, listamontos).addToBackStack(null).commit()
+            lifecycleScope.launch {
+                limpiar()
+            }
         }
 
         /*

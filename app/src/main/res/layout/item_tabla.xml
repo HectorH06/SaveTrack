@@ -17,7 +17,6 @@
         android:maxHeight="150dp"
         android:hint="@string/Concepto"
         android:paddingStart="7dp"
-        android:layout_marginEnd="16dp"
         android:textColor="@color/P5"
         android:textSize="18sp" />
 
@@ -28,7 +27,7 @@
         android:maxWidth="100dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
-        android:maxHeight="150dp"
+        android:maxHeight="100dp"
         android:hint="@string/Valor"
         android:textAlignment="textEnd"
         android:paddingStart="15dp"
@@ -40,9 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="80dp"
-        android:maxWidth="150dp"
+        android:maxWidth="100dp"
         android:hint="@string/Fecha"
-        android:layout_marginStart="15dp"
         android:textAlignment="textEnd"
         android:paddingStart="15dp"
         android:textColor="@color/P5"

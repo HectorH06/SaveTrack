@@ -150,15 +150,14 @@
 
     <ImageButton
         android:id="@+id/MedidorDeAhorroButton"
-        android:layout_width="62dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="323dp"
-        android:layout_marginBottom="323dp"
-        android:background="@drawable/confshape"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="45dp"
+        android:layout_height="80dp"
+        android:background="@drawable/configshape"
+        app:layout_constraintBottom_toTopOf="@id/AgregarIngresoButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete"
+        app:layout_constraintTop_toBottomOf="@id/ConfigButton"
+        app:srcCompat="@drawable/ic_bubbles"
+        android:layout_marginEnd="10dp"
         android:contentDescription="@string/medidor_de_ahorro"/>
 
     <ImageButton

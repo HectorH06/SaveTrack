@@ -183,7 +183,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
             var interes = 0.0
 
-            if (label != 0L && concepto != "" && valorstr != "" || valorstr != ".") {
+            if (label != 0L && concepto != "" && valorstr != "" && valorstr != ".") {
                 val confirmDialog = AlertDialog.Builder(requireContext())
                     .setTitle("¿Seguro que quieres guardar cambios?")
                     .setPositiveButton("Guardar") { dialog, _ ->
@@ -196,7 +196,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         if (label == 8L || label == 16L){
                             interes = binding.InteresField.text.toString().toDouble()
                         }
-
 
                         Log.v("Concepto", concepto)
                         Log.v("Valor", valor.toString())

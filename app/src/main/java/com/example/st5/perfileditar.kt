@@ -49,7 +49,7 @@ class perfileditar : Fragment() {
                 override fun handleOnBackPressed() {
                     val prev = perfilmain()
                     parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                         .replace(R.id.perfil_container, prev)
                         .addToBackStack(null).commit()
                 }

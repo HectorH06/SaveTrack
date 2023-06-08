@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentIndexmainBinding
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -25,9 +26,8 @@ import kotlinx.coroutines.withContext
 
 class indexmain : Fragment(), OnChartValueSelectedListener {
     private lateinit var binding: FragmentIndexmainBinding
-    private val colors: MutableList<Int> = mutableListOf()
-
-    private var listamontos = Fragment()
+    private val colorsG: MutableList<Int> = mutableListOf()
+    private val colorsI: MutableList<Int> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,14 +49,23 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     }
 
     private fun setupColors() {
-        colors.add(ContextCompat.getColor(requireContext(), R.color.Y3))
-        colors.add(ContextCompat.getColor(requireContext(), R.color.B2))
-        colors.add(ContextCompat.getColor(requireContext(), R.color.G2))
-        colors.add(ContextCompat.getColor(requireContext(), R.color.B0))
-        colors.add(ContextCompat.getColor(requireContext(), R.color.O1))
-        colors.add(ContextCompat.getColor(requireContext(), R.color.R1))
-        colors.add(ContextCompat.getColor(requireContext(), R.color.P1))
-        colors.add(ContextCompat.getColor(requireContext(), R.color.R0))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.Y3))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.B2))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.G2))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.B0))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.O1))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.R1))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.P1))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.R0))
+
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.G4))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.B4))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.R2))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.O4))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.Y2))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.P2))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.P1))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.R0))
     }
 
     private fun isNotZero(value: Double?): Boolean
@@ -197,7 +206,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             )
 
             val dataSet = PieDataSet(entries, "Gastos")
-            dataSet.colors = colors
+            dataSet.colors = colorsG
 
             val data = PieData(dataSet)
             binding.PieChart.data = data
@@ -299,7 +308,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             }
             Log.v("GRAN TOTAL", totalisimo.toString())
 
-            var percentSalario: Float? = 0f
+            var percentSalarios: Float? = 0f
             var percentIrregulares: Float? = 0f
             var percentBecas: Float? = 0f
             var percentPensiones: Float? = 0f
@@ -309,7 +318,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             var percentPrestamos: Float? = 0f
 
             if (isNotZero(totalSalarios)){
-                percentSalario = (totalSalarios.toFloat() / totalIngresos.toFloat())*100
+                percentSalarios = (totalSalarios.toFloat() / totalIngresos.toFloat())*100
             }
             if (isNotZero(totalIrregulares)){
                 percentIrregulares = (totalIrregulares.toFloat() / totalIngresos.toFloat())*100
@@ -334,27 +343,32 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             }
 
             val entries = listOf(
-                percentSalario?.let { PieEntry(it) },
-                percentIrregulares?.let { PieEntry(it) },
-                percentBecas?.let { PieEntry(it) },
-                percentPensiones?.let { PieEntry(it) },
-                percentManutencion?.let { PieEntry(it) },
-                percentPasivos?.let { PieEntry(it) },
-                percentRegalos?.let { PieEntry(it) },
-                percentPrestamos?.let { PieEntry(it) }
+                totalSalarios.toFloat()?.let { PieEntry(it) },
+                totalIrregulares.toFloat()?.let { PieEntry(it) },
+                totalBecas.toFloat()?.let { PieEntry(it) },
+                totalPensiones.toFloat()?.let { PieEntry(it) },
+                totalManutencion.toFloat()?.let { PieEntry(it) },
+                totalPasivos.toFloat()?.let { PieEntry(it) },
+                totalRegalos.toFloat()?.let { PieEntry(it) },
+                totalPrestamos.toFloat()?.let { PieEntry(it) }
             )
 
             val dataSet = PieDataSet(entries, "Gastos")
-            dataSet.colors = colors
+            dataSet.colors = colorsI
 
             val data = PieData(dataSet)
-            binding.PieChart.data = data
+            val chart = binding.PieChart
 
-            binding.PieChart.centerText = "$totalIngresos$ - $totalGastos$ = $totalisimo$"
-            binding.PieChart.setCenterTextSize(24f)
-            binding.PieChart.setCenterTextColor(R.color.white)
-            binding.PieChart.description.isEnabled = false
-            binding.PieChart.legend.isEnabled = false
+            chart.centerText = "$totalIngresos$ - $totalGastos$ = $totalisimo$"
+            chart.setCenterTextSize(24f)
+            chart.holeRadius = 48f
+            chart.setCenterTextColor(R.color.white)
+            chart.description.isEnabled = false
+            chart.legend.isEnabled = false
+            chart.isRotationEnabled = true
+            chart.absoluteAngles
+
+            chart.data = data
 
             val idus = usuarioDao.checkId()
             usuarioDao.updateBalance(idus, totalisimo)
@@ -373,8 +387,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         
         var switchVal = false
         lifecycleScope.launch {
-            delay(1500)
-            gi(!switchVal)
+            delay(1000)
+            gi(switchVal)
         }
 
         binding.MedidorDeAhorroButton.setOnClickListener {
@@ -392,14 +406,16 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         binding.PieChart.setOnChartValueSelectedListener(pieChartOnChartValueSelectedListener())
 
         binding.SultanOfSwing.setCheckedChangeListener {
-            when (binding.SultanOfSwing.checked) {
+            switchVal = when (binding.SultanOfSwing.checked) {
                 IconSwitch.Checked.LEFT -> {
-                    switchVal = true
+                    true
                 }
                 IconSwitch.Checked.RIGHT -> {
-                    switchVal = false
+                    false
                 }
-                else -> {}
+                else -> {
+                    false
+                }
             }
             lifecycleScope.launch {
                 gi(switchVal)
@@ -458,10 +474,14 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         if (!switchVal) {
             lifecycleScope.launch {
                 setupPieChartG()
+                binding.PieChart.performClick()
+                binding.PieChart.animateY(1400, Easing.EaseInOutQuad)
             }
         } else {
             lifecycleScope.launch {
                 setupPieChartI()
+                binding.PieChart.performClick()
+                binding.PieChart.animateY(1400, Easing.EaseInOutQuad)
             }
         }
     }
@@ -469,10 +489,13 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     inner class pieChartOnChartValueSelectedListener : OnChartValueSelectedListener {
         override fun onValueSelected(e: Entry, h: Highlight) {
             if (e == null) return
-            Log.i(
-                "VAL SELECTED",
-                "Value: " + e.y + ", index: " + h.x + ", DataSet index: " + h.dataSetIndex
-            )
+            Log.i("VAL SELECTED", "Value: " + e.y + ", index: " + h.x)
+            // TODO angulo del SELECTED, redirección, tubo de ensayo, sus gifs y lo que conllevan
+
+            val chart = binding.PieChart
+
+            chart.highlightValue(h)
+            chart.rotationAngle = 90f
         }
         override fun onNothingSelected() {
             Log.i("PieChart", "nothing selected")

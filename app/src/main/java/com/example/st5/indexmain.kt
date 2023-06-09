@@ -32,8 +32,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private val colorsGDraw: MutableList<Int> = mutableListOf()
     private val colorsIDraw: MutableList<Int> = mutableListOf()
 
-    private val fragI: MutableList<Fragment> = mutableListOf()
-    private val fragG: MutableList<Fragment> = mutableListOf()
+    private val textG: MutableList<String> = mutableListOf()
+    private val textI: MutableList<String> = mutableListOf()
 
     private var switchVal = false
     private lateinit var lista : Fragment
@@ -95,6 +95,24 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         colorsIDraw.add(R.drawable.ttp2)
         colorsIDraw.add(R.drawable.ttp1)
         colorsIDraw.add(R.drawable.ttr0)
+
+        textG.add("Alimentos")
+        textG.add("Hogar")
+        textG.add("Bienestar")
+        textG.add("Necesidades")
+        textG.add("Gastos Hormiga")
+        textG.add("Ocio y demás")
+        textG.add("Obsequio")
+        textG.add("Deuda")
+
+        textI.add("Salarios")
+        textI.add("Ventas")
+        textI.add("Becas")
+        textI.add("Pensiones")
+        textI.add("Manutención")
+        textI.add("Ingresos Pasivos")
+        textI.add("Regalos")
+        textI.add("Préstamos")
     }
 
     private fun isNotZero(value: Double?): Boolean
@@ -501,6 +519,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1400, Easing.EaseInOutQuad)
                 binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.ttg)
+                binding.searchforlabel.text = null
+                binding.searchforlabel.hint = "Gastos"
             }
         } else {
             lifecycleScope.launch {
@@ -509,6 +529,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1400, Easing.EaseInOutQuad)
                 binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.tti)
+                binding.searchforlabel.text = null
+                binding.searchforlabel.hint = "Ingresos"
             }
         }
     }
@@ -524,10 +546,13 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             lista = if (!switchVal) {
                 binding.MedidorDeAhorroButton.setBackgroundResource(colorsGDraw[h.x.toInt()])
+                binding.searchforlabel.text = textG[h.x.toInt()]
                 val iglinstance = indexGastosList.labelSearch(h.x.toInt())
                 iglinstance
+                // TODO textview para la etiqueta en el index y si hay tiempo una búsqueda por texto (evitar usar spinner porque es última alternativa)
             } else {
                 binding.MedidorDeAhorroButton.setBackgroundResource(colorsIDraw[h.x.toInt()])
+                binding.searchforlabel.text = textI[h.x.toInt()]
                 val iilinstance = indexIngresosList.labelSearch(h.x.toInt())
                 iilinstance
             }
@@ -536,9 +561,13 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             Log.i("PieChart", "nothing selected")
             lista = if (!switchVal) {
                 binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.ttg)
+                binding.searchforlabel.text = null
+                binding.searchforlabel.hint = "Gastos"
                 indexGastosList()
             } else {
                 binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.tti)
+                binding.searchforlabel.text = null
+                binding.searchforlabel.hint = "Ingresos"
                 indexIngresosList()
             }
         }

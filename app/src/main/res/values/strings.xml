@@ -111,6 +111,8 @@
     <string name="confirmar">Confirmar</string>
     <string name="goback">Go back</string>
     <string name="Interes">Interés en %</string>
+    <string name="buscar">Buscar</string>
+    <string name="gastos">Gastos</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

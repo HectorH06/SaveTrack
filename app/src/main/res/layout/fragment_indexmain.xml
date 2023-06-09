@@ -5,23 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background_index">
-<!--
+
+    <!--
+    style="?android:attr/progressBarStyle"
+    android:background="@drawable/ring"
+    android:indeterminateDrawable="@drawable/progresscolor"
+    -->
     <ProgressBar
         android:id="@+id/GraficoPastel"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="221dp"
-        android:layout_height="233dp"
-        android:layout_marginStart="95dp"
-        android:layout_marginTop="249dp"
-        android:layout_marginEnd="95dp"
-        android:layout_marginBottom="249dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:translationZ="-200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/ring"
-        android:indeterminateDrawable="@drawable/progresscolor"/>
--->
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/searchforlabel"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAlignment="center"
+        android:paddingTop="7dp"
+        android:textSize="34sp"
+        android:textColor="@color/P5"
+        android:textColorHint="@color/P3"
+        android:hint="@string/gastos"
+        android:background="@drawable/p1table"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/PieChart"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"/>
+
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/PieChart"
         android:layout_width="250dp"

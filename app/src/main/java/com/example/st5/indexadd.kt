@@ -492,6 +492,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             "Semanal" -> {
                 frecuencia = 7
                 displayFechaField()
+                // TODO día de la semana para semanal y quincenal, y de ahí tomar el string de fecha y crear casos para el autoincremento con rangos
             }
             "Quincenal" -> {
                 frecuencia = 14

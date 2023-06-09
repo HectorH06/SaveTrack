@@ -32,6 +32,9 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private val colorsGDraw: MutableList<Int> = mutableListOf()
     private val colorsIDraw: MutableList<Int> = mutableListOf()
 
+    private val fragI: MutableList<Fragment> = mutableListOf()
+    private val fragG: MutableList<Fragment> = mutableListOf()
+
     private var switchVal = false
     private lateinit var lista : Fragment
 
@@ -519,15 +522,25 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             chart.highlightValue(h)
 
-            if (!switchVal) {
+            lista = if (!switchVal) {
                 binding.MedidorDeAhorroButton.setBackgroundResource(colorsGDraw[h.x.toInt()])
-                // TODO añadir companion object con instancia de una query mensa para pedir datos de etiqueta específica
+                val iglinstance = indexGastosList.labelSearch(h.x.toInt())
+                iglinstance
             } else {
                 binding.MedidorDeAhorroButton.setBackgroundResource(colorsIDraw[h.x.toInt()])
+                val iilinstance = indexIngresosList.labelSearch(h.x.toInt())
+                iilinstance
             }
         }
         override fun onNothingSelected() {
             Log.i("PieChart", "nothing selected")
+            lista = if (!switchVal) {
+                binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.ttg)
+                indexGastosList()
+            } else {
+                binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.tti)
+                indexIngresosList()
+            }
         }
     }
     override fun onValueSelected(e: Entry, h: Highlight) {

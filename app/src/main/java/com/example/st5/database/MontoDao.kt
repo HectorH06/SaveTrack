@@ -60,6 +60,10 @@ interface MontoDao {
     fun getIngresos(): List<Monto>
     @Query("SELECT * FROM monto WHERE valor < 0")
     fun getGastos(): List<Monto>
+    @Query("SELECT * FROM monto WHERE valor >= 0 AND etiqueta = :e")
+    fun getIngresos(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE valor < 0 AND etiqueta = :e")
+    fun getGastos(e: Int): List<Monto>
 
     //GET POR FECHA ESPECÍFICA
     @Query("SELECT * FROM monto WHERE fecha = :fecha")
@@ -106,6 +110,34 @@ interface MontoDao {
     fun getGastosEtiquetados(): List<Monto>
     @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY interes ASC")
     fun getGastosInteres(): List<Monto>
+
+    // GET POR FILTROS para listas de ingresos (con etiqueta)
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY concepto ASC")
+    fun getIngresosAlfabetica(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY fecha ASC")
+    fun getIngresosFechados(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY valor ASC")
+    fun getIngresosValuados(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY frecuencia ASC")
+    fun getIngresosFrecuentes(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY etiqueta ASC")
+    fun getIngresosEtiquetados(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY interes ASC")
+    fun getIngresosInteres(e: Int): List<Monto>
+
+    // GET POR FILTROS para listas de gastos (con etiqueta)
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY concepto ASC")
+    fun getGastosAlfabetica(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY fecha ASC")
+    fun getGastosFechados(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY valor ASC")
+    fun getGastosValuados(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY frecuencia ASC")
+    fun getGastosFrecuentes(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY etiqueta ASC")
+    fun getGastosEtiquetados(e: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY interes ASC")
+    fun getGastosInteres(e: Int): List<Monto>
 
     // GET ATRIBUTOS
     @Query("SELECT idmonto FROM monto WHERE idmonto = :id")

@@ -23,9 +23,33 @@ class indexGastosList : Fragment() {
 
     private lateinit var gastos: List<Monto>
 
+    companion object {
+        private const val etiqueta = "etiquetar"
+        fun labelSearch(etiquet: Int): indexGastosList {
+            val fragment = indexGastosList()
+            val args = Bundle()
+            Log.i("etiquet", etiquet.toString())
+            val labe = when (etiquet) {
+                0 -> 1
+                1 -> 2
+                2 -> 3
+                3 -> 4
+                4 -> 5
+                5 -> 6
+                6 -> 6
+                7 -> 8
+                else -> null
+            }
+            if (labe != null) {
+                args.putInt(etiqueta, labe)
+            }
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -57,6 +81,10 @@ class indexGastosList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val label: Int? = arguments?.getInt(etiqueta)
+        Log.i("etiqueta", label.toString())
+
         val back = indexmain()
         val addWithSwitchOff = indexadd.newInstance(false)
 
@@ -117,8 +145,13 @@ class indexGastosList : Fragment() {
     private suspend fun montosget(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = montoDao.getGastos()
+            gastos = if (label != null) {
+                montoDao.getGastos(label)
+            } else {
+                montoDao.getGastos()
+            }
             Log.i("ALL MONTOS", gastos.toString())
         }
         return gastos
@@ -127,8 +160,13 @@ class indexGastosList : Fragment() {
     private suspend fun montosgetAlfabetica(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = montoDao.getGastosAlfabetica()
+            gastos = if (label != null) {
+                montoDao.getGastosAlfabetica(label)
+            } else {
+                montoDao.getGastosAlfabetica()
+            }
             Log.i("ALL MONTOS", gastos.toString())
         }
         return gastos
@@ -137,8 +175,13 @@ class indexGastosList : Fragment() {
     private suspend fun montosgetValuados(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = montoDao.getGastosValuados()
+            gastos = if (label != null) {
+                montoDao.getGastosValuados(label)
+            } else {
+                montoDao.getGastosValuados()
+            }
             Log.i("ALL MONTOS", gastos.toString())
         }
         return gastos
@@ -147,8 +190,13 @@ class indexGastosList : Fragment() {
     private suspend fun montosgetFechados(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = montoDao.getGastosFechados()
+            gastos = if (label != null) {
+                montoDao.getGastosFechados(label)
+            } else {
+                montoDao.getGastosFechados()
+            }
             Log.i("ALL MONTOS", gastos.toString())
         }
         return gastos
@@ -157,14 +205,20 @@ class indexGastosList : Fragment() {
     private suspend fun montosgetEtiquetados(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = montoDao.getGastosEtiquetados()
+            gastos = if (label != null) {
+                montoDao.getGastosEtiquetados(label)
+            } else {
+                montoDao.getGastosEtiquetados()
+            }
             Log.i("ALL MONTOS", gastos.toString())
         }
         return gastos
     }
 
-    private inner class MontoAdapter(private val montos: List<Monto>) : RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
+    private inner class MontoAdapter(private val montos: List<Monto>) :
+        RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
             itemView: View,
             val conceptoTextView: TextView,
@@ -175,12 +229,19 @@ class indexGastosList : Fragment() {
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
-            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_tabla, parent, false)
+            val itemView =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_tabla, parent, false)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.IConcepto)
             val valorTextView = itemView.findViewById<TextView>(R.id.IValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.IFecha)
             val etiquetaTextView = itemView.findViewById<TextView>(R.id.IEtiqueta)
-            return MontoViewHolder(itemView, conceptoTextView, valorTextView, fechaTextView, etiquetaTextView)
+            return MontoViewHolder(
+                itemView,
+                conceptoTextView,
+                valorTextView,
+                fechaTextView,
+                etiquetaTextView
+            )
         }
 
 

@@ -23,9 +23,33 @@ class indexIngresosList : Fragment() {
 
     private lateinit var ingresos: List<Monto>
 
+    companion object {
+        private const val etiqueta = "etiquetar"
+        fun labelSearch(etiquet: Int): indexIngresosList {
+            val fragment = indexIngresosList()
+            val args = Bundle()
+            Log.i("etiquet", etiquet.toString())
+            val labe = when (etiquet) {
+                0 -> 9
+                1 -> 10
+                2 -> 11
+                3 -> 12
+                4 -> 13
+                5 -> 14
+                6 -> 15
+                7 -> 16
+                else -> null
+            }
+            if (labe != null) {
+                args.putInt(etiqueta, labe)
+            }
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -57,6 +81,10 @@ class indexIngresosList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val label: Int? = arguments?.getInt(etiqueta)
+
+        Log.i("etiqueta", label.toString())
+
         val back = indexmain()
         val addWithSwitchOn = indexadd.newInstance(true)
 
@@ -117,8 +145,13 @@ class indexIngresosList : Fragment() {
     private suspend fun montosget(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            ingresos = montoDao.getIngresos()
+            ingresos = if (label != null) {
+                montoDao.getIngresos(label)
+            } else {
+                montoDao.getIngresos()
+            }
             Log.i("ALL MONTOS", ingresos.toString())
         }
         return ingresos
@@ -127,8 +160,13 @@ class indexIngresosList : Fragment() {
     private suspend fun montosgetAlfabetica(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            ingresos = montoDao.getIngresosAlfabetica()
+            ingresos = if (label != null) {
+                montoDao.getIngresosAlfabetica(label)
+            } else {
+                montoDao.getIngresosAlfabetica()
+            }
             Log.i("ALL MONTOS", ingresos.toString())
         }
         return ingresos
@@ -137,8 +175,13 @@ class indexIngresosList : Fragment() {
     private suspend fun montosgetValuados(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            ingresos = montoDao.getIngresosValuados()
+            ingresos = if (label != null) {
+                montoDao.getIngresosValuados(label)
+            } else {
+                montoDao.getIngresosValuados()
+            }
             Log.i("ALL MONTOS", ingresos.toString())
         }
         return ingresos
@@ -147,8 +190,13 @@ class indexIngresosList : Fragment() {
     private suspend fun montosgetFechados(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            ingresos = montoDao.getIngresosFechados()
+            ingresos = if (label != null) {
+                montoDao.getIngresosFechados(label)
+            } else {
+                montoDao.getIngresosFechados()
+            }
             Log.i("ALL MONTOS", ingresos.toString())
         }
         return ingresos
@@ -157,8 +205,13 @@ class indexIngresosList : Fragment() {
     private suspend fun montosgetEtiquetados(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
 
-            ingresos = montoDao.getIngresosEtiquetados()
+            ingresos = if (label != null) {
+                montoDao.getIngresosEtiquetados(label)
+            } else {
+                montoDao.getIngresosEtiquetados()
+            }
             Log.i("ALL MONTOS", ingresos.toString())
         }
         return ingresos

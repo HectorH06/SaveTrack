@@ -82,4 +82,5 @@ dependencies {
     implementation 'com.polyak:icon-switch:1.0.0'
     implementation 'com.android.support:support-annotations:28.0.0'
     implementation 'com.kizitonwose.calendar:view:2.0.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 }

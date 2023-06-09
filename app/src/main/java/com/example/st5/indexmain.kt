@@ -29,6 +29,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private val colorsG: MutableList<Int> = mutableListOf()
     private val colorsI: MutableList<Int> = mutableListOf()
 
+    private val colorsGDraw: MutableList<Int> = mutableListOf()
+    private val colorsIDraw: MutableList<Int> = mutableListOf()
+
+    private var switchVal = false
+    private lateinit var lista : Fragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -66,6 +72,26 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         colorsI.add(ContextCompat.getColor(requireContext(), R.color.P2))
         colorsI.add(ContextCompat.getColor(requireContext(), R.color.P1))
         colorsI.add(ContextCompat.getColor(requireContext(), R.color.R0))
+
+
+
+        colorsGDraw.add(R.drawable.tty3)
+        colorsGDraw.add(R.drawable.ttb2)
+        colorsGDraw.add(R.drawable.ttg2)
+        colorsGDraw.add(R.drawable.ttb0)
+        colorsGDraw.add(R.drawable.tto1)
+        colorsGDraw.add(R.drawable.ttr1)
+        colorsGDraw.add(R.drawable.ttp1)
+        colorsGDraw.add(R.drawable.ttr0)
+
+        colorsIDraw.add(R.drawable.ttg4)
+        colorsIDraw.add(R.drawable.ttb4)
+        colorsIDraw.add(R.drawable.ttr2)
+        colorsIDraw.add(R.drawable.tto4)
+        colorsIDraw.add(R.drawable.tty2)
+        colorsIDraw.add(R.drawable.ttp2)
+        colorsIDraw.add(R.drawable.ttp1)
+        colorsIDraw.add(R.drawable.ttr0)
     }
 
     private fun isNotZero(value: Double?): Boolean
@@ -194,15 +220,24 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 percentDeudas = (totalDeudas.toFloat() / totalGastos.toFloat())*100
             }
 
+            val chartAlimentos = totalAlimentos.toFloat() * -1
+            val chartHogar = totalHogar.toFloat() * -1
+            val chartBienestar: Float = totalBienestar.toFloat() * -1
+            val chartNecesidades = totalNecesidades.toFloat() * -1
+            val chartHormiga = totalHormiga.toFloat() * -1
+            val chartOcio = totalOcio.toFloat() * -1
+            val chartObsequios = totalObsequios.toFloat() * -1
+            val chartDeudas = totalDeudas.toFloat() * -1
+
             val entries = listOf(
-                percentAlimento?.let { PieEntry(it) },
-                percentHogar?.let { PieEntry(it) },
-                percentBienestar?.let { PieEntry(it) },
-                percentNecesidades?.let { PieEntry(it) },
-                percentHormiga?.let { PieEntry(it) },
-                percentOcio?.let { PieEntry(it) },
-                percentObsequios?.let { PieEntry(it) },
-                percentDeudas?.let { PieEntry(it) }
+                PieEntry(chartAlimentos),
+                PieEntry(chartHogar),
+                PieEntry(chartBienestar),
+                PieEntry(chartNecesidades),
+                PieEntry(chartHormiga),
+                PieEntry(chartOcio),
+                PieEntry(chartObsequios),
+                PieEntry(chartDeudas)
             )
 
             val dataSet = PieDataSet(entries, "Gastos")
@@ -318,7 +353,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             var percentPrestamos: Float? = 0f
 
             if (isNotZero(totalSalarios)){
-                percentSalarios = (totalSalarios.toFloat() / totalIngresos.toFloat())*100
+                val percentSalarios = (totalSalarios.toFloat() / totalIngresos.toFloat())*100
             }
             if (isNotZero(totalIrregulares)){
                 percentIrregulares = (totalIrregulares.toFloat() / totalIngresos.toFloat())*100
@@ -383,20 +418,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         val addWithSwitchOn = indexadd.newInstance(true)
         val addWithSwitchOff = indexadd.newInstance(false)
 
-        var lista : Fragment
-        
-        var switchVal = false
         lifecycleScope.launch {
             delay(1000)
             gi(switchVal)
         }
 
         binding.MedidorDeAhorroButton.setOnClickListener {
-            lista = if (switchVal){
-                indexIngresosList()
-            } else {
-                indexGastosList()
-            }
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.index_container, lista).addToBackStack(null).commit()
@@ -434,18 +461,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         }
 
         /*
-        binding.MedidorDeAhorroButton.setOnClickListener {
-            lifecycleScope.launch{
-                limpiar()
-            }
-        }
-         */
-
         binding.ConfigButton.setOnClickListener {
             lifecycleScope.launch {
                 limpiar()
             }
         }
+         */
 
         /*
                 val progressBar = binding.GraficoPastel
@@ -470,18 +491,21 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
     private fun gi(switchVal: Boolean) {
         Log.v("masomenos", switchVal.toString())
-
         if (!switchVal) {
             lifecycleScope.launch {
                 setupPieChartG()
+                lista = indexGastosList()
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1400, Easing.EaseInOutQuad)
+                binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.ttg)
             }
         } else {
             lifecycleScope.launch {
                 setupPieChartI()
+                lista = indexIngresosList()
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1400, Easing.EaseInOutQuad)
+                binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.tti)
             }
         }
     }
@@ -489,13 +513,18 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     inner class pieChartOnChartValueSelectedListener : OnChartValueSelectedListener {
         override fun onValueSelected(e: Entry, h: Highlight) {
             if (e == null) return
-            Log.i("VAL SELECTED", "Value: " + e.y + ", index: " + h.x)
-            // TODO angulo del SELECTED, redirección, tubo de ensayo, sus gifs y lo que conllevan
+            Log.i("VAL SELECTED", "Value: " + e.y + ", index: " + h.x.toInt())
 
             val chart = binding.PieChart
 
             chart.highlightValue(h)
-            chart.rotationAngle = 90f
+
+            if (!switchVal) {
+                binding.MedidorDeAhorroButton.setBackgroundResource(colorsGDraw[h.x.toInt()])
+                // TODO añadir companion object con instancia de una query mensa para pedir datos de etiqueta específica
+            } else {
+                binding.MedidorDeAhorroButton.setBackgroundResource(colorsIDraw[h.x.toInt()])
+            }
         }
         override fun onNothingSelected() {
             Log.i("PieChart", "nothing selected")
@@ -503,10 +532,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     }
     override fun onValueSelected(e: Entry, h: Highlight) {
         if (e == null) return
-        Log.i(
-            "VAL SELECTED",
-            "Value: " + e.y + ", index: " + h.x + ", DataSet index: " + h.dataSetIndex
-        )
+        Log.i("VAL SELECTED", "Value: " + e.y + ", index: " + h.x)
     }
     override fun onNothingSelected() {
         Log.i("PieChart", "nothing selected")

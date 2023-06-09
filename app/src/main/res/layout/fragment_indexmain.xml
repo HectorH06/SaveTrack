@@ -148,17 +148,17 @@
         app:srcCompat="@android:drawable/ic_menu_my_calendar"
         android:contentDescription="@string/dias_ahorrando"/>
 
-    <ImageButton
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/MedidorDeAhorroButton"
         android:layout_width="45dp"
-        android:layout_height="80dp"
-        android:background="@drawable/configshape"
+        android:layout_height="120dp"
+        android:background="@drawable/ttg"
         app:layout_constraintBottom_toTopOf="@id/AgregarIngresoButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ConfigButton"
         app:srcCompat="@drawable/ic_bubbles"
         android:layout_marginEnd="10dp"
-        android:contentDescription="@string/medidor_de_ahorro"/>
+        android:contentDescription="@string/medidor_de_ahorro" />
 
     <ImageButton
         android:id="@+id/ConfigButton"

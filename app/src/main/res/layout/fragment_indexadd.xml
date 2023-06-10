@@ -116,6 +116,27 @@
                     app:isw_thumb_color_right="@color/R0" />
             </RelativeLayout>
 
+            <Spinner
+                android:id="@+id/LabelField"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/p1bottomcell"
+                android:elevation="15dp"
+                android:inputType="text"
+                android:paddingStart="6dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="6dp"
+                android:textSize="24sp"
+                android:theme="@style/SpinnerStyle"
+                app:layout_constraintBottom_toTopOf="@+id/invisibleContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.468"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ValorField"
+                app:layout_constraintVertical_bias="0.892" />
 
             <TableLayout
                 android:id="@+id/invisibleContainer"
@@ -151,37 +172,64 @@
                     android:theme="@style/SpinnerStyle"
                     android:translationY="-50dp"
                     android:translationZ="-100dp"
-                    app:layout_constraintBottom_toTopOf="@+id/FechaField"
+                    app:layout_constraintBottom_toTopOf="@+id/datedate"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.468"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/LabelField"
                     app:layout_constraintVertical_bias="0.788" />
 
-                <DatePicker
-                    android:id="@+id/FechaField"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/datedate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:alpha="1"
-                    android:background="@drawable/p1bottomcell"
-                    android:buttonTint="@color/P0"
-                    android:calendarViewShown="false"
-                    android:clickable="true"
-                    android:datePickerMode="spinner"
-                    android:elevation="15dp"
-                    android:focusable="true"
-                    android:hint="@string/Fecha"
-                    android:inputType="text"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:theme="@style/calendario_add"
-                    android:translationY="-50dp"
-                    android:translationZ="-150dp"
                     app:layout_constraintBottom_toTopOf="@id/InteresField"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/FrecuenciaField" />
+                    app:layout_constraintTop_toBottomOf="@+id/FrecuenciaField">
+
+                    <DatePicker
+                        android:id="@+id/FechaField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:alpha="1"
+                        android:background="@drawable/p1bottomcell"
+                        android:buttonTint="@color/P0"
+                        android:calendarViewShown="false"
+                        android:clickable="true"
+                        android:datePickerMode="spinner"
+                        android:elevation="15dp"
+                        android:focusable="true"
+                        android:hint="@string/Fecha"
+                        android:inputType="text"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        android:theme="@style/calendario_add"
+                        android:translationY="-50dp"
+                        android:translationZ="-150dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ca.antonious.materialdaypicker.MaterialDayPicker
+                        android:id="@+id/WeekField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:alpha="1"
+                        android:buttonTint="@color/P0"
+                        android:calendarViewShown="false"
+                        android:clickable="true"
+                        android:elevation="15dp"
+                        android:focusable="true"
+                        android:translationZ="-150dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <EditText
                     android:id="@+id/InteresField"
@@ -207,7 +255,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.468"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/FechaField"
+                    app:layout_constraintTop_toBottomOf="@+id/datedate"
                     app:layout_constraintVertical_bias="0.734" />
 
                 <SeekBar
@@ -239,29 +287,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/InteresField"
                     app:layout_constraintVertical_bias="0.734" />
             </TableLayout>
-
-
-            <Spinner
-                android:id="@+id/LabelField"
-                android:layout_width="match_parent"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/p1bottomcell"
-                android:elevation="15dp"
-                android:inputType="text"
-                android:paddingStart="6dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="6dp"
-                android:textSize="24sp"
-                android:theme="@style/SpinnerStyle"
-                app:layout_constraintBottom_toTopOf="@+id/invisibleContainer"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.468"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ValorField"
-                app:layout_constraintVertical_bias="0.892" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

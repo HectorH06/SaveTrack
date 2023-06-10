@@ -36,7 +36,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private val textI: MutableList<String> = mutableListOf()
 
     private var switchVal = false
-    private lateinit var lista : Fragment
+    private var lista : Fragment = indexGastosList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -517,7 +517,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 setupPieChartG()
                 lista = indexGastosList()
                 binding.PieChart.performClick()
-                binding.PieChart.animateY(1400, Easing.EaseInOutQuad)
+                binding.PieChart.animateY(1200, Easing.EaseInOutQuad)
                 binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.ttg)
                 binding.searchforlabel.text = null
                 binding.searchforlabel.hint = "Gastos"
@@ -527,7 +527,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 setupPieChartI()
                 lista = indexIngresosList()
                 binding.PieChart.performClick()
-                binding.PieChart.animateY(1400, Easing.EaseInOutQuad)
+                binding.PieChart.animateY(1200, Easing.EaseInOutQuad)
                 binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.tti)
                 binding.searchforlabel.text = null
                 binding.searchforlabel.hint = "Ingresos"
@@ -549,7 +549,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 binding.searchforlabel.text = textG[h.x.toInt()]
                 val iglinstance = indexGastosList.labelSearch(h.x.toInt())
                 iglinstance
-                // TODO textview para la etiqueta en el index y si hay tiempo una búsqueda por texto (evitar usar spinner porque es última alternativa)
             } else {
                 binding.MedidorDeAhorroButton.setBackgroundResource(colorsIDraw[h.x.toInt()])
                 binding.searchforlabel.text = textI[h.x.toInt()]

@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import ca.antonious.materialdaypicker.SingleSelectionMode
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentIndexaddBinding
 import com.example.st5.models.Monto
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.Date
 import java.text.DecimalFormat
-
+import java.util.*
 
 class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding: FragmentIndexaddBinding
@@ -33,6 +34,9 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private var frecuencia: Long = 0L
     private var fecha: String = ""
     private var interes: Double = 0.0
+    private var selectedDay = "NONE"
+    private var selectedLabel: String? = "Seleccionar"
+    private var selectedfr: String? = "Seleccionar"
 
     companion object {
         private const val switchval = "switchValue"
@@ -65,9 +69,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentIndexaddBinding.inflate(inflater, container, false)
-
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,11 +104,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.adapter = adapterF
         binding.FrecuenciaField.alpha = 0f
 
-        hideFechaField()
-        hideInteresField()
-
-        // TODO SPINNER unificar, y hacer opciones para fecha, hacer filtros para la gráfica
-
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
@@ -125,13 +122,12 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 }
                 else -> {}
             }
+            hideAll()
         }
 
         binding.LabelField.onItemSelectedListener = this
 
         binding.FrecuenciaField.onItemSelectedListener = this
-
-        // TODO: INTERÉS de seekbar a textview
 
         val max = 100
         val min = 0
@@ -164,26 +160,30 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             }
         })
 
-
+        binding.WeekField.selectionMode = SingleSelectionMode.create()
+        binding.WeekField.locale = Locale.getDefault()
+        binding.WeekField.setDaySelectionChangedListener { selectedDays ->
+            if (selectedDays.isNotEmpty()) {
+                var aux = selectedDays[0].name.toLowerCase()
+                selectedDay = aux.replaceFirstChar {
+                    if (it.isLowerCase()) {it.titlecase(Locale.ROOT)}
+                    else {it.toString()}
+                }
+                Log.i("Día seleccionado", selectedDay)
+            } else {
+                Log.i("Día seleccionado", "NONE")
+            }
+        }
 
         binding.Confirm.setOnClickListener {
             val concepto = binding.ConceptoField.text.toString()
             val valorstr = binding.ValorField.text.toString()
 
-            val intyear = binding.FechaField.year - 1900
-            Log.w("YEAR", intyear.toString())
-            val intmonth = binding.FechaField.month
-            Log.w("MONTH", intmonth.toString())
-            val intday = binding.FechaField.dayOfMonth
-            Log.w("DAY", intday.toString())
-            val datedate = Date(intyear, intmonth, intday)
-            Log.w("DATE", datedate.toString())
-            fecha = datedate.toString()
             // TODO fecha.length == 8, es única, if fecha,length == 16, fecha inicio y fecha final, poner barra superior en cada subvista y duplicar subvista para hacer edición de montos
 
             var interes = 0.0
 
-            if (label != 0L && concepto != "" && valorstr != "" && valorstr != ".") {
+            if (label != 0L && concepto != "" && valorstr != "" && valorstr != "." && selectedDay != "NONE") {
                 val confirmDialog = AlertDialog.Builder(requireContext())
                     .setTitle("¿Seguro que quieres guardar cambios?")
                     .setPositiveButton("Guardar") { dialog, _ ->
@@ -195,6 +195,53 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
                         if (label == 8L || label == 16L){
                             interes = binding.InteresField.text.toString().toDouble()
+                        }
+
+                        fecha = when(frecuencia){
+                            0L -> {
+                                val intyear = binding.FechaField.year - 1900
+                                Log.w("YEAR", intyear.toString())
+                                val intmonth = binding.FechaField.month
+                                Log.w("MONTH", intmonth.toString())
+                                val intday = binding.FechaField.dayOfMonth
+                                Log.w("DAY", intday.toString())
+                                val datedate = Date(intyear, intmonth, intday)
+                                Log.w("DATE", datedate.toString())
+
+                                binding.FechaField.toString()
+                            } // Único
+                            1L -> {"Diario"} // Diario
+                            7L, 14L -> {selectedDay} // Semanales
+                            30L, 61L, 91L, 122L, 183L -> {
+                                val intday = binding.FechaField.dayOfMonth
+                                Log.w("DAY", intday.toString())
+                                val datedate = "$intday"
+                                Log.w("DATE", datedate)
+
+                                datedate
+                            } // Mensuales
+                            365L -> {
+                                val intmonth = binding.FechaField.month
+                                Log.w("MONTH", intmonth.toString())
+                                val intday = binding.FechaField.dayOfMonth
+                                Log.w("DAY", intday.toString())
+                                val datedate = "$intmonth-$intday"
+                                Log.w("DATE", datedate)
+
+                                datedate
+                            } // Anual
+                            else -> {
+                                val intyear = binding.FechaField.year - 1900
+                                Log.w("YEAR", intyear.toString())
+                                val intmonth = binding.FechaField.month
+                                Log.w("MONTH", intmonth.toString())
+                                val intday = binding.FechaField.dayOfMonth
+                                Log.w("DAY", intday.toString())
+                                val datedate = Date(intyear, intmonth, intday)
+                                Log.w("DATE", datedate.toString())
+
+                                binding.FechaField.toString()
+                            } // Catch que agarra la fecha actual
                         }
 
                         Log.v("Concepto", concepto)
@@ -244,6 +291,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             cancelDialog.show()
         }
 
+        hideAll()
     }
 
     private fun masmenos(switchValue: Boolean) {
@@ -313,11 +361,9 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.LabelField.setBackgroundResource(R.drawable.p1midcell)
         Log.v("LABEL", label.toString())
     }
-    private fun truncateDouble(value: Double): Double {
-        val decimalFormat = DecimalFormat("#.##")
-        return decimalFormat.format(value).toDouble()
-    }
     private fun hideFrecField(){
+        hideFechaField()
+        selectedfr = "Seleccionar"
         binding.FrecuenciaField.animate()
             .alpha(0f)
             .translationY(-50f)
@@ -330,6 +376,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         Log.v("LABEL", label.toString())
     }
     private fun displayFechaField(){
+        hideWeekField()
         binding.FechaField.animate()
             .alpha(1f)
             .translationY(0f)
@@ -339,7 +386,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setListener(null)
             .start()
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1midcell)
-        Log.v("FRECUENCIA", frecuencia.toString())
+        Log.v("FECHA", fecha)
     }
     private fun hideFechaField(){
         binding.FechaField.animate()
@@ -351,7 +398,33 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setListener(null)
             .start()
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
-        Log.v("FRECUENCIA", frecuencia.toString())
+        Log.v("FECHA", fecha)
+    }
+    private fun displayWeekField(){
+        hideFechaField()
+        binding.WeekField.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .translationZ(150f)
+            .setDuration(300)
+            .setStartDelay(200)
+            .setListener(null)
+            .start()
+        binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
+        Log.v("DAY OF WEEK", fecha)
+    }
+    private fun hideWeekField(){
+        selectedDay = "NONE"
+        binding.WeekField.animate()
+            .alpha(0f)
+            .translationY(-50f)
+            .translationZ(-150f)
+            .setDuration(200)
+            .setStartDelay(0)
+            .setListener(null)
+            .start()
+        binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
+        Log.v("DAY OF WEEK", fecha)
     }
     private fun displayInteresField(){
         binding.InteresField.animate()
@@ -374,6 +447,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         Log.v("INTERÉS", interes.toString())
     }
     private fun hideInteresField(){
+        interes = 0.0
         binding.InteresField.animate()
             .alpha(0f)
             .translationY(-50f)
@@ -393,41 +467,62 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FechaField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("INTERÉS", interes.toString())
     }
+    private fun hideAll(){
+        hideWeekField()
+        hideFrecField()
+        hideFechaField()
+        hideInteresField()
+    }
+    private fun truncateDouble(value: Double): Double {
+        val decimalFormat = DecimalFormat("#.##")
+        return decimalFormat.format(value).toDouble()
+    }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        val selectedLabel = binding.LabelField.selectedItem?.toString()
+        selectedLabel = binding.LabelField.selectedItem?.toString()
+        selectedfr = binding.FrecuenciaField.selectedItem?.toString()
+
+        // region LABELS
         if (selectedLabel != null) {
-            Log.v("ETIQUETA", selectedLabel)
+            Log.v("ETIQUETA", selectedLabel.toString())
         }
         when (selectedLabel) {
             "Alimento" -> {
                 label = 1
                 displayFrecField()
+                hideInteresField()
             }
             "Hogar" -> {
                 label = 2
                 displayFrecField()
+                hideInteresField()
             }
             "Bienestar" -> {
                 label = 3
                 displayFrecField()
+                hideInteresField()
             }
             "Otras necesidades" -> {
                 label = 4
                 displayFrecField()
+                hideInteresField()
             }
             "Gasto hormiga" -> {
                 label = 5
                 displayFrecField()
+                hideInteresField()
             }
             "Ocio y demás" -> {
                 label = 6
                 displayFrecField()
+                hideInteresField()
             }
             "Obsequio" -> {
                 label = 7
+                frecuencia = 0
                 hideFrecField()
                 displayFechaField()
+                hideInteresField()
             }
             "Deuda" -> {
                 label = 8
@@ -439,30 +534,38 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             "Salario" -> {
                 label = 9
                 displayFrecField()
+                hideInteresField()
             }
             "Venta" -> {
                 label = 10
                 hideFrecField()
+                hideInteresField()
             }
             "Beca" -> {
                 label = 11
                 displayFrecField()
+                hideInteresField()
             }
             "Pensión" -> {
                 label = 12
                 displayFrecField()
+                hideInteresField()
             }
             "Manutención" -> {
                 label = 13
                 displayFrecField()
+                hideInteresField()
             }
             "Ingreso pasivo" -> {
                 label = 14
                 hideFrecField()
+                hideInteresField()
             }
             "Regalo" -> {
                 label = 15
+                frecuencia = 0
                 hideFrecField()
+                hideInteresField()
             }
             "Préstamo" -> {
                 label = 16
@@ -470,55 +573,92 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 displayInteresField()
             }
 
-            else -> label = 0
+            else -> {
+                label = 0
+                hideAll()
+            }
         }
+        // endregion
 
-
-
-        val selectedfr = binding.FrecuenciaField.selectedItem?.toString()
-
+        // region FRECUENCIAS
         if (selectedfr != null) {
-            Log.v("ETIQUETA", selectedfr)
+            Log.v("ETIQUETA", selectedfr.toString())
         }
         when (selectedfr) {
             "Única vez" -> {
                 frecuencia = 0
-                hideFechaField()
+                displayFechaField()
+
+                selectedDay = ""
+                binding.FechaField.calendarViewShown = false
             }
             "Diario" -> {
                 frecuencia = 1
                 hideFechaField()
+
+                selectedDay = ""
             }
             "Semanal" -> {
                 frecuencia = 7
-                displayFechaField()
-                // TODO día de la semana para semanal y quincenal, y de ahí tomar el string de fecha y crear casos para el autoincremento con rangos
+                displayWeekField()
+
+                selectedDay = "NONE"
             }
             "Quincenal" -> {
                 frecuencia = 14
-                displayFechaField()
+                displayWeekField()
+
+                selectedDay = "NONE"
             }
             "Mensual" -> {
-                frecuencia = 30 // TODO: revisar lo de meses irregulares a partir de aquí
+                frecuencia = 30
+                displayFechaField()
+
+                selectedDay = ""
+                binding.FechaField.calendarViewShown = true
+
+                // TODO guardar día del mes (para meses irregulares, tomar el número máximo del mes si el día rebasa, ej: 31 de enero sería 28 de febrero o 29 si es año biciesto, pero si se elige el 28 de febrero)
+                // TODO procesos en segundo plano
             }
             "Bimestral" -> {
                 frecuencia = 61
+
+                selectedDay = ""
             }
             "Trimestral" -> {
                 frecuencia = 91
+
+                selectedDay = ""
             }
             "Cuatrimestral" -> {
                 frecuencia = 122
+
+                selectedDay = ""
             }
             "Semestral" -> {
                 frecuencia = 183
+
+                selectedDay = ""
             }
             "Anual" -> {
                 frecuencia = 365
+                displayFechaField()
+
+                selectedDay = ""
+                binding.FechaField.calendarViewShown = true
             }
 
-            else -> frecuencia = 0
+            else -> {
+                frecuencia = 0
+
+                selectedDay = "NONE"
+
+                hideInteresField()
+                hideWeekField()
+                hideFechaField()
+            }
         }
+        // endregion
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

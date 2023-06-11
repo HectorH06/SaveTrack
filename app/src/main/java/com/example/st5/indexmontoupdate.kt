@@ -48,7 +48,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             return fragment
         }
 
-        private const val id = "ide"
+        private const val idm = "ide"
         private const val concep = "concept"
         private const val valu = "value"
         private const val dat = "date"
@@ -61,19 +61,24 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             concept: String,
             value: Double,
             date: String,
-            frequency: Long,
+            frequency: Long?,
             label: Long,
-            interest: Double
+            interest: Double?
         ): indexmontoupdate {
             val fragment = indexmontoupdate()
             val args = Bundle()
-            args.putLong(id, ide)
+            args.putLong(idm, ide)
+            Log.i("id", idm)
             args.putString(concep, concept)
             args.putDouble(valu, value)
             args.putString(dat, date)
-            args.putLong(frequenc, frequency)
+            if (frequency != null) {
+                args.putLong(frequenc, frequency)
+            }
             args.putLong(labe, label)
-            args.putDouble(interes, interest)
+            if (interest != null) {
+                args.putDouble(interes, interest)
+            }
             fragment.arguments = args
             return fragment
         }
@@ -108,7 +113,6 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         val back = indexmain()
 
         binding.ConceptoField.setText(arguments?.getString(concep))
-        binding.ValorField.setText(arguments?.getDouble(valu).toString())
         binding.InteresField.setText(arguments?.getDouble(interes.toString()).toString())
 
         val switchValue = arguments?.getBoolean(switchval) ?: false
@@ -216,7 +220,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             val concepto = binding.ConceptoField.text.toString()
             val valorstr = binding.ValorField.text.toString()
 
-            // TODO poner barra superior en cada subvista y duplicar subvista para hacer edición de montos
+            // TODO poner barra superior en cada subvista
 
             var interes = 0.0
 
@@ -225,7 +229,12 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                     .setTitle("¿Seguro que quieres guardar cambios en el monto $concepto?")
                     .setPositiveButton("Guardar") { dialog, _ ->
 
-                        val id: Long = arguments?.getLong(id.toString()) ?: 0
+                        val idn = arguments?.getLong(idm)
+                        var idm = 0L
+                        if (idn != null){
+                            idm = idn.toLong()
+                        }
+
 
                         var valor = valorstr.toDouble()
                         valor = truncateDouble(valor)
@@ -296,7 +305,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Etiqueta", label.toString())
                         Log.v("Interes", interes.toString())
                         lifecycleScope.launch {
-                            montoupdate(id, concepto, valor, fecha, frecuencia, label, interes)
+                            montoupdate(idm, concepto, valor, fecha, frecuencia, label, interes)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -356,9 +365,11 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (switchValue) {
             binding.ValorField.hint = "$0.00"
+            binding.ValorField.setText(arguments?.getDouble(valu).toString())
             binding.LabelField.adapter = adapterI
         } else {
             binding.ValorField.hint = "$0.00"
+            binding.ValorField.setText((arguments?.getDouble(valu)?.times(-1)).toString())
             binding.LabelField.adapter = adapterG
             binding.updownSwitch.checked = IconSwitch.Checked.RIGHT
         }

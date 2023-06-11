@@ -53,17 +53,17 @@
         android:textColor="@color/P5"
         android:textSize="18sp" />
 
-    <ImageView
+    <Button
         android:id="@+id/editMonto"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:srcCompat="@drawable/ic_edit"
-        app:tint="@color/P5" />
+        android:background="@drawable/ic_edit"
+        android:backgroundTint="@color/P5" />
 
-    <ImageView
+    <Button
         android:id="@+id/deleteMonto"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:srcCompat="@drawable/ic_delete"
-        app:tint="@color/P5"/>
+        android:background="@drawable/ic_delete"
+        android:backgroundTint="@color/P5"/>
 </TableRow>

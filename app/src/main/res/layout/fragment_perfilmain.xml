@@ -20,7 +20,7 @@
         android:elevation="15dp"/>
 
     <ImageButton
-        android:id="@+id/EditProfileButton"
+        android:id="@+id/Config"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -32,17 +32,16 @@
         android:contentDescription="@string/configuracion"/>
 
     <Button
-        android:id="@+id/DaysSavingButton"
-        android:layout_width="0dp"
-        android:layout_height="117dp"
-        android:layout_marginStart="47dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/R1"
+        android:id="@+id/BalanceTV"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:backgroundTint="@color/B5"
+        android:background="@drawable/ic_hexagon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/BalanceTV"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/black"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="128dp"
         android:contentDescription="@string/dias_ahorrando" />
 
     <LinearLayout
@@ -106,6 +105,30 @@
             android:textColorHint="@color/B0"/>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/EditProfileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationZ="200dp"
+        app:srcCompat="@drawable/ic_edit"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="@id/UserDataLayout"
+        app:layout_constraintStart_toEndOf="@+id/UserDataLayout"
+        app:tint="@color/B5" />
+
+    <ImageView
+        android:id="@+id/EditProfileButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationZ="200dp"
+        app:srcCompat="@drawable/ic_edit"
+        android:layout_marginTop="120dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="@id/UserDataLayout"
+        app:layout_constraintStart_toEndOf="@+id/UserDataLayout"
+        app:tint="@color/B5" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="209dp"
@@ -139,21 +162,16 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/BalanceTV"
+        android:id="@+id/DaysSavingButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="329dp"
         android:background="@color/Y2"
         android:contentDescription="@string/balance"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/DaysSavingButton"
+        app:layout_constraintTop_toBottomOf="@id/Config"
+        app:layout_constraintBottom_toTopOf="@id/UserDataLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
-        app:layout_constraintTop_toBottomOf="@+id/EditProfileButton" />
+        android:layout_marginEnd="16dp"/>
 
     <Button
         android:id="@+id/cerrarsesionperfilmainbtn"

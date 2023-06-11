@@ -355,6 +355,13 @@ class perfilmain : Fragment() {
                 .replace(R.id.perfil_container, edit).addToBackStack(null).commit()
         }
 
+        binding.EditProfileButton2.setOnClickListener {
+            val edit = perfileditar()
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.perfil_container, edit).addToBackStack(null).commit()
+        }
+
         suspend fun mostrarDatos() {
             withContext(Dispatchers.IO) {
                 val usuarioDao = Stlite.getInstance(

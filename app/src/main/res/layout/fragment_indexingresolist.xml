@@ -21,7 +21,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="80dp"
                 android:layout_marginEnd="10dp"
-                android:stretchColumns="0,1,2,3"
+                android:stretchColumns="0,1,2,3,4,5,6"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TableRow
@@ -32,7 +32,7 @@
 
                     <TextView
                         android:id="@+id/HConcepto"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/Concepto"
                         android:maxWidth="100dp"
@@ -42,7 +42,7 @@
 
                     <TextView
                         android:id="@+id/HValor"
-                        android:layout_width="wrap_content"
+                        android:layout_width="65dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/Valor"
                         android:textAlignment="center"
@@ -51,20 +51,20 @@
 
                     <TextView
                         android:id="@+id/HFecha"
-                        android:layout_width="wrap_content"
+                        android:layout_width="65dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/Fecha"
-                        android:textAlignment="textEnd"
+                        android:textAlignment="center"
                         android:textColor="@color/P5"
                         android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/HEtiqueta"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/Etiqueta"
                         android:paddingEnd="7dp"
-                        android:textAlignment="textEnd"
+                        android:layout_marginEnd="20dp"
                         android:textColor="@color/P5"
                         android:textSize="18sp" />
 
@@ -79,7 +79,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/cabezaingresos" />
 
                 <TableRow>
-
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_marginTop="16dp">
 
@@ -97,12 +96,35 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </TableRow>
             </TableLayout>
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="200dp"
+                android:layout_height="24dp"
+                android:textSize="18sp"
+                android:text="@string/total_de_ingresos"
+                android:textAlignment="textEnd"
+                app:layout_constraintBottom_toTopOf="@id/totalI"
+                app:layout_constraintEnd_toEndOf="@id/totalI"/>
+
+            <TextView
+                android:id="@+id/totalI"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textAlignment="textEnd"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="128dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/scrollView2"
+        app:layout_anchorGravity="center">
 
         <ImageButton
             android:id="@+id/ConfigButton"

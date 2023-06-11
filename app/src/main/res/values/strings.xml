@@ -113,6 +113,8 @@
     <string name="Interes">Interés en %</string>
     <string name="buscar">Buscar</string>
     <string name="gastos">Gastos</string>
+    <string name="total_de_ingresos">Total de ingresos:</string>
+    <string name="total_de_gastos">Total de gastos</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

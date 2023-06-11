@@ -1,5 +1,6 @@
 package com.example.st5
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -63,6 +64,7 @@ class indexIngresosList : Fragment() {
             })
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,13 +72,22 @@ class indexIngresosList : Fragment() {
         binding = FragmentIndexingresolistBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
             ingresos = montosget()
-            if (ingresos != null) {
-                binding.displayIngresos.adapter = MontoAdapter(ingresos)
-            } else {
-                Log.e("INGRESOS", "No hay ingresos")
-            }
+            binding.displayIngresos.adapter = MontoAdapter(ingresos)
+            binding.totalI.text = "$" + totalIngresos().toString()
         }
         return binding.root
+    }
+
+    private suspend fun totalIngresos(): Double {
+        var totalI: Double
+
+        withContext(Dispatchers.IO) {
+            val igDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+
+            totalI = igDao.checkSummaryI()
+        }
+
+        return totalI
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

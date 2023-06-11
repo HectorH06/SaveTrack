@@ -97,6 +97,28 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </TableRow>
             </TableLayout>
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="200dp"
+                android:layout_height="24dp"
+                android:textSize="18sp"
+                android:text="@string/total_de_gastos"
+                android:textAlignment="textEnd"
+                app:layout_constraintBottom_toTopOf="@id/totalG"
+                app:layout_constraintEnd_toEndOf="@id/totalG"/>
+
+            <TextView
+                android:id="@+id/totalG"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textAlignment="textEnd"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginStart="120dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

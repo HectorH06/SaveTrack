@@ -1,5 +1,6 @@
 package com.example.st5
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -63,6 +64,7 @@ class indexGastosList : Fragment() {
             })
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,13 +72,22 @@ class indexGastosList : Fragment() {
         binding = FragmentIndexgastoslistBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
             gastos = montosget()
-            if (gastos != null) {
-                binding.displayGastos.adapter = MontoAdapter(gastos)
-            } else {
-                Log.e("GASTOS", "No hay gastos")
-            }
+            binding.displayGastos.adapter = MontoAdapter(gastos)
+            binding.totalG.text = "$" + totalGastos().toString()
         }
         return binding.root
+    }
+
+    private suspend fun totalGastos(): Double {
+        var totalG: Double
+
+        withContext(Dispatchers.IO) {
+            val igDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+
+            totalG = igDao.checkSummaryG()
+        }
+
+        return totalG
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

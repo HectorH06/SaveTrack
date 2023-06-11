@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import ca.antonious.materialdaypicker.SingleSelectionMode
 import com.example.st5.database.Stlite
-import com.example.st5.databinding.FragmentIndexaddBinding
+import com.example.st5.databinding.FragmentIndexmontoupdateBinding
 import com.example.st5.models.Monto
 import com.polyak.iconswitch.IconSwitch
 import kotlinx.coroutines.Dispatchers
@@ -27,8 +27,8 @@ import java.sql.Date
 import java.text.DecimalFormat
 import java.util.*
 
-class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
-    private lateinit var binding: FragmentIndexaddBinding
+class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
+    private lateinit var binding: FragmentIndexmontoupdateBinding
 
     private var label: Long = 0L
     private var frecuencia: Long = 0L
@@ -40,10 +40,40 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
     companion object {
         private const val switchval = "switchValue"
-        fun newInstance(switchValue: Boolean): indexadd {
-            val fragment = indexadd()
+        fun newInstance(switchValue: Boolean): indexmontoupdate {
+            val fragment = indexmontoupdate()
             val args = Bundle()
             args.putBoolean(switchval, switchValue)
+            fragment.arguments = args
+            return fragment
+        }
+
+        private const val id = "ide"
+        private const val concep = "concept"
+        private const val valu = "value"
+        private const val dat = "date"
+        private const val frequenc = "frequency"
+        private const val labe = "label"
+        private const val interes = "interest"
+
+        fun sendMonto(
+            ide: Long,
+            concept: String,
+            value: Double,
+            date: String,
+            frequency: Long,
+            label: Long,
+            interest: Double
+        ): indexmontoupdate {
+            val fragment = indexmontoupdate()
+            val args = Bundle()
+            args.putLong(id, ide)
+            args.putString(concep, concept)
+            args.putDouble(valu, value)
+            args.putString(dat, date)
+            args.putLong(frequenc, frequency)
+            args.putLong(labe, label)
+            args.putDouble(interes, interest)
             fragment.arguments = args
             return fragment
         }
@@ -68,7 +98,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentIndexaddBinding.inflate(inflater, container, false)
+        binding = FragmentIndexmontoupdateBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -76,6 +106,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         super.onViewCreated(view, savedInstanceState)
 
         val back = indexmain()
+
+        binding.ConceptoField.setText(arguments?.getString(concep))
+        binding.ValorField.setText(arguments?.getDouble(valu).toString())
+        binding.InteresField.setText(arguments?.getDouble(interes.toString()).toString())
 
         val switchValue = arguments?.getBoolean(switchval) ?: false
         lifecycleScope.launch {
@@ -166,8 +200,11 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             if (selectedDays.isNotEmpty()) {
                 var aux = selectedDays[0].name.toLowerCase()
                 selectedDay = aux.replaceFirstChar {
-                    if (it.isLowerCase()) {it.titlecase(Locale.ROOT)}
-                    else {it.toString()}
+                    if (it.isLowerCase()) {
+                        it.titlecase(Locale.ROOT)
+                    } else {
+                        it.toString()
+                    }
                 }
                 Log.i("Día seleccionado", selectedDay)
             } else {
@@ -179,23 +216,28 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             val concepto = binding.ConceptoField.text.toString()
             val valorstr = binding.ValorField.text.toString()
 
+            // TODO poner barra superior en cada subvista y duplicar subvista para hacer edición de montos
+
             var interes = 0.0
 
             if (label != 0L && concepto != "" && valorstr != "" && valorstr != "." && selectedDay != "NONE") {
                 val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres guardar cambios?")
+                    .setTitle("¿Seguro que quieres guardar cambios en el monto $concepto?")
                     .setPositiveButton("Guardar") { dialog, _ ->
+
+                        val id: Long = arguments?.getLong(id.toString()) ?: 0
+
                         var valor = valorstr.toDouble()
                         valor = truncateDouble(valor)
                         if (label <= 8) {
                             valor *= -1
                         }
 
-                        if (label == 8L || label == 16L){
+                        if (label == 8L || label == 16L) {
                             interes = binding.InteresField.text.toString().toDouble()
                         }
 
-                        fecha = when(frecuencia){
+                        fecha = when (frecuencia) {
                             0L -> {
                                 val intyear = binding.FechaField.year - 1900
                                 Log.w("YEAR", intyear.toString())
@@ -208,8 +250,12 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
                                 binding.FechaField.toString()
                             } // Único
-                            1L -> {"Diario"} // Diario
-                            7L, 14L -> {selectedDay} // Semanales
+                            1L -> {
+                                "Diario"
+                            } // Diario
+                            7L, 14L -> {
+                                selectedDay
+                            } // Semanales
                             30L, 61L, 91L, 122L, 183L -> {
                                 val intday = binding.FechaField.dayOfMonth
                                 Log.w("DAY", intday.toString())
@@ -242,6 +288,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                             } // Catch que agarra la fecha actual
                         }
 
+                        Log.v("Id del monto actualizado", id.toString())
                         Log.v("Concepto", concepto)
                         Log.v("Valor", valor.toString())
                         Log.v("Fecha", fecha)
@@ -249,7 +296,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Etiqueta", label.toString())
                         Log.v("Interes", interes.toString())
                         lifecycleScope.launch {
-                            montoadd(concepto, valor, fecha, frecuencia, label, interes)
+                            montoupdate(id, concepto, valor, fecha, frecuencia, label, interes)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -317,7 +364,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private suspend fun montoadd(
+    private suspend fun montoupdate(
+        id: Long,
         concepto: String,
         valor: Double,
         fecha: String,
@@ -330,7 +378,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
             val iduser = usuarioDao.checkId().toLong()
-            val nuevoMonto = Monto(
+            val viejoMonto = Monto(
+                idmonto = id,
                 iduser = iduser,
                 concepto = concepto,
                 valor = valor,
@@ -340,14 +389,14 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 interes = interes
             )
 
-            montoDao.insertMonto(nuevoMonto)
+            montoDao.updateMonto(viejoMonto)
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
 
         }
     }
 
-    private fun displayFrecField(){
+    private fun displayFrecField() {
         binding.FrecuenciaField.animate()
             .alpha(1f)
             .translationY(0f)
@@ -359,7 +408,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.LabelField.setBackgroundResource(R.drawable.p1midcell)
         Log.v("LABEL", label.toString())
     }
-    private fun hideFrecField(){
+
+    private fun hideFrecField() {
         hideFechaField()
         selectedfr = "Seleccionar"
         binding.FrecuenciaField.animate()
@@ -373,7 +423,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.LabelField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("LABEL", label.toString())
     }
-    private fun displayFechaField(){
+
+    private fun displayFechaField() {
         hideWeekField()
         binding.FechaField.animate()
             .alpha(1f)
@@ -386,7 +437,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1midcell)
         Log.v("FECHA", fecha)
     }
-    private fun hideFechaField(){
+
+    private fun hideFechaField() {
         binding.FechaField.animate()
             .alpha(0f)
             .translationY(-50f)
@@ -398,7 +450,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("FECHA", fecha)
     }
-    private fun displayWeekField(){
+
+    private fun displayWeekField() {
         hideFechaField()
         binding.WeekField.animate()
             .alpha(1f)
@@ -411,7 +464,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("DAY OF WEEK", fecha)
     }
-    private fun hideWeekField(){
+
+    private fun hideWeekField() {
         selectedDay = "NONE"
         binding.WeekField.animate()
             .alpha(0f)
@@ -424,7 +478,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("DAY OF WEEK", fecha)
     }
-    private fun displayInteresField(){
+
+    private fun displayInteresField() {
         binding.InteresField.animate()
             .alpha(1f)
             .translationY(0f)
@@ -444,7 +499,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FechaField.setBackgroundResource(R.drawable.p1midcell)
         Log.v("INTERÉS", interes.toString())
     }
-    private fun hideInteresField(){
+
+    private fun hideInteresField() {
         interes = 0.0
         binding.InteresField.animate()
             .alpha(0f)
@@ -465,12 +521,14 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FechaField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("INTERÉS", interes.toString())
     }
-    private fun hideAll(){
+
+    private fun hideAll() {
         hideWeekField()
         hideFrecField()
         hideFechaField()
         hideInteresField()
     }
+
     private fun truncateDouble(value: Double): Double {
         val decimalFormat = DecimalFormat("#.##")
         return decimalFormat.format(value).toDouble()

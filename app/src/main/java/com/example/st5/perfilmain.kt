@@ -150,7 +150,8 @@ class perfilmain : Fragment() {
                                 fecha = montoDao.getFecha(idmonto),
                                 frecuencia = montoDao.getFrecuencia(idmonto),
                                 etiqueta = montoDao.getEtiqueta(idmonto),
-                                interes = montoDao.getInteres(idmonto)
+                                interes = montoDao.getInteres(idmonto),
+                                veces = montoDao.getVeces(idmonto)
                             )
                             Log.v("Current monto $idmonto", viejoMonto.toString())
                             val jsonObjectMonto = JSONObject()

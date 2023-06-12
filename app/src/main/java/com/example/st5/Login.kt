@@ -455,6 +455,8 @@ class Login : Fragment() {
                                                                 jsonObject3.optLong("etiqueta")
                                                             val interes: Double =
                                                                 jsonObject3.optDouble("interes")
+                                                            val veces: Long =
+                                                                jsonObject3.optLong("veces")
 
                                                             val nuevoMonto = Monto(
                                                                 idmonto = idmonto,
@@ -464,7 +466,8 @@ class Login : Fragment() {
                                                                 fecha = fecha,
                                                                 frecuencia = frecuencia,
                                                                 etiqueta = etiqueta,
-                                                                interes = interes
+                                                                interes = interes,
+                                                                veces = veces
                                                             )
                                                             Log.v("Current monto $i", nuevoMonto.toString())
 

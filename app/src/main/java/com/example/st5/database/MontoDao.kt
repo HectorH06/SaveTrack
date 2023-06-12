@@ -156,4 +156,6 @@ interface MontoDao {
     fun getEtiqueta(id: Int): Long
     @Query("SELECT interes FROM monto WHERE idmonto = :id")
     fun getInteres(id: Int): Double
+    @Query("SELECT veces FROM monto WHERE idmonto = :id")
+    fun getVeces(id: Int): Long
 }

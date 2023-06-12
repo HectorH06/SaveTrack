@@ -31,7 +31,10 @@ data class Monto(
     var etiqueta: Long,
 
     @ColumnInfo(name = "interes")
-    var interes: Double?
+    var interes: Double?,
+
+    @ColumnInfo(name = "veces")
+    var veces: Long?
 ) : Parcelable {
-    constructor() : this(0L, 0L, "", 0.0, "",0L, 0L, 0.0)
+    constructor() : this(0L, 0L, "", 0.0, "",0L, 0L, 0.0, 0L)
 }

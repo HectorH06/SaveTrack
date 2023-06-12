@@ -178,6 +178,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.Confirm.setOnClickListener {
             val concepto = binding.ConceptoField.text.toString()
             val valorstr = binding.ValorField.text.toString()
+            var veces = 0L
 
             var interes = 0.0
 
@@ -208,7 +209,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
                                 binding.FechaField.toString()
                             } // Único
-                            1L -> {"Diario"} // Diario
+                            1L -> {
+                                veces = 1L
+                                "Diario"
+                            } // Diario
                             7L, 14L -> {selectedDay} // Semanales
                             30L, 61L, 91L, 122L, 183L -> {
                                 val intday = binding.FechaField.dayOfMonth
@@ -248,8 +252,9 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Frecuencia", frecuencia.toString())
                         Log.v("Etiqueta", label.toString())
                         Log.v("Interes", interes.toString())
+                        Log.v("Veces", veces.toString())
                         lifecycleScope.launch {
-                            montoadd(concepto, valor, fecha, frecuencia, label, interes)
+                            montoadd(concepto, valor, fecha, frecuencia, label, interes, veces)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -323,7 +328,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         fecha: String,
         frecuencia: Long,
         etiqueta: Long,
-        interes: Double
+        interes: Double,
+        veces: Long?
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
@@ -337,7 +343,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 fecha = fecha,
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
-                interes = interes
+                interes = interes,
+                veces = veces
             )
 
             montoDao.insertMonto(nuevoMonto)

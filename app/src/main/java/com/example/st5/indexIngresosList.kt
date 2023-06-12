@@ -237,7 +237,8 @@ class indexIngresosList : Fragment() {
         fecha: String,
         frecuencia: Long?,
         etiqueta: Long,
-        interes: Double?
+        interes: Double?,
+        veces: Long?
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
@@ -252,7 +253,8 @@ class indexIngresosList : Fragment() {
                 fecha = fecha,
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
-                interes = interes
+                interes = interes,
+                veces = veces
             )
 
             montoDao.deleteMonto(muertoMonto)
@@ -292,7 +294,7 @@ class indexIngresosList : Fragment() {
             holder.valorTextView.text = monto.valor.toString()
             holder.fechaTextView.text = monto.fecha
             holder.etiquetaTextView.text = monto.etiqueta.toString()
-            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes)
+            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces)
             holder.updateM.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
@@ -310,8 +312,9 @@ class indexIngresosList : Fragment() {
                         Log.v("Frecuencia", monto.frecuencia.toString())
                         Log.v("Etiqueta", monto.etiqueta.toString())
                         Log.v("Interes", monto.interes.toString())
+                        Log.v("Veces", monto.veces.toString())
                         lifecycleScope.launch {
-                            montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes)
+                            montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()

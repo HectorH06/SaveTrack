@@ -26,6 +26,7 @@ import kotlinx.coroutines.withContext
 import java.sql.Date
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.math.abs
 
 class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding: FragmentIndexmontoupdateBinding
@@ -55,6 +56,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         private const val frequenc = "frequency"
         private const val labe = "label"
         private const val interes = "interest"
+        private const val time = "times"
 
         fun sendMonto(
             ide: Long,
@@ -63,7 +65,8 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             date: String,
             frequency: Long?,
             label: Long,
-            interest: Double?
+            interest: Double?,
+            times: Long?
         ): indexmontoupdate {
             val fragment = indexmontoupdate()
             val args = Bundle()
@@ -78,6 +81,9 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             args.putLong(labe, label)
             if (interest != null) {
                 args.putDouble(interes, interest)
+            }
+            if (times != null) {
+                args.putLong(time, times)
             }
             fragment.arguments = args
             return fragment
@@ -115,11 +121,15 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         binding.ConceptoField.setText(arguments?.getString(concep))
         binding.InteresField.setText(arguments?.getDouble(interes.toString()).toString())
 
-        val switchValue = arguments?.getBoolean(switchval) ?: false
+        val aux = arguments?.getDouble(valu)
+        var switchValue = false
+        if (aux != null) {
+            if (aux >= 0){switchValue = true}
+        }
+
         lifecycleScope.launch {
             masmenos(switchValue)
         }
-
         val adapterF = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.frecuenciaoptions,
@@ -219,6 +229,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         binding.Confirm.setOnClickListener {
             val concepto = binding.ConceptoField.text.toString()
             val valorstr = binding.ValorField.text.toString()
+            val veces = arguments?.getLong(time)
 
             // TODO poner barra superior en cada subvista
 
@@ -304,8 +315,9 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Frecuencia", frecuencia.toString())
                         Log.v("Etiqueta", label.toString())
                         Log.v("Interes", interes.toString())
+                        Log.v("Veces", veces.toString())
                         lifecycleScope.launch {
-                            montoupdate(idm, concepto, valor, fecha, frecuencia, label, interes)
+                            montoupdate(idm, concepto, valor, fecha, frecuencia, label, interes, veces)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -363,13 +375,15 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         )
         adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        val valu: Double? = arguments?.let { abs(it.getDouble(valu)) }
         if (switchValue) {
             binding.ValorField.hint = "$0.00"
-            binding.ValorField.setText(arguments?.getDouble(valu).toString())
+            binding.ValorField.setText(valu.toString())
             binding.LabelField.adapter = adapterI
         } else {
             binding.ValorField.hint = "$0.00"
-            binding.ValorField.setText((arguments?.getDouble(valu)?.times(-1)).toString())
+            binding.ValorField.setText(valu.toString())
             binding.LabelField.adapter = adapterG
             binding.updownSwitch.checked = IconSwitch.Checked.RIGHT
         }
@@ -382,7 +396,8 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         fecha: String,
         frecuencia: Long,
         etiqueta: Long,
-        interes: Double
+        interes: Double,
+        veces: Long?
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
@@ -397,7 +412,8 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                 fecha = fecha,
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
-                interes = interes
+                interes = interes,
+                veces = veces
             )
 
             montoDao.updateMonto(viejoMonto)
@@ -649,7 +665,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
 
         // region FRECUENCIAS
         if (selectedfr != null) {
-            Log.v("ETIQUETA", selectedfr.toString())
+            Log.v("FRECUENCIA", selectedfr.toString())
         }
         when (selectedfr) {
             "Única vez" -> {

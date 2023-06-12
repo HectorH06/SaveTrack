@@ -1,5 +1,10 @@
 package com.example.st5
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,6 +28,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class indexmain : Fragment(), OnChartValueSelectedListener {
     private lateinit var binding: FragmentIndexmainBinding
@@ -36,10 +45,11 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private val textI: MutableList<String> = mutableListOf()
 
     private var switchVal = false
-    private var lista : Fragment = indexGastosList()
+    private var lista: Fragment = indexGastosList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupAlarm()
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -115,11 +125,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         textI.add("Préstamos")
     }
 
-    private fun isNotZero(value: Double?): Boolean
-    {
+    private fun isNotZero(value: Double?): Boolean {
         return ((value != 0.0) || (value != -0.0))
     }
-    
+
     //region PIECHARTS
     private suspend fun setupPieChartG() {
         setupColors()
@@ -190,13 +199,13 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
 
             var totalIngresos = 0.0
-            for (monto in totalI){
+            for (monto in totalI) {
                 totalIngresos += monto.valor
             }
             Log.v("INGRESOS", totalI.toString())
 
             var totalGastos = 0.0
-            for (monto in totalG){
+            for (monto in totalG) {
                 totalGastos += monto.valor
             }
             Log.v("GASTOS", totalG.toString())
@@ -216,29 +225,29 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             var percentObsequios: Float? = 0f
             var percentDeudas: Float? = 0f
 
-            if (isNotZero(totalAlimentos)){
-                percentAlimento = (totalAlimentos.toFloat() / totalGastos.toFloat())*100
+            if (isNotZero(totalAlimentos)) {
+                percentAlimento = (totalAlimentos.toFloat() / totalGastos.toFloat()) * 100
             }
-            if (isNotZero(totalHogar)){
-                percentHogar = (totalHogar.toFloat() / totalGastos.toFloat())*100
+            if (isNotZero(totalHogar)) {
+                percentHogar = (totalHogar.toFloat() / totalGastos.toFloat()) * 100
             }
-            if (isNotZero(totalBienestar)){
-                percentBienestar = (totalBienestar.toFloat() / totalGastos.toFloat())*100
+            if (isNotZero(totalBienestar)) {
+                percentBienestar = (totalBienestar.toFloat() / totalGastos.toFloat()) * 100
             }
-            if (isNotZero(totalNecesidades)){
-                percentNecesidades = (totalNecesidades.toFloat() / totalGastos.toFloat())*100
+            if (isNotZero(totalNecesidades)) {
+                percentNecesidades = (totalNecesidades.toFloat() / totalGastos.toFloat()) * 100
             }
-            if (isNotZero(totalHormiga)){
-                percentHormiga = (totalHormiga.toFloat() / totalGastos.toFloat())*100
+            if (isNotZero(totalHormiga)) {
+                percentHormiga = (totalHormiga.toFloat() / totalGastos.toFloat()) * 100
             }
-            if (isNotZero(totalOcio)){
-                percentOcio = (totalOcio.toFloat() / totalGastos.toFloat())*100
+            if (isNotZero(totalOcio)) {
+                percentOcio = (totalOcio.toFloat() / totalGastos.toFloat()) * 100
             }
-            if (isNotZero(totalObsequios)){
-                percentObsequios = (totalObsequios.toFloat() / totalGastos.toFloat())*100
+            if (isNotZero(totalObsequios)) {
+                percentObsequios = (totalObsequios.toFloat() / totalGastos.toFloat()) * 100
             }
-            if (isNotZero(totalDeudas)){
-                percentDeudas = (totalDeudas.toFloat() / totalGastos.toFloat())*100
+            if (isNotZero(totalDeudas)) {
+                percentDeudas = (totalDeudas.toFloat() / totalGastos.toFloat()) * 100
             }
 
             val chartAlimentos = totalAlimentos.toFloat() * -1
@@ -347,13 +356,13 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
 
             var totalIngresos = 0.0
-            for (monto in totalI){
+            for (monto in totalI) {
                 totalIngresos += monto.valor
             }
             Log.v("INGRESOS", totalI.toString())
 
             var totalGastos = 0.0
-            for (monto in totalG){
+            for (monto in totalG) {
                 totalGastos += monto.valor
             }
             Log.v("GASTOS", totalG.toString())
@@ -373,29 +382,29 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             var percentRegalos: Float? = 0f
             var percentPrestamos: Float? = 0f
 
-            if (isNotZero(totalSalarios)){
-                val percentSalarios = (totalSalarios.toFloat() / totalIngresos.toFloat())*100
+            if (isNotZero(totalSalarios)) {
+                val percentSalarios = (totalSalarios.toFloat() / totalIngresos.toFloat()) * 100
             }
-            if (isNotZero(totalIrregulares)){
-                percentIrregulares = (totalIrregulares.toFloat() / totalIngresos.toFloat())*100
+            if (isNotZero(totalIrregulares)) {
+                percentIrregulares = (totalIrregulares.toFloat() / totalIngresos.toFloat()) * 100
             }
-            if (isNotZero(totalBecas)){
-                percentBecas = (totalBecas.toFloat() / totalIngresos.toFloat())*100
+            if (isNotZero(totalBecas)) {
+                percentBecas = (totalBecas.toFloat() / totalIngresos.toFloat()) * 100
             }
-            if (isNotZero(totalPensiones)){
-                percentPensiones = (totalPensiones.toFloat() / totalIngresos.toFloat())*100
+            if (isNotZero(totalPensiones)) {
+                percentPensiones = (totalPensiones.toFloat() / totalIngresos.toFloat()) * 100
             }
-            if (isNotZero(totalManutencion)){
-                percentManutencion = (totalManutencion.toFloat() / totalIngresos.toFloat())*100
+            if (isNotZero(totalManutencion)) {
+                percentManutencion = (totalManutencion.toFloat() / totalIngresos.toFloat()) * 100
             }
-            if (isNotZero(totalPasivos)){
-                percentPasivos = (totalPasivos.toFloat() / totalIngresos.toFloat())*100
+            if (isNotZero(totalPasivos)) {
+                percentPasivos = (totalPasivos.toFloat() / totalIngresos.toFloat()) * 100
             }
-            if (isNotZero(totalRegalos)){
-                percentRegalos = (totalRegalos.toFloat() / totalIngresos.toFloat())*100
+            if (isNotZero(totalRegalos)) {
+                percentRegalos = (totalRegalos.toFloat() / totalIngresos.toFloat()) * 100
             }
-            if (isNotZero(totalPrestamos)){
-                percentPrestamos = (totalPrestamos.toFloat() / totalIngresos.toFloat())*100
+            if (isNotZero(totalPrestamos)) {
+                percentPrestamos = (totalPrestamos.toFloat() / totalIngresos.toFloat()) * 100
             }
 
             val entries = listOf(
@@ -439,9 +448,16 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         val addWithSwitchOn = indexadd.newInstance(true)
         val addWithSwitchOff = indexadd.newInstance(false)
 
+
+        lifecycleScope.launch {
+            delay(3000)
+            procesarMontos()
+        }
         lifecycleScope.launch {
             delay(1000)
             gi(switchVal)
+            delay(500)
+            binding.GraficoPastel.alpha = 0f
         }
 
         binding.MedidorDeAhorroButton.setOnClickListener {
@@ -494,13 +510,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 val progressDrawable = progressBar.indeterminateDrawable as AnimationDrawable
                 progressDrawable.start()
         */
-
-        // MOSTRAR DATOS de las tablas ingresosgastos y monto
-        // Vincular botones a otras vistas con viewbinding para acceder a los cruds de monto
-        // Crear las funciones para autoincremento de ciertos datos como días o ingresos
-        // Cruds de monto para la modificación interna de los datos de la tabla ingresosgastos
-        // Trabajo SERIO de frontend
-        // Traer datos de otras vistas porque es el index xd (fechas del historial o deudas de planes de ahorro)
     }
 
     private suspend fun limpiar() {
@@ -556,6 +565,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 iilinstance
             }
         }
+
         override fun onNothingSelected() {
             Log.i("PieChart", "nothing selected")
             lista = if (!switchVal) {
@@ -571,11 +581,157 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             }
         }
     }
+
     override fun onValueSelected(e: Entry, h: Highlight) {
         if (e == null) return
         Log.i("VAL SELECTED", "Value: " + e.y + ", index: " + h.x)
     }
+
     override fun onNothingSelected() {
         Log.i("PieChart", "nothing selected")
+    }
+
+    /*
+    =======================================================================================================================
+
+           ####  #####   ####    ##   ##  ##     ##  ####     #####         #####   ##        ###    ##     ##   #####
+          ##     ##     ##       ##   ##  ####   ##  ##  ##  ##   ##        ##  ##  ##       ## ##   ####   ##  ##   ##
+           ###   #####  ##  ###  ##   ##  ##  ## ##  ##  ##  ##   ##        #####   ##      ##   ##  ##  ## ##  ##   ##
+             ##  ##     ##   ##  ##   ##  ##    ###  ##  ##  ##   ##        ##      ##      #######  ##    ###  ##   ##
+          ####   #####   ####     #####   ##     ##  ####     #####         ##      ######  ##   ##  ##     ##   #####
+
+    =======================================================================================================================
+    */
+    private suspend fun procesarMontos() {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+            val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
+
+            val totalIngresos = ingresoGastoDao.checkSummaryI()
+            val totalGastos = ingresoGastoDao.checkSummaryG()
+
+            val montos = montoDao.getMonto()
+
+            val fechaActual = LocalDate.now()
+            val diaActual = fechaActual.dayOfMonth
+            val diaSemana = fechaActual.dayOfWeek.toString().uppercase()
+            Log.v("WEEEEK", diaSemana)
+
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+            val today = fechaActual.toString()
+            val prev = assetsDao.getLastProcess()
+            Log.i("todayyyy", today)
+            Log.i("prevvvvv", prev)
+
+            if (prev != today) {
+                montos.forEach { monto ->
+                    var fechaMonto: LocalDate = LocalDate.now()
+                    var weekMonto = monto.fecha.uppercase()
+                    Log.v("wek", weekMonto)
+
+                    if (monto.fecha == "Diario") {
+                        if (monto.valor > 0) {
+                            ingresoGastoDao.updateSummaryI(
+                                monto.iduser.toInt(),
+                                totalIngresos + monto.valor
+                            )
+                        } else {
+                            ingresoGastoDao.updateSummaryG(
+                                monto.iduser.toInt(),
+                                totalGastos + monto.valor
+                            )
+                        }
+
+                        monto.veces = monto.veces?.plus(1)
+                        montoDao.updateMonto(monto)
+                    } else {
+                        if (weekMonto == "MONDAY" || weekMonto == "TUESDAY" || weekMonto == "WEDNESDAY" || weekMonto == "THURSDAY" || weekMonto == "FRIDAY" || weekMonto == "SATURDAY" || weekMonto == "SUNDAY") {
+                            val diaSemanaMonto = DayOfWeek.valueOf(monto.fecha.uppercase())
+
+                            if (fechaActual.dayOfWeek == diaSemanaMonto) {
+                                if (monto.valor > 0) {
+                                    ingresoGastoDao.updateSummaryI(
+                                        monto.iduser.toInt(),
+                                        totalIngresos + monto.valor
+                                    )
+                                } else {
+                                    ingresoGastoDao.updateSummaryG(
+                                        monto.iduser.toInt(),
+                                        totalGastos + monto.valor
+                                    )
+                                }
+
+                                monto.veces = monto.veces?.plus(1)
+                                montoDao.updateMonto(monto)
+                            }
+                        } else {
+                            if (monto.fecha.matches(Regex("[1-9]|[12][0-9]|3[01]"))) {
+                                if (diaActual == monto.fecha.toInt()) {
+                                    if (monto.valor > 0) {
+                                        ingresoGastoDao.updateSummaryI(
+                                            monto.iduser.toInt(),
+                                            totalIngresos + monto.valor
+                                        )
+                                    } else {
+                                        ingresoGastoDao.updateSummaryG(
+                                            monto.iduser.toInt(),
+                                            totalGastos + monto.valor
+                                        )
+                                    }
+
+                                    monto.veces = monto.veces?.plus(1)
+                                    montoDao.updateMonto(monto)
+                                }
+                            } else {
+                                fechaMonto = LocalDate.parse(monto.fecha, formatter)
+                            }
+                        }
+                    }
+
+                    if (fechaMonto.isEqual(fechaActual)) {
+                        when {
+                            fechaMonto.dayOfMonth == diaActual -> {
+                                if (monto.valor > 0) {
+                                    ingresoGastoDao.updateSummaryI(
+                                        monto.iduser.toInt(),
+                                        totalIngresos + monto.valor
+                                    )
+                                } else {
+                                    ingresoGastoDao.updateSummaryG(
+                                        monto.iduser.toInt(),
+                                        totalGastos + monto.valor
+                                    )
+                                }
+
+                                monto.veces = monto.veces?.plus(1)
+                                montoDao.updateMonto(monto)
+                            }
+                        }
+                    }
+                }
+                assetsDao.updateLastprocess(today)
+            }
+        }
+    }
+
+    private fun setupAlarm() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.set(Calendar.HOUR_OF_DAY, 3)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+
+        val intent = Intent(requireContext(), Alarma::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, FLAG_IMMUTABLE)
+
+        val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
     }
 }

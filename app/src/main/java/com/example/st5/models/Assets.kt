@@ -14,6 +14,9 @@ data class Assets(
 
     @ColumnInfo(name = "theme")
     var theme: Long,
+
+    @ColumnInfo(name = "lastprocess")
+    var lastprocess: String
 ) : Parcelable {
-    constructor() : this(0L, 0L)
+    constructor() : this(0L, 0L, "")
 }

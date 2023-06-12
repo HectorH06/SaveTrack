@@ -163,6 +163,7 @@ class perfilmain : Fragment() {
                             jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
                             jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
                             jsonObjectMonto.put("interes", viejoMonto.interes)
+                            jsonObjectMonto.put("veces", viejoMonto.veces)
 
                             jsonArrayMonto.put(jsonObjectMonto)
 

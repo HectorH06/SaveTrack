@@ -207,7 +207,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                                 val datedate = Date(intyear, intmonth, intday)
                                 Log.w("DATE", datedate.toString())
 
-                                binding.FechaField.toString()
+                                datedate.toString()
                             } // Único
                             1L -> {
                                 veces = 1L
@@ -242,7 +242,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                                 val datedate = Date(intyear, intmonth, intday)
                                 Log.w("DATE", datedate.toString())
 
-                                binding.FechaField.toString()
+                                datedate.toString()
                             } // Catch que agarra la fecha actual
                         }
 

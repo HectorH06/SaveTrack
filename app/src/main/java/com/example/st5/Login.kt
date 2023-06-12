@@ -131,6 +131,7 @@ class Login : Fragment() {
                                                     val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
                                                     val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
                                                     val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+                                                    val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
 
                                                     val nuevoUsuario = Usuario(
                                                         iduser = id,
@@ -159,17 +160,23 @@ class Login : Fragment() {
                                                         nmembers = 1,
                                                         enlace = ""
                                                     )
+                                                    val defaultAssets = Assets(
+                                                        theme = 0,
+                                                        lastprocess = ""
+                                                    )
 
                                                     usuarioDao.clean()
                                                     ingresosGastosDao.clean()
                                                     montoDao.clean()
                                                     montoGrupoDao.clean()
                                                     gruposDao.clean()
+                                                    assetsDao.clean()
 
                                                     usuarioDao.insertUsuario(nuevoUsuario)
                                                     ingresosGastosDao.insertIngresosGastos(nuevosIG)
                                                     montoGrupoDao.insertMontoG(nuevoMontoGrupo)
                                                     gruposDao.insertGrupo(nuevoGrupo)
+                                                    assetsDao.insertAsset(defaultAssets)
 
                                                     val selected = usuarioDao.getUserData()
                                                     Log.v("SELECTED USERS", selected.toString())
@@ -498,6 +505,8 @@ class Login : Fragment() {
                                                         requireContext()
                                                     ).getGruposDao()
 
+                                                    val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
+
                                                     val nuevoUsuario = Usuario(
                                                         iduser = idu,
                                                         nombre = nombre,
@@ -527,16 +536,22 @@ class Login : Fragment() {
                                                         nmembers = nmembers,
                                                         enlace = enlace
                                                     )
+                                                    val defaultAssets = Assets(
+                                                        theme = 0,
+                                                        lastprocess = ""
+                                                    )
 
                                                     usuarioDao.clean()
                                                     ingresosGastosDao.clean()
                                                     montoGrupoDao.clean()
                                                     gruposDao.clean()
+                                                    assetsDao.clean()
 
                                                     usuarioDao.insertUsuario(nuevoUsuario)
                                                     ingresosGastosDao.insertIngresosGastos(nuevosIG)
                                                     montoGrupoDao.insertMontoG(nuevoMontoGrupo)
                                                     gruposDao.insertGrupo(nuevoGrupo)
+                                                    assetsDao.insertAsset(defaultAssets)
 
                                                     val selected = usuarioDao.getUserData()
                                                     Log.v("SELECTED USERS", selected.toString())

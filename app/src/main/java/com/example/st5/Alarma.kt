@@ -15,7 +15,6 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.Charset
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -38,9 +37,6 @@ class Alarma : BroadcastReceiver() {
             val ingresoGastoDao = Stlite.getInstance(context).getIngresosGastosDao()
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
-            val totalIngresos = ingresoGastoDao.checkSummaryI()
-            val totalGastos = ingresoGastoDao.checkSummaryG()
-
             val montos = montoDao.getMonto()
 
             val fechaActual = LocalDate.now()
@@ -55,6 +51,10 @@ class Alarma : BroadcastReceiver() {
 
             if (prev != today) {
                 montos.forEach { monto ->
+
+                    val totalIngresos = ingresoGastoDao.checkSummaryI()
+                    val totalGastos = ingresoGastoDao.checkSummaryG()
+
                     var fechaMonto: LocalDate = LocalDate.now()
                     var weekMonto = monto.fecha.uppercase()
                     Log.v("wek", weekMonto)
@@ -76,9 +76,8 @@ class Alarma : BroadcastReceiver() {
                         montoDao.updateMonto(monto)
                     } else {
                         if (weekMonto == "MONDAY" || weekMonto == "TUESDAY" || weekMonto == "WEDNESDAY" || weekMonto == "THURSDAY" || weekMonto == "FRIDAY" || weekMonto == "SATURDAY" || weekMonto == "SUNDAY") {
-                            val diaSemanaMonto = DayOfWeek.valueOf(monto.fecha.uppercase())
 
-                            if (fechaActual.dayOfWeek == diaSemanaMonto) {
+                            if (fechaActual.dayOfWeek.toString() == weekMonto) {
                                 if (monto.valor > 0) {
                                     ingresoGastoDao.updateSummaryI(
                                         monto.iduser.toInt(),

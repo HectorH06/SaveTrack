@@ -28,7 +28,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -608,9 +607,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
             val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
 
-            val totalIngresos = ingresoGastoDao.checkSummaryI()
-            val totalGastos = ingresoGastoDao.checkSummaryG()
-
             val montos = montoDao.getMonto()
 
             val fechaActual = LocalDate.now()
@@ -627,6 +623,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             if (prev != today) {
                 for (monto in montos) {
+                    val totalIngresos = ingresoGastoDao.checkSummaryI()
+                    val totalGastos = ingresoGastoDao.checkSummaryG()
+
+                    Log.i("MONTO PROCESADO", monto.toString())
                     var fechaMonto: LocalDate = LocalDate.now()
                     var weekMonto = monto.fecha.uppercase()
                     Log.v("wek", weekMonto)
@@ -649,9 +649,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                             montoDao.updateMonto(monto)
                         }
                         weekMonto == "MONDAY" || weekMonto == "TUESDAY" || weekMonto == "WEDNESDAY" || weekMonto == "THURSDAY" || weekMonto == "FRIDAY" || weekMonto == "SATURDAY" || weekMonto == "SUNDAY" -> {
-                            val diaSemanaMonto = DayOfWeek.valueOf(monto.fecha.uppercase())
-
-                            if (fechaActual.dayOfWeek == diaSemanaMonto) {
+                            // TODO agregar notación para las quincenas
+                            if (fechaActual.dayOfWeek.toString() == weekMonto) {
                                 if (monto.valor > 0) {
                                     ingresoGastoDao.updateSummaryI(
                                         monto.iduser.toInt(),
@@ -668,7 +667,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                                 montoDao.updateMonto(monto)
                             }
                         }
-                        monto.fecha.matches(Regex("[1-9]|[12][0-9]|3[01]")) -> {
+                        monto.fecha.matches(Regex("^(?:[1-9]|[12][0-9]|3[01])$")) -> {
                             if (diaActual == monto.fecha.toInt()) {
                                 if (monto.valor > 0) {
                                     ingresoGastoDao.updateSummaryI(
@@ -713,7 +712,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                             }
                         }
                     }
-
                 }
             }
             assetsDao.updateLastprocess(today)

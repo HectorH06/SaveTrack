@@ -119,8 +119,8 @@ class Alarma : BroadcastReceiver() {
                     }
 
                     if (fechaMonto.isEqual(fechaActual)) {
-                        when {
-                            fechaMonto.dayOfMonth == diaActual -> {
+                        when (fechaMonto.dayOfMonth) {
+                            diaActual -> {
                                 if (monto.valor > 0) {
                                     ingresoGastoDao.updateSummaryI(
                                         monto.iduser.toInt(),
@@ -139,8 +139,8 @@ class Alarma : BroadcastReceiver() {
                         }
                     }
                 }
-                assetsDao.updateLastprocess(today)
             }
+            assetsDao.updateLastprocess(today)
         }
     }
 

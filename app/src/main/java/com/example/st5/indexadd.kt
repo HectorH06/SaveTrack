@@ -207,7 +207,11 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                                 val datedate = Date(intyear, intmonth, intday)
                                 Log.w("DATE", datedate.toString())
 
+                                if (label == 10L){
+                                    ""
+                                } else {
                                 datedate.toString()
+                                }
                             } // Único
                             1L -> {
                                 veces = 1L
@@ -656,11 +660,12 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             else -> {
                 frecuencia = 0
 
-                selectedDay = "NONE"
-
                 hideInteresField()
                 hideWeekField()
                 hideFechaField()
+
+                selectedDay = ""
+                Log.d("NONE OR NOT", selectedDay)
             }
         }
         // endregion

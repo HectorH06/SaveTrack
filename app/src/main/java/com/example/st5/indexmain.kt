@@ -626,28 +626,29 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             Log.i("prevvvvv", prev)
 
             if (prev != today) {
-                montos.forEach { monto ->
+                for (monto in montos) {
                     var fechaMonto: LocalDate = LocalDate.now()
                     var weekMonto = monto.fecha.uppercase()
                     Log.v("wek", weekMonto)
 
-                    if (monto.fecha == "Diario") {
-                        if (monto.valor > 0) {
-                            ingresoGastoDao.updateSummaryI(
-                                monto.iduser.toInt(),
-                                totalIngresos + monto.valor
-                            )
-                        } else {
-                            ingresoGastoDao.updateSummaryG(
-                                monto.iduser.toInt(),
-                                totalGastos + monto.valor
-                            )
-                        }
+                    when {
+                        monto.fecha == "Diario" -> {
+                            if (monto.valor > 0) {
+                                ingresoGastoDao.updateSummaryI(
+                                    monto.iduser.toInt(),
+                                    totalIngresos + monto.valor
+                                )
+                            } else {
+                                ingresoGastoDao.updateSummaryG(
+                                    monto.iduser.toInt(),
+                                    totalGastos + monto.valor
+                                )
+                            }
 
-                        monto.veces = monto.veces?.plus(1)
-                        montoDao.updateMonto(monto)
-                    } else {
-                        if (weekMonto == "MONDAY" || weekMonto == "TUESDAY" || weekMonto == "WEDNESDAY" || weekMonto == "THURSDAY" || weekMonto == "FRIDAY" || weekMonto == "SATURDAY" || weekMonto == "SUNDAY") {
+                            monto.veces = monto.veces?.plus(1)
+                            montoDao.updateMonto(monto)
+                        }
+                        weekMonto == "MONDAY" || weekMonto == "TUESDAY" || weekMonto == "WEDNESDAY" || weekMonto == "THURSDAY" || weekMonto == "FRIDAY" || weekMonto == "SATURDAY" || weekMonto == "SUNDAY" -> {
                             val diaSemanaMonto = DayOfWeek.valueOf(monto.fecha.uppercase())
 
                             if (fechaActual.dayOfWeek == diaSemanaMonto) {
@@ -666,33 +667,35 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                                 monto.veces = monto.veces?.plus(1)
                                 montoDao.updateMonto(monto)
                             }
-                        } else {
-                            if (monto.fecha.matches(Regex("[1-9]|[12][0-9]|3[01]"))) {
-                                if (diaActual == monto.fecha.toInt()) {
-                                    if (monto.valor > 0) {
-                                        ingresoGastoDao.updateSummaryI(
-                                            monto.iduser.toInt(),
-                                            totalIngresos + monto.valor
-                                        )
-                                    } else {
-                                        ingresoGastoDao.updateSummaryG(
-                                            monto.iduser.toInt(),
-                                            totalGastos + monto.valor
-                                        )
-                                    }
-
-                                    monto.veces = monto.veces?.plus(1)
-                                    montoDao.updateMonto(monto)
+                        }
+                        monto.fecha.matches(Regex("[1-9]|[12][0-9]|3[01]")) -> {
+                            if (diaActual == monto.fecha.toInt()) {
+                                if (monto.valor > 0) {
+                                    ingresoGastoDao.updateSummaryI(
+                                        monto.iduser.toInt(),
+                                        totalIngresos + monto.valor
+                                    )
+                                } else {
+                                    ingresoGastoDao.updateSummaryG(
+                                        monto.iduser.toInt(),
+                                        totalGastos + monto.valor
+                                    )
                                 }
-                            } else {
+
+                                monto.veces = monto.veces?.plus(1)
+                                montoDao.updateMonto(monto)
+                            }
+                        }
+                        else -> {
+                            if (monto.fecha != ""){
                                 fechaMonto = LocalDate.parse(monto.fecha, formatter)
                             }
                         }
                     }
 
                     if (fechaMonto.isEqual(fechaActual)) {
-                        when {
-                            fechaMonto.dayOfMonth == diaActual -> {
+                        when (fechaMonto.dayOfMonth) {
+                            diaActual -> {
                                 if (monto.valor > 0) {
                                     ingresoGastoDao.updateSummaryI(
                                         monto.iduser.toInt(),
@@ -710,9 +713,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                             }
                         }
                     }
+
                 }
-                assetsDao.updateLastprocess(today)
             }
+            assetsDao.updateLastprocess(today)
         }
     }
 

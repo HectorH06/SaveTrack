@@ -268,7 +268,11 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                                 val datedate = Date(intyear, intmonth, intday)
                                 Log.w("DATE", datedate.toString())
 
-                                datedate.toString()
+                                if (label == 10L){
+                                    ""
+                                } else {
+                                    datedate.toString()
+                                }
                             } // Único
                             1L -> {
                                 "Diario"
@@ -734,11 +738,12 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             else -> {
                 frecuencia = 0
 
-                selectedDay = "NONE"
-
                 hideInteresField()
                 hideWeekField()
                 hideFechaField()
+
+                selectedDay = ""
+                Log.d("NONE OR NOT", selectedDay)
             }
         }
         // endregion

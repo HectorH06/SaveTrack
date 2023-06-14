@@ -1,0 +1,69 @@
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cabezaingresos"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/y1midcell"
+    android:orientation="horizontal"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/MConcepto"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:maxHeight="150dp"
+        android:hint="@string/Concepto"
+        android:paddingStart="7dp"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/MValor"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:maxHeight="100dp"
+        android:hint="@string/Valor"
+        android:textAlignment="textEnd"
+        android:paddingStart="15dp"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/MVeces"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/Fecha"
+        android:textAlignment="textEnd"
+        android:paddingStart="15dp"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/MEtiqueta"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/Etiqueta"
+        android:layout_marginStart="15dp"
+        android:textAlignment="textEnd"
+        android:paddingEnd="7dp"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/editMonto"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_edit"
+        android:backgroundTint="@color/O0" />
+
+    <Button
+        android:id="@+id/deleteMonto"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_delete"
+        android:backgroundTint="@color/O0"/>
+</TableRow>

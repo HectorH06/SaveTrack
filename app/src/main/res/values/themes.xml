@@ -32,6 +32,18 @@
         <item name="android:dayOfWeekBackground">@color/white</item>
     </style>
 
+    <style name="historial" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorAccent">@color/transparent</item>
+        <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+        <item name="android:textColorSecondaryInverse">@color/O0</item>
+        <item name="android:colorControlHighlight">@color/O5</item>
+        <item name="android:colorControlActivated">@color/O1</item>
+        <item name="android:calendarTextColor">@color/white</item>
+        <item name="android:dayOfWeekBackground">@color/white</item>
+    </style>
+
     <style name="CustomDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
         <item name="android:headerBackground">@color/transparent</item>
         <item name="android:dayOfWeekBackground">@color/P3</item>

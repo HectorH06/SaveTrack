@@ -5,6 +5,8 @@ import com.example.st5.models.Monto
 
 @Dao
 interface MontoDao {
+
+    // region BASIC QUERIES
     @Insert
     fun insertMonto(monto: Monto)
     @Update
@@ -21,7 +23,9 @@ interface MontoDao {
     @Query("DELETE FROM monto")
     suspend fun clean()
 
-    // GET ETIQUETAS
+    // endregion
+
+    // region GET ETIQUETAS
     @Query("SELECT * FROM monto WHERE etiqueta = 1")
     fun getAlimentos(): List<Monto>
     @Query("SELECT * FROM monto WHERE etiqueta = 2")
@@ -55,7 +59,9 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE etiqueta = 16")
     fun getPrestamos(): List<Monto>
 
-    // GET GASTOS/INGRESOS
+    // endregion
+
+    // region GET GASTOS/INGRESOS
     @Query("SELECT * FROM monto WHERE valor >= 0")
     fun getIngresos(): List<Monto>
     @Query("SELECT * FROM monto WHERE valor < 0")
@@ -65,11 +71,9 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE valor < 0 AND etiqueta = :e")
     fun getGastos(e: Int): List<Monto>
 
-    //GET POR FECHA ESPECÍFICA
-    @Query("SELECT * FROM monto WHERE fecha = :fecha")
-    fun getMontoXFecha(fecha: String): List<Monto>
+    //endregion
 
-    // GET POR FILTROS para listas de monto
+    // region GET POR FILTROS para listas de monto
     @Query("SELECT * FROM monto ORDER BY concepto ASC")
     fun getMontosAlfabetica(): List<Monto>
     @Query("SELECT * FROM monto ORDER BY fecha ASC")
@@ -82,8 +86,12 @@ interface MontoDao {
     fun getMontosEtiquetados(): List<Monto>
     @Query("SELECT * FROM monto ORDER BY interes ASC")
     fun getMontosInteres(): List<Monto>
+    @Query("SELECT * FROM monto ORDER BY veces ASC")
+    fun getMontosVeces(): List<Monto>
 
-    // GET POR FILTROS para listas de ingresos
+    // endregion
+
+    // region GET POR FILTROS para listas de ingresos
     @Query("SELECT * FROM monto WHERE valor >= 0 ORDER BY concepto ASC")
     fun getIngresosAlfabetica(): List<Monto>
     @Query("SELECT * FROM monto WHERE valor >= 0 ORDER BY fecha ASC")
@@ -97,7 +105,9 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE valor >= 0 ORDER BY interes ASC")
     fun getIngresosInteres(): List<Monto>
 
-    // GET POR FILTROS para listas de gastos
+    // endregion
+
+    // region GET POR FILTROS para listas de gastos
     @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY concepto ASC")
     fun getGastosAlfabetica(): List<Monto>
     @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY fecha ASC")
@@ -111,7 +121,9 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE valor < 0 ORDER BY interes ASC")
     fun getGastosInteres(): List<Monto>
 
-    // GET POR FILTROS para listas de ingresos (con etiqueta)
+    // endregion
+
+    // region GET POR FILTROS para listas de ingresos (con etiqueta)
     @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY concepto ASC")
     fun getIngresosAlfabetica(e: Int): List<Monto>
     @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY fecha ASC")
@@ -125,7 +137,9 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY interes ASC")
     fun getIngresosInteres(e: Int): List<Monto>
 
-    // GET POR FILTROS para listas de gastos (con etiqueta)
+    // endregion
+
+    // region GET POR FILTROS para listas de gastos (con etiqueta)
     @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY concepto ASC")
     fun getGastosAlfabetica(e: Int): List<Monto>
     @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY fecha ASC")
@@ -139,7 +153,9 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE etiqueta = :e ORDER BY interes ASC")
     fun getGastosInteres(e: Int): List<Monto>
 
-    // GET ATRIBUTOS
+    // endregion
+
+    // region GET ATRIBUTOS
     @Query("SELECT idmonto FROM monto WHERE idmonto = :id")
     fun getIdmonto(id: Int): Long
     @Query("SELECT iduser FROM monto WHERE idmonto = :id")
@@ -158,4 +174,39 @@ interface MontoDao {
     fun getInteres(id: Int): Double
     @Query("SELECT veces FROM monto WHERE idmonto = :id")
     fun getVeces(id: Int): Long
+
+    // endregion
+
+    // region GET POR FECHA ESPECÍFICA
+    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai")
+    fun getMontoXFecha(fecha: String, dom: String, dow: String, dai: String): List<Monto>
+    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY concepto ASC")
+    fun getMontoXFechaAlfabetica(fecha: String, dom: String, dow: String, dai: String): List<Monto>
+    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY valor ASC")
+    fun getMontoXFechaValuados(fecha: String, dom: String, dow: String, dai: String): List<Monto>
+    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY frecuencia ASC")
+    fun getMontoXFechaFrecuentes(fecha: String, dom: String, dow: String, dai: String): List<Monto>
+    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY etiqueta ASC")
+    fun getMontoXFechaEtiquetados(fecha: String, dom: String, dow: String, dai: String): List<Monto>
+    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY interes ASC")
+    fun getMontoXFechaInteres(fecha: String, dom: String, dow: String, dai: String): List<Monto>
+    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY veces ASC")
+    fun getMontoXFechaVeces(fecha: String, dom: String, dow: String, dai: String): List<Monto>
+
+    @Query("SELECT * FROM monto")
+    fun getMontoXFecha(): List<Monto>
+    @Query("SELECT * FROM monto ORDER BY concepto ASC")
+    fun getMontoXFechaAlfabetica(): List<Monto>
+    @Query("SELECT * FROM monto ORDER BY valor ASC")
+    fun getMontoXFechaValuados(): List<Monto>
+    @Query("SELECT * FROM monto ORDER BY frecuencia ASC")
+    fun getMontoXFechaFrecuentes(): List<Monto>
+    @Query("SELECT * FROM monto ORDER BY etiqueta ASC")
+    fun getMontoXFechaEtiquetados(): List<Monto>
+    @Query("SELECT * FROM monto ORDER BY interes ASC")
+    fun getMontoXFechaInteres(): List<Monto>
+    @Query("SELECT * FROM monto ORDER BY veces ASC")
+    fun getMontoXFechaVeces(): List<Monto>
+
+    // endregion
 }

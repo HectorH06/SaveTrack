@@ -1,14 +1,30 @@
 <resources>
-    <style name="Theme.ST5" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.AppTheme.Light" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/P5</item>
-        <item name="colorPrimaryVariant">@color/R0</item>
+        <item name="colorPrimaryVariant">@color/P0</item>
         <item name="colorOnPrimary">@color/white</item>
 
-        <item name="colorSecondary">@color/R1</item>
-        <item name="colorSecondaryVariant">@color/R0</item>
+        <item name="colorSecondary">@color/P1</item>
+        <item name="colorSecondaryVariant">@color/P0</item>
         <item name="colorOnSecondary">@color/white</item>
 
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="perfil_background" parent="Theme.AppTheme.Light">
+        <item name="android:background">@drawable/gradient_background_perfil</item>
+    </style>
+    <style name="historial_background" parent="Theme.AppTheme.Light">
+        <item name="android:background">@drawable/gradient_background_historial</item>
+    </style>
+    <style name="index_background" parent="Theme.AppTheme.Light">
+        <item name="android:background">@drawable/gradient_background_index</item>
+    </style>
+    <style name="pda_background" parent="Theme.AppTheme.Light">
+        <item name="android:background">@drawable/gradient_background_planes_de_ahorro</item>
+    </style>
+    <style name="finanzas_background" parent="Theme.AppTheme.Light">
+        <item name="android:background">@drawable/gradient_background_finanzas</item>
     </style>
 
     <style name="NoActionBar">

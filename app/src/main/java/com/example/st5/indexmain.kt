@@ -3,6 +3,7 @@ package com.example.st5
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
@@ -49,6 +50,17 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupAlarm()
+        lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -57,6 +69,18 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             })
     }
 
+    private suspend fun isDarkModeEnabled(context: Context): Boolean {
+        var komodo: Boolean
+
+        withContext(Dispatchers.IO){
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+
+            val mode = assetsDao.getTheme()
+            komodo = mode != 0
+        }
+
+        return komodo
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -496,13 +520,11 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 .replace(R.id.index_container, addWithSwitchOff).addToBackStack(null).commit()
         }
 
-        /*
         binding.ConfigButton.setOnClickListener {
-            lifecycleScope.launch {
-                limpiar()
-            }
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.index_container, Configuracion()).addToBackStack(null).commit()
         }
-         */
 
         /*
                 val progressBar = binding.GraficoPastel

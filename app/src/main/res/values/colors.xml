@@ -7,15 +7,15 @@
     
     <!-- Purple -->
     <color name="P0">#FF400060</color>
-    <color name="P1">#FF6900C6</color>
-    <color name="P2">#FFA47CCB</color>
+    <color name="P1">#5700A5</color>
+    <color name="P2">#79529F</color>
     <color name="P3">#FFD5ABFF</color>
     <color name="P4">#FFE5CBFF</color>
     <color name="P5">#FFEFDEFE</color>
 
     <!-- Green -->
-    <color name="G0">#117729</color>
-    <color name="G1">#FF28A745</color>
+    <color name="G0">#0F6323</color>
+    <color name="G1">#218A39</color>
     <color name="G2">#FF61BD4F</color>
     <color name="G3">#FFA3E635</color>
     <color name="G4">#FFB4ED50</color>
@@ -45,8 +45,8 @@
     <color name="Y5">#FFFFE7A6</color>
 
     <!-- Blue -->
-    <color name="B0">#FF1559A3</color>
-    <color name="B1">#007AE4</color>
+    <color name="B0">#124A88</color>
+    <color name="B1">#046DC8</color>
     <color name="B2">#FF3DADF2</color>
     <color name="B3">#FF85C1E9</color>
     <color name="B4">#FFAFDCEC</color>

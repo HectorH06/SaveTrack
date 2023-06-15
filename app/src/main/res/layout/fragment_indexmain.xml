@@ -3,9 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient_background_index">
+    android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/index_background"/>
     <!--
     style="?android:attr/progressBarStyle"
     android:background="@drawable/ring"
@@ -15,7 +19,7 @@
         android:id="@+id/GraficoPastel"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:translationZ="-200dp"
+        android:translationZ="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,10 +32,11 @@
         android:textAlignment="center"
         android:paddingTop="7dp"
         android:textSize="34sp"
-        android:textColor="@color/P5"
+        android:textColor="@color/P2"
         android:textColorHint="@color/P3"
         android:hint="@string/gastos"
         android:background="@drawable/p1table"
+        android:translationZ="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/PieChart"

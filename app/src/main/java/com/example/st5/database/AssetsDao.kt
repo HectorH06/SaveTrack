@@ -10,6 +10,9 @@ interface AssetsDao {
 
     @Query("DELETE FROM assets")
     fun clean()
+
+    @Query("SELECT theme FROM assets")
+    fun getTheme(): Int
     @Query("UPDATE assets SET theme = :mode")
     fun updateTheme(mode: Long)
 
@@ -18,4 +21,5 @@ interface AssetsDao {
 
     @Query("SELECT lastprocess FROM assets")
     fun getLastProcess(): String
+
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.Light">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/finanzas_background" />
+
+    <ImageButton
+        android:id="@+id/goback"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/transparent"
+        android:contentDescription="@string/goback"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back" />
+
+    <com.polyak.iconswitch.IconSwitch
+        android:id="@+id/claroscuro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_vertical"
+        android:trackTint="@color/N2"
+        app:isw_icon_left="@drawable/ic_lightm"
+        app:isw_icon_right="@drawable/ic_darkm"
+        app:isw_inactive_tint_icon_left="@color/N0"
+        app:isw_active_tint_icon_left="@color/N0"
+        app:isw_active_tint_icon_right="@color/N5"
+        app:isw_inactive_tint_icon_right="@color/N5"
+        app:isw_thumb_color_left="@color/N5"
+        app:isw_thumb_color_right="@color/N0" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
-import com.example.st5.databinding.ContainerPdhBinding
+import com.example.st5.databinding.ContainerPdaBinding
 import com.example.st5.ui.main.PageViewModel
 
 class containerPlanesDeAhorro : Fragment() {
-    private lateinit var binding: ContainerPdhBinding
+    private lateinit var binding: ContainerPdaBinding
     private lateinit var pageViewModel: PageViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +32,9 @@ class containerPlanesDeAhorro : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = ContainerPdhBinding.inflate(inflater, container, false)
+        binding = ContainerPdaBinding.inflate(inflater, container, false)
         parentFragmentManager.commit {
-            replace<planesdeahorromain>(R.id.pdh_container, "planesdeahorromain")
+            replace<planesdeahorromain>(R.id.pda_container, "planesdeahorromain")
             setReorderingAllowed(true)
             addToBackStack(null)
         }

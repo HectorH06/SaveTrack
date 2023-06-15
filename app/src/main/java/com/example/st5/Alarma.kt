@@ -3,6 +3,7 @@ package com.example.st5
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.util.Log
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -16,7 +17,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.Charset
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class Alarma : BroadcastReceiver() {
@@ -37,106 +38,59 @@ class Alarma : BroadcastReceiver() {
             val ingresoGastoDao = Stlite.getInstance(context).getIngresosGastosDao()
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
-            val montos = montoDao.getMonto()
-
             val fechaActual = LocalDate.now()
-            val diaActual = fechaActual.dayOfMonth
-            val diaSemana = fechaActual.dayOfWeek.toString().uppercase()
-            Log.v("WEEEEK", diaSemana)
-
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
             val today = fechaActual.toString()
             val prev = assetsDao.getLastProcess()
 
-            if (prev != today) {
-                montos.forEach { monto ->
+            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val truefecha = formatoFecha.parse(today)
+            val calendar = Calendar.getInstance()
+            calendar.time = truefecha
 
+            var dom = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            var w = calendar.get(Calendar.DAY_OF_WEEK)
+            var dow = "Diario"
+            when (w) {
+                1 -> dow = "Sunday"
+                2 -> dow = "Monday"
+                3 -> dow = "Tuesday"
+                4 -> dow = "Wednesday"
+                5 -> dow = "Thursday"
+                6 -> dow = "Friday"
+                7 -> dow = "Saturday"
+            }
+
+            Log.i("DOM", dom)
+            Log.i("DOW", dow)
+
+            Log.i("todayyyy", today)
+            Log.i("prevvvvv", prev)
+
+            val montos = montoDao.getMontoXFecha(today, dom, dow, "Diario")
+
+            if (prev != today) {
+                for (monto in montos) {
                     val totalIngresos = ingresoGastoDao.checkSummaryI()
                     val totalGastos = ingresoGastoDao.checkSummaryG()
 
-                    var fechaMonto: LocalDate = LocalDate.now()
+                    Log.i("MONTO PROCESADO", monto.toString())
                     var weekMonto = monto.fecha.uppercase()
                     Log.v("wek", weekMonto)
 
-                    if (monto.fecha == "Diario") {
-                        if (monto.valor > 0) {
-                            ingresoGastoDao.updateSummaryI(
-                                monto.iduser.toInt(),
-                                totalIngresos + monto.valor
-                            )
-                        } else {
-                            ingresoGastoDao.updateSummaryG(
-                                monto.iduser.toInt(),
-                                totalGastos + monto.valor
-                            )
-                        }
-
-                        monto.veces = monto.veces?.plus(1)
-                        montoDao.updateMonto(monto)
+                    if (monto.valor > 0) {
+                        ingresoGastoDao.updateSummaryI(
+                            monto.iduser.toInt(),
+                            totalIngresos + monto.valor
+                        )
                     } else {
-                        if (weekMonto == "MONDAY" || weekMonto == "TUESDAY" || weekMonto == "WEDNESDAY" || weekMonto == "THURSDAY" || weekMonto == "FRIDAY" || weekMonto == "SATURDAY" || weekMonto == "SUNDAY") {
-
-                            if (fechaActual.dayOfWeek.toString() == weekMonto) {
-                                if (monto.valor > 0) {
-                                    ingresoGastoDao.updateSummaryI(
-                                        monto.iduser.toInt(),
-                                        totalIngresos + monto.valor
-                                    )
-                                } else {
-                                    ingresoGastoDao.updateSummaryG(
-                                        monto.iduser.toInt(),
-                                        totalGastos + monto.valor
-                                    )
-                                }
-
-                                monto.veces = monto.veces?.plus(1)
-                                montoDao.updateMonto(monto)
-                            }
-                        } else {
-                            if (monto.fecha.matches(Regex("[1-9]|[12][0-9]|3[01]"))) {
-                                if (diaActual == monto.fecha.toInt()) {
-                                    if (monto.valor > 0) {
-                                        ingresoGastoDao.updateSummaryI(
-                                            monto.iduser.toInt(),
-                                            totalIngresos + monto.valor
-                                        )
-                                    } else {
-                                        ingresoGastoDao.updateSummaryG(
-                                            monto.iduser.toInt(),
-                                            totalGastos + monto.valor
-                                        )
-                                    }
-
-                                    monto.veces = monto.veces?.plus(1)
-                                    montoDao.updateMonto(monto)
-                                }
-                            } else {
-                                fechaMonto = LocalDate.parse(monto.fecha, formatter)
-                            }
-                        }
+                        ingresoGastoDao.updateSummaryG(
+                            monto.iduser.toInt(),
+                            totalGastos + monto.valor
+                        )
                     }
 
-                    if (fechaMonto.isEqual(fechaActual)) {
-                        when (fechaMonto.dayOfMonth) {
-                            diaActual -> {
-                                if (monto.valor > 0) {
-                                    ingresoGastoDao.updateSummaryI(
-                                        monto.iduser.toInt(),
-                                        totalIngresos + monto.valor
-                                    )
-                                } else {
-                                    ingresoGastoDao.updateSummaryG(
-                                        monto.iduser.toInt(),
-                                        totalGastos + monto.valor
-                                    )
-                                }
-
-                                monto.veces = monto.veces?.plus(1)
-                                montoDao.updateMonto(monto)
-                            }
-                        }
-                    }
+                    monto.veces = monto.veces?.plus(1)
+                    montoDao.updateMonto(monto)
                 }
             }
             assetsDao.updateLastprocess(today)

@@ -5,13 +5,13 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pdh_pane"
+        android:id="@+id/pda_pane"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"/>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/pdh_container"
+        android:id="@+id/pda_container"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent" />

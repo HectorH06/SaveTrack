@@ -71,17 +71,17 @@ class finanzasmain : Fragment() {
         binding.VerMasMERCALIBRE.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.index_container, consejos).addToBackStack(null).commit()
+                .replace(R.id.finanzas_container, consejos).addToBackStack(null).commit()
         }
         binding.VerMenosMERCALIBRE.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.index_container, stats).addToBackStack(null).commit()
+                .replace(R.id.finanzas_container, stats).addToBackStack(null).commit()
         }
         binding.RedirectMERCALIBRE.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.index_container, estatico).addToBackStack(null).commit()
+                .replace(R.id.finanzas_container, estatico).addToBackStack(null).commit()
         }
     }
 }

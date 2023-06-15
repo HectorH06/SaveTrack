@@ -82,7 +82,7 @@ class Configuracion : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val back = indexmain()
+        val back = perfilmain()
 
         val adapterF = ArrayAdapter.createFromResource(
             requireContext(),
@@ -106,10 +106,12 @@ class Configuracion : Fragment() {
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.index_container, back).addToBackStack(null).commit()
+                .replace(R.id.perfil_container, back).addToBackStack(null).commit()
         }
 
         binding.claroscuro.setCheckedChangeListener {
+
+            // TODO AÑADIR DESTROYER DE VIEWS PARA QUE SE VUELVAN A CONSTRUIR TODAS Y NO HAYA ERRORES VISUALES
             when (binding.claroscuro.checked) {
                 IconSwitch.Checked.LEFT -> {
                     binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)

@@ -35,6 +35,7 @@
             android:name=".Index"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="index"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
         <receiver android:name=".Alarma" />
     </application>

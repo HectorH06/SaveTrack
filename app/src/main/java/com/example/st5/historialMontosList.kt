@@ -2,6 +2,7 @@ package com.example.st5
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
@@ -45,6 +46,19 @@ class historialMontosList : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_historial2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_historial)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -56,6 +70,19 @@ class historialMontosList : Fragment() {
                         .addToBackStack(null).commit()
                 }
             })
+    }
+
+    private suspend fun isDarkModeEnabled(context: Context): Boolean {
+        var komodo: Boolean
+
+        withContext(Dispatchers.IO){
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+
+            val mode = assetsDao.getTheme()
+            komodo = mode != 0
+        }
+
+        return komodo
     }
 
     @SuppressLint("SetTextI18n")

@@ -1,7 +1,7 @@
 <resources>
-    <style name="Theme.ST4" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+    <style name="Theme.AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/R5</item>
+        <item name="colorPrimaryVariant">@color/R3</item>
         <item name="colorOnPrimary">@color/black</item>
 
         <item name="colorSecondary">@color/R1</item>
@@ -9,5 +9,21 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="perfil_background" parent="Theme.AppTheme">
+        <item name="android:background">@drawable/gradient_background_perfil2</item>
+    </style>
+    <style name="historial_background" parent="Theme.AppTheme">
+        <item name="android:background">@drawable/gradient_background_historial2</item>
+    </style>
+    <style name="index_background" parent="Theme.AppTheme">
+        <item name="android:background">@drawable/gradient_background_index2</item>
+    </style>
+    <style name="pda_background" parent="Theme.AppTheme">
+        <item name="android:background">@drawable/gradient_background_planes_de_ahorro2</item>
+    </style>
+    <style name="finanzas_background" parent="Theme.AppTheme">
+        <item name="android:background">@drawable/gradient_background_finanzas2</item>
     </style>
 </resources>

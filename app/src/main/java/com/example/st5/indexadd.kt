@@ -1,6 +1,7 @@
 package com.example.st5
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -51,6 +52,19 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -62,6 +76,19 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         .addToBackStack(null).commit()
                 }
             })
+    }
+
+    private suspend fun isDarkModeEnabled(context: Context): Boolean {
+        var komodo: Boolean
+
+        withContext(Dispatchers.IO){
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+
+            val mode = assetsDao.getTheme()
+            komodo = mode != 0
+        }
+
+        return komodo
     }
 
     override fun onCreateView(

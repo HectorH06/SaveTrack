@@ -22,6 +22,7 @@ import java.util.*
 
 class Alarma : BroadcastReceiver() {
     private val jsonArrayMonto = JSONArray()
+    private val jsonArrayLabels = JSONArray()
 
     override fun onReceive(context: Context?, intent: Intent?) {
         runBlocking {
@@ -79,13 +80,11 @@ class Alarma : BroadcastReceiver() {
 
                     if (monto.valor > 0) {
                         ingresoGastoDao.updateSummaryI(
-                            monto.iduser.toInt(),
-                            totalIngresos + monto.valor
+                            monto.iduser.toInt(), totalIngresos + monto.valor
                         )
                     } else {
                         ingresoGastoDao.updateSummaryG(
-                            monto.iduser.toInt(),
-                            totalGastos + monto.valor
+                            monto.iduser.toInt(), totalGastos + monto.valor
                         )
                     }
 
@@ -105,8 +104,11 @@ class Alarma : BroadcastReceiver() {
             val montoDao = Stlite.getInstance(context).getMontoDao()
             val montoGrupoDao = Stlite.getInstance(context).getMontoGrupoDao()
             val gruposDao = Stlite.getInstance(context).getGruposDao()
+            val labelsDao = Stlite.getInstance(context).getLabelsDao()
 
             val perocuantosmontos = montoDao.getMaxMonto()
+            val perocuantaslabels = labelsDao.getMaxLabel()
+            Log.v("CUANTOS MONTOS", perocuantosmontos.toString())
             Log.v("CUANTOS MONTOS", perocuantosmontos.toString())
 
             val iduser = usuarioDao.checkId().toLong()
@@ -130,9 +132,7 @@ class Alarma : BroadcastReceiver() {
                 balance = balance
             )
             val viejosIG = IngresosGastos(
-                iduser = iduser,
-                summaryingresos = summaryingresos,
-                summarygastos = summarygastos
+                iduser = iduser, summaryingresos = summaryingresos, summarygastos = summarygastos
             )
 
             val viejoMontoGrupo = MontoGrupo(
@@ -141,12 +141,7 @@ class Alarma : BroadcastReceiver() {
                 iduser = iduser,
             )
             val viejoGrupo = Grupos(
-                Id = 0,
-                name = "",
-                description = "",
-                admin = iduser,
-                nmembers = 1,
-                enlace = ""
+                Id = 0, name = "", description = "", admin = iduser, nmembers = 1, enlace = ""
             )
 
 
@@ -175,7 +170,7 @@ class Alarma : BroadcastReceiver() {
 
             // Tabla Monto
             for (idmonto in 1..perocuantosmontos) {
-                if (montoDao.getConcepto(idmonto) != null){
+                if (montoDao.getConcepto(idmonto) != null) {
                     Log.v("Current idmonto", idmonto.toString())
                     val viejoMonto = Monto(
                         idmonto = montoDao.getIdmonto(idmonto),
@@ -223,26 +218,44 @@ class Alarma : BroadcastReceiver() {
             jsonObjectGrupos.put("nmembers", viejoGrupo.nmembers)
             jsonObjectGrupos.put("enlace", viejoGrupo.enlace)
 
+            // Tabla Labels
+            for (idlabel in 1..perocuantaslabels) {
+                if (labelsDao.getIdLabel(idlabel) != null) {
+                    Log.v("Current idmonto", idlabel.toString())
+                    val viejaLabel = Labels(
+                        idlabel = labelsDao.getIdLabel(idlabel),
+                        plabel = labelsDao.getPlabel(idlabel),
+                        color = labelsDao.getColor(idlabel)
+                    )
+                    Log.v("Current monto $idlabel", viejaLabel.toString())
+                    val jsonObjectLabels = JSONObject()
+                    jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
+                    jsonObjectLabels.put("plabel", viejaLabel.plabel)
+                    jsonObjectLabels.put("color", viejaLabel.color)
 
+                    jsonArrayLabels.put(jsonObjectLabels)
+
+                    Log.v("Current object", jsonObjectLabels.toString())
+                    Log.v("Current array", jsonArrayLabels.toString())
+                } else {
+                    Log.v("Current monto $idlabel", "VACÍO")
+                }
+            }
 
             Log.v("jsonObjectUsuario", jsonObjectUsuario.toString())
 
             val uploadurl =
                 "http://savetrack.com.mx/backupput.php?username=$username&backup=$jsonObjectUsuario"
             val uploadReq: StringRequest =
-                object : StringRequest(
-                    Method.PUT,
-                    uploadurl,
-                    Response.Listener { response ->
-                        Log.d(
-                            "response", response
-                        )
-                    },
-                    Response.ErrorListener { error ->
-                        Log.e(
-                            "API error", "error => $error"
-                        )
-                    }) {
+                object : StringRequest(Method.PUT, uploadurl, Response.Listener { response ->
+                    Log.d(
+                        "response", response
+                    )
+                }, Response.ErrorListener { error ->
+                    Log.e(
+                        "API error", "error => $error"
+                    )
+                }) {
                     override fun getBody(): ByteArray {
                         return uploadurl.toByteArray(
                             Charset.defaultCharset()
@@ -257,19 +270,15 @@ class Alarma : BroadcastReceiver() {
             val upload2url =
                 "http://savetrack.com.mx/backupput2.php?username=$username&backup=$jsonObjectIngresosGastos"
             val upload2Req: StringRequest =
-                object : StringRequest(
-                    Method.PUT,
-                    upload2url,
-                    Response.Listener { response ->
-                        Log.d(
-                            "response", response
-                        )
-                    },
-                    Response.ErrorListener { error ->
-                        Log.e(
-                            "API error", "error => $error"
-                        )
-                    }) {
+                object : StringRequest(Method.PUT, upload2url, Response.Listener { response ->
+                    Log.d(
+                        "response", response
+                    )
+                }, Response.ErrorListener { error ->
+                    Log.e(
+                        "API error", "error => $error"
+                    )
+                }) {
                     override fun getBody(): ByteArray {
                         return upload2url.toByteArray(
                             Charset.defaultCharset()
@@ -284,19 +293,15 @@ class Alarma : BroadcastReceiver() {
             val upload3url =
                 "http://savetrack.com.mx/backupput3.php?username=$username&backup=$jsonArrayMonto"
             val upload3Req: StringRequest =
-                object : StringRequest(
-                    Method.PUT,
-                    upload3url,
-                    Response.Listener { response ->
-                        Log.d(
-                            "response", response
-                        )
-                    },
-                    Response.ErrorListener { error ->
-                        Log.e(
-                            "API error", "error => $error"
-                        )
-                    }) {
+                object : StringRequest(Method.PUT, upload3url, Response.Listener { response ->
+                    Log.d(
+                        "response", response
+                    )
+                }, Response.ErrorListener { error ->
+                    Log.e(
+                        "API error", "error => $error"
+                    )
+                }) {
                     override fun getBody(): ByteArray {
                         return upload3url.toByteArray(
                             Charset.defaultCharset()
@@ -311,19 +316,15 @@ class Alarma : BroadcastReceiver() {
             val upload4url =
                 "http://savetrack.com.mx/backupput4.php?username=$username&backup=$jsonObjectMontoGrupo"
             val upload4Req: StringRequest =
-                object : StringRequest(
-                    Method.PUT,
-                    upload4url,
-                    Response.Listener { response ->
-                        Log.d(
-                            "response", response
-                        )
-                    },
-                    Response.ErrorListener { error ->
-                        Log.e(
-                            "API error", "error => $error"
-                        )
-                    }) {
+                object : StringRequest(Method.PUT, upload4url, Response.Listener { response ->
+                    Log.d(
+                        "response", response
+                    )
+                }, Response.ErrorListener { error ->
+                    Log.e(
+                        "API error", "error => $error"
+                    )
+                }) {
                     override fun getBody(): ByteArray {
                         return upload4url.toByteArray(
                             Charset.defaultCharset()
@@ -338,9 +339,32 @@ class Alarma : BroadcastReceiver() {
             val upload5url =
                 "http://savetrack.com.mx/backupput5.php?username=$username&backup=$jsonObjectGrupos"
             val upload5Req: StringRequest =
+                object : StringRequest(Method.PUT, upload5url, Response.Listener { response ->
+                    Log.d(
+                        "response", response
+                    )
+                }, Response.ErrorListener { error ->
+                    Log.e(
+                        "API error", "error => $error"
+                    )
+                }) {
+                    override fun getBody(): ByteArray {
+                        return upload5url.toByteArray(
+                            Charset.defaultCharset()
+                        )
+                    }
+                }
+            Log.d(
+                "uploadReq", upload5Req.toString()
+            )
+            queue.add(upload5Req)
+
+            val upload6url =
+                "http://savetrack.com.mx/backupput6.php?username=$username&backup=$jsonArrayLabels"
+            val upload6Req: StringRequest =
                 object : StringRequest(
                     Method.PUT,
-                    upload5url,
+                    upload6url,
                     Response.Listener { response ->
                         Log.d(
                             "response", response
@@ -352,15 +376,15 @@ class Alarma : BroadcastReceiver() {
                         )
                     }) {
                     override fun getBody(): ByteArray {
-                        return upload5url.toByteArray(
+                        return upload6url.toByteArray(
                             Charset.defaultCharset()
                         )
                     }
                 }
             Log.d(
-                "uploadReq", upload5Req.toString()
+                "uploadReq", upload6Req.toString()
             )
-            queue.add(upload5Req)
+            queue.add(upload6Req)
 
             val selectedafter = usuarioDao.getUserData()
             Log.v(

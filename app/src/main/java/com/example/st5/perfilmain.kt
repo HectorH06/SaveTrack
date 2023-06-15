@@ -29,6 +29,7 @@ class perfilmain : Fragment() {
     private lateinit var binding: FragmentPerfilmainBinding
 
     private val jsonArrayMonto = JSONArray()
+    private val jsonArrayLabels = JSONArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +71,11 @@ class perfilmain : Fragment() {
                     val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
                     val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
                     val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+                    val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
 
                     val perocuantosmontos = montoDao.getMaxMonto()
+                    val perocuantaslabels = labelsDao.getMaxLabel()
+                    Log.v("CUANTOS MONTOS", perocuantosmontos.toString())
                     Log.v("CUANTOS MONTOS", perocuantosmontos.toString())
 
                     val iduser = usuarioDao.checkId().toLong()
@@ -189,7 +193,29 @@ class perfilmain : Fragment() {
                     jsonObjectGrupos.put("nmembers", viejoGrupo.nmembers)
                     jsonObjectGrupos.put("enlace", viejoGrupo.enlace)
 
+                    // Tabla Labels
+                    for (idlabel in 1..perocuantaslabels) {
+                        if (labelsDao.getIdLabel(idlabel) != null){
+                            Log.v("Current idmonto", idlabel.toString())
+                            val viejaLabel = Labels(
+                                idlabel = labelsDao.getIdLabel(idlabel),
+                                plabel = labelsDao.getPlabel(idlabel),
+                                color = labelsDao.getColor(idlabel)
+                            )
+                            Log.v("Current monto $idlabel", viejaLabel.toString())
+                            val jsonObjectLabels = JSONObject()
+                            jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
+                            jsonObjectLabels.put("plabel", viejaLabel.plabel)
+                            jsonObjectLabels.put("color", viejaLabel.color)
 
+                            jsonArrayLabels.put(jsonObjectLabels)
+
+                            Log.v("Current object", jsonObjectLabels.toString())
+                            Log.v("Current array", jsonArrayLabels.toString())
+                        } else {
+                            Log.v("Current monto $idlabel", "VACÍO")
+                        }
+                    }
 
                     Log.v("jsonObjectUsuario", jsonObjectUsuario.toString())
 
@@ -328,13 +354,39 @@ class perfilmain : Fragment() {
                     )
                     queue.add(upload5Req)
 
-
+                    val upload6url =
+                        "http://savetrack.com.mx/backupput6.php?username=$username&backup=$jsonArrayLabels"
+                    val upload6Req: StringRequest =
+                        object : StringRequest(
+                            Method.PUT,
+                            upload6url,
+                            Response.Listener { response ->
+                                Log.d(
+                                    "response", response
+                                )
+                            },
+                            Response.ErrorListener { error ->
+                                Log.e(
+                                    "API error", "error => $error"
+                                )
+                            }) {
+                            override fun getBody(): ByteArray {
+                                return upload6url.toByteArray(
+                                    Charset.defaultCharset()
+                                )
+                            }
+                        }
+                    Log.d(
+                        "uploadReq", upload6Req.toString()
+                    )
+                    queue.add(upload6Req)
 
                     usuarioDao.clean()
                     ingresosGastosDao.clean()
                     montoDao.clean()
                     montoGrupoDao.clean()
                     gruposDao.clean()
+                    labelsDao.clean()
 
                     val selectedafter = usuarioDao.getUserData()
                     Log.v(

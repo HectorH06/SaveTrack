@@ -379,7 +379,7 @@ class historialMontosList : Fragment() {
             holder.updateM.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.index_container, upup).addToBackStack(null).commit()
+                    .replace(R.id.historial_container, upup).addToBackStack(null).commit()
             }
             holder.deleteM.setOnClickListener {
                 val confirmDialog = AlertDialog.Builder(requireContext())

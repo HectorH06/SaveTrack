@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.st5.models.*
 
-@Database(entities = [Grupos::class, IngresosGastos::class, Usuario::class, Monto::class, MontoGrupo::class, Assets::class], version = 18, exportSchema = true)
+@Database(entities = [Grupos::class, IngresosGastos::class, Usuario::class, Monto::class, MontoGrupo::class, Assets::class, Labels::class], version = 19, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class Stlite : RoomDatabase() {
 
@@ -17,6 +17,7 @@ abstract class Stlite : RoomDatabase() {
     abstract fun getMontoGrupoDao(): MontoGrupoDao
     abstract fun getGruposDao(): GruposDao
     abstract fun getAssetsDao(): AssetsDao
+    abstract fun getLabelsDao(): LabelsDao
 
     companion object {
         @Volatile

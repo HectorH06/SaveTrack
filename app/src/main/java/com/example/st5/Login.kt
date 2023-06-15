@@ -132,6 +132,7 @@ class Login : Fragment() {
                                                     val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
                                                     val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
                                                     val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
+                                                    val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
 
                                                     val nuevoUsuario = Usuario(
                                                         iduser = id,
@@ -171,6 +172,7 @@ class Login : Fragment() {
                                                     montoGrupoDao.clean()
                                                     gruposDao.clean()
                                                     assetsDao.clean()
+                                                    labelsDao.clean()
 
                                                     usuarioDao.insertUsuario(nuevoUsuario)
                                                     ingresosGastosDao.insertIngresosGastos(nuevosIG)
@@ -218,7 +220,8 @@ class Login : Fragment() {
                                                     jsonObjectGrupos.put("nmembers", nuevoGrupo.nmembers)
                                                     jsonObjectGrupos.put("enlace", nuevoGrupo.enlace)
 
-
+                                                    // Tabla Labels
+                                                    val jsonObjectLabels = JSONObject()
 
                                                     Log.v("jsonObjectUsuario", jsonObjectUsuario.toString())
 
@@ -352,10 +355,36 @@ class Login : Fragment() {
                                                     )
                                                     queue.add(upload5Req)
 
-                                                    val url6 =
+                                                    val upload6url =
+                                                        "http://savetrack.com.mx/backupput6.php?username=$username&backup=$jsonObjectLabels"
+                                                    val upload6Req: StringRequest =
+                                                        object : StringRequest(Method.PUT,
+                                                            upload6url,
+                                                            Response.Listener { response ->
+                                                                Log.d(
+                                                                    "response", response
+                                                                )
+                                                            },
+                                                            Response.ErrorListener { error ->
+                                                                Log.e(
+                                                                    "API error", "error => $error"
+                                                                )
+                                                            }) {
+                                                            override fun getBody(): ByteArray {
+                                                                return idurl.toByteArray(
+                                                                    Charset.defaultCharset()
+                                                                )
+                                                            }
+                                                        }
+                                                    Log.d(
+                                                        "uploadReq", upload6Req.toString()
+                                                    )
+                                                    queue.add(upload6Req)
+
+                                                    val url7 =
                                                         "http://savetrack.com.mx/images/inipic.php?username=$username"
                                                     val stringRequest = object : StringRequest(
-                                                        Method.POST, url6,
+                                                        Method.POST, url7,
                                                         Response.Listener { response ->
                                                             try {
                                                                 Log.d("UPLOAD SUCCESS", response)
@@ -373,7 +402,6 @@ class Login : Fragment() {
                                                             )
                                                         }
                                                     }
-
 
                                                     val socketTimeout = 5000
                                                     val policy: RetryPolicy = DefaultRetryPolicy(
@@ -435,8 +463,6 @@ class Login : Fragment() {
                                                         requireContext()
                                                     ).getIngresosGastosDao()
 
-
-                                                    // TODO ARRAY PARA EXTRAER PORQUE SI NO MUEREN TODOS LOS MONTOS
                                                     val jsonArray3 =
                                                         JSONArray(URL("http://savetrack.com.mx/backupget3.php?username=$username").readText())
                                                     val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
@@ -504,6 +530,35 @@ class Login : Fragment() {
                                                     val gruposDao = Stlite.getInstance(
                                                         requireContext()
                                                     ).getGruposDao()
+
+                                                    val jsonArray6 =
+                                                        JSONArray(URL("http://savetrack.com.mx/backupget6.php?username=$username").readText())
+                                                    val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
+                                                    labelsDao.clean()
+                                                    Log.v("jsonArray6", jsonArray6.toString())
+                                                    for (i in 0 until jsonArray6.length())
+                                                    {
+                                                        val jsonObject6 = jsonArray6.getJSONObject(i)
+                                                        if (jsonObject6.getLong("idlabel") != null) {
+                                                            val idlabel: Long =
+                                                                jsonObject6.getLong("idlabel")
+                                                            val plabel: String =
+                                                                jsonObject6.getString("plabel")
+                                                            val color: String =
+                                                                jsonObject6.optString("color")
+
+                                                            val nuevasLabels = Labels(
+                                                                idlabel = idlabel,
+                                                                plabel = plabel,
+                                                                color = color,
+                                                            )
+                                                            Log.v("Current monto $i", nuevasLabels.toString())
+
+                                                            labelsDao.insertLabel(nuevasLabels)
+                                                        } else {
+                                                            Log.v("Current monto $i", "VACÍO")
+                                                        }
+                                                    }
 
                                                     val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
 

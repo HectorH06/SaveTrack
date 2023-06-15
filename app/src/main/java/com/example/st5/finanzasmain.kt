@@ -28,4 +28,27 @@ class finanzasmain : Fragment() {
         return binding.root
 
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val consejos = finanzasconysug();
+        val stats = finanzasstatsahorro();
+        val estatico = finanzasestatico();
+
+        binding.VerMasMERCALIBRE.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .replace(R.id.index_container, consejos).addToBackStack(null).commit()
+        }
+        binding.VerMenosMERCALIBRE.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .replace(R.id.index_container, stats).addToBackStack(null).commit()
+        }
+        binding.RedirectMERCALIBRE.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .replace(R.id.index_container, estatico).addToBackStack(null).commit()
+        }
+    }
 }

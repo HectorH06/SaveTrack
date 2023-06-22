@@ -249,7 +249,8 @@ class indexGastosList : Fragment() {
         frecuencia: Long?,
         etiqueta: Long,
         interes: Double?,
-        veces: Long?
+        veces: Long?,
+        adddate: String
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
@@ -265,7 +266,8 @@ class indexGastosList : Fragment() {
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
                 interes = interes,
-                veces = veces
+                veces = veces,
+                adddate = adddate
             )
 
             montoDao.deleteMonto(muertoMonto)
@@ -315,7 +317,7 @@ class indexGastosList : Fragment() {
             holder.valorTextView.text = monto.valor.toString()
             holder.fechaTextView.text = monto.fecha
             holder.etiquetaTextView.text = monto.etiqueta.toString()
-            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces)
+            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
             holder.updateM.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
@@ -335,7 +337,7 @@ class indexGastosList : Fragment() {
                         Log.v("Interes", monto.interes.toString())
                         Log.v("Veces", monto.veces.toString())
                         lifecycleScope.launch {
-                            montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces)
+                            montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()

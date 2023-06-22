@@ -58,6 +58,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         private const val labe = "label"
         private const val interes = "interest"
         private const val time = "times"
+        private const val adddat = "adddate"
 
         fun sendMonto(
             ide: Long,
@@ -67,7 +68,8 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             frequency: Long?,
             label: Long,
             interest: Double?,
-            times: Long?
+            times: Long?,
+            adddate: String
         ): indexmontoupdate {
             val fragment = indexmontoupdate()
             val args = Bundle()
@@ -86,6 +88,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             if (times != null) {
                 args.putLong(time, times)
             }
+            args.putString(adddat, adddate)
             fragment.arguments = args
             return fragment
         }
@@ -339,6 +342,8 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                             } // Catch que agarra la fecha actual
                         }
 
+                        val adddate: String = arguments?.getString(adddat).toString()
+
                         Log.v("Id del monto actualizado", id.toString())
                         Log.v("Concepto", concepto)
                         Log.v("Valor", valor.toString())
@@ -347,8 +352,9 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Etiqueta", label.toString())
                         Log.v("Interes", interes.toString())
                         Log.v("Veces", veces.toString())
+                        Log.v("FECHA de CREACIÓN", adddate)
                         lifecycleScope.launch {
-                            montoupdate(idm, concepto, valor, fecha, frecuencia, label, interes, veces)
+                            montoupdate(idm, concepto, valor, fecha, frecuencia, label, interes, veces, adddate)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -428,7 +434,8 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         frecuencia: Long,
         etiqueta: Long,
         interes: Double,
-        veces: Long?
+        veces: Long?,
+        adddate: String
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
@@ -444,7 +451,8 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
                 interes = interes,
-                veces = veces
+                veces = veces,
+                adddate = adddate
             )
 
             montoDao.updateMonto(viejoMonto)

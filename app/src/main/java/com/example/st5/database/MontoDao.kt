@@ -174,11 +174,13 @@ interface MontoDao {
     fun getInteres(id: Int): Double
     @Query("SELECT veces FROM monto WHERE idmonto = :id")
     fun getVeces(id: Int): Long
+    @Query("SELECT adddate FROM monto WHERE idmonto = :id")
+    fun getAdded(id: Int): String
 
     // endregion
 
     // region GET POR FECHA ESPECÍFICA
-    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai")
+    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai AND adddate = 0")
     fun getMontoXFecha(fecha: String, dom: String, dow: String, dai: String): List<Monto>
     @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY concepto ASC")
     fun getMontoXFechaAlfabetica(fecha: String, dom: String, dow: String, dai: String): List<Monto>

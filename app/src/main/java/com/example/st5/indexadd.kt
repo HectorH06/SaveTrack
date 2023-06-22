@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.Date
 import java.text.DecimalFormat
+import java.time.LocalDate
 import java.util.*
 
 class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
@@ -277,6 +278,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                             } // Catch que agarra la fecha actual
                         }
 
+                        val adddate: String = LocalDate.now().toString()
+
                         Log.v("Concepto", concepto)
                         Log.v("Valor", valor.toString())
                         Log.v("Fecha", fecha)
@@ -284,8 +287,9 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Etiqueta", label.toString())
                         Log.v("Interes", interes.toString())
                         Log.v("Veces", veces.toString())
+                        Log.v("Addate", adddate)
                         lifecycleScope.launch {
-                            montoadd(concepto, valor, fecha, frecuencia, label, interes, veces)
+                            montoadd(concepto, valor, fecha, frecuencia, label, interes, veces, adddate)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -360,7 +364,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         frecuencia: Long,
         etiqueta: Long,
         interes: Double,
-        veces: Long?
+        veces: Long?,
+        adddate: String
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
@@ -375,7 +380,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
                 interes = interes,
-                veces = veces
+                veces = veces,
+                adddate = adddate
             )
 
             montoDao.insertMonto(nuevoMonto)

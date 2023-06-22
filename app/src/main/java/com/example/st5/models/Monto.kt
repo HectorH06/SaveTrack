@@ -37,7 +37,10 @@ data class Monto(
     var veces: Long?,
 
     @ColumnInfo(name = "estado")
-    var estado: Long? = 0L
+    var estado: Long? = 0L,
+
+    @ColumnInfo(name = "adddate")
+    var adddate: String
 ) : Parcelable {
-    constructor() : this(0L, 0L, "", 0.0, "",0L, 0L, 0.0, 0L, 0L)
+    constructor() : this(0L, 0L, "", 0.0, "",0L, 0L, 0.0, 0L, 0L, "")
 }

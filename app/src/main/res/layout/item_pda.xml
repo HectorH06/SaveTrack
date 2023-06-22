@@ -53,7 +53,25 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pdaValor"
-                android:hint="mañana"/>
+                android:hint="mañana" />
+
+            <Button
+                android:id="@+id/editPda"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_edit"
+                android:backgroundTint="@color/P5"
+                app:layout_constraintStart_toEndOf="@id/pdaFecha"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <Button
+                android:id="@+id/deletePda"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_delete"
+                android:backgroundTint="@color/P5"
+                app:layout_constraintStart_toEndOf="@id/editPda"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

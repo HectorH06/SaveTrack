@@ -23,6 +23,8 @@ import kotlinx.coroutines.withContext
 class planesdeahorromain : Fragment() {
     private lateinit var binding: FragmentPlanesdeahorromainBinding
 
+    private lateinit var pda: List<Monto>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,8 +65,22 @@ class planesdeahorromain : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPlanesdeahorromainBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            pda = montosget()
+            binding.displayPda.adapter = MontoAdapter(pda)
+        }
         return binding.root
+    }
 
+    private suspend fun montosget(): List<Monto> {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val owe = 8
+
+            pda = montoDao.getGastos(owe)
+            Log.i("ALL MONTOS", pda.toString())
+        }
+        return pda
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,8 +93,6 @@ class planesdeahorromain : Fragment() {
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.perfil_container, back).addToBackStack(null).commit()
         }
-
-
     }
 
     private inner class MontoAdapter(private val montos: List<Monto>) :
@@ -87,8 +101,7 @@ class planesdeahorromain : Fragment() {
             itemView: View,
             val conceptoTextView: TextView,
             val valorTextView: TextView,
-            val vecesTextView: TextView,
-            val etiquetaTextView: TextView,
+            val fechaTextView: TextView,
             val updateM: Button,
             val deleteM: Button
         ) : RecyclerView.ViewHolder(itemView)
@@ -96,19 +109,17 @@ class planesdeahorromain : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
             val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_historial, parent, false)
-            val conceptoTextView = itemView.findViewById<TextView>(R.id.MConcepto)
-            val valorTextView = itemView.findViewById<TextView>(R.id.MValor)
-            val vecesTextView = itemView.findViewById<TextView>(R.id.MVeces)
-            val etiquetaTextView = itemView.findViewById<TextView>(R.id.MEtiqueta)
-            val updateM = itemView.findViewById<Button>(R.id.editMonto)
-            val deleteM = itemView.findViewById<Button>(R.id.deleteMonto)
+                LayoutInflater.from(parent.context).inflate(R.layout.item_pda, parent, false)
+            val conceptoTextView = itemView.findViewById<TextView>(R.id.pdaNombre)
+            val valorTextView = itemView.findViewById<TextView>(R.id.pdaValor)
+            val fechaTextView = itemView.findViewById<TextView>(R.id.pdaFecha)
+            val updateM = itemView.findViewById<Button>(R.id.editPda)
+            val deleteM = itemView.findViewById<Button>(R.id.deletePda)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
                 valorTextView,
-                vecesTextView,
-                etiquetaTextView,
+                fechaTextView,
                 updateM,
                 deleteM
             )
@@ -119,8 +130,7 @@ class planesdeahorromain : Fragment() {
             val monto = montos[position]
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
-            holder.vecesTextView.text = monto.veces.toString()
-            holder.etiquetaTextView.text = monto.etiqueta.toString()
+            holder.fechaTextView.text = monto.fecha
             val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
             holder.updateM.setOnClickListener {
                 parentFragmentManager.beginTransaction()

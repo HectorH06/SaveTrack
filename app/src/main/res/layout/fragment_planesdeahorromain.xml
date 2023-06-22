@@ -11,100 +11,80 @@
         android:theme="@style/pda_background"/>
 
     <ImageButton
-        android:id="@+id/PAConfigButton"
-        android:layout_width="59dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="331dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="661dp"
-        android:background="@color/N4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_manage" />
-
-    <ImageButton
-        android:id="@+id/PACurrencyButton"
-        android:layout_width="72dp"
-        android:layout_height="64dp"
+        android:id="@+id/goback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="323dp"
-        android:layout_marginBottom="623dp"
-        android:background="@color/G3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="661dp"
+        android:background="@color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_notification_clear_all" />
+        app:srcCompat="@drawable/ic_back" />
 
     <ImageButton
+        android:id="@+id/config"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="661dp"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_settings" />
+
+    <Button
+        android:id="@+id/PACurrencyButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/G2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/config" />
+
+    <Button
         android:id="@+id/PADiasAhorrandoButton"
-        android:layout_width="59dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="331dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="598dp"
-        android:background="@color/G3"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/G2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_day" />
+        app:layout_constraintTop_toBottomOf="@id/config" />
 
 
-    <ImageButton
+    <Button
         android:id="@+id/PASaldoActual"
-        android:layout_width="235dp"
-        android:layout_height="198dp"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="266dp"
-        android:layout_marginEnd="88dp"
-        android:layout_marginBottom="267dp"
-        android:background="@color/G3"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="255dp"
+        android:layout_height="255dp"
+        android:backgroundTint="@color/G2"
+        android:background="@drawable/ic_hexagon"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_today" />
+        android:textColor="@color/black"
+        android:contentDescription="@string/dias_ahorrando" />
 
 
-    <TableRow
+    <LinearLayout
         android:id="@+id/ProductoPorPagarTableRow"
-        android:layout_width="409dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="601dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="79dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <CheckBox
-            android:id="@+id/PAcheckBox1"
-            android:layout_width="136.3dp"
-            android:layout_height="match_parent"
-            android:background="@color/G5"
-            android:text="PPP1" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/displayGastos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="@+id/cabezagastos"
+            app:layout_constraintTop_toBottomOf="@+id/cabezagastos" />
 
-        <CheckBox
-            android:id="@+id/PAcheckBox2"
-            android:layout_width="136.3dp"
-            android:layout_height="match_parent"
-            android:background="@color/G5"
-            android:text="PPP2" />
-
-        <CheckBox
-            android:id="@+id/PAcheckBox3"
-            android:layout_width="136.3dp"
-            android:layout_height="match_parent"
-            android:background="@color/G5"
-            android:text="PPP3" />
-    </TableRow>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

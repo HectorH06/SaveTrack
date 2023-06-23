@@ -9,10 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentPlanesdeahorromainBinding
 import com.example.st5.models.Monto
@@ -24,7 +29,7 @@ class planesdeahorromain : Fragment() {
     private lateinit var binding: FragmentPlanesdeahorromainBinding
 
     private lateinit var pda: List<Monto>
-
+    private var dolarValue: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,7 +55,7 @@ class planesdeahorromain : Fragment() {
     private suspend fun isDarkModeEnabled(context: Context): Boolean {
         var komodo: Boolean
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             val mode = assetsDao.getTheme()
@@ -93,6 +98,57 @@ class planesdeahorromain : Fragment() {
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.perfil_container, back).addToBackStack(null).commit()
         }
+
+        suspend fun mostrarDatos() {
+            withContext(Dispatchers.IO) {
+                val usuarioDao = Stlite.getInstance(
+                    requireContext()
+                ).getUsuarioDao()
+
+                val diasaho = usuarioDao.checkDiasaho()
+                val balance = usuarioDao.checkBalance()
+
+                val durl = "http://savetrack.com.mx/dlrval.php"
+                val queue: RequestQueue = Volley.newRequestQueue(requireContext())
+                val checkDollar = StringRequest(
+                    Request.Method.GET, durl,
+                    { response ->
+                        dolarValue = response.toString()
+                        Log.d("DÓLAR HOY", dolarValue)
+                        binding.PACurrencyButton.text = buildString {
+                            append("Dolar HOY: ")
+                            append("$$dolarValue")
+                        }
+                    },
+                    { error ->
+                        Toast.makeText(
+                            requireContext(), "No se ha podido conectar al valor del dólar hoy", Toast.LENGTH_SHORT
+                        ).show()
+                        binding.PACurrencyButton.text = buildString {
+                            append("Sin conexión")
+                        }
+                        Log.d("error => $error", "SIE API ERROR")
+                    }
+                )
+                queue.add(checkDollar)
+
+                Log.v("Diasaho", diasaho.toString())
+                Log.v("Balance", balance.toString())
+
+                binding.PADiasAhorrandoButton.text = buildString {
+                    append("¡")
+                    append(diasaho.toString())
+                    append(" días ahorrando!")
+                }
+                binding.PASaldoActual.text = buildString {
+                    append("Balance: ")
+                    append(balance.toString())
+                }
+            }
+        }
+        lifecycleScope.launch {
+            mostrarDatos()
+        }
     }
 
     private inner class MontoAdapter(private val montos: List<Monto>) :
@@ -131,7 +187,17 @@ class planesdeahorromain : Fragment() {
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
             holder.fechaTextView.text = monto.fecha
-            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+            val upup = indexmontoupdate.sendMonto(
+                monto.idmonto,
+                monto.concepto,
+                monto.valor,
+                monto.fecha,
+                monto.frecuencia,
+                monto.etiqueta,
+                monto.interes,
+                monto.veces,
+                monto.adddate
+            )
             holder.updateM.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
@@ -154,7 +220,7 @@ class planesdeahorromain : Fragment() {
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                            .replace(R.id.pda_container, indexmain()).addToBackStack(null).commit()
                     }
                     .setNegativeButton("Cancelar") { dialog, _ ->
                         dialog.dismiss()

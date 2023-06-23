@@ -1,78 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/PPP"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/G2"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="true">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/PPP"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true"
-        app:cardBackgroundColor="@color/G2"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="0dp">
+        <TextView
+            android:id="@+id/pdaNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/layout_margin_default"
+            android:layout_marginTop="@dimen/layout_margin_default"
+            android:layout_marginEnd="@dimen/layout_margin_default"
+            android:hint="Deuda"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/pdaValor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/layout_margin_default"
+            android:layout_marginEnd="@dimen/layout_margin_default"
+            android:layout_marginBottom="@dimen/layout_margin_default"
+            android:hint="mil pesos"
+            android:maxLines="7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pdaNombre" />
 
-            <TextView
-                android:id="@+id/pdaNombre"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/layout_margin_default"
-                android:layout_marginTop="@dimen/layout_margin_default"
-                android:layout_marginEnd="@dimen/layout_margin_default"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:hint="Deuda"/>
+        <TextView
+            android:id="@+id/pdaFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="mañana"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pdaValor" />
 
-            <TextView
-                android:id="@+id/pdaValor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/layout_margin_default"
-                android:layout_marginEnd="@dimen/layout_margin_default"
-                android:layout_marginBottom="@dimen/layout_margin_default"
-                android:maxLines="7"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pdaNombre"
-                android:hint="mil pesos"/>
+        <Button
+            android:id="@+id/editPda"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_edit"
+            android:backgroundTint="@color/P5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/pdaFecha" />
 
-            <TextView
-                android:id="@+id/pdaFecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pdaValor"
-                android:hint="mañana" />
+        <Button
+            android:id="@+id/deletePda"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_delete"
+            android:backgroundTint="@color/P5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/editPda" />
 
-            <Button
-                android:id="@+id/editPda"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/ic_edit"
-                android:backgroundTint="@color/P5"
-                app:layout_constraintStart_toEndOf="@id/pdaFecha"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <Button
-                android:id="@+id/deletePda"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/ic_delete"
-                android:backgroundTint="@color/P5"
-                app:layout_constraintStart_toEndOf="@id/editPda"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-</layout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

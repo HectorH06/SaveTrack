@@ -8,14 +8,14 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/pda_background"/>
+        android:theme="@style/pda_background" />
 
     <ImageButton
         android:id="@+id/goback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="661dp"
         android:background="@color/transparent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,18 +36,18 @@
 
     <Button
         android:id="@+id/PACurrencyButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:background="@color/G2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/config" />
 
     <Button
         android:id="@+id/PADiasAhorrandoButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/G2"
@@ -59,32 +59,38 @@
         android:id="@+id/PASaldoActual"
         android:layout_width="255dp"
         android:layout_height="255dp"
-        android:backgroundTint="@color/G2"
         android:background="@drawable/ic_hexagon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/G2"
+        android:contentDescription="@string/dias_ahorrando"
         android:textColor="@color/black"
-        android:contentDescription="@string/dias_ahorrando" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-    <LinearLayout
-        android:id="@+id/ProductoPorPagarTableRow"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/displayPda"
+        <LinearLayout
+            android:id="@+id/ProductoPorPagarTableRow"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintStart_toStartOf="@+id/cabezagastos"
-            app:layout_constraintTop_toBottomOf="@+id/cabezagastos" />
+            android:layout_height="120dp"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/displayPda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="@+id/cabezagastos"
+                app:layout_constraintTop_toBottomOf="@+id/cabezagastos" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

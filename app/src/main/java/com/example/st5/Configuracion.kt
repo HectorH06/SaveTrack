@@ -1,6 +1,7 @@
 package com.example.st5
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,11 +41,8 @@ class Configuracion : Fragment() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    val prev = indexmain()
-                    parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.index_container, prev)
-                        .addToBackStack(null).commit()
+                    val intent = Intent(activity, Index::class.java)
+                    startActivity(intent)
                 }
             })
     }
@@ -104,9 +102,8 @@ class Configuracion : Fragment() {
         adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         binding.goback.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.perfil_container, back).addToBackStack(null).commit()
+            val intent = Intent(activity, Index::class.java)
+            startActivity(intent)
         }
 
         binding.claroscuro.setCheckedChangeListener {

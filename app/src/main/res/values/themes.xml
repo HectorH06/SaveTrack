@@ -1,12 +1,12 @@
 <resources>
     <style name="Theme.AppTheme.Light" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/P5</item>
-        <item name="colorPrimaryVariant">@color/P0</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/P2</item>
+        <item name="colorOnPrimary">@color/P0</item>
 
         <item name="colorSecondary">@color/P1</item>
-        <item name="colorSecondaryVariant">@color/P0</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/P3</item>
+        <item name="colorOnSecondary">@color/P4</item>
 
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>

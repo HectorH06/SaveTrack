@@ -4,14 +4,14 @@
         <shape android:shape="oval">
             <solid android:color="@color/B0" />
             <gradient
-                android:startColor="@color/B4"
-                android:endColor="@color/B2"
+                android:startColor="?attr/colorOnSecondary"
+                android:endColor="?attr/colorPrimaryVariant"
                 android:type="linear"
                 android:angle="0"/>
 
             <stroke
                 android:width="4dp"
-                android:color="@color/B0"/>
+                android:color="?attr/colorOnPrimary"/>
 
             <padding android:left="1dp"
                 android:top="1dp"
@@ -23,16 +23,11 @@
     </item>
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/B1" />
-            <gradient
-                android:startColor="@color/B5"
-                android:endColor="@color/B3"
-                android:type="linear"
-                android:angle="0"/>
+            <solid android:color="@color/transparent" />
 
             <stroke
                 android:width="4dp"
-                android:color="@color/B0"/>
+                android:color="?attr/colorOnPrimary"/>
 
             <padding android:left="1dp"
                 android:top="1dp"

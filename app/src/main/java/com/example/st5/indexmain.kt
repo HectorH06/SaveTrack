@@ -91,23 +91,22 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     }
 
     private fun setupColors() {
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.Y3))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.B2))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.G2))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.B0))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.O1))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.R1))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.P1))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.R0))
-
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.G4))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.B4))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.R2))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.O4))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.Y2))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.P2))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.P1))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.R0))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V1))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V2))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V3))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V4))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V5))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V6))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V7))
+        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V8))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V9))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V10))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V11))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V12))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V13))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V14))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V7))
+        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V8))
 
 
 

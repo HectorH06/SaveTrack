@@ -4,20 +4,23 @@
         <shape android:shape="rectangle">
             <corners android:radius="15dp" />
             <gradient
-                android:startColor="@color/P2"
-                android:endColor="@color/transparent"
+                android:startColor="?attr/colorPrimary"
+                android:endColor="?attr/colorSecondary"
                 android:angle="45" />
             <stroke
                 android:width="2dp"
-                android:color="@color/P0" />
+                android:color="?attr/colorOnPrimary" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
+            <solid android:color="@color/transparent" />
+
             <corners android:radius="15dp" />
+
             <stroke
                 android:width="2dp"
-                android:color="@color/P0" />
+                android:color="?attr/colorOnPrimary" />
         </shape>
     </item>
 </selector>

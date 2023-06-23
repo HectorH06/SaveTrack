@@ -40,11 +40,11 @@
         android:id="@+id/BalanceTV"
         android:layout_width="148dp"
         android:layout_height="148dp"
-        android:backgroundTint="@color/B3"
+        android:backgroundTint="?attr/colorSecondaryVariant"
         android:background="@drawable/ic_hexagon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnPrimary"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="128dp"
         android:contentDescription="@string/dias_ahorrando" />
@@ -75,8 +75,8 @@
             android:paddingStart="10dp"
             android:paddingTop="12dp"
             android:paddingEnd="6dp"
-            android:textColor="@color/B0"
-            android:textColorHint="@color/B0"
+            android:textColor="?attr/colorOnPrimary"
+            android:textColorHint="?attr/colorSecondary"
             android:textSize="20sp" />
 
         <TextView
@@ -91,8 +91,8 @@
             android:paddingEnd="6dp"
             android:layout_marginTop="-2dp"
             android:layout_marginBottom="-2dp"
-            android:textColor="@color/B0"
-            android:textColorHint="@color/B0"
+            android:textColor="?attr/colorOnPrimary"
+            android:textColorHint="?attr/colorSecondary"
             android:textSize="20sp" />
 
         <TextView
@@ -106,8 +106,8 @@
             android:paddingEnd="6dp"
             android:autofillHints="Ocupation"
             android:textSize="20sp"
-            android:textColor="@color/B0"
-            android:textColorHint="@color/B0"/>
+            android:textColor="?attr/colorOnPrimary"
+            android:textColorHint="?attr/colorSecondary" />
     </LinearLayout>
 
     <ImageView
@@ -120,7 +120,7 @@
         android:layout_marginStart="8dp"
         app:layout_constraintTop_toTopOf="@id/UserDataLayout"
         app:layout_constraintStart_toEndOf="@+id/UserDataLayout"
-        app:tint="@color/B0" />
+        app:tint="?attr/colorOnPrimary" />
 
     <ImageView
         android:id="@+id/EditProfileButton2"
@@ -132,7 +132,7 @@
         android:layout_marginStart="8dp"
         app:layout_constraintTop_toTopOf="@id/UserDataLayout"
         app:layout_constraintStart_toEndOf="@+id/UserDataLayout"
-        app:tint="@color/B0" />
+        app:tint="?attr/colorOnPrimary" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -148,21 +148,27 @@
             android:id="@+id/Group1Button"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/B4"
+            android:textColor="?attr/colorOnPrimary"
+            android:textColorHint="?attr/colorSecondary"
+            android:background="?attr/colorOnSecondary"
             android:text="Group 1" />
 
         <Button
             android:id="@+id/Group2Button"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/B4"
+            android:textColor="?attr/colorOnPrimary"
+            android:textColorHint="?attr/colorSecondary"
+            android:background="?attr/colorOnSecondary"
             android:text="Group 2" />
 
         <Button
             android:id="@+id/Group3Button"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/B4"
+            android:textColor="?attr/colorOnPrimary"
+            android:textColorHint="?attr/colorSecondary"
+            android:background="?attr/colorOnSecondary"
             android:text="Group 3" />
     </LinearLayout>
 
@@ -170,9 +176,11 @@
         android:id="@+id/DaysSavingButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@color/Y2"
+        android:background="@drawable/b1table"
         android:contentDescription="@string/balance"
         android:textSize="20sp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
         app:layout_constraintTop_toBottomOf="@id/Config"
         app:layout_constraintBottom_toTopOf="@id/UserDataLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -184,7 +192,7 @@
         android:layout_height="75dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="40dp"
-        android:background="@color/black"
+        android:background="?attr/colorOnPrimary"
         android:text="Cerrar Sesión"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

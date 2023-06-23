@@ -5,21 +5,22 @@
     <color name="gris">#C9CCD6</color>
     <color name="amarilloetiquetas">#E6D780</color>
     
-    <!-- Purple -->
+    <!-- Purple OLD
     <color name="P0">#FF400060</color>
     <color name="P1">#5700A5</color>
     <color name="P2">#79529F</color>
     <color name="P3">#FFD5ABFF</color>
     <color name="P4">#FFE5CBFF</color>
     <color name="P5">#FFEFDEFE</color>
+    -->
 
-    <!-- Green -->
-    <color name="G0">#0F6323</color>
-    <color name="G1">#218A39</color>
-    <color name="G2">#FF61BD4F</color>
-    <color name="G3">#FFA3E635</color>
-    <color name="G4">#FFB4ED50</color>
-    <color name="G5">#FFC9F7B9</color>
+    <!-- NEW, not purple so P stands for pro -->
+    <color name="P0">#0A0A0A</color>
+    <color name="P1">#222</color>
+    <color name="P2">#333</color>
+    <color name="P3">#DDD</color>
+    <color name="P4">#EEE</color>
+    <color name="P5">#FFF</color>
 
     <!-- Red -->
     <color name="R0">#FFA80B1A</color>
@@ -44,7 +45,15 @@
     <color name="Y4">#FFFDCB6E</color>
     <color name="Y5">#FFFFE7A6</color>
 
-    <!-- Blue -->
+    <!-- Green -->
+    <color name="G0">#073211</color>
+    <color name="G1">#135C24</color>
+    <color name="G2">#3AA824</color>
+    <color name="G3">#FFA3E635</color>
+    <color name="G4">#FFB4ED50</color>
+    <color name="G5">#FFC9F7B9</color>
+
+    <!-- Blue OLD
     <color name="B0">#124A88</color>
     <color name="B1">#046DC8</color>
     <color name="B2">#FF3DADF2</color>
@@ -52,6 +61,15 @@
     <color name="B4">#FFAFDCEC</color>
     <color name="B5">#FFC7E7F3</color>
     <color name="B6">#D6F2F8</color>
+    -->
+
+    <!-- NEW, not blue so B stands for basic -->
+    <color name="B0">#0A0A0A</color>
+    <color name="B1">#222</color>
+    <color name="B2">#333</color>
+    <color name="B3">#EEE</color>
+    <color name="B5">#F0F0F0</color>
+    <color name="B4">#FFF</color>
 
     <!-- Neutral -->
     <color name="black">#FF000000</color>
@@ -64,6 +82,26 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="grey">#FFC9CCD6</color>
+
+
+
+    <!-- Piechart -->
+    <color name="V1">#FFFDB813</color>
+    <color name="V2">#FF3DADF2</color>
+    <color name="V3">#FF3AA824</color>
+    <color name="V4">#FF124A88</color>
+    <color name="V5">#FFDC9225</color>
+    <color name="V6">#FFDC3545</color>
+    <color name="V7">#FF5700A5</color>
+    <color name="V8">#FFA80B1A</color>
+    <color name="V9">#FFB4ED50</color>
+    <color name="V10">#FFAFDCEC</color>
+    <color name="V11">#FFEF476F</color>
+    <color name="V12">#FFFFBD9A</color>
+    <color name="V13">#FFFFBF5F</color>
+    <color name="V14">#FF79529F</color>
+
+
 
     <!-- Android -->
     <color name="purple_200">#FFBB86FC</color>

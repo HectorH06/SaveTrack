@@ -116,6 +116,8 @@
     <string name="total_de_ingresos">Total de ingresos:</string>
     <string name="total_de_gastos">Total de gastos</string>
     <string name="veces">Veces</string>
+    <string name="deuda">Deuda</string>
+    <string name="wallpaper">Wallpaper</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

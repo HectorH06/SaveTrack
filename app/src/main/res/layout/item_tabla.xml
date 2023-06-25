@@ -59,15 +59,15 @@
 
     <Button
         android:id="@+id/editMonto"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:background="@drawable/ic_edit"
         android:backgroundTint="?attr/colorOnPrimary" />
 
     <Button
         android:id="@+id/deleteMonto"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:background="@drawable/ic_delete"
         android:backgroundTint="?attr/colorOnPrimary"/>
 </TableRow>

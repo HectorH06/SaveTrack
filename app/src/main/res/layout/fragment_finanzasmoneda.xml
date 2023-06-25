@@ -62,7 +62,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="613dp"
         android:background="@drawable/ic_bubbles"
-        android:backgroundTint="@color/B4"
+        android:backgroundTint="@color/X4"
         android:gravity="center"
         android:rotation="-180"
         android:textColor="@color/white"

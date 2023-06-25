@@ -8,7 +8,8 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/pda_background" />
+        android:theme="@style/pda_background"
+        android:contentDescription="@string/wallpaper" />
 
     <ImageButton
         android:id="@+id/goback"
@@ -20,7 +21,8 @@
         android:background="@color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
+        app:srcCompat="@drawable/ic_back"
+        android:contentDescription="@string/goback" />
 
     <ImageButton
         android:id="@+id/config"
@@ -32,7 +34,8 @@
         android:background="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_settings" />
+        app:srcCompat="@drawable/ic_settings"
+        android:contentDescription="@string/configuracion" />
 
     <Button
         android:id="@+id/PACurrencyButton"
@@ -41,6 +44,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@color/G2"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/config" />
 
@@ -51,6 +56,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/G2"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/config" />
 
@@ -62,7 +69,8 @@
         android:background="@drawable/ic_hexagon"
         android:backgroundTint="@color/G2"
         android:contentDescription="@string/dias_ahorrando"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

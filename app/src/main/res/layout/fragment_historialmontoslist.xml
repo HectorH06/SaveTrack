@@ -9,7 +9,8 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/historial_background"/>
+        android:theme="@style/historial_background"
+        android:contentDescription="@string/wallpaper" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -114,6 +115,7 @@
             android:contentDescription="@string/goback"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back" />
+            app:srcCompat="@drawable/ic_back"
+            app:tint="?attr/colorOnPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

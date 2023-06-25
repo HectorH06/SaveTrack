@@ -42,7 +42,8 @@
                         android:hint="@string/Concepto"
                         android:maxWidth="100dp"
                         android:paddingStart="7dp"
-                        android:textColor="@color/P5"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorOnPrimary"
                         android:textSize="18sp" />
 
                     <TextView
@@ -51,7 +52,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/Valor"
                         android:textAlignment="center"
-                        android:textColor="@color/P5"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorOnPrimary"
                         android:textSize="18sp" />
 
                     <TextView
@@ -60,7 +62,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/Fecha"
                         android:textAlignment="center"
-                        android:textColor="@color/P5"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorOnPrimary"
                         android:textSize="18sp" />
 
                     <TextView
@@ -70,7 +73,8 @@
                         android:hint="@string/Etiqueta"
                         android:paddingEnd="7dp"
                         android:layout_marginEnd="20dp"
-                        android:textColor="@color/P5"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorOnPrimary"
                         android:textSize="18sp" />
 
                 </TableRow>
@@ -109,6 +113,8 @@
                 android:textSize="18sp"
                 android:text="@string/total_de_ingresos"
                 android:textAlignment="textEnd"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorOnPrimary"
                 app:layout_constraintBottom_toTopOf="@id/totalI"
                 app:layout_constraintEnd_toEndOf="@id/totalI"/>
 
@@ -118,6 +124,8 @@
                 android:layout_height="50dp"
                 android:textAlignment="textEnd"
                 android:textSize="36sp"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorOnPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp"
@@ -153,6 +161,7 @@
             android:contentDescription="@string/goback"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back" />
+            app:srcCompat="@drawable/ic_back"
+            app:tint="?attr/colorOnPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

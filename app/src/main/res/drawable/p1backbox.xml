@@ -2,16 +2,16 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/P0" />
+            <solid android:color="@color/X0" />
             <gradient
-                android:startColor="@color/P5"
+                android:startColor="@color/X5"
                 android:endColor="@color/white"
                 android:type="linear"
                 android:angle="0"/>
 
             <stroke
                 android:width="0dp"
-                android:color="@color/P0"/>
+                android:color="@color/X0"/>
 
             <padding android:left="1dp"
                 android:top="1dp"
@@ -23,16 +23,16 @@
     </item>
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/P1" />
+            <solid android:color="@color/X1" />
             <gradient
-                android:startColor="@color/P5"
+                android:startColor="@color/X5"
                 android:endColor="@color/white"
                 android:type="linear"
                 android:angle="0"/>
 
             <stroke
                 android:width="0dp"
-                android:color="@color/P1"/>
+                android:color="@color/X1"/>
 
             <padding android:left="1dp"
                 android:top="1dp"

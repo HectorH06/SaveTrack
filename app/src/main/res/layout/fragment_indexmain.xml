@@ -9,7 +9,8 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/index_background"/>
+        android:theme="@style/index_background"
+        android:contentDescription="@string/wallpaper" />
     <!--
     style="?android:attr/progressBarStyle"
     android:background="@drawable/ring"
@@ -32,8 +33,8 @@
         android:textAlignment="center"
         android:paddingTop="7dp"
         android:textSize="34sp"
-        android:textColor="@color/P2"
-        android:textColorHint="@color/P3"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
         android:hint="@string/gastos"
         android:background="@drawable/p1table"
         android:translationZ="200dp"
@@ -49,6 +50,8 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:contentDescription=""
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:trackTint="@color/P2"
+            android:trackTint="@color/X2"
             app:isw_icon_left="@drawable/ic_add"
             app:isw_icon_right="@drawable/ic_remove"
             app:isw_inactive_tint_icon_left="@color/G5"
@@ -193,7 +196,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_settings"
         android:contentDescription="@string/configuracion"/>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

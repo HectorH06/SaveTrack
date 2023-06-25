@@ -7,29 +7,14 @@
 
     <fragment
         android:id="@+id/noteListFragment"
-        android:name="com.kulnois.notesapp.ui.list.NoteListFragment"
+        android:name="com.example.st5.Starter"
         android:label="NoteListFragment"
-        tools:layout="@layout/fragment_list_note">
-        <action
-            android:id="@+id/action_noteListFragment_to_noteEditorFragment"
-            app:destination="@id/noteEditorFragment" />
-        <action
-            android:id="@+id/action_noteListFragment_to_noteEditorFragment2"
-            app:destination="@id/noteEditorFragment" />
+        tools:layout="@layout/activity_main">
     </fragment>
     <fragment
         android:id="@+id/noteEditorFragment"
-        android:name="com.kulnois.notesapp.ui.editor.NoteEditorFragment"
+        android:name="com.example.st5.Starter"
         android:label="NoteEditorFragment"
-        tools:layout="@layout/fragment_note_editor">
-
-        <argument
-            android:name="noteKey"
-            app:argType="long" />
-        <action
-            android:id="@+id/action_noteEditorFragment_to_noteListFragment"
-            app:destination="@id/noteListFragment"
-            app:popUpTo="@+id/noteListFragment"
-            app:popUpToInclusive="true" />
+        tools:layout="@layout/activity_index">
     </fragment>
 </navigation>

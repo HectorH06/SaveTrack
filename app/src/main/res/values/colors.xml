@@ -5,22 +5,13 @@
     <color name="gris">#C9CCD6</color>
     <color name="amarilloetiquetas">#E6D780</color>
     
-    <!-- Purple OLD
+    <!-- Purple -->
     <color name="P0">#FF400060</color>
     <color name="P1">#5700A5</color>
     <color name="P2">#79529F</color>
     <color name="P3">#FFD5ABFF</color>
     <color name="P4">#FFE5CBFF</color>
     <color name="P5">#FFEFDEFE</color>
-    -->
-
-    <!-- NEW, not purple so P stands for pro -->
-    <color name="P0">#0A0A0A</color>
-    <color name="P1">#222</color>
-    <color name="P2">#333</color>
-    <color name="P3">#DDD</color>
-    <color name="P4">#EEE</color>
-    <color name="P5">#FFF</color>
 
     <!-- Red -->
     <color name="R0">#FFA80B1A</color>
@@ -53,7 +44,7 @@
     <color name="G4">#FFB4ED50</color>
     <color name="G5">#FFC9F7B9</color>
 
-    <!-- Blue OLD
+    <!-- Blue -->
     <color name="B0">#124A88</color>
     <color name="B1">#046DC8</color>
     <color name="B2">#FF3DADF2</color>
@@ -61,15 +52,6 @@
     <color name="B4">#FFAFDCEC</color>
     <color name="B5">#FFC7E7F3</color>
     <color name="B6">#D6F2F8</color>
-    -->
-
-    <!-- NEW, not blue so B stands for basic -->
-    <color name="B0">#0A0A0A</color>
-    <color name="B1">#222</color>
-    <color name="B2">#333</color>
-    <color name="B3">#EEE</color>
-    <color name="B5">#F0F0F0</color>
-    <color name="B4">#FFF</color>
 
     <!-- Neutral -->
     <color name="black">#FF000000</color>
@@ -83,7 +65,13 @@
 
     <color name="grey">#FFC9CCD6</color>
 
-
+    <!-- X for b&w themes -->
+    <color name="X0">#0A0A0A</color>
+    <color name="X1">#222</color>
+    <color name="X2">#333</color>
+    <color name="X3">#EEE</color>
+    <color name="X5">#F0F0F0</color>
+    <color name="X4">#FFF</color>
 
     <!-- Piechart -->
     <color name="V1">#FFFDB813</color>

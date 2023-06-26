@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,7 +9,8 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/index_background"/>
+        android:theme="@style/index_background"
+        android:contentDescription="@string/wallpaper" />
 
     <ScrollView
         android:id="@+id/scrollView3"
@@ -44,7 +46,8 @@
                         android:paddingStart="7dp"
                         android:textColor="?attr/colorOnPrimary"
                         android:textColorHint="?attr/colorOnPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        tools:ignore="RtlSymmetry" />
 
                     <TextView
                         android:id="@+id/HValor"
@@ -75,7 +78,8 @@
                         android:textAlignment="textEnd"
                         android:textColor="?attr/colorOnPrimary"
                         android:textColorHint="?attr/colorOnPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        tools:ignore="RtlSymmetry" />
 
                 </TableRow>
 
@@ -89,7 +93,7 @@
 
                 <TableRow>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:layout_marginTop="16dp">
 
                         <ImageButton
@@ -103,7 +107,8 @@
                             app:tint="@color/R1"
                             app:srcCompat="@drawable/ic_remove"
                             android:contentDescription="@string/nuevo_gasto"/>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
                 </TableRow>
             </TableLayout>
 

@@ -566,7 +566,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
     inner class pieChartOnChartValueSelectedListener : OnChartValueSelectedListener {
         override fun onValueSelected(e: Entry, h: Highlight) {
-            if (e == null) return
             Log.i("VAL SELECTED", "Value: " + e.y + ", index: " + h.x.toInt())
 
             val chart = binding.PieChart
@@ -603,7 +602,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     }
 
     override fun onValueSelected(e: Entry, h: Highlight) {
-        if (e == null) return
         Log.i("VAL SELECTED", "Value: " + e.y + ", index: " + h.x)
     }
 
@@ -637,9 +635,9 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dm = calendar.get(Calendar.DAY_OF_MONTH)
-            var dom = String.format("%02d", dm)
-            var w = calendar.get(Calendar.DAY_OF_WEEK)
+            val dm = calendar.get(Calendar.DAY_OF_MONTH)
+            val dom = String.format("%02d", dm)
+            val w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
                 1 -> dow = "Sunday"
@@ -651,7 +649,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 7 -> dow = "Saturday"
             }
 
-            val addd: Int = today?.replace("-", "")?.toInt() ?: 0
+            val addd: Int = today.replace("-", "").toInt()
 
             Log.i("DOM", dom)
             Log.i("DOW", dow)
@@ -667,7 +665,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     val totalGastos = ingresoGastoDao.checkSummaryG()
 
                     Log.i("MONTO PROCESADO", monto.toString())
-                    var weekMonto = monto.fecha.uppercase()
+                    val weekMonto = monto.fecha.uppercase()
                     Log.v("wek", weekMonto)
 
                     if (monto.valor > 0) {

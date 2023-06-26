@@ -26,6 +26,7 @@ class indexIngresosList : Fragment() {
     private lateinit var binding: FragmentIndexingresolistBinding
 
     private lateinit var ingresos: List<Monto>
+    private lateinit var fastable: List<Monto>
 
     companion object {
         private const val etiqueta = "etiquetar"
@@ -101,8 +102,10 @@ class indexIngresosList : Fragment() {
         binding = FragmentIndexingresolistBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
             ingresos = montosget()
+            fastable = montosget()
             binding.displayIngresos.adapter = MontoAdapter(ingresos)
             binding.totalI.text = "$" + totalIngresos().toString()
+            binding.fastAdd.adapter = MontoAdapter2(fastable)
         }
         return binding.root
     }
@@ -341,6 +344,37 @@ class indexIngresosList : Fragment() {
 
                 confirmDialog.show()
             }
+        }
+
+
+        override fun getItemCount(): Int {
+            Log.v("size de montossss", montos.size.toString())
+            return montos.size
+        }
+    }
+
+    private inner class MontoAdapter2(private val montos: List<Monto>) : RecyclerView.Adapter<MontoAdapter2.MontoViewHolder2>() {
+        inner class MontoViewHolder2(
+            itemView: View,
+            val vecesTextView: TextView,
+            val conceptoTextView: TextView,
+            val valorTextView: TextView
+        ) : RecyclerView.ViewHolder(itemView)
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder2 {
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_fastadd, parent, false)
+            val vecesTextView = itemView.findViewById<TextView>(R.id.fastVeces)
+            val conceptoTextView = itemView.findViewById<TextView>(R.id.fastNombre)
+            val valorTextView = itemView.findViewById<TextView>(R.id.fastValor)
+            return MontoViewHolder2(itemView, vecesTextView, conceptoTextView, valorTextView)
+        }
+
+
+        override fun onBindViewHolder(holder: MontoViewHolder2, position: Int) {
+            val monto = montos[position]
+            holder.vecesTextView.text = monto.veces.toString()
+            holder.conceptoTextView.text = monto.concepto
+            holder.valorTextView.text = monto.valor.toString()
         }
 
 

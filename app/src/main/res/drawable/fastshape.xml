@@ -3,8 +3,8 @@
     <item android:state_pressed="true">
         <shape android:shape="oval">
             <gradient
-                android:startColor="?attr/colorOnSecondary"
-                android:endColor="?attr/colorPrimaryVariant"
+                android:startColor="?attr/colorSecondary"
+                android:endColor="?attr/colorOnSecondary"
                 android:type="linear"
                 android:angle="0"/>
 
@@ -22,10 +22,10 @@
     </item>
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/transparent" />
+            <solid android:color="?attr/colorSecondary" />
 
             <stroke
-                android:width="4dp"
+                android:width="0dp"
                 android:color="?attr/colorOnPrimary"/>
 
             <padding android:left="1dp"

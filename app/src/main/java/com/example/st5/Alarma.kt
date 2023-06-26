@@ -48,9 +48,9 @@ class Alarma : BroadcastReceiver() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dm = calendar.get(Calendar.DAY_OF_MONTH)
-            var dom = String.format("%02d", dm)
-            var w = calendar.get(Calendar.DAY_OF_WEEK)
+            val dm = calendar.get(Calendar.DAY_OF_MONTH)
+            val dom = String.format("%02d", dm)
+            val w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
                 1 -> dow = "Sunday"
@@ -62,7 +62,7 @@ class Alarma : BroadcastReceiver() {
                 7 -> dow = "Saturday"
             }
 
-            val addd: Int = today?.replace("-", "")?.toInt() ?: 0
+            val addd: Int = today.replace("-", "").toInt()
 
             Log.i("DOM", dom)
             Log.i("DOW", dow)
@@ -78,7 +78,7 @@ class Alarma : BroadcastReceiver() {
                     val totalGastos = ingresoGastoDao.checkSummaryG()
 
                     Log.i("MONTO PROCESADO", monto.toString())
-                    var weekMonto = monto.fecha.uppercase()
+                    val weekMonto = monto.fecha.uppercase()
                     Log.v("wek", weekMonto)
 
                     if (monto.valor > 0) {
@@ -173,40 +173,36 @@ class Alarma : BroadcastReceiver() {
 
             // Tabla Monto
             for (idmonto in 1..perocuantosmontos) {
-                if (montoDao.getConcepto(idmonto) != null) {
-                    Log.v("Current idmonto", idmonto.toString())
-                    val viejoMonto = Monto(
-                        idmonto = montoDao.getIdmonto(idmonto),
-                        iduser = montoDao.getIduser(idmonto),
-                        concepto = montoDao.getConcepto(idmonto),
-                        valor = montoDao.getValor(idmonto),
-                        fecha = montoDao.getFecha(idmonto),
-                        frecuencia = montoDao.getFrecuencia(idmonto),
-                        etiqueta = montoDao.getEtiqueta(idmonto),
-                        interes = montoDao.getInteres(idmonto),
-                        veces = montoDao.getVeces(idmonto),
-                        adddate = montoDao.getAdded(idmonto)
-                    )
-                    Log.v("Current monto $idmonto", viejoMonto.toString())
-                    val jsonObjectMonto = JSONObject()
-                    jsonObjectMonto.put("idmonto", viejoMonto.idmonto)
-                    jsonObjectMonto.put("iduser", viejoMonto.iduser)
-                    jsonObjectMonto.put("concepto", viejoMonto.concepto)
-                    jsonObjectMonto.put("valor", viejoMonto.valor)
-                    jsonObjectMonto.put("fecha", viejoMonto.fecha)
-                    jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
-                    jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
-                    jsonObjectMonto.put("interes", viejoMonto.interes)
-                    jsonObjectMonto.put("veces", viejoMonto.veces)
-                    jsonObjectMonto.put("adddate", viejoMonto.adddate)
+                Log.v("Current idmonto", idmonto.toString())
+                val viejoMonto = Monto(
+                    idmonto = montoDao.getIdmonto(idmonto),
+                    iduser = montoDao.getIduser(idmonto),
+                    concepto = montoDao.getConcepto(idmonto),
+                    valor = montoDao.getValor(idmonto),
+                    fecha = montoDao.getFecha(idmonto),
+                    frecuencia = montoDao.getFrecuencia(idmonto),
+                    etiqueta = montoDao.getEtiqueta(idmonto),
+                    interes = montoDao.getInteres(idmonto),
+                    veces = montoDao.getVeces(idmonto),
+                    adddate = montoDao.getAdded(idmonto)
+                )
+                Log.v("Current monto $idmonto", viejoMonto.toString())
+                val jsonObjectMonto = JSONObject()
+                jsonObjectMonto.put("idmonto", viejoMonto.idmonto)
+                jsonObjectMonto.put("iduser", viejoMonto.iduser)
+                jsonObjectMonto.put("concepto", viejoMonto.concepto)
+                jsonObjectMonto.put("valor", viejoMonto.valor)
+                jsonObjectMonto.put("fecha", viejoMonto.fecha)
+                jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
+                jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
+                jsonObjectMonto.put("interes", viejoMonto.interes)
+                jsonObjectMonto.put("veces", viejoMonto.veces)
+                jsonObjectMonto.put("adddate", viejoMonto.adddate)
 
-                    jsonArrayMonto.put(jsonObjectMonto)
+                jsonArrayMonto.put(jsonObjectMonto)
 
-                    Log.v("Current object", jsonObjectMonto.toString())
-                    Log.v("Current array", jsonArrayMonto.toString())
-                } else {
-                    Log.v("Current monto $idmonto", "VACÍO")
-                }
+                Log.v("Current object", jsonObjectMonto.toString())
+                Log.v("Current array", jsonArrayMonto.toString())
             }
 
             // Tabla MontoGrupo
@@ -226,26 +222,22 @@ class Alarma : BroadcastReceiver() {
 
             // Tabla Labels
             for (idlabel in 1..perocuantaslabels) {
-                if (labelsDao.getIdLabel(idlabel) != null) {
-                    Log.v("Current idmonto", idlabel.toString())
-                    val viejaLabel = Labels(
-                        idlabel = labelsDao.getIdLabel(idlabel),
-                        plabel = labelsDao.getPlabel(idlabel),
-                        color = labelsDao.getColor(idlabel)
-                    )
-                    Log.v("Current monto $idlabel", viejaLabel.toString())
-                    val jsonObjectLabels = JSONObject()
-                    jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
-                    jsonObjectLabels.put("plabel", viejaLabel.plabel)
-                    jsonObjectLabels.put("color", viejaLabel.color)
+                Log.v("Current idmonto", idlabel.toString())
+                val viejaLabel = Labels(
+                    idlabel = labelsDao.getIdLabel(idlabel),
+                    plabel = labelsDao.getPlabel(idlabel),
+                    color = labelsDao.getColor(idlabel)
+                )
+                Log.v("Current monto $idlabel", viejaLabel.toString())
+                val jsonObjectLabels = JSONObject()
+                jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
+                jsonObjectLabels.put("plabel", viejaLabel.plabel)
+                jsonObjectLabels.put("color", viejaLabel.color)
 
-                    jsonArrayLabels.put(jsonObjectLabels)
+                jsonArrayLabels.put(jsonObjectLabels)
 
-                    Log.v("Current object", jsonObjectLabels.toString())
-                    Log.v("Current array", jsonArrayLabels.toString())
-                } else {
-                    Log.v("Current monto $idlabel", "VACÍO")
-                }
+                Log.v("Current object", jsonObjectLabels.toString())
+                Log.v("Current array", jsonArrayLabels.toString())
             }
 
             Log.v("jsonObjectUsuario", jsonObjectUsuario.toString())

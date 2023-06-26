@@ -8,7 +8,8 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/index_background"/>
+        android:theme="@style/index_background"
+        android:contentDescription="@string/wallpaper" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -89,7 +90,8 @@
 
                 <TableRow>
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_marginTop="16dp">
+                        android:layout_marginTop="16dp"
+                        android:layout_height="200dp">
 
                         <ImageButton
                             android:id="@+id/AgregarIngresoButton"
@@ -97,11 +99,21 @@
                             android:layout_height="64dp"
                             android:background="@drawable/confshape"
                             android:contentDescription="@string/nuevo_ingreso"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="16dp"
                             app:srcCompat="@drawable/ic_add"
                             app:tint="@color/G1" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/fastAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintTop_toBottomOf="@id/AgregarIngresoButton"
+                            app:layout_constraintStart_toStartOf="parent"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </TableRow>
             </TableLayout>

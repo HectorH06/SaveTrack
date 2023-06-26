@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/noteListFragment">
+    app:startDestination="@id/frag">
 
     <fragment
-        android:id="@+id/noteListFragment"
+        android:id="@+id/frag"
         android:name="com.example.st5.Starter"
         android:label="NoteListFragment"
         tools:layout="@layout/activity_main">
     </fragment>
     <fragment
-        android:id="@+id/noteEditorFragment"
+        android:id="@+id/starter"
         android:name="com.example.st5.Starter"
         android:label="NoteEditorFragment"
         tools:layout="@layout/activity_index">

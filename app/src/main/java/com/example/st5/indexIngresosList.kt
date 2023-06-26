@@ -143,41 +143,25 @@ class indexIngresosList : Fragment() {
         binding.HConcepto.setOnClickListener {
             lifecycleScope.launch {
                 ingresos = montosgetAlfabetica()
-                if (ingresos != null) {
-                    binding.displayIngresos.adapter = MontoAdapter(ingresos)
-                } else {
-                    Log.e("INGRESOS", "No hay ingresos")
-                }
+                binding.displayIngresos.adapter = MontoAdapter(ingresos)
             }
         }
         binding.HValor.setOnClickListener {
             lifecycleScope.launch {
                 ingresos = montosgetValuados()
-                if (ingresos != null) {
-                    binding.displayIngresos.adapter = MontoAdapter(ingresos)
-                } else {
-                    Log.e("INGRESOS", "No hay ingresos")
-                }
+                binding.displayIngresos.adapter = MontoAdapter(ingresos)
             }
         }
         binding.HFecha.setOnClickListener {
             lifecycleScope.launch {
                 ingresos = montosgetFechados()
-                if (ingresos != null) {
-                    binding.displayIngresos.adapter = MontoAdapter(ingresos)
-                } else {
-                    Log.e("INGRESOS", "No hay ingresos")
-                }
+                binding.displayIngresos.adapter = MontoAdapter(ingresos)
             }
         }
         binding.HEtiqueta.setOnClickListener {
             lifecycleScope.launch {
                 ingresos = montosgetEtiquetados()
-                if (ingresos != null) {
-                    binding.displayIngresos.adapter = MontoAdapter(ingresos)
-                } else {
-                    Log.e("INGRESOS", "No hay ingresos")
-                }
+                binding.displayIngresos.adapter = MontoAdapter(ingresos)
             }
         }
     }
@@ -266,7 +250,7 @@ class indexIngresosList : Fragment() {
         etiqueta: Long,
         interes: Double?,
         veces: Long?,
-        adddate: String
+        adddate: Int
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()

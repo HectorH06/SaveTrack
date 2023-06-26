@@ -149,7 +149,8 @@ class historialMontosList : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dom = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            var dm = calendar.get(Calendar.DAY_OF_MONTH)
+            var dom = String.format("%02d", dm)
             var w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
@@ -162,12 +163,14 @@ class historialMontosList : Fragment() {
                 7 -> dow = "Saturday"
             }
 
+            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
+
             Log.i("datedate", datedate.toString())
             Log.i("DOM", dom)
             Log.i("DOW", dow)
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFecha(datedate, dom, dow, "Diario")
+                montoDao.getMontoXFecha(datedate, dom, dow, "Diario", addd)
             } else {
                 montoDao.getMontoXFecha()
             }
@@ -187,7 +190,8 @@ class historialMontosList : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dom = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            var dm = calendar.get(Calendar.DAY_OF_MONTH)
+            var dom = String.format("%02d", dm)
             var w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
@@ -200,12 +204,14 @@ class historialMontosList : Fragment() {
                 7 -> dow = "Saturday"
             }
 
+            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
+
             Log.i("datedate", datedate.toString())
             Log.i("DOM", dom)
             Log.i("DOW", dow)
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaAlfabetica(datedate, dom, dow, "Diario")
+                montoDao.getMontoXFechaAlfabetica(datedate, dom, dow, "Diario", addd)
             } else {
                 montoDao.getMontoXFechaAlfabetica()
             }
@@ -225,7 +231,8 @@ class historialMontosList : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dom = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            var dm = calendar.get(Calendar.DAY_OF_MONTH)
+            var dom = String.format("%02d", dm)
             var w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
@@ -238,12 +245,14 @@ class historialMontosList : Fragment() {
                 7 -> dow = "Saturday"
             }
 
+            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
+
             Log.i("datedate", datedate.toString())
             Log.i("DOM", dom)
             Log.i("DOW", dow)
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaValuados(datedate, dom, dow, "Diario")
+                montoDao.getMontoXFechaValuados(datedate, dom, dow, "Diario", addd)
             } else {
                 montoDao.getMontoXFechaValuados()
             }
@@ -263,7 +272,8 @@ class historialMontosList : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dom = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            var dm = calendar.get(Calendar.DAY_OF_MONTH)
+            var dom = String.format("%02d", dm)
             var w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
@@ -276,12 +286,14 @@ class historialMontosList : Fragment() {
                 7 -> dow = "Saturday"
             }
 
+            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
+
             Log.i("datedate", datedate.toString())
             Log.i("DOM", dom)
             Log.i("DOW", dow)
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaVeces(datedate, dom, dow, "Diario")
+                montoDao.getMontoXFechaVeces(datedate, dom, dow, "Diario", addd)
             } else {
                 montoDao.getMontoXFechaVeces()
             }
@@ -301,7 +313,8 @@ class historialMontosList : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dom = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            var dm = calendar.get(Calendar.DAY_OF_MONTH)
+            var dom = String.format("%02d", dm)
             var w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
@@ -314,12 +327,14 @@ class historialMontosList : Fragment() {
                 7 -> dow = "Saturday"
             }
 
+            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
+
             Log.i("datedate", datedate.toString())
             Log.i("DOM", dom)
             Log.i("DOW", dow)
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaEtiquetados(datedate, dom, dow, "Diario")
+                montoDao.getMontoXFechaEtiquetados(datedate, dom, dow, "Diario", addd)
             } else {
                 montoDao.getMontoXFechaEtiquetados()
             }
@@ -337,7 +352,7 @@ class historialMontosList : Fragment() {
         etiqueta: Long,
         interes: Double?,
         veces: Long?,
-        adddate: String
+        adddate: Int
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()

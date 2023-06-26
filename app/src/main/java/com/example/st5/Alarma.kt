@@ -48,7 +48,8 @@ class Alarma : BroadcastReceiver() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dom = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            var dm = calendar.get(Calendar.DAY_OF_MONTH)
+            var dom = String.format("%02d", dm)
             var w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
@@ -61,13 +62,15 @@ class Alarma : BroadcastReceiver() {
                 7 -> dow = "Saturday"
             }
 
+            val addd: Int = today?.replace("-", "")?.toInt() ?: 0
+
             Log.i("DOM", dom)
             Log.i("DOW", dow)
 
             Log.i("todayyyy", today)
             Log.i("prevvvvv", prev)
 
-            val montos = montoDao.getMontoXFecha(today, dom, dow, "Diario")
+            val montos = montoDao.getMontoXFecha(today, dom, dow, "Diario", addd)
 
             if (prev != today) {
                 for (monto in montos) {

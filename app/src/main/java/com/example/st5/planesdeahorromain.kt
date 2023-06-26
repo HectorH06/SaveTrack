@@ -29,7 +29,7 @@ class planesdeahorromain : Fragment() {
     private lateinit var binding: FragmentPlanesdeahorromainBinding
 
     private lateinit var pda: List<Monto>
-    private var dolarValue: String = ""
+    private var dollarValue: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -113,11 +113,11 @@ class planesdeahorromain : Fragment() {
                 val checkDollar = StringRequest(
                     Request.Method.GET, durl,
                     { response ->
-                        dolarValue = response.toString()
-                        Log.d("DÓLAR HOY", dolarValue)
+                        dollarValue = response.toString()
+                        Log.d("DÓLAR HOY", dollarValue)
                         binding.PACurrencyButton.text = buildString {
                             append("Dolar HOY: ")
-                            append("$$dolarValue")
+                            append("$$dollarValue")
                         }
                     },
                     { error ->

@@ -69,7 +69,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             label: Long,
             interest: Double?,
             times: Long?,
-            adddate: String
+            adddate: Int
         ): indexmontoupdate {
             val fragment = indexmontoupdate()
             val args = Bundle()
@@ -88,7 +88,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             if (times != null) {
                 args.putLong(time, times)
             }
-            args.putString(adddat, adddate)
+            args.putInt(adddat, adddate)
             fragment.arguments = args
             return fragment
         }
@@ -342,7 +342,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                             } // Catch que agarra la fecha actual
                         }
 
-                        val adddate: String = arguments?.getString(adddat).toString()
+                        val adddate: Int = arguments?.getInt(adddat) ?: 0
 
                         Log.v("Id del monto actualizado", id.toString())
                         Log.v("Concepto", concepto)
@@ -352,7 +352,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Etiqueta", label.toString())
                         Log.v("Interes", interes.toString())
                         Log.v("Veces", veces.toString())
-                        Log.v("FECHA de CREACIÓN", adddate)
+                        Log.v("FECHA de CREACIÓN", adddate.toString())
                         lifecycleScope.launch {
                             montoupdate(idm, concepto, valor, fecha, frecuencia, label, interes, veces, adddate)
                         }
@@ -435,7 +435,7 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         etiqueta: Long,
         interes: Double,
         veces: Long?,
-        adddate: String
+        adddate: Int
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()

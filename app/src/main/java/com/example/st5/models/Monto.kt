@@ -40,7 +40,7 @@ data class Monto(
     var estado: Long? = 0L,
 
     @ColumnInfo(name = "adddate")
-    var adddate: String
+    var adddate: Int
 ) : Parcelable {
-    constructor() : this(0L, 0L, "", 0.0, "",0L, 0L, 0.0, 0L, 0L, "")
+    constructor() : this(0L, 0L, "", 0.0, "",0L, 0L, 0.0, 0L, 0L, 0)
 }

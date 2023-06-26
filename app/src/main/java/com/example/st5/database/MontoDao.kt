@@ -175,25 +175,25 @@ interface MontoDao {
     @Query("SELECT veces FROM monto WHERE idmonto = :id")
     fun getVeces(id: Int): Long
     @Query("SELECT adddate FROM monto WHERE idmonto = :id")
-    fun getAdded(id: Int): String
+    fun getAdded(id: Int): Int
 
     // endregion
 
     // region GET POR FECHA ESPECÍFICA
-    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai AND adddate = 0")
-    fun getMontoXFecha(fecha: String, dom: String, dow: String, dai: String): List<Monto>
-    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY concepto ASC")
-    fun getMontoXFechaAlfabetica(fecha: String, dom: String, dow: String, dai: String): List<Monto>
-    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY valor ASC")
-    fun getMontoXFechaValuados(fecha: String, dom: String, dow: String, dai: String): List<Monto>
-    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY frecuencia ASC")
-    fun getMontoXFechaFrecuentes(fecha: String, dom: String, dow: String, dai: String): List<Monto>
-    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY etiqueta ASC")
-    fun getMontoXFechaEtiquetados(fecha: String, dom: String, dow: String, dai: String): List<Monto>
-    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY interes ASC")
-    fun getMontoXFechaInteres(fecha: String, dom: String, dow: String, dai: String): List<Monto>
-    @Query("SELECT * FROM monto WHERE fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai ORDER BY veces ASC")
-    fun getMontoXFechaVeces(fecha: String, dom: String, dow: String, dai: String): List<Monto>
+    @Query("SELECT * FROM monto WHERE (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din")
+    fun getMontoXFecha(fecha: String, dom: String, dow: String, dai: String, din: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY concepto ASC")
+    fun getMontoXFechaAlfabetica(fecha: String, dom: String, dow: String, dai: String, din: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY valor ASC")
+    fun getMontoXFechaValuados(fecha: String, dom: String, dow: String, dai: String, din: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY frecuencia ASC")
+    fun getMontoXFechaFrecuentes(fecha: String, dom: String, dow: String, dai: String, din: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY etiqueta ASC")
+    fun getMontoXFechaEtiquetados(fecha: String, dom: String, dow: String, dai: String, din: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY interes ASC")
+    fun getMontoXFechaInteres(fecha: String, dom: String, dow: String, dai: String, din: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY veces ASC")
+    fun getMontoXFechaVeces(fecha: String, dom: String, dow: String, dai: String, din: Int): List<Monto>
 
     @Query("SELECT * FROM monto")
     fun getMontoXFecha(): List<Monto>

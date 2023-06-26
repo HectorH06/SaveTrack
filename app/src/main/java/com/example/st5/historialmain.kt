@@ -73,9 +73,11 @@ class historialmain : Fragment() {
 
         binding.calendarView.setOnClickListener() {
                 val day = binding.calendarView.dayOfMonth
+                val fDay = String.format("%02d", day)
                 val month = binding.calendarView.month + 1
+                val fMonth = String.format("%02d", month)
                 val year = binding.calendarView.year
-                fechaSeleccionada = "$year-$month-$day"
+                fechaSeleccionada = "$year-$fMonth-$fDay"
 
                 Toast.makeText(requireContext(), "$fechaSeleccionada", Toast.LENGTH_SHORT).show()
 

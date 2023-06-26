@@ -249,7 +249,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                             30L, 61L, 91L, 122L, 183L -> {
                                 val intday = binding.FechaField.dayOfMonth
                                 Log.w("DAY", intday.toString())
-                                val datedate = "$intday"
+                                val datedate = String.format("%02d", intday)
                                 Log.w("DATE", datedate)
 
                                 datedate
@@ -278,7 +278,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                             } // Catch que agarra la fecha actual
                         }
 
-                        val adddate: String = LocalDate.now().toString()
+                        val adddateStr: String = LocalDate.now().toString()
+                        val adddate = adddateStr.replace("-", "").toInt()
 
                         Log.v("Concepto", concepto)
                         Log.v("Valor", valor.toString())
@@ -287,7 +288,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Etiqueta", label.toString())
                         Log.v("Interes", interes.toString())
                         Log.v("Veces", veces.toString())
-                        Log.v("Addate", adddate)
+                        Log.v("Addate", adddate.toString())
                         lifecycleScope.launch {
                             montoadd(concepto, valor, fecha, frecuencia, label, interes, veces, adddate)
                         }
@@ -365,7 +366,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         etiqueta: Long,
         interes: Double,
         veces: Long?,
-        adddate: String
+        adddate: Int
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()

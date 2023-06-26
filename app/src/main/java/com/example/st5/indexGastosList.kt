@@ -250,7 +250,7 @@ class indexGastosList : Fragment() {
         etiqueta: Long,
         interes: Double?,
         veces: Long?,
-        adddate: String
+        adddate: Int
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()

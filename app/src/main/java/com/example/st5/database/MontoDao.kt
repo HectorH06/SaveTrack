@@ -213,13 +213,13 @@ interface MontoDao {
     // endregion
 
     // region GET GASTOS/INGRESOS
-    @Query("SELECT * FROM monto WHERE valor >= 0 AND (etiqueta == 10 OR etiqueta == 13)")
+    @Query("SELECT * FROM monto WHERE valor >= 0 AND (etiqueta = 10 OR etiqueta = 13)")
     fun getIFast(): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND (etiqueta == 10 OR etiqueta == 13)")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (etiqueta = 10 OR etiqueta = 13)")
     fun getGFast(): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor >= 0 AND etiqueta = :e AND (etiqueta == 10 OR etiqueta == 13)")
+    @Query("SELECT * FROM monto WHERE valor >= 0 AND etiqueta = :e AND (etiqueta = 10 OR etiqueta = 13)")
     fun getIFast(e: Int): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND etiqueta = :e AND (etiqueta == 10 etiqueta == 13)")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND etiqueta = :e AND (etiqueta = 10 OR etiqueta = 13)")
     fun getGFast(e: Int): List<Monto>
 
     //endregion

@@ -51,6 +51,18 @@ class indexIngresosList : Fragment() {
             fragment.arguments = args
             return fragment
         }
+
+        private const val selfL = "self"
+        fun selfLS(self: Int): indexIngresosList {
+            val fragment = indexIngresosList()
+            val args = Bundle()
+            Log.i("etiquet", self.toString())
+            if (self != null) {
+                args.putInt(selfL, self)
+            }
+            fragment.arguments = args
+            return fragment
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +96,7 @@ class indexIngresosList : Fragment() {
     private suspend fun isDarkModeEnabled(context: Context): Boolean {
         var komodo: Boolean
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             val mode = assetsDao.getTheme()
@@ -102,7 +114,7 @@ class indexIngresosList : Fragment() {
         binding = FragmentIndexingresolistBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
             ingresos = montosget()
-            fastable = montosget()
+            fastable = fastget()
             binding.displayIngresos.adapter = MontoAdapter(ingresos)
             binding.totalI.text = "$" + totalIngresos().toString()
             binding.fastAdd.adapter = MontoAdapter2(fastable)
@@ -280,7 +292,23 @@ class indexIngresosList : Fragment() {
         }
     }
 
-    private inner class MontoAdapter(private val montos: List<Monto>) : RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
+    private suspend fun fastget(): List<Monto> {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val label: Int? = arguments?.getInt(etiqueta)
+
+            fastable = if (label != null) {
+                montoDao.getIFast(label)
+            } else {
+                montoDao.getIFast()
+            }
+            Log.i("ALL FASTADD", fastable.toString())
+        }
+        return fastable
+    }
+
+    private inner class MontoAdapter(private val montos: List<Monto>) :
+        RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
             itemView: View,
             val conceptoTextView: TextView,
@@ -293,14 +321,23 @@ class indexIngresosList : Fragment() {
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
-            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_tabla, parent, false)
+            val itemView =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_tabla, parent, false)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.IConcepto)
             val valorTextView = itemView.findViewById<TextView>(R.id.IValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.IFecha)
             val etiquetaTextView = itemView.findViewById<TextView>(R.id.IEtiqueta)
             val updateM = itemView.findViewById<Button>(R.id.editMonto)
             val deleteM = itemView.findViewById<Button>(R.id.deleteMonto)
-            return MontoViewHolder(itemView, conceptoTextView, valorTextView, fechaTextView, etiquetaTextView, updateM, deleteM)
+            return MontoViewHolder(
+                itemView,
+                conceptoTextView,
+                valorTextView,
+                fechaTextView,
+                etiquetaTextView,
+                updateM,
+                deleteM
+            )
         }
 
 
@@ -310,7 +347,17 @@ class indexIngresosList : Fragment() {
             holder.valorTextView.text = monto.valor.toString()
             holder.fechaTextView.text = monto.fecha
             holder.etiquetaTextView.text = monto.etiqueta.toString()
-            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+            val upup = indexmontoupdate.sendMonto(
+                monto.idmonto,
+                monto.concepto,
+                monto.valor,
+                monto.fecha,
+                monto.frecuencia,
+                monto.etiqueta,
+                monto.interes,
+                monto.veces,
+                monto.adddate
+            )
             holder.updateM.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
@@ -330,12 +377,23 @@ class indexIngresosList : Fragment() {
                         Log.v("Interes", monto.interes.toString())
                         Log.v("Veces", monto.veces.toString())
                         lifecycleScope.launch {
-                            montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+                            montodelete(
+                                monto.idmonto,
+                                monto.concepto,
+                                monto.valor,
+                                monto.fecha,
+                                monto.frecuencia,
+                                monto.etiqueta,
+                                monto.interes,
+                                monto.veces,
+                                monto.adddate
+                            )
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                            .replace(R.id.index_container, indexmain()).addToBackStack(null)
+                            .commit()
                     }
                     .setNegativeButton("Cancelar") { dialog, _ ->
                         dialog.dismiss()
@@ -353,7 +411,8 @@ class indexIngresosList : Fragment() {
         }
     }
 
-    private inner class MontoAdapter2(private val montos: List<Monto>) : RecyclerView.Adapter<MontoAdapter2.MontoViewHolder2>() {
+    private inner class MontoAdapter2(private val montos: List<Monto>) :
+        RecyclerView.Adapter<MontoAdapter2.MontoViewHolder2>() {
         inner class MontoViewHolder2(
             itemView: View,
             val vecesTextView: TextView,
@@ -362,7 +421,8 @@ class indexIngresosList : Fragment() {
         ) : RecyclerView.ViewHolder(itemView)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder2 {
-            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_fastadd, parent, false)
+            val itemView =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_fastadd, parent, false)
             val vecesTextView = itemView.findViewById<TextView>(R.id.fastVeces)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.fastNombre)
             val valorTextView = itemView.findViewById<TextView>(R.id.fastValor)
@@ -372,11 +432,78 @@ class indexIngresosList : Fragment() {
 
         override fun onBindViewHolder(holder: MontoViewHolder2, position: Int) {
             val monto = montos[position]
+            holder.itemView.setOnClickListener {
+                lifecycleScope.launch {
+                    fup(monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.adddate
+                    )
+                    val label: Int? = arguments?.getInt(selfL)
+                    var iilinstance = indexIngresosList()
+                    if (label != null) {
+                        iilinstance = selfLS(label)
+                    }
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                        .replace(R.id.index_container, iilinstance).addToBackStack(null).commit()
+                }
+            }
             holder.vecesTextView.text = monto.veces.toString()
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
         }
 
+        suspend fun fup(
+            id: Long,
+            concepto: String,
+            valor: Double,
+            fecha: String,
+            frecuencia: Long?,
+            etiqueta: Long,
+            interes: Double?,
+            veces: Long?,
+            adddate: Int
+        ) {
+            withContext(Dispatchers.IO) {
+                val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+                val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+
+                var nv: Long? = 1
+                if (veces != null)
+                    nv = veces + 1
+
+                val iduser = usuarioDao.checkId().toLong()
+                val montoPresionado = Monto(
+                    idmonto = id,
+                    iduser = iduser,
+                    concepto = concepto,
+                    valor = valor,
+                    fecha = fecha,
+                    frecuencia = frecuencia,
+                    etiqueta = etiqueta,
+                    interes = interes,
+                    veces = nv,
+                    adddate = adddate
+                )
+
+                val totalIngresos = ingresoGastoDao.checkSummaryI()
+
+                ingresoGastoDao.updateSummaryI(
+                    montoPresionado.iduser.toInt(),
+                    totalIngresos + montoPresionado.valor
+                )
+                montoDao.updateMonto(montoPresionado)
+                val montos = montoDao.getMonto()
+                Log.i("ALL MONTOS", montos.toString())
+            }
+        }
 
         override fun getItemCount(): Int {
             Log.v("size de montossss", montos.size.toString())

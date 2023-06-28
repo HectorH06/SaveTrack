@@ -15,7 +15,7 @@
         android:textColor="?attr/colorOnSecondary"
         android:textColorHint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fastValor"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -26,8 +26,8 @@
         android:textAlignment="center"
         android:textColor="?attr/colorOnSecondary"
         android:textColorHint="?attr/colorSecondary"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fastVeces" />
 
     <TextView
@@ -38,8 +38,8 @@
         android:textColor="?attr/colorOnSecondary"
         android:textColorHint="?attr/colorSecondary"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fastNombre" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fastNombre"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

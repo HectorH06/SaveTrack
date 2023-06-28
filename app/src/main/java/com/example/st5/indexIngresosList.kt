@@ -450,7 +450,6 @@ class indexIngresosList : Fragment() {
                         iilinstance = selfLS(label)
                     }
                     parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                         .replace(R.id.index_container, iilinstance).addToBackStack(null).commit()
                 }
             }

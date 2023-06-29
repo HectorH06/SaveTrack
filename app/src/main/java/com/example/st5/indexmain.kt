@@ -484,7 +484,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
 
         lifecycleScope.launch {
-            delay(2000)
             procesarMontos()
 
             fastable = fastget()
@@ -497,7 +496,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 .start()
         }
         lifecycleScope.launch {
-            delay(1000)
             gi(switchVal)
             delay(500)
             binding.GraficoPastel.alpha = 0f

@@ -806,7 +806,7 @@ class Login : Fragment() {
                                 requireContext(), "Bienvenido, $username", Toast.LENGTH_SHORT
                             ).show()
 
-                            delay(200)
+                            delay(3000)
                             val intent = Intent(activity, Index::class.java)
                             startActivity(intent)
                         }

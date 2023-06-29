@@ -75,7 +75,6 @@ class Alarma : BroadcastReceiver() {
             if (prev != today) {
                 for (monto in montos) {
                     val totalIngresos = ingresoGastoDao.checkSummaryI()
-                    val totalGastos = ingresoGastoDao.checkSummaryG()
 
                     Log.i("MONTO PROCESADO", monto.toString())
                     val weekMonto = monto.fecha.uppercase()
@@ -86,9 +85,20 @@ class Alarma : BroadcastReceiver() {
                             monto.iduser.toInt(), totalIngresos + monto.valor
                         )
                     } else {
-                        ingresoGastoDao.updateSummaryG(
-                            monto.iduser.toInt(), totalGastos + monto.valor
+                        val toCheckMonto = Monto(
+                            idmonto = monto.idmonto,
+                            iduser = monto.iduser,
+                            concepto = monto.concepto,
+                            valor = monto.valor,
+                            fecha = monto.fecha,
+                            frecuencia = monto.frecuencia,
+                            etiqueta = monto.etiqueta,
+                            interes = monto.interes,
+                            veces = monto.veces,
+                            estado = 0,
+                            adddate = monto.adddate
                         )
+                        montoDao.updateMonto(toCheckMonto)
                     }
 
                     monto.veces = monto.veces?.plus(1)

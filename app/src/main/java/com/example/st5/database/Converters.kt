@@ -9,13 +9,13 @@ import java.util.*
 class Converters {
     //Date converter
     @TypeConverter
-    fun fromDate(date: Date?): Long? {
-        return date?.time
+    fun fromDate(date: Date?): String? {
+        return date?.time.toString()
     }
 
     @TypeConverter
-    fun toDate(value: Long?): Date? {
-        return if (value == null) null else Date(value)
+    fun toDate(value: String?): Date? {
+        return if (value == null) null else Date(value.replace("-", "").toLong())
     }
 
     //Image converter

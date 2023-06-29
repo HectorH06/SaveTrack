@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentIndexmainBinding
+import com.example.st5.models.Monto
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -489,6 +490,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
         }
 
+        binding.Calendario.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.index_container, indexPorPagar()).addToBackStack(null).commit()
+        }
+
         binding.PieChart.setOnChartValueSelectedListener(pieChartOnChartValueSelectedListener())
 
         binding.SultanOfSwing.setCheckedChangeListener {
@@ -635,6 +642,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
+            binding.Calendario.text = today
             val dm = calendar.get(Calendar.DAY_OF_MONTH)
             val dom = String.format("%02d", dm)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
@@ -662,7 +670,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             if (prev != today) {
                 for (monto in montos) {
                     val totalIngresos = ingresoGastoDao.checkSummaryI()
-                    val totalGastos = ingresoGastoDao.checkSummaryG()
 
                     Log.i("MONTO PROCESADO", monto.toString())
                     val weekMonto = monto.fecha.uppercase()
@@ -673,15 +680,24 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                             monto.iduser.toInt(),
                             totalIngresos + monto.valor
                         )
+                        monto.veces = monto.veces?.plus(1)
+                        montoDao.updateMonto(monto)
                     } else {
-                        ingresoGastoDao.updateSummaryG(
-                            monto.iduser.toInt(),
-                            totalGastos + monto.valor
+                        val toCheckMonto = Monto(
+                            idmonto = monto.idmonto,
+                            iduser = monto.iduser,
+                            concepto = monto.concepto,
+                            valor = monto.valor,
+                            fecha = monto.fecha,
+                            frecuencia = monto.frecuencia,
+                            etiqueta = monto.etiqueta,
+                            interes = monto.interes,
+                            veces = monto.veces,
+                            estado = 0,
+                            adddate = monto.adddate
                         )
+                        montoDao.updateMonto(toCheckMonto)
                     }
-
-                    monto.veces = monto.veces?.plus(1)
-                    montoDao.updateMonto(monto)
                 }
             }
             assetsDao.updateLastprocess(today)

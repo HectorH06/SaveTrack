@@ -157,7 +157,7 @@
             android:textSize="12sp" />
     </LinearLayout>
 
-    <ImageButton
+    <Button
         android:id="@+id/Calendario"
         android:layout_width="62dp"
         android:layout_height="63dp"

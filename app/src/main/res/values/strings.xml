@@ -119,6 +119,7 @@
     <string name="deuda">Deuda</string>
     <string name="wallpaper">Wallpaper</string>
     <string name="venta">Venta</string>
+    <string name="no_hay_nada_por_pagar_hoy">No hay nada por pagar hoy</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

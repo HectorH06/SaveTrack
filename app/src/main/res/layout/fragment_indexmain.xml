@@ -121,53 +121,41 @@
         app:layout_constraintTop_toTopOf="parent" />
 -->
 
-    <LinearLayout
+    <ScrollView
         android:id="@+id/LayoutPendientes"
         android:layout_width="60dp"
-        android:layout_height="380dp"
-        android:layout_marginTop="174dp"
-        android:layout_marginBottom="177dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/AgregarIngresoButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@id/searchforlabel">
 
-        <CheckBox
-            android:id="@+id/checkBox1"
+        <LinearLayout
+            android:id="@+id/ProductoPorPagar"
             android:layout_width="match_parent"
-            android:layout_height="126.6dp"
-            android:background="@color/R1"
-            android:text="CheckBox1"
-            android:textSize="12sp" />
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="match_parent"
-            android:layout_height="126.6dp"
-            android:background="@color/O0"
-            android:text="CheckBox2"
-            android:textSize="12sp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/displayCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <CheckBox
-            android:id="@+id/checkBox3"
-            android:layout_width="match_parent"
-            android:layout_height="126.6dp"
-            android:background="@color/G0"
-            android:text="CheckBox3"
-            android:textSize="12sp" />
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/Calendario"
-        android:layout_width="62dp"
-        android:layout_height="63dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="98dp"
-        android:layout_marginEnd="333dp"
-        android:layout_marginBottom="570dp"
-        android:background="@color/N4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/datepng"
+        android:paddingTop="8dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_my_calendar"

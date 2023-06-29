@@ -120,6 +120,12 @@
     <string name="wallpaper">Wallpaper</string>
     <string name="venta">Venta</string>
     <string name="no_hay_nada_por_pagar_hoy">No hay nada por pagar hoy</string>
+    <string name="papelera">Papelera</string>
+    <string name="ingresos">Ingresos</string>
+    <string name="actualizarm">Actualizar Monto</string>
+    <string name="addm">Añadir Monto</string>
+    <string name="porpagar">Para pagar HOY</string>
+    <string name="editperfil">Editar Perfil</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

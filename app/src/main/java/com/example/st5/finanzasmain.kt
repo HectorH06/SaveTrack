@@ -64,6 +64,13 @@ class finanzasmain : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.ConfigButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
+        }
+
         val consejos = finanzasconysug();
         val stats = finanzasstatsahorro();
         val estatico = finanzasestatico();
@@ -73,11 +80,13 @@ class finanzasmain : Fragment() {
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.finanzas_container, consejos).addToBackStack(null).commit()
         }
+
         binding.VerMenosMERCALIBRE.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.finanzas_container, stats).addToBackStack(null).commit()
         }
+
         binding.RedirectMERCALIBRE.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)

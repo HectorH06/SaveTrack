@@ -99,6 +99,12 @@ class planesdeahorromain : Fragment() {
                 .replace(R.id.perfil_container, back).addToBackStack(null).commit()
         }
 
+        binding.config.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.pda_container, Configuracion()).addToBackStack(null).commit()
+        }
+
         suspend fun mostrarDatos() {
             withContext(Dispatchers.IO) {
                 val usuarioDao = Stlite.getInstance(

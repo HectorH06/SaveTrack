@@ -9,7 +9,7 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <TextView
-        android:id="@+id/MConcepto"
+        android:id="@+id/PConcepto"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
@@ -22,7 +22,7 @@
 
 
     <TextView
-        android:id="@+id/MValor"
+        android:id="@+id/PValor"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
@@ -35,7 +35,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/MVeces"
+        android:id="@+id/PVeces"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:hint="@string/Fecha"
@@ -46,7 +46,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/MEtiqueta"
+        android:id="@+id/PEtiqueta"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:hint="@string/Etiqueta"
@@ -58,14 +58,14 @@
         android:textSize="18sp" />
 
     <Button
-        android:id="@+id/editMonto"
+        android:id="@+id/getbackMonto"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:background="@drawable/ic_edit"
+        android:background="@drawable/ic_getback"
         android:backgroundTint="?attr/colorOnPrimary" />
 
     <Button
-        android:id="@+id/deleteMonto"
+        android:id="@+id/killMonto"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="@drawable/ic_delete"

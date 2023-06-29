@@ -57,9 +57,7 @@ class indexIngresosList : Fragment() {
             val fragment = indexIngresosList()
             val args = Bundle()
             Log.i("etiquet", self.toString())
-            if (self != null) {
-                args.putInt(selfL, self)
-            }
+            args.putInt(selfL, self)
             fragment.arguments = args
             return fragment
         }
@@ -256,7 +254,7 @@ class indexIngresosList : Fragment() {
         return ingresos
     }
 
-    private suspend fun montodelete(
+    private suspend fun montoPapelera(
         idmonto: Long,
         concepto: String,
         valor: Double,
@@ -272,7 +270,7 @@ class indexIngresosList : Fragment() {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
             val iduser = usuarioDao.checkId().toLong()
-            val muertoMonto = Monto(
+            val viejoMonto = Monto(
                 idmonto = idmonto,
                 iduser = iduser,
                 concepto = concepto,
@@ -282,10 +280,11 @@ class indexIngresosList : Fragment() {
                 etiqueta = etiqueta,
                 interes = interes,
                 veces = veces,
+                estado = 2,
                 adddate = adddate
             )
 
-            montoDao.deleteMonto(muertoMonto)
+            montoDao.updateMonto(viejoMonto)
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
 
@@ -365,8 +364,8 @@ class indexIngresosList : Fragment() {
             }
             holder.deleteM.setOnClickListener {
                 val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres eliminar el monto ${monto.concepto}? Esta acción no se puede deshacer")
-                    .setPositiveButton("Guardar") { dialog, _ ->
+                    .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
+                    .setPositiveButton("Eliminar") { dialog, _ ->
 
                         Log.v("Id del monto actualizado", monto.idmonto.toString())
                         Log.v("Concepto", monto.concepto)
@@ -377,7 +376,7 @@ class indexIngresosList : Fragment() {
                         Log.v("Interes", monto.interes.toString())
                         Log.v("Veces", monto.veces.toString())
                         lifecycleScope.launch {
-                            montodelete(
+                            montoPapelera(
                                 monto.idmonto,
                                 monto.concepto,
                                 monto.valor,

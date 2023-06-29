@@ -87,5 +87,17 @@ class historialmain : Fragment() {
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                     .replace(R.id.historial_container, montosF).addToBackStack(null).commit()
         }
+
+        binding.ConfigButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.historial_container, Configuracion()).addToBackStack(null).commit()
+        }
+
+        binding.PapeleraButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.historial_container, historialPapelera()).addToBackStack(null).commit()
+        }
     }
 }

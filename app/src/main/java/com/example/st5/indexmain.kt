@@ -1,6 +1,7 @@
 package com.example.st5
 
 import android.app.AlarmManager
+import android.app.AlertDialog
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
@@ -12,10 +13,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentIndexmainBinding
 import com.example.st5.models.Monto
@@ -48,6 +52,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private var switchVal = false
     private var lista: Fragment = indexGastosList()
 
+    private lateinit var fastable: List<Monto>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupAlarm()
@@ -73,7 +79,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private suspend fun isDarkModeEnabled(context: Context): Boolean {
         var komodo: Boolean
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             val mode = assetsDao.getTheme()
@@ -82,12 +88,17 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
         return komodo
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentIndexmainBinding.inflate(inflater, container, false)
         binding.SultanOfSwing.checked = IconSwitch.Checked.RIGHT
+        binding.displayCheck.animate()
+            .alpha(0f)
+            .translationX(-60f)
+            .start()
         return binding.root
     }
 
@@ -473,8 +484,17 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
 
         lifecycleScope.launch {
-            delay(3000)
+            delay(2000)
             procesarMontos()
+
+            fastable = fastget()
+            binding.displayCheck.adapter = MontoAdapter(fastable)
+            binding.displayCheck.animate()
+                .alpha(1f)
+                .translationX(0f)
+                .translationZ(0f)
+                .setDuration(300)
+                .start()
         }
         lifecycleScope.launch {
             delay(1000)
@@ -494,6 +514,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.index_container, indexPorPagar()).addToBackStack(null).commit()
+        }
+
+        binding.ConfigButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.index_container, Configuracion()).addToBackStack(null).commit()
         }
 
         binding.PieChart.setOnChartValueSelectedListener(pieChartOnChartValueSelectedListener())
@@ -544,6 +570,47 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             montoDao.clean()
         }
+    }
+
+    private suspend fun fastget(): List<Monto> {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+
+            val fechaActual = LocalDate.now()
+            val today = fechaActual.toString()
+
+            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val truefecha = formatoFecha.parse(today)
+            val calendar = Calendar.getInstance()
+            calendar.time = truefecha
+
+            binding.Calendario.text = today
+
+            val dm = calendar.get(Calendar.DAY_OF_MONTH)
+            val dom = String.format("%02d", dm)
+            val w = calendar.get(Calendar.DAY_OF_WEEK)
+            var dow = "Diario"
+            when (w) {
+                1 -> dow = "Sunday"
+                2 -> dow = "Monday"
+                3 -> dow = "Tuesday"
+                4 -> dow = "Wednesday"
+                5 -> dow = "Thursday"
+                6 -> dow = "Friday"
+                7 -> dow = "Saturday"
+            }
+
+            val addd: Int = today.replace("-", "").toInt()
+
+            Log.i("DOM", dom)
+            Log.i("DOW", dow)
+
+            Log.i("todayyyy", today)
+
+            fastable = montoDao.getGXFecha(today, dom, dow, "Diario", addd)
+            Log.i("ALL TODOLIST", fastable.toString())
+        }
+        return fastable
     }
 
     private fun gi(switchVal: Boolean) {
@@ -642,7 +709,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            binding.Calendario.text = today
             val dm = calendar.get(Calendar.DAY_OF_MONTH)
             val dom = String.format("%02d", dm)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
@@ -721,5 +787,153 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
+    }
+
+    private inner class MontoAdapter(private val montos: List<Monto>) :
+        RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
+        inner class MontoViewHolder(
+            itemView: View,
+            val conceptoTextView: TextView,
+            val valorTextView: TextView,
+            val fechaTextView: TextView,
+            val updateM: Button,
+            val checkM: Button
+        ) : RecyclerView.ViewHolder(itemView)
+
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
+            val itemView =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_porpagar, parent, false)
+            val conceptoTextView = itemView.findViewById<TextView>(R.id.pNombre)
+            val valorTextView = itemView.findViewById<TextView>(R.id.pValor)
+            val fechaTextView = itemView.findViewById<TextView>(R.id.pFecha)
+            val updateM = itemView.findViewById<Button>(R.id.editP)
+            val checkM = itemView.findViewById<Button>(R.id.checkP)
+            return MontoViewHolder(
+                itemView,
+                conceptoTextView,
+                valorTextView,
+                fechaTextView,
+                updateM,
+                checkM
+            )
+        }
+
+
+        override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
+            val monto = montos[position]
+            holder.conceptoTextView.text = monto.concepto
+            holder.valorTextView.text = monto.valor.toString()
+            holder.fechaTextView.text = monto.fecha
+            val upup = indexmontoupdate.sendMonto(
+                monto.idmonto,
+                monto.concepto,
+                monto.valor,
+                monto.fecha,
+                monto.frecuencia,
+                monto.etiqueta,
+                monto.interes,
+                monto.veces,
+                monto.adddate
+            )
+            holder.updateM.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.historial_container, upup).addToBackStack(null).commit()
+            }
+            holder.checkM.setOnClickListener {
+                val confirmDialog = AlertDialog.Builder(requireContext())
+                    .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
+                    .setPositiveButton("Eliminar") { dialog, _ ->
+
+                        Log.v("Id del monto actualizado", monto.idmonto.toString())
+                        Log.v("Concepto", monto.concepto)
+                        Log.v("Valor", monto.valor.toString())
+                        Log.v("Fecha", monto.fecha)
+                        Log.v("Frecuencia", monto.frecuencia.toString())
+                        Log.v("Etiqueta", monto.etiqueta.toString())
+                        Log.v("Interes", monto.interes.toString())
+                        Log.v("Veces", monto.veces.toString())
+
+                        lifecycleScope.launch {
+                            montoCheck(
+                                monto.idmonto,
+                                monto.concepto,
+                                monto.valor,
+                                monto.fecha,
+                                monto.frecuencia,
+                                monto.etiqueta,
+                                monto.interes,
+                                monto.veces,
+                                monto.adddate
+                            )
+                        }
+                        dialog.dismiss()
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                    }
+                    .setNegativeButton("Cancelar") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+
+                confirmDialog.show()
+            }
+        }
+
+        override fun getItemCount(): Int {
+            Log.v("size de montossss", montos.size.toString())
+            return montos.size
+        }
+
+        private suspend fun montoCheck(
+            idmonto: Long,
+            concepto: String,
+            valor: Double,
+            fecha: String,
+            frecuencia: Long?,
+            etiqueta: Long,
+            interes: Double?,
+            veces: Long?,
+            adddate: Int
+        ) {
+            withContext(Dispatchers.IO) {
+                val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+                val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+
+                var nv: Long? = 1
+                if (veces != null)
+                    nv = veces + 1
+
+                val iduser = usuarioDao.checkId().toLong()
+                val montoPresionado = Monto(
+                    idmonto = iduser,
+                    iduser = iduser,
+                    concepto = concepto,
+                    valor = valor,
+                    fecha = fecha,
+                    frecuencia = frecuencia,
+                    etiqueta = etiqueta,
+                    interes = interes,
+                    veces = nv,
+                    estado = 1,
+                    adddate = adddate
+                )
+
+                val totalGastos = ingresoGastoDao.checkSummaryG()
+
+                ingresoGastoDao.updateSummaryG(
+                    montoPresionado.iduser.toInt(),
+                    totalGastos + montoPresionado.valor
+                )
+
+                montoDao.updateMonto(montoPresionado)
+                val montos = montoDao.getMonto()
+                Log.i("ALL MONTOS", montos.toString())
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+            }
+        }
     }
 }

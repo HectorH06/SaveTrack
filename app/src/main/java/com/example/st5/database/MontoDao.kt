@@ -290,4 +290,7 @@ interface MontoDao {
     fun getGFast(e: Int): List<Monto>
 
     //endregion
+
+    @Query("SELECT * FROM monto WHERE estado = 2")
+    fun getPapelera(): List<Monto>
 }

@@ -15,42 +15,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.st5.database.Stlite
-import com.example.st5.databinding.FragmentIndexgastoslistBinding
+import com.example.st5.databinding.FragmentHistorialpapeleraBinding
 import com.example.st5.models.Monto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
-class indexGastosList : Fragment() {
-    private lateinit var binding: FragmentIndexgastoslistBinding
+class historialPapelera : Fragment() {
+    private lateinit var binding: FragmentHistorialpapeleraBinding
 
-    private lateinit var gastos: List<Monto>
-
-    companion object {
-        private const val etiqueta = "etiquetar"
-        fun labelSearch(etiquet: Int): indexGastosList {
-            val fragment = indexGastosList()
-            val args = Bundle()
-            Log.i("etiquet", etiquet.toString())
-            val labe = when (etiquet) {
-                0 -> 1
-                1 -> 2
-                2 -> 3
-                3 -> 4
-                4 -> 5
-                5 -> 6
-                6 -> 6
-                7 -> 8
-                else -> null
-            }
-            if (labe != null) {
-                args.putInt(etiqueta, labe)
-            }
-            fragment.arguments = args
-            return fragment
-        }
-    }
+    private lateinit var montosp: List<Monto>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +35,9 @@ class indexGastosList : Fragment() {
             val isDarkMode = isDarkModeEnabled(requireContext())
 
             if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
+                binding.background.setBackgroundResource(R.drawable.gradient_background_historial2)
             } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
+                binding.background.setBackgroundResource(R.drawable.gradient_background_historial)
             }
 
             Log.i("MODO", isDarkMode.toString())
@@ -98,70 +74,47 @@ class indexGastosList : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentIndexgastoslistBinding.inflate(inflater, container, false)
+        binding = FragmentHistorialpapeleraBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
-            gastos = montosget()
-            binding.displayGastos.adapter = MontoAdapter(gastos)
-            binding.totalG.text = "$" + totalGastos().toString()
+            montosp = montosget()
+            binding.displayMontos.adapter = MontoAdapter(montosp)
         }
         return binding.root
-    }
-
-    private suspend fun totalGastos(): Double {
-        var totalG: Double
-
-        withContext(Dispatchers.IO) {
-            val igDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
-
-            totalG = igDao.checkSummaryG()
-        }
-
-        return totalG
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val label: Int? = arguments?.getInt(etiqueta)
-        Log.i("etiqueta", label.toString())
-
-        val back = indexmain()
-        val addWithSwitchOff = indexadd.newInstance(false)
+        val back = historialmain()
 
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.index_container, back).addToBackStack(null).commit()
-        }
-
-        binding.AgregarGastoButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.index_container, addWithSwitchOff).addToBackStack(null).commit()
+                .replace(R.id.historial_container, back).addToBackStack(null).commit()
         }
 
         binding.HConcepto.setOnClickListener {
             lifecycleScope.launch {
-                gastos = montosgetAlfabetica()
-                binding.displayGastos.adapter = MontoAdapter(gastos)
+                montosp = montosgetAlfabetica()
+                binding.displayMontos.adapter = MontoAdapter(montosp)
             }
         }
         binding.HValor.setOnClickListener {
             lifecycleScope.launch {
-                gastos = montosgetValuados()
-                binding.displayGastos.adapter = MontoAdapter(gastos)
+                montosp = montosgetValuados()
+                binding.displayMontos.adapter = MontoAdapter(montosp)
             }
         }
-        binding.HFecha.setOnClickListener {
+        binding.HVeces.setOnClickListener {
             lifecycleScope.launch {
-                gastos = montosgetFechados()
-                binding.displayGastos.adapter = MontoAdapter(gastos)
+                montosp = montosgetVeces()
+                binding.displayMontos.adapter = MontoAdapter(montosp)
             }
         }
         binding.HEtiqueta.setOnClickListener {
             lifecycleScope.launch {
-                gastos = montosgetEtiquetados()
-                binding.displayGastos.adapter = MontoAdapter(gastos)
+                montosp = montosgetEtiquetados()
+                binding.displayMontos.adapter = MontoAdapter(montosp)
             }
         }
     }
@@ -169,79 +122,54 @@ class indexGastosList : Fragment() {
     private suspend fun montosget(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = if (label != null) {
-                montoDao.getGastos(label)
-            } else {
-                montoDao.getGastos()
-            }
-            Log.i("ALL MONTOS", gastos.toString())
+            montosp = montoDao.getPapelera()
+            Log.i("ALL MONTOS", montosp.toString())
         }
-        return gastos
+        return montosp
     }
 
     private suspend fun montosgetAlfabetica(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = if (label != null) {
-                montoDao.getGastosAlfabetica(label)
-            } else {
-                montoDao.getGastosAlfabetica()
-            }
-            Log.i("ALL MONTOS", gastos.toString())
+            montosp = montoDao.getPapelera()
+            Log.i("ALL MONTOS", montosp.toString())
         }
-        return gastos
+        return montosp
     }
 
     private suspend fun montosgetValuados(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = if (label != null) {
-                montoDao.getGastosValuados(label)
-            } else {
-                montoDao.getGastosValuados()
-            }
-            Log.i("ALL MONTOS", gastos.toString())
+            montosp = montoDao.getPapelera()
+            Log.i("ALL MONTOS", montosp.toString())
         }
-        return gastos
+        return montosp
     }
 
-    private suspend fun montosgetFechados(): List<Monto> {
+    private suspend fun montosgetVeces(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = if (label != null) {
-                montoDao.getGastosFechados(label)
-            } else {
-                montoDao.getGastosFechados()
-            }
-            Log.i("ALL MONTOS", gastos.toString())
+            montosp = montoDao.getPapelera()
+            Log.i("ALL MONTOS", montosp.toString())
         }
-        return gastos
+        return montosp
     }
 
     private suspend fun montosgetEtiquetados(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            val label: Int? = arguments?.getInt(etiqueta)
 
-            gastos = if (label != null) {
-                montoDao.getGastosEtiquetados(label)
-            } else {
-                montoDao.getGastosEtiquetados()
-            }
-            Log.i("ALL MONTOS", gastos.toString())
+            montosp = montoDao.getPapelera()
+            Log.i("ALL MONTOS", montosp.toString())
         }
-        return gastos
+        return montosp
     }
 
-    private suspend fun montoPapelera(
+    private suspend fun montoback(
         idmonto: Long,
         concepto: String,
         valor: Double,
@@ -267,11 +195,47 @@ class indexGastosList : Fragment() {
                 etiqueta = etiqueta,
                 interes = interes,
                 veces = veces,
-                estado = 2,
+                estado = 0,
                 adddate = adddate
             )
 
             montoDao.updateMonto(viejoMonto)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+
+        }
+    }
+
+    private suspend fun montodelete(
+        idmonto: Long,
+        concepto: String,
+        valor: Double,
+        fecha: String,
+        frecuencia: Long?,
+        etiqueta: Long,
+        interes: Double?,
+        veces: Long?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+
+            val iduser = usuarioDao.checkId().toLong()
+            val muertoMonto = Monto(
+                idmonto = idmonto,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = veces,
+                adddate = adddate
+            )
+
+            montoDao.deleteMonto(muertoMonto)
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
 
@@ -284,29 +248,29 @@ class indexGastosList : Fragment() {
             itemView: View,
             val conceptoTextView: TextView,
             val valorTextView: TextView,
-            val fechaTextView: TextView,
+            val vecesTextView: TextView,
             val etiquetaTextView: TextView,
-            val updateM: Button,
+            val zM: Button,
             val deleteM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
             val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_tabla, parent, false)
-            val conceptoTextView = itemView.findViewById<TextView>(R.id.IConcepto)
-            val valorTextView = itemView.findViewById<TextView>(R.id.IValor)
-            val fechaTextView = itemView.findViewById<TextView>(R.id.IFecha)
-            val etiquetaTextView = itemView.findViewById<TextView>(R.id.IEtiqueta)
-            val updateM = itemView.findViewById<Button>(R.id.editMonto)
-            val deleteM = itemView.findViewById<Button>(R.id.deleteMonto)
+                LayoutInflater.from(parent.context).inflate(R.layout.item_papelera, parent, false)
+            val conceptoTextView = itemView.findViewById<TextView>(R.id.PConcepto)
+            val valorTextView = itemView.findViewById<TextView>(R.id.PValor)
+            val vecesTextView = itemView.findViewById<TextView>(R.id.PVeces)
+            val etiquetaTextView = itemView.findViewById<TextView>(R.id.PEtiqueta)
+            val zM = itemView.findViewById<Button>(R.id.getbackMonto)
+            val deleteM = itemView.findViewById<Button>(R.id.killMonto)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
                 valorTextView,
-                fechaTextView,
+                vecesTextView,
                 etiquetaTextView,
-                updateM,
+                zM,
                 deleteM
             )
         }
@@ -316,18 +280,12 @@ class indexGastosList : Fragment() {
             val monto = montos[position]
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
-            holder.fechaTextView.text = monto.fecha
+            holder.vecesTextView.text = monto.veces.toString()
             holder.etiquetaTextView.text = monto.etiqueta.toString()
-            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
-            holder.updateM.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.index_container, upup).addToBackStack(null).commit()
-            }
-            holder.deleteM.setOnClickListener {
+            holder.zM.setOnClickListener {
                 val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
-                    .setPositiveButton("Eliminar") { dialog, _ ->
+                    .setTitle("¿Seguro que quieres recuperar el monto ${monto.concepto}?")
+                    .setPositiveButton("Recuperar") { dialog, _ ->
 
                         Log.v("Id del monto actualizado", monto.idmonto.toString())
                         Log.v("Concepto", monto.concepto)
@@ -338,7 +296,35 @@ class indexGastosList : Fragment() {
                         Log.v("Interes", monto.interes.toString())
                         Log.v("Veces", monto.veces.toString())
                         lifecycleScope.launch {
-                            montoPapelera(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+                            montoback(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+                        }
+                        dialog.dismiss()
+                        parentFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                    }
+                    .setNegativeButton("Cancelar") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+
+                confirmDialog.show()
+            }
+            holder.deleteM.setOnClickListener {
+                val confirmDialog = AlertDialog.Builder(requireContext())
+                    .setTitle("¿Seguro que quieres eliminar el monto ${monto.concepto}? Esta acción no se puede deshacer")
+                    .setPositiveButton("Guardar") { dialog, _ ->
+
+                        Log.v("Id del monto actualizado", monto.idmonto.toString())
+                        Log.v("Concepto", monto.concepto)
+                        Log.v("Valor", monto.valor.toString())
+                        Log.v("Fecha", monto.fecha)
+                        Log.v("Frecuencia", monto.frecuencia.toString())
+                        Log.v("Etiqueta", monto.etiqueta.toString())
+                        Log.v("Interes", monto.interes.toString())
+                        Log.v("Veces", monto.veces.toString())
+                        lifecycleScope.launch {
+                            montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()

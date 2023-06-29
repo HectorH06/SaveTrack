@@ -48,6 +48,17 @@
                 app:srcCompat="@drawable/ic_back"
                 app:tint="?attr/colorOnPrimary" />
 
+            <TextView
+                android:id="@+id/bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/actualizarm"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="36sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/goback"/>
 
             <EditText
                 android:id="@+id/ConceptoField"

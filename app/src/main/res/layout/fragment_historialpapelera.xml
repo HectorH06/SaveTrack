@@ -2,14 +2,15 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.Light">
 
     <ImageView
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/wallpaper"
-        android:theme="@style/index_background" />
+        android:theme="@style/historial_background"
+        android:contentDescription="@string/wallpaper" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <TableLayout
-                android:id="@+id/cabezaingresos"
+                android:id="@+id/cabezamontos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -33,7 +34,7 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/p1topcell"
+                    android:background="@drawable/y1topcell"
                     android:orientation="horizontal">
 
                     <TextView
@@ -43,8 +44,7 @@
                         android:hint="@string/Concepto"
                         android:maxWidth="100dp"
                         android:paddingStart="7dp"
-                        android:textColor="?attr/colorOnPrimary"
-                        android:textColorHint="?attr/colorOnPrimary"
+                        android:textColor="@color/Y5"
                         android:textSize="18sp" />
 
                     <TextView
@@ -53,90 +53,37 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/Valor"
                         android:textAlignment="center"
-                        android:textColor="?attr/colorOnPrimary"
-                        android:textColorHint="?attr/colorOnPrimary"
+                        android:textColor="@color/Y5"
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/HFecha"
+                        android:id="@+id/HVeces"
                         android:layout_width="65dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/Fecha"
+                        android:hint="@string/veces"
                         android:textAlignment="center"
-                        android:textColor="?attr/colorOnPrimary"
-                        android:textColorHint="?attr/colorOnPrimary"
+                        android:textColor="@color/Y5"
                         android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/HEtiqueta"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
                         android:hint="@string/Etiqueta"
                         android:paddingEnd="7dp"
-                        android:textColor="?attr/colorOnPrimary"
-                        android:textColorHint="?attr/colorOnPrimary"
+                        android:layout_marginEnd="20dp"
+                        android:textColor="@color/Y5"
                         android:textSize="18sp" />
-
                 </TableRow>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/displayIngresos"
+                    android:id="@+id/displayMontos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintStart_toStartOf="@+id/cabezaingresos"
-                    app:layout_constraintTop_toBottomOf="@+id/cabezaingresos" />
-
+                    app:layout_constraintStart_toStartOf="@+id/cabezamontos"
+                    app:layout_constraintTop_toBottomOf="@+id/cabezamontos" />
             </TableLayout>
-
-            <ImageButton
-                android:id="@+id/AgregarIngresoButton"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/confshape"
-                android:contentDescription="@string/nuevo_ingreso"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cabezaingresos"
-                app:srcCompat="@drawable/ic_add"
-                app:tint="@color/G1" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fastAdd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/AgregarIngresoButton" />
-
-            <TextView
-                android:id="@+id/total"
-                android:layout_width="200dp"
-                android:layout_height="24dp"
-                android:text="@string/total_de_ingresos"
-                android:textAlignment="textEnd"
-                android:textColor="?attr/colorOnPrimary"
-                android:textColorHint="?attr/colorOnPrimary"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@id/totalI"
-                app:layout_constraintEnd_toEndOf="@id/totalI" />
-
-            <TextView
-                android:id="@+id/totalI"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="128dp"
-                android:layout_marginEnd="16dp"
-                android:textAlignment="textEnd"
-                android:textColor="?attr/colorOnPrimary"
-                android:textColorHint="?attr/colorOnPrimary"
-                android:textSize="36sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -162,8 +109,8 @@
             android:id="@+id/bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ingresos"
-            android:textColor="?attr/colorOnPrimary"
+            android:text="@string/papelera"
+            android:textColor="@color/O0"
             android:textSize="36sp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"

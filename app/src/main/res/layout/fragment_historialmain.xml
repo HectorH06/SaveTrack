@@ -29,7 +29,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:backgroundTint="@color/transparent"
-        app:srcCompat="@drawable/ic_settings" />
+        app:srcCompat="@drawable/ic_settings"
+        android:contentDescription="@string/configuracion" />
 
     <ImageButton
         android:id="@+id/TagsButton"
@@ -40,7 +41,20 @@
         android:backgroundTint="@color/transparent"
         app:layout_constraintEnd_toStartOf="@id/ConfigButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_etiqueta" />
+        app:srcCompat="@drawable/ic_etiqueta"
+        android:contentDescription="@string/Label" />
+
+    <ImageButton
+        android:id="@+id/PapeleraButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/transparent"
+        app:layout_constraintEnd_toStartOf="@id/TagsButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_trashcan"
+        android:contentDescription="@string/papelera" />
 
 
 

@@ -35,10 +35,8 @@ class historialMontosList : Fragment() {
             val fragment = historialMontosList()
             val args = Bundle()
             Log.i("fech", fech)
-            
-            if (fech != null) {
-                args.putString(fecha, fech)
-            }
+
+            args.putString(fecha, fech)
             fragment.arguments = args
             return fragment
         }
@@ -138,6 +136,7 @@ class historialMontosList : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private suspend fun montosget(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
@@ -145,13 +144,15 @@ class historialMontosList : Fragment() {
             val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val datedate: String? = arguments?.getString(fecha)
 
+            binding.bar.text = "Montos del $datedate"
+
             val truefecha = formatoFecha.parse(datedate)
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dm = calendar.get(Calendar.DAY_OF_MONTH)
-            var dom = String.format("%02d", dm)
-            var w = calendar.get(Calendar.DAY_OF_WEEK)
+            val dm = calendar.get(Calendar.DAY_OF_MONTH)
+            val dom = String.format("%02d", dm)
+            val w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
                 1 -> dow = "Sunday"
@@ -190,9 +191,9 @@ class historialMontosList : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dm = calendar.get(Calendar.DAY_OF_MONTH)
-            var dom = String.format("%02d", dm)
-            var w = calendar.get(Calendar.DAY_OF_WEEK)
+            val dm = calendar.get(Calendar.DAY_OF_MONTH)
+            val dom = String.format("%02d", dm)
+            val w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
                 1 -> dow = "Sunday"
@@ -231,9 +232,9 @@ class historialMontosList : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dm = calendar.get(Calendar.DAY_OF_MONTH)
-            var dom = String.format("%02d", dm)
-            var w = calendar.get(Calendar.DAY_OF_WEEK)
+            val dm = calendar.get(Calendar.DAY_OF_MONTH)
+            val dom = String.format("%02d", dm)
+            val w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
                 1 -> dow = "Sunday"
@@ -272,9 +273,9 @@ class historialMontosList : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dm = calendar.get(Calendar.DAY_OF_MONTH)
-            var dom = String.format("%02d", dm)
-            var w = calendar.get(Calendar.DAY_OF_WEEK)
+            val dm = calendar.get(Calendar.DAY_OF_MONTH)
+            val dom = String.format("%02d", dm)
+            val w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
                 1 -> dow = "Sunday"
@@ -313,9 +314,9 @@ class historialMontosList : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            var dm = calendar.get(Calendar.DAY_OF_MONTH)
-            var dom = String.format("%02d", dm)
-            var w = calendar.get(Calendar.DAY_OF_WEEK)
+            val dm = calendar.get(Calendar.DAY_OF_MONTH)
+            val dom = String.format("%02d", dm)
+            val w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = "Diario"
             when (w) {
                 1 -> dow = "Sunday"
@@ -343,7 +344,7 @@ class historialMontosList : Fragment() {
         return montosf
     }
 
-    private suspend fun montodelete(
+    private suspend fun montoPapelera(
         idmonto: Long,
         concepto: String,
         valor: Double,
@@ -359,7 +360,7 @@ class historialMontosList : Fragment() {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
             val iduser = usuarioDao.checkId().toLong()
-            val muertoMonto = Monto(
+            val viejoMonto = Monto(
                 idmonto = idmonto,
                 iduser = iduser,
                 concepto = concepto,
@@ -369,10 +370,11 @@ class historialMontosList : Fragment() {
                 etiqueta = etiqueta,
                 interes = interes,
                 veces = veces,
+                estado = 2,
                 adddate = adddate
             )
 
-            montoDao.deleteMonto(muertoMonto)
+            montoDao.updateMonto(viejoMonto)
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
 
@@ -427,8 +429,8 @@ class historialMontosList : Fragment() {
             }
             holder.deleteM.setOnClickListener {
                 val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres eliminar el monto ${monto.concepto}? Esta acción no se puede deshacer")
-                    .setPositiveButton("Guardar") { dialog, _ ->
+                    .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
+                    .setPositiveButton("Eliminar") { dialog, _ ->
 
                         Log.v("Id del monto actualizado", monto.idmonto.toString())
                         Log.v("Concepto", monto.concepto)
@@ -439,7 +441,7 @@ class historialMontosList : Fragment() {
                         Log.v("Interes", monto.interes.toString())
                         Log.v("Veces", monto.veces.toString())
                         lifecycleScope.launch {
-                            montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+                            montoPapelera(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()

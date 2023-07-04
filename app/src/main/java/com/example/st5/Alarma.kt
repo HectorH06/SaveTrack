@@ -183,36 +183,40 @@ class Alarma : BroadcastReceiver() {
 
             // Tabla Monto
             for (idmonto in 1..perocuantosmontos) {
-                Log.v("Current idmonto", idmonto.toString())
-                val viejoMonto = Monto(
-                    idmonto = montoDao.getIdmonto(idmonto),
-                    iduser = montoDao.getIduser(idmonto),
-                    concepto = montoDao.getConcepto(idmonto),
-                    valor = montoDao.getValor(idmonto),
-                    fecha = montoDao.getFecha(idmonto),
-                    frecuencia = montoDao.getFrecuencia(idmonto),
-                    etiqueta = montoDao.getEtiqueta(idmonto),
-                    interes = montoDao.getInteres(idmonto),
-                    veces = montoDao.getVeces(idmonto),
-                    adddate = montoDao.getAdded(idmonto)
-                )
-                Log.v("Current monto $idmonto", viejoMonto.toString())
-                val jsonObjectMonto = JSONObject()
-                jsonObjectMonto.put("idmonto", viejoMonto.idmonto)
-                jsonObjectMonto.put("iduser", viejoMonto.iduser)
-                jsonObjectMonto.put("concepto", viejoMonto.concepto)
-                jsonObjectMonto.put("valor", viejoMonto.valor)
-                jsonObjectMonto.put("fecha", viejoMonto.fecha)
-                jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
-                jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
-                jsonObjectMonto.put("interes", viejoMonto.interes)
-                jsonObjectMonto.put("veces", viejoMonto.veces)
-                jsonObjectMonto.put("adddate", viejoMonto.adddate)
+                val concept = montoDao.getConcepto(idmonto)
 
-                jsonArrayMonto.put(jsonObjectMonto)
+                if (concept != null) {
+                    Log.v("Current idmonto", idmonto.toString())
+                    val viejoMonto = Monto(
+                        idmonto = montoDao.getIdmonto(idmonto),
+                        iduser = montoDao.getIduser(idmonto),
+                        concepto = montoDao.getConcepto(idmonto),
+                        valor = montoDao.getValor(idmonto),
+                        fecha = montoDao.getFecha(idmonto),
+                        frecuencia = montoDao.getFrecuencia(idmonto),
+                        etiqueta = montoDao.getEtiqueta(idmonto),
+                        interes = montoDao.getInteres(idmonto),
+                        veces = montoDao.getVeces(idmonto),
+                        adddate = montoDao.getAdded(idmonto)
+                    )
+                    Log.v("Current monto $idmonto", viejoMonto.toString())
+                    val jsonObjectMonto = JSONObject()
+                    jsonObjectMonto.put("idmonto", viejoMonto.idmonto)
+                    jsonObjectMonto.put("iduser", viejoMonto.iduser)
+                    jsonObjectMonto.put("concepto", viejoMonto.concepto)
+                    jsonObjectMonto.put("valor", viejoMonto.valor)
+                    jsonObjectMonto.put("fecha", viejoMonto.fecha)
+                    jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
+                    jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
+                    jsonObjectMonto.put("interes", viejoMonto.interes)
+                    jsonObjectMonto.put("veces", viejoMonto.veces)
+                    jsonObjectMonto.put("adddate", viejoMonto.adddate)
 
-                Log.v("Current object", jsonObjectMonto.toString())
-                Log.v("Current array", jsonArrayMonto.toString())
+                    jsonArrayMonto.put(jsonObjectMonto)
+
+                    Log.v("Current object", jsonObjectMonto.toString())
+                    Log.v("Current array", jsonArrayMonto.toString())
+                }
             }
 
             // Tabla MontoGrupo

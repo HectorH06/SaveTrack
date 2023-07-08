@@ -127,36 +127,35 @@ class indexPorPagar : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            val fechaActual = LocalDate.now()
-            val today = fechaActual.toString()
+            val fechaActual = LocalDate.now().toString()
+            val today: Int = fechaActual.replace("-", "").toInt()
 
             val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val truefecha = formatoFecha.parse(today)
+            val truefecha = formatoFecha.parse(fechaActual)
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            val dom = String.format("%02d", dm)
+            val dom = calendar.get(Calendar.DAY_OF_MONTH)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = "Diario"
+            var dow = 100
             when (w) {
-                1 -> dow = "Sunday"
-                2 -> dow = "Monday"
-                3 -> dow = "Tuesday"
-                4 -> dow = "Wednesday"
-                5 -> dow = "Thursday"
-                6 -> dow = "Friday"
-                7 -> dow = "Saturday"
+                1 -> dow = 47
+                2 -> dow = 41
+                3 -> dow = 42
+                4 -> dow = 43
+                5 -> dow = 44
+                6 -> dow = 45
+                7 -> dow = 46
             }
 
-            val addd: Int = today.replace("-", "").toInt()
+            val addd: Int = today
 
-            Log.i("DOM", dom)
-            Log.i("DOW", dow)
+            Log.i("DOM", dom.toString())
+            Log.i("DOW", dow.toString())
 
-            Log.i("todayyyy", today)
+            Log.i("todayyyy", today.toString())
 
-            fastable = montoDao.getGXFecha(today, dom, dow, "Diario", addd)
+            fastable = montoDao.getGXFecha(today, dom, dow, 100, addd)
             Log.i("ALL TODOLIST", fastable.toString())
         }
         return fastable
@@ -211,9 +210,9 @@ class indexPorPagar : Fragment() {
             id: Long,
             concepto: String,
             valor: Double,
-            fecha: String,
-            frecuencia: Long?,
-            etiqueta: Long,
+            fecha: Int?,
+            frecuencia: Int?,
+            etiqueta: Int,
             interes: Double?,
             veces: Long?,
             adddate: Int

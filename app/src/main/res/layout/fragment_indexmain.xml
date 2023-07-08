@@ -146,7 +146,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
+    <TextView
         android:id="@+id/Calendario"
         android:layout_width="64dp"
         android:layout_height="64dp"
@@ -154,6 +154,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/datepng"
         android:paddingTop="8dp"
+        android:textAlignment="center"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"

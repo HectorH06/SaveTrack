@@ -1,5 +1,6 @@
 package com.example.st5
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.PendingIntent
@@ -570,42 +571,68 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private suspend fun fastget(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            val fechaActual = LocalDate.now()
-            val today = fechaActual.toString()
+            val fechaActual = LocalDate.now().toString()
+            val today: Int = fechaActual.replace("-", "").toInt()
 
             val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val truefecha = formatoFecha.parse(today)
+            val truefecha = formatoFecha.parse(fechaActual)
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            binding.Calendario.text = today
-
-            val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            val dom = String.format("%02d", dm)
+            val dom = calendar.get(Calendar.DAY_OF_MONTH)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = "Diario"
+            var dow = 100
             when (w) {
-                1 -> dow = "Sunday"
-                2 -> dow = "Monday"
-                3 -> dow = "Tuesday"
-                4 -> dow = "Wednesday"
-                5 -> dow = "Thursday"
-                6 -> dow = "Friday"
-                7 -> dow = "Saturday"
+                1 -> dow = 47
+                2 -> dow = 41
+                3 -> dow = 42
+                4 -> dow = 43
+                5 -> dow = 44
+                6 -> dow = 45
+                7 -> dow = 46
             }
 
-            val addd: Int = today.replace("-", "").toInt()
+            val yyy = calendar.get(Calendar.YEAR)
+            val mesesito = when (calendar.get(Calendar.MONTH)) {
+                0 -> "Enero"
+                1 -> "Febrero"
+                2 -> "Marzo"
+                3 -> "Abril"
+                4 -> "Mayo"
+                5 -> "Junio"
+                6 -> "Julio"
+                7 -> "Agosto"
+                8 -> "Septiembre"
+                9 -> "Octubre"
+                10 -> "Noviembre"
+                11 -> "Diciembre"
+                else -> "cualquier mes"
+            }
+            val semanita = when (dow) {
+                47 -> "Domingo"
+                41 -> "Lunes"
+                42 -> "Martes"
+                43 -> "Miércoles"
+                44 -> "Jueves"
+                45 -> "Viernes"
+                46 -> "Sábado"
+                else -> ""
+            }
 
-            Log.i("DOM", dom)
-            Log.i("DOW", dow)
+            binding.Calendario.text = "$semanita $dom de $mesesito del $yyy"
+            val addd: Int = today
 
-            Log.i("todayyyy", today)
+            Log.i("DOM", dom.toString())
+            Log.i("DOW", dow.toString())
 
-            fastable = montoDao.getGXFecha(today, dom, dow, "Diario", addd)
+            Log.i("todayyyy", today.toString())
+
+            fastable = montoDao.getGXFecha(today, dom, dow, 100, addd)
             Log.i("ALL TODOLIST", fastable.toString())
         }
         return fastable
@@ -698,46 +725,46 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
             val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
 
-            val fechaActual = LocalDate.now()
-            val today = fechaActual.toString()
+            val fechaActual = LocalDate.now().toString()
+            Log.d("HOY", fechaActual)
+            val today: Int = fechaActual.replace("-", "").toInt()
             val prev = assetsDao.getLastProcess()
 
             val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val truefecha = formatoFecha.parse(today)
+            val truefecha = formatoFecha.parse(fechaActual)
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            val dom = String.format("%02d", dm)
+            val dom = calendar.get(Calendar.DAY_OF_MONTH)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = "Diario"
+            var dow = 100
             when (w) {
-                1 -> dow = "Sunday"
-                2 -> dow = "Monday"
-                3 -> dow = "Tuesday"
-                4 -> dow = "Wednesday"
-                5 -> dow = "Thursday"
-                6 -> dow = "Friday"
-                7 -> dow = "Saturday"
+                1 -> dow = 47
+                2 -> dow = 41
+                3 -> dow = 42
+                4 -> dow = 43
+                5 -> dow = 44
+                6 -> dow = 45
+                7 -> dow = 46
             }
 
-            val addd: Int = today.replace("-", "").toInt()
+            val addd: Int = today
 
-            Log.i("DOM", dom)
-            Log.i("DOW", dow)
+            Log.i("DOM", dom.toString())
+            Log.i("DOW", dow.toString())
 
-            Log.i("todayyyy", today)
-            Log.i("prevvvvv", prev)
+            Log.i("todayyyy", today.toString())
+            Log.i("prevvvvv", prev.toString())
 
-            val montos = montoDao.getMontoXFecha(today, dom, dow, "Diario", addd)
+            val montos = montoDao.getMontoXFecha(today, dom, dow, 100, addd)
 
             if (prev != today) {
                 for (monto in montos) {
                     val totalIngresos = ingresoGastoDao.checkSummaryI()
 
                     Log.i("MONTO PROCESADO", monto.toString())
-                    val weekMonto = monto.fecha.uppercase()
-                    Log.v("wek", weekMonto)
+                    val weekMonto = monto.fecha
+                    Log.v("wek", weekMonto.toString())
 
                     if (monto.valor > 0) {
                         ingresoGastoDao.updateSummaryI(
@@ -822,7 +849,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val monto = montos[position]
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
-            holder.fechaTextView.text = monto.fecha
+            holder.fechaTextView.text = monto.fecha.toString()
             val upup = indexmontoupdate.sendMonto(
                 monto.idmonto,
                 monto.concepto,
@@ -841,13 +868,13 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             }
             holder.checkM.setOnClickListener {
                 val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
+                    .setTitle("¿Seguro que quieres marcar el gasto ${monto.concepto} como pagado?")
                     .setPositiveButton("Eliminar") { dialog, _ ->
 
                         Log.v("Id del monto actualizado", monto.idmonto.toString())
                         Log.v("Concepto", monto.concepto)
                         Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha)
+                        Log.v("Fecha", monto.fecha.toString())
                         Log.v("Frecuencia", monto.frecuencia.toString())
                         Log.v("Etiqueta", monto.etiqueta.toString())
                         Log.v("Interes", monto.interes.toString())
@@ -888,9 +915,9 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             idmonto: Long,
             concepto: String,
             valor: Double,
-            fecha: String,
-            frecuencia: Long?,
-            etiqueta: Long,
+            fecha: Int?,
+            frecuencia: Int?,
+            etiqueta: Int,
             interes: Double?,
             veces: Long?,
             adddate: Int
@@ -906,7 +933,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
-                    idmonto = iduser,
+                    idmonto = idmonto,
                     iduser = iduser,
                     concepto = concepto,
                     valor = valor,

@@ -180,7 +180,7 @@ class Login : Fragment() {
                                                             )
                                                             val defaultAssets = Assets(
                                                                 theme = 0,
-                                                                lastprocess = ""
+                                                                lastprocess = 0
                                                             )
 
                                                             usuarioDao.clean()
@@ -560,6 +560,10 @@ class Login : Fragment() {
                                                                 jsonObject1.optLong("diasaho")
                                                             val balance: Double =
                                                                 jsonObject1.optDouble("balance")
+                                                            val tema: Long =
+                                                                jsonObject1.optLong("theme")
+                                                            val lastprocess: Int =
+                                                                jsonObject1.optInt("lastprocess")
                                                             val usuarioDao = Stlite.getInstance(
                                                                 requireContext()
                                                             ).getUsuarioDao()
@@ -599,16 +603,22 @@ class Login : Fragment() {
                                                                         jsonObject3.optString("concepto")
                                                                     val valor: Double =
                                                                         jsonObject3.optDouble("valor")
-                                                                    val fecha: String =
-                                                                        jsonObject3.optString("fecha")
-                                                                    val frecuencia: Long =
-                                                                        jsonObject3.optLong("frecuencia")
-                                                                    val etiqueta: Long =
-                                                                        jsonObject3.optLong("etiqueta")
+                                                                    val valorfinal: Double =
+                                                                        jsonObject3.optDouble("valorfinal")
+                                                                    val fecha: Int =
+                                                                        jsonObject3.optInt("fecha")
+                                                                    val fechafinal: Int =
+                                                                        jsonObject3.optInt("fechafinal")
+                                                                    val frecuencia: Int =
+                                                                        jsonObject3.optInt("frecuencia")
+                                                                    val etiqueta: Int =
+                                                                        jsonObject3.optInt("etiqueta")
                                                                     val interes: Double =
                                                                         jsonObject3.optDouble("interes")
                                                                     val veces: Long =
                                                                         jsonObject3.optLong("veces")
+                                                                    val estado: Int =
+                                                                        jsonObject3.optInt("estado")
                                                                     val adddate: Int =
                                                                         jsonObject3.optInt("adddate")
 
@@ -617,11 +627,14 @@ class Login : Fragment() {
                                                                         iduser = iduse,
                                                                         concepto = concepto,
                                                                         valor = valor,
+                                                                        valorfinal = valorfinal,
                                                                         fecha = fecha,
+                                                                        fechafinal = fechafinal,
                                                                         frecuencia = frecuencia,
                                                                         etiqueta = etiqueta,
                                                                         interes = interes,
                                                                         veces = veces,
+                                                                        estado = estado,
                                                                         adddate = adddate
                                                                     )
                                                                     Log.v(
@@ -744,8 +757,8 @@ class Login : Fragment() {
                                                                 enlace = enlace
                                                             )
                                                             val defaultAssets = Assets(
-                                                                theme = 0,
-                                                                lastprocess = ""
+                                                                theme = tema,
+                                                                lastprocess = lastprocess
                                                             )
 
                                                             usuarioDao.clean()

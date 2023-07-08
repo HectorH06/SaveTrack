@@ -21,14 +21,20 @@ data class Monto(
     @ColumnInfo(name = "valor")
     var valor: Double,
 
+    @ColumnInfo(name = "valorfinal")
+    var valorfinal: Double? = 0.0,
+
     @ColumnInfo(name = "fecha")
-    var fecha: String,
+    var fecha: Int?,
+
+    @ColumnInfo(name = "fechafinal")
+    var fechafinal: Int? = 0,
 
     @ColumnInfo(name = "frecuencia")
-    var frecuencia: Long?,
+    var frecuencia: Int?,
 
     @ColumnInfo(name = "etiqueta")
-    var etiqueta: Long,
+    var etiqueta: Int,
 
     @ColumnInfo(name = "interes")
     var interes: Double?,
@@ -37,10 +43,10 @@ data class Monto(
     var veces: Long?,
 
     @ColumnInfo(name = "estado")
-    var estado: Long? = 0L,
+    var estado: Int? = 0,
 
     @ColumnInfo(name = "adddate")
     var adddate: Int
 ) : Parcelable {
-    constructor() : this(0L, 0L, "", 0.0, "",0L, 0L, 0.0, 0L, 0L, 0)
+    constructor() : this(0L, 0L, "", 0.0, 0.0, 0, 0,0, 0, 0.0, 0L, 0, 0)
 }

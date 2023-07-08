@@ -39,46 +39,47 @@ class Alarma : BroadcastReceiver() {
             val ingresoGastoDao = Stlite.getInstance(context).getIngresosGastosDao()
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
-            val fechaActual = LocalDate.now()
-            val today = fechaActual.toString()
+            val fechaActual = LocalDate.now().toString()
+            val today: Int = fechaActual.replace("-", "").toInt()
             val prev = assetsDao.getLastProcess()
 
             val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val truefecha = formatoFecha.parse(today)
+            val truefecha = formatoFecha.parse(fechaActual)
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
             val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            val dom = String.format("%02d", dm)
+            var doma = String.format("%02d", dm)
+            val dom = "5$doma".toInt()
             val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = "Diario"
+            var dow = 100
             when (w) {
-                1 -> dow = "Sunday"
-                2 -> dow = "Monday"
-                3 -> dow = "Tuesday"
-                4 -> dow = "Wednesday"
-                5 -> dow = "Thursday"
-                6 -> dow = "Friday"
-                7 -> dow = "Saturday"
+                1 -> dow = 47
+                2 -> dow = 41
+                3 -> dow = 42
+                4 -> dow = 43
+                5 -> dow = 44
+                6 -> dow = 45
+                7 -> dow = 46
             }
 
-            val addd: Int = today.replace("-", "").toInt()
+            val addd: Int = today
 
-            Log.i("DOM", dom)
-            Log.i("DOW", dow)
+            Log.i("DOM", dom.toString())
+            Log.i("DOW", dow.toString())
 
-            Log.i("todayyyy", today)
-            Log.i("prevvvvv", prev)
+            Log.i("todayyyy", today.toString())
+            Log.i("prevvvvv", prev.toString())
 
-            val montos = montoDao.getMontoXFecha(today, dom, dow, "Diario", addd)
+            val montos = montoDao.getMontoXFecha(today, dom, dow, 100, addd)
 
             if (prev != today) {
                 for (monto in montos) {
                     val totalIngresos = ingresoGastoDao.checkSummaryI()
 
                     Log.i("MONTO PROCESADO", monto.toString())
-                    val weekMonto = monto.fecha.uppercase()
-                    Log.v("wek", weekMonto)
+                    val weekMonto = monto.fecha
+                    Log.v("wek", weekMonto.toString())
 
                     if (monto.valor > 0) {
                         ingresoGastoDao.updateSummaryI(
@@ -118,6 +119,7 @@ class Alarma : BroadcastReceiver() {
             val montoGrupoDao = Stlite.getInstance(context).getMontoGrupoDao()
             val gruposDao = Stlite.getInstance(context).getGruposDao()
             val labelsDao = Stlite.getInstance(context).getLabelsDao()
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             val perocuantosmontos = montoDao.getMaxMonto()
             val perocuantaslabels = labelsDao.getMaxLabel()
@@ -133,6 +135,8 @@ class Alarma : BroadcastReceiver() {
             val foto = usuarioDao.checkFoto()
             val summaryingresos = ingresosGastosDao.checkSummaryI()
             val summarygastos = ingresosGastosDao.checkSummaryG()
+            val tema = assetsDao.getTheme().toLong()
+            val lastprocess = assetsDao.getLastProcess()
 
 
             val viejoUsuario = Usuario(
@@ -156,6 +160,11 @@ class Alarma : BroadcastReceiver() {
             val viejoGrupo = Grupos(
                 Id = 0, name = "", description = "", admin = iduser, nmembers = 1, enlace = ""
             )
+            val viejosAssets = Assets(
+                idtheme = 0,
+                theme = tema,
+                lastprocess = lastprocess
+            )
 
 
             val selectedbefore = usuarioDao.getUserData()
@@ -174,6 +183,8 @@ class Alarma : BroadcastReceiver() {
             jsonObjectUsuario.put("foto", viejoUsuario.foto)
             jsonObjectUsuario.put("diasaho", viejoUsuario.diasaho)
             jsonObjectUsuario.put("balance", viejoUsuario.balance)
+            jsonObjectUsuario.put("theme", viejosAssets.theme)
+            jsonObjectUsuario.put("lastprocess", viejosAssets.lastprocess)
 
             // Tabla IngresosGastos
             val jsonObjectIngresosGastos = JSONObject()
@@ -192,11 +203,14 @@ class Alarma : BroadcastReceiver() {
                         iduser = montoDao.getIduser(idmonto),
                         concepto = montoDao.getConcepto(idmonto),
                         valor = montoDao.getValor(idmonto),
+                        valorfinal = montoDao.getValorFinal(idmonto),
                         fecha = montoDao.getFecha(idmonto),
+                        fechafinal = montoDao.getFechaFinal(idmonto),
                         frecuencia = montoDao.getFrecuencia(idmonto),
                         etiqueta = montoDao.getEtiqueta(idmonto),
                         interes = montoDao.getInteres(idmonto),
                         veces = montoDao.getVeces(idmonto),
+                        estado = montoDao.getEstado(idmonto),
                         adddate = montoDao.getAdded(idmonto)
                     )
                     Log.v("Current monto $idmonto", viejoMonto.toString())
@@ -205,11 +219,14 @@ class Alarma : BroadcastReceiver() {
                     jsonObjectMonto.put("iduser", viejoMonto.iduser)
                     jsonObjectMonto.put("concepto", viejoMonto.concepto)
                     jsonObjectMonto.put("valor", viejoMonto.valor)
+                    jsonObjectMonto.put("valorfinal", viejoMonto.valorfinal)
                     jsonObjectMonto.put("fecha", viejoMonto.fecha)
+                    jsonObjectMonto.put("fechafinal", viejoMonto.fechafinal)
                     jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
                     jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
                     jsonObjectMonto.put("interes", viejoMonto.interes)
                     jsonObjectMonto.put("veces", viejoMonto.veces)
+                    jsonObjectMonto.put("estado", viejoMonto.estado)
                     jsonObjectMonto.put("adddate", viejoMonto.adddate)
 
                     jsonArrayMonto.put(jsonObjectMonto)

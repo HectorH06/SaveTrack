@@ -46,7 +46,7 @@ class historialmain : Fragment() {
     private suspend fun isDarkModeEnabled(context: Context): Boolean {
         var komodo: Boolean
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             val mode = assetsDao.getTheme()
@@ -71,21 +71,22 @@ class historialmain : Fragment() {
 
         var fechaSeleccionada: String
 
-        binding.calendarView.setOnClickListener() {
-                val day = binding.calendarView.dayOfMonth
-                val fDay = String.format("%02d", day)
-                val month = binding.calendarView.month + 1
-                val fMonth = String.format("%02d", month)
-                val year = binding.calendarView.year
-                fechaSeleccionada = "$year-$fMonth-$fDay"
+        binding.calendarView.setOnClickListener {
+            val day = binding.calendarView.dayOfMonth
+            val fDay = String.format("%02d", day)
+            val month = binding.calendarView.month + 1
+            val fMonth = String.format("%02d", month)
+            val year = binding.calendarView.year
+            fechaSeleccionada = "$year$fMonth$fDay"
+            val fsi: Int = fechaSeleccionada.replace("-", "").toInt()
 
-                Toast.makeText(requireContext(), "$fechaSeleccionada", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "$fsi", Toast.LENGTH_SHORT).show()
 
-                val montosF = historialMontosList.fechaSearch(fechaSeleccionada)
+            val montosF = historialMontosList.fechaSearch(fsi)
 
-                parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.historial_container, montosF).addToBackStack(null).commit()
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .replace(R.id.historial_container, montosF).addToBackStack(null).commit()
         }
 
         binding.ConfigButton.setOnClickListener {
@@ -97,7 +98,8 @@ class historialmain : Fragment() {
         binding.PapeleraButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.historial_container, historialPapelera()).addToBackStack(null).commit()
+                .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
+                .commit()
         }
     }
 }

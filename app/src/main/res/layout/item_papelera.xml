@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/PConcepto"
-        android:layout_width="120dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:maxHeight="150dp"
@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/PValor"
-        android:layout_width="70dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:maxHeight="100dp"
@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/PVeces"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:hint="@string/Fecha"
         android:textColor="?attr/colorOnPrimary"

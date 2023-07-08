@@ -107,14 +107,14 @@
 
         <TextView
             android:id="@+id/bar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/O0"
-            android:textSize="36sp"
-            android:layout_marginStart="16dp"
+            android:textSize="20sp"
+            android:layout_marginStart="77dp"
+            android:layout_marginEnd="77dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/goback"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/goback"

@@ -31,12 +31,12 @@ class historialMontosList : Fragment() {
 
     companion object {
         private const val fecha = "fechar"
-        fun fechaSearch(fech: String): historialMontosList {
+        fun fechaSearch(fech: Int): historialMontosList {
             val fragment = historialMontosList()
             val args = Bundle()
-            Log.i("fech", fech)
+            Log.i("fech", fech.toString())
 
-            args.putString(fecha, fech)
+            args.putInt(fecha, fech)
             fragment.arguments = args
             return fragment
         }
@@ -141,37 +141,63 @@ class historialMontosList : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val datedate: String? = arguments?.getString(fecha)
+            val formatoFecha = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val datedate: Int? = arguments?.getInt(fecha)
 
-            binding.bar.text = "Montos del $datedate"
+            val fs = "$datedate"
 
-            val truefecha = formatoFecha.parse(datedate)
+            val truefecha = formatoFecha.parse(fs)
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            val dom = String.format("%02d", dm)
+            val dom = calendar.get(Calendar.DAY_OF_MONTH)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = "Diario"
+            var dow = 100
             when (w) {
-                1 -> dow = "Sunday"
-                2 -> dow = "Monday"
-                3 -> dow = "Tuesday"
-                4 -> dow = "Wednesday"
-                5 -> dow = "Thursday"
-                6 -> dow = "Friday"
-                7 -> dow = "Saturday"
+                1 -> dow = 47
+                2 -> dow = 41
+                3 -> dow = 42
+                4 -> dow = 43
+                5 -> dow = 44
+                6 -> dow = 45
+                7 -> dow = 46
             }
 
-            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
+            val yyy = calendar.get(Calendar.YEAR)
+            val mesesito = when (calendar.get(Calendar.MONTH)) {
+                0 -> "Enero"
+                1 -> "Febrero"
+                2 -> "Marzo"
+                3 -> "Abril"
+                4 -> "Mayo"
+                5 -> "Junio"
+                6 -> "Julio"
+                7 -> "Agosto"
+                8 -> "Septiembre"
+                9 -> "Octubre"
+                10 -> "Noviembre"
+                11 -> "Diciembre"
+                else -> "cualquier mes"
+            }
+            val semanita = when (dow) {
+                47 -> "Domingo"
+                41 -> "Lunes"
+                42 -> "Martes"
+                43 -> "Miércoles"
+                44 -> "Jueves"
+                45 -> "Viernes"
+                46 -> "Sábado"
+                else -> ""
+            }
 
-            Log.i("datedate", datedate.toString())
-            Log.i("DOM", dom)
-            Log.i("DOW", dow)
+            Log.i("datedate", fs)
+            Log.i("DOM", dom.toString())
+            Log.i("DOW", dow.toString())
+
+            binding.bar.text = "Montos del $semanita $dom de $mesesito del $yyy"
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFecha(datedate, dom, dow, "Diario", addd)
+                montoDao.getMontoXFecha(datedate, dom, dow, 100, datedate)
             } else {
                 montoDao.getMontoXFecha()
             }
@@ -184,35 +210,32 @@ class historialMontosList : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val datedate: String? = arguments?.getString(fecha)
+            val formatoFecha = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val datedate: Int? = arguments?.getInt(fecha)
 
-            val truefecha = formatoFecha.parse(datedate)
+            val truefecha = formatoFecha.parse(datedate.toString())
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            val dom = String.format("%02d", dm)
+            val dom = calendar.get(Calendar.DAY_OF_MONTH)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = "Diario"
+            var dow = 100
             when (w) {
-                1 -> dow = "Sunday"
-                2 -> dow = "Monday"
-                3 -> dow = "Tuesday"
-                4 -> dow = "Wednesday"
-                5 -> dow = "Thursday"
-                6 -> dow = "Friday"
-                7 -> dow = "Saturday"
+                1 -> dow = 47
+                2 -> dow = 41
+                3 -> dow = 42
+                4 -> dow = 43
+                5 -> dow = 44
+                6 -> dow = 45
+                7 -> dow = 46
             }
 
-            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
-
             Log.i("datedate", datedate.toString())
-            Log.i("DOM", dom)
-            Log.i("DOW", dow)
+            Log.i("DOM", dom.toString())
+            Log.i("DOW", dow.toString())
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaAlfabetica(datedate, dom, dow, "Diario", addd)
+                montoDao.getMontoXFechaAlfabetica(datedate, dom, dow, 100, datedate)
             } else {
                 montoDao.getMontoXFechaAlfabetica()
             }
@@ -225,35 +248,32 @@ class historialMontosList : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val datedate: String? = arguments?.getString(fecha)
+            val formatoFecha = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val datedate: Int? = arguments?.getInt(fecha)
 
-            val truefecha = formatoFecha.parse(datedate)
+            val truefecha = formatoFecha.parse(datedate.toString())
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            val dom = String.format("%02d", dm)
+            val dom = calendar.get(Calendar.DAY_OF_MONTH)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = "Diario"
+            var dow = 100
             when (w) {
-                1 -> dow = "Sunday"
-                2 -> dow = "Monday"
-                3 -> dow = "Tuesday"
-                4 -> dow = "Wednesday"
-                5 -> dow = "Thursday"
-                6 -> dow = "Friday"
-                7 -> dow = "Saturday"
+                1 -> dow = 47
+                2 -> dow = 41
+                3 -> dow = 42
+                4 -> dow = 43
+                5 -> dow = 44
+                6 -> dow = 45
+                7 -> dow = 46
             }
 
-            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
-
             Log.i("datedate", datedate.toString())
-            Log.i("DOM", dom)
-            Log.i("DOW", dow)
+            Log.i("DOM", dom.toString())
+            Log.i("DOW", dow.toString())
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaValuados(datedate, dom, dow, "Diario", addd)
+                montoDao.getMontoXFechaValuados(datedate, dom, dow, 100, datedate)
             } else {
                 montoDao.getMontoXFechaValuados()
             }
@@ -266,35 +286,32 @@ class historialMontosList : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val datedate: String? = arguments?.getString(fecha)
+            val formatoFecha = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val datedate: Int? = arguments?.getInt(fecha)
 
-            val truefecha = formatoFecha.parse(datedate)
+            val truefecha = formatoFecha.parse(datedate.toString())
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            val dom = String.format("%02d", dm)
+            val dom = calendar.get(Calendar.DAY_OF_MONTH)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = "Diario"
+            var dow = 100
             when (w) {
-                1 -> dow = "Sunday"
-                2 -> dow = "Monday"
-                3 -> dow = "Tuesday"
-                4 -> dow = "Wednesday"
-                5 -> dow = "Thursday"
-                6 -> dow = "Friday"
-                7 -> dow = "Saturday"
+                1 -> dow = 47
+                2 -> dow = 41
+                3 -> dow = 42
+                4 -> dow = 43
+                5 -> dow = 44
+                6 -> dow = 45
+                7 -> dow = 46
             }
 
-            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
-
             Log.i("datedate", datedate.toString())
-            Log.i("DOM", dom)
-            Log.i("DOW", dow)
+            Log.i("DOM", dom.toString())
+            Log.i("DOW", dow.toString())
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaVeces(datedate, dom, dow, "Diario", addd)
+                montoDao.getMontoXFechaVeces(datedate, dom, dow, 100, datedate)
             } else {
                 montoDao.getMontoXFechaVeces()
             }
@@ -307,35 +324,32 @@ class historialMontosList : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val datedate: String? = arguments?.getString(fecha)
+            val formatoFecha = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val datedate: Int? = arguments?.getInt(fecha)
 
-            val truefecha = formatoFecha.parse(datedate)
+            val truefecha = formatoFecha.parse(datedate.toString())
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            val dom = String.format("%02d", dm)
+            val dom = calendar.get(Calendar.DAY_OF_MONTH)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = "Diario"
+            var dow = 100
             when (w) {
-                1 -> dow = "Sunday"
-                2 -> dow = "Monday"
-                3 -> dow = "Tuesday"
-                4 -> dow = "Wednesday"
-                5 -> dow = "Thursday"
-                6 -> dow = "Friday"
-                7 -> dow = "Saturday"
+                1 -> dow = 47
+                2 -> dow = 41
+                3 -> dow = 42
+                4 -> dow = 43
+                5 -> dow = 44
+                6 -> dow = 45
+                7 -> dow = 46
             }
 
-            val addd: Int = datedate?.replace("-", "")?.toInt() ?: 0
-
             Log.i("datedate", datedate.toString())
-            Log.i("DOM", dom)
-            Log.i("DOW", dow)
+            Log.i("DOM", dom.toString())
+            Log.i("DOW", dow.toString())
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaEtiquetados(datedate, dom, dow, "Diario", addd)
+                montoDao.getMontoXFechaEtiquetados(datedate, dom, dow, 100, datedate)
             } else {
                 montoDao.getMontoXFechaEtiquetados()
             }
@@ -348,9 +362,9 @@ class historialMontosList : Fragment() {
         idmonto: Long,
         concepto: String,
         valor: Double,
-        fecha: String,
-        frecuencia: Long?,
-        etiqueta: Long,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
         interes: Double?,
         veces: Long?,
         adddate: Int
@@ -435,7 +449,7 @@ class historialMontosList : Fragment() {
                         Log.v("Id del monto actualizado", monto.idmonto.toString())
                         Log.v("Concepto", monto.concepto)
                         Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha)
+                        Log.v("Fecha", monto.fecha.toString())
                         Log.v("Frecuencia", monto.frecuencia.toString())
                         Log.v("Etiqueta", monto.etiqueta.toString())
                         Log.v("Interes", monto.interes.toString())

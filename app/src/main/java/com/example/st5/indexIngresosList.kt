@@ -258,9 +258,9 @@ class indexIngresosList : Fragment() {
         idmonto: Long,
         concepto: String,
         valor: Double,
-        fecha: String,
-        frecuencia: Long?,
-        etiqueta: Long,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
         interes: Double?,
         veces: Long?,
         adddate: Int
@@ -344,7 +344,7 @@ class indexIngresosList : Fragment() {
             val monto = montos[position]
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
-            holder.fechaTextView.text = monto.fecha
+            holder.fechaTextView.text = monto.fecha.toString()
             holder.etiquetaTextView.text = monto.etiqueta.toString()
             val upup = indexmontoupdate.sendMonto(
                 monto.idmonto,
@@ -370,7 +370,7 @@ class indexIngresosList : Fragment() {
                         Log.v("Id del monto actualizado", monto.idmonto.toString())
                         Log.v("Concepto", monto.concepto)
                         Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha)
+                        Log.v("Fecha", monto.fecha.toString())
                         Log.v("Frecuencia", monto.frecuencia.toString())
                         Log.v("Etiqueta", monto.etiqueta.toString())
                         Log.v("Interes", monto.interes.toString())
@@ -461,9 +461,9 @@ class indexIngresosList : Fragment() {
             id: Long,
             concepto: String,
             valor: Double,
-            fecha: String,
-            frecuencia: Long?,
-            etiqueta: Long,
+            fecha: Int?,
+            frecuencia: Int?,
+            etiqueta: Int,
             interes: Double?,
             veces: Long?,
             adddate: Int

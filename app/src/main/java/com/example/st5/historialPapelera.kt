@@ -173,9 +173,9 @@ class historialPapelera : Fragment() {
         idmonto: Long,
         concepto: String,
         valor: Double,
-        fecha: String,
-        frecuencia: Long?,
-        etiqueta: Long,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
         interes: Double?,
         veces: Long?,
         adddate: Int
@@ -210,9 +210,9 @@ class historialPapelera : Fragment() {
         idmonto: Long,
         concepto: String,
         valor: Double,
-        fecha: String,
-        frecuencia: Long?,
-        etiqueta: Long,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
         interes: Double?,
         veces: Long?,
         adddate: Int
@@ -290,7 +290,7 @@ class historialPapelera : Fragment() {
                         Log.v("Id del monto actualizado", monto.idmonto.toString())
                         Log.v("Concepto", monto.concepto)
                         Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha)
+                        Log.v("Fecha", monto.fecha.toString())
                         Log.v("Frecuencia", monto.frecuencia.toString())
                         Log.v("Etiqueta", monto.etiqueta.toString())
                         Log.v("Interes", monto.interes.toString())
@@ -318,7 +318,7 @@ class historialPapelera : Fragment() {
                         Log.v("Id del monto actualizado", monto.idmonto.toString())
                         Log.v("Concepto", monto.concepto)
                         Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha)
+                        Log.v("Fecha", monto.fecha.toString())
                         Log.v("Frecuencia", monto.frecuencia.toString())
                         Log.v("Etiqueta", monto.etiqueta.toString())
                         Log.v("Interes", monto.interes.toString())

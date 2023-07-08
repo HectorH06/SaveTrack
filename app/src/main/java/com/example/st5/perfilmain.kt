@@ -98,6 +98,7 @@ class perfilmain : Fragment() {
                     val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
                     val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
                     val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
+                    val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
 
                     val perocuantosmontos = montoDao.getMaxMonto()
                     val perocuantaslabels = labelsDao.getMaxLabel()
@@ -113,6 +114,8 @@ class perfilmain : Fragment() {
                     val foto = usuarioDao.checkFoto()
                     val summaryingresos = ingresosGastosDao.checkSummaryI()
                     val summarygastos = ingresosGastosDao.checkSummaryG()
+                    val tema = assetsDao.getTheme().toLong()
+                    val lastprocess = assetsDao.getLastProcess()
 
 
                     val viejoUsuario = Usuario(
@@ -143,6 +146,11 @@ class perfilmain : Fragment() {
                         nmembers = 1,
                         enlace = ""
                     )
+                    val viejosAssets = Assets(
+                        idtheme = 0,
+                        theme = tema,
+                        lastprocess = lastprocess
+                    )
 
 
                     val selectedbefore = usuarioDao.getUserData()
@@ -161,6 +169,8 @@ class perfilmain : Fragment() {
                     jsonObjectUsuario.put("foto", viejoUsuario.foto)
                     jsonObjectUsuario.put("diasaho", viejoUsuario.diasaho)
                     jsonObjectUsuario.put("balance", viejoUsuario.balance)
+                    jsonObjectUsuario.put("theme", viejosAssets.theme)
+                    jsonObjectUsuario.put("lastprocess", viejosAssets.lastprocess)
 
                     // Tabla IngresosGastos
                     val jsonObjectIngresosGastos = JSONObject()
@@ -177,11 +187,14 @@ class perfilmain : Fragment() {
                                 iduser = montoDao.getIduser(idmonto),
                                 concepto = montoDao.getConcepto(idmonto),
                                 valor = montoDao.getValor(idmonto),
+                                valorfinal = montoDao.getValorFinal(idmonto),
                                 fecha = montoDao.getFecha(idmonto),
+                                fechafinal = montoDao.getFechaFinal(idmonto),
                                 frecuencia = montoDao.getFrecuencia(idmonto),
                                 etiqueta = montoDao.getEtiqueta(idmonto),
                                 interes = montoDao.getInteres(idmonto),
                                 veces = montoDao.getVeces(idmonto),
+                                estado = montoDao.getEstado(idmonto),
                                 adddate = montoDao.getAdded(idmonto)
                             )
                             Log.v("Current monto $idmonto", viejoMonto.toString())
@@ -190,11 +203,14 @@ class perfilmain : Fragment() {
                             jsonObjectMonto.put("iduser", viejoMonto.iduser)
                             jsonObjectMonto.put("concepto", viejoMonto.concepto)
                             jsonObjectMonto.put("valor", viejoMonto.valor)
+                            jsonObjectMonto.put("valorinal", viejoMonto.valorfinal)
                             jsonObjectMonto.put("fecha", viejoMonto.fecha)
+                            jsonObjectMonto.put("fechafinal", viejoMonto.fechafinal)
                             jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
                             jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
                             jsonObjectMonto.put("interes", viejoMonto.interes)
                             jsonObjectMonto.put("veces", viejoMonto.veces)
+                            jsonObjectMonto.put("estado", viejoMonto.estado)
                             jsonObjectMonto.put("adddate", viejoMonto.adddate)
 
                             jsonArrayMonto.put(jsonObjectMonto)

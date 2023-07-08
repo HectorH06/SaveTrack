@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/IConcepto"
-        android:layout_width="120dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:hint="@string/Concepto"
@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/IValor"
-        android:layout_width="70dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:hint="@string/Valor"
@@ -34,7 +34,7 @@
 
     <TextView
         android:id="@+id/IFecha"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:hint="@string/Fecha"
         android:textAlignment="textEnd"

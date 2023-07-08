@@ -17,9 +17,9 @@ interface AssetsDao {
     fun updateTheme(mode: Long)
 
     @Query("UPDATE assets SET lastprocess = :today")
-    fun updateLastprocess(today: String)
+    fun updateLastprocess(today: Int)
 
     @Query("SELECT lastprocess FROM assets")
-    fun getLastProcess(): String
+    fun getLastProcess(): Int
 
 }

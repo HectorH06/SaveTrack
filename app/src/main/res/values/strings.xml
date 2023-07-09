@@ -126,6 +126,10 @@
     <string name="addm">Añadir Monto</string>
     <string name="porpagar">Para pagar HOY</string>
     <string name="editperfil">Editar Perfil</string>
+    <string name="guardados">guardados</string>
+    <string name="etiquetas">Etiquetas</string>
+    <string name="categoria">Categoría</string>
+    <string name="color">Color</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

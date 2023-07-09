@@ -8,7 +8,8 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/historial_background"/>
+        android:theme="@style/historial_background"
+        android:contentDescription="@string/wallpaper" />
 
     <DatePicker
         android:id="@+id/calendarView"
@@ -55,6 +56,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_trashcan"
         android:contentDescription="@string/papelera" />
+
+    <ImageButton
+        android:id="@+id/GuardadosButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/transparent"
+        app:layout_constraintEnd_toStartOf="@id/PapeleraButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_star"
+        android:contentDescription="@string/guardados" />
 
 
 

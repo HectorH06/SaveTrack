@@ -57,8 +57,8 @@
 
         <Button
             android:id="@+id/editP"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="2dp"
             android:layout_marginTop="2dp"
@@ -70,8 +70,8 @@
 
         <Button
             android:id="@+id/checkP"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:background="@drawable/ic_confirm"
             android:backgroundTint="?attr/colorOnSecondary"
             app:layout_constraintTop_toBottomOf="@id/editP"

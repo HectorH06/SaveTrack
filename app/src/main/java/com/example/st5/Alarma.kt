@@ -86,6 +86,19 @@ class Alarma : BroadcastReceiver() {
                             monto.iduser.toInt(), totalIngresos + monto.valor
                         )
                     } else {
+                        var status = 0
+                        if (monto.estado == 1){
+                            status = 0
+                        }
+                        if (monto.estado == 4){
+                            status = 3
+                        }
+                        if (monto.estado == 6){
+                            status = 5
+                        }
+                        if (monto.estado == 9){
+                            status = 8
+                        }
                         val toCheckMonto = Monto(
                             idmonto = monto.idmonto,
                             iduser = monto.iduser,
@@ -96,7 +109,7 @@ class Alarma : BroadcastReceiver() {
                             etiqueta = monto.etiqueta,
                             interes = monto.interes,
                             veces = monto.veces,
-                            estado = 0,
+                            estado = status,
                             adddate = monto.adddate
                         )
                         montoDao.updateMonto(toCheckMonto)

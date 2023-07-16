@@ -1,5 +1,6 @@
 package com.example.st5
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
@@ -34,6 +35,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private var label: Int = 0
     private var frecuencia: Int = 0
     private var fecha: Int = 0
+    private var estado: Int = 0
     private var interes: Double = 0.0
     private var selectedDay = 39
     private var selectedLabel: String? = "Seleccionar"
@@ -99,6 +101,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -142,10 +145,12 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 IconSwitch.Checked.LEFT -> {
                     binding.ValorField.hint = "Ingreso"
                     binding.LabelField.adapter = adapterI
+                    binding.yocreoquesi.text = "Préstamo"
                 }
                 IconSwitch.Checked.RIGHT -> {
                     binding.ValorField.hint = "Gasto"
                     binding.LabelField.adapter = adapterG
+                    binding.yocreoquesi.text = "Deuda"
                 }
                 else -> {}
             }
@@ -187,6 +192,17 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             }
         })
 
+        binding.yocreoquesi.setOnClickListener{
+            if (binding.yocreoquesi.isChecked){
+                displayFrecField() //Justificar la deuda y condiciones con intereses
+                displayInteresField()
+            } else {
+                hideFrecField()
+                hideInteresField()
+            }
+        }
+
+
         binding.WeekField.selectionMode = SingleSelectionMode.create()
         binding.WeekField.locale = Locale.getDefault()
         binding.WeekField.setDaySelectionChangedListener { selectedDays ->
@@ -222,12 +238,16 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                     .setPositiveButton("Guardar") { dialog, _ ->
                         var valor = valorstr.toDouble()
                         valor = truncateDouble(valor)
-                        if (label <= 8) {
+                        if (label <= 7) {
                             valor *= -1
                         }
 
-                        if (label == 8 || label == 16){
+                        if (estado == 8 || estado == 16){
                             interes = binding.InteresField.text.toString().toDouble()
+                        }
+
+                        if (binding.yocreoquesi.isChecked){
+                            estado = 5
                         }
 
                         fecha = when(frecuencia){
@@ -299,7 +319,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Veces", veces.toString())
                         Log.v("Addate", adddate.toString())
                         lifecycleScope.launch {
-                            montoadd(concepto, valor, valorfinal, fecha, fechafinal, frecuencia, label, interes, veces, adddate)
+                            montoadd(concepto, valor, valorfinal, fecha, fechafinal, frecuencia, label, interes, veces, estado, adddate)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -377,6 +397,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         etiqueta: Int,
         interes: Double,
         veces: Long?,
+        estado: Int,
         adddate: Int
     ) {
         withContext(Dispatchers.IO) {
@@ -395,6 +416,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 etiqueta = etiqueta,
                 interes = interes,
                 veces = veces,
+                estado = estado,
                 adddate = adddate
             )
 
@@ -580,12 +602,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 displayFechaField()
                 hideInteresField()
             }
-            "Deuda" -> {
-                label = 8
-                displayFrecField() //Justificar la deuda y condiciones con intereses
-                displayInteresField()
-            }
-
 
             "Salario" -> {
                 label = 9
@@ -622,11 +638,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 frecuencia = 0
                 hideFrecField()
                 hideInteresField()
-            }
-            "Préstamo" -> {
-                label = 16
-                displayFrecField() //Justificar préstamo con reglas de deudas, e intereses
-                displayInteresField()
             }
 
             else -> {

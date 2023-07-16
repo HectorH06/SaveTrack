@@ -266,8 +266,6 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             val valorstr = binding.ValorField.text.toString()
             var veces = arguments?.getLong(time)
 
-            // TODO poner barra superior en cada subvista
-
             var interes = 0.0
 
             if (label != 0 && concepto != "" && valorstr != "" && valorstr != "." && selectedDay != 39) {

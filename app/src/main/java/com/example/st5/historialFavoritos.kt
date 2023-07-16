@@ -1,7 +1,6 @@
 package com.example.st5
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -23,7 +22,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 
-class historialPapelera : Fragment() {
+class historialFavoritos : Fragment() {
     private lateinit var binding: FragmentHistorialpapeleraBinding
 
     private lateinit var montosp: List<Monto>
@@ -123,7 +122,7 @@ class historialPapelera : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            montosp = montoDao.getPapelera()
+            montosp = montoDao.getFavoritos()
             Log.i("ALL MONTOS", montosp.toString())
         }
         return montosp
@@ -133,7 +132,7 @@ class historialPapelera : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            montosp = montoDao.getPapelera()
+            montosp = montoDao.getFavoritos()
             Log.i("ALL MONTOS", montosp.toString())
         }
         return montosp
@@ -143,7 +142,7 @@ class historialPapelera : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            montosp = montoDao.getPapelera()
+            montosp = montoDao.getFavoritos()
             Log.i("ALL MONTOS", montosp.toString())
         }
         return montosp
@@ -153,7 +152,7 @@ class historialPapelera : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            montosp = montoDao.getPapelera()
+            montosp = montoDao.getFavoritos()
             Log.i("ALL MONTOS", montosp.toString())
         }
         return montosp
@@ -163,13 +162,13 @@ class historialPapelera : Fragment() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
-            montosp = montoDao.getPapelera()
+            montosp = montoDao.getFavoritos()
             Log.i("ALL MONTOS", montosp.toString())
         }
         return montosp
     }
 
-    private suspend fun montoback(
+    private suspend fun montoFavorito(
         idmonto: Long,
         concepto: String,
         valor: Double,
@@ -184,13 +183,18 @@ class historialPapelera : Fragment() {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val status = when (estado) {
+                0 -> 3
+                1 -> 4
+                5 -> 8
+                6 -> 9
 
-            var status = 0
-            if (estado == 2){
-                status = 0
-            }
-            if (estado == 7){
-                status = 5
+                3 -> 0
+                4 -> 1
+                8 -> 5
+                9 -> 6
+
+                else -> 3
             }
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
@@ -214,140 +218,83 @@ class historialPapelera : Fragment() {
         }
     }
 
-    private suspend fun montodelete(
-        idmonto: Long,
-        concepto: String,
-        valor: Double,
-        fecha: Int?,
-        frecuencia: Int?,
-        etiqueta: Int,
-        interes: Double?,
-        veces: Long?,
-        adddate: Int
-    ) {
-        withContext(Dispatchers.IO) {
-            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-
-            val iduser = usuarioDao.checkId().toLong()
-            val muertoMonto = Monto(
-                idmonto = idmonto,
-                iduser = iduser,
-                concepto = concepto,
-                valor = valor,
-                fecha = fecha,
-                frecuencia = frecuencia,
-                etiqueta = etiqueta,
-                interes = interes,
-                veces = veces,
-                adddate = adddate
-            )
-
-            montoDao.deleteMonto(muertoMonto)
-            val montos = montoDao.getMonto()
-            Log.i("ALL MONTOS", montos.toString())
-
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
-                .commit()
-        }
-    }
-
     private inner class MontoAdapter(private val montos: List<Monto>) :
         RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
             itemView: View,
             val conceptoTextView: TextView,
             val valorTextView: TextView,
-            val vecesTextView: TextView,
             val etiquetaTextView: TextView,
-            val zM: Button,
-            val deleteM: Button
+            val favM: Button,
+            val updateM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
             val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_papelera, parent, false)
-            val conceptoTextView = itemView.findViewById<TextView>(R.id.PConcepto)
-            val valorTextView = itemView.findViewById<TextView>(R.id.PValor)
-            val vecesTextView = itemView.findViewById<TextView>(R.id.PVeces)
-            val etiquetaTextView = itemView.findViewById<TextView>(R.id.PEtiqueta)
-            val zM = itemView.findViewById<Button>(R.id.getbackMonto)
-            val deleteM = itemView.findViewById<Button>(R.id.killMonto)
+                LayoutInflater.from(parent.context).inflate(R.layout.item_fav, parent, false)
+            val conceptoTextView = itemView.findViewById<TextView>(R.id.FConcepto)
+            val valorTextView = itemView.findViewById<TextView>(R.id.FValor)
+            val etiquetaTextView = itemView.findViewById<TextView>(R.id.FEtiqueta)
+            val favM = itemView.findViewById<Button>(R.id.favMonto)
+            val updateM = itemView.findViewById<Button>(R.id.editMonto)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
                 valorTextView,
-                vecesTextView,
                 etiquetaTextView,
-                zM,
-                deleteM
+                favM,
+                updateM
             )
         }
 
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
+            var tempstat = 5
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
-            holder.vecesTextView.text = monto.veces.toString()
             holder.etiquetaTextView.text = monto.etiqueta.toString()
-            holder.zM.setOnClickListener {
-                val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres recuperar el monto ${monto.concepto}?")
-                    .setPositiveButton("Recuperar") { dialog, _ ->
-
-                        Log.v("Id del monto actualizado", monto.idmonto.toString())
-                        Log.v("Concepto", monto.concepto)
-                        Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha.toString())
-                        Log.v("Frecuencia", monto.frecuencia.toString())
-                        Log.v("Etiqueta", monto.etiqueta.toString())
-                        Log.v("Interes", monto.interes.toString())
-                        Log.v("Veces", monto.veces.toString())
-                        lifecycleScope.launch {
-                            montoback(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.estado, monto.adddate)
-                        }
-                        dialog.dismiss()
-                        parentFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
-                    }
-                    .setNegativeButton("Cancelar") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
-
-                confirmDialog.show()
+            if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6){
+                holder.favM.setBackgroundResource(R.drawable.ic_notstar)
+                tempstat = 5
             }
-            holder.deleteM.setOnClickListener {
-                val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres eliminar el monto ${monto.concepto}? Esta acción no se puede deshacer")
-                    .setPositiveButton("Guardar") { dialog, _ ->
-
-                        Log.v("Id del monto actualizado", monto.idmonto.toString())
-                        Log.v("Concepto", monto.concepto)
-                        Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha.toString())
-                        Log.v("Frecuencia", monto.frecuencia.toString())
-                        Log.v("Etiqueta", monto.etiqueta.toString())
-                        Log.v("Interes", monto.interes.toString())
-                        Log.v("Veces", monto.veces.toString())
-                        lifecycleScope.launch {
-                            montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
-                        }
-                        dialog.dismiss()
-                        parentFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
-                    }
-                    .setNegativeButton("Cancelar") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
-
-                confirmDialog.show()
+            if (monto.estado == 3 || monto.estado == 4 || monto.estado == 8 || monto.estado == 9){
+                holder.favM.setBackgroundResource(R.drawable.ic_star)
+                tempstat = 8
+            }
+            holder.favM.setOnClickListener {
+                if (tempstat == 5){
+                    holder.favM.setBackgroundResource(R.drawable.ic_star)
+                    tempstat = 8
+                }
+                if (tempstat == 8){
+                    holder.favM.setBackgroundResource(R.drawable.ic_notstar)
+                    tempstat = 5
+                }
+                lifecycleScope.launch {
+                    montoFavorito(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
+                }
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.historial_container, historialFavoritos()).addToBackStack(null)
+                    .commit()
+            }
+            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+            holder.updateM.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.historial_container, upup).addToBackStack(null).commit()
             }
         }
 

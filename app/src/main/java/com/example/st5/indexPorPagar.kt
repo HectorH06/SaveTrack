@@ -193,6 +193,7 @@ class indexPorPagar : Fragment() {
                         monto.etiqueta,
                         monto.interes,
                         monto.veces,
+                        monto.estado,
                         monto.adddate
                     )
 
@@ -215,6 +216,7 @@ class indexPorPagar : Fragment() {
             etiqueta: Int,
             interes: Double?,
             veces: Long?,
+            estado: Int?,
             adddate: Int
         ) {
             withContext(Dispatchers.IO) {
@@ -226,6 +228,19 @@ class indexPorPagar : Fragment() {
                 if (veces != null)
                     nv = veces + 1
 
+                var status = 1
+                if (estado == 0){
+                    status = 1
+                }
+                if (estado == 3){
+                    status = 4
+                }
+                if (estado == 5){
+                    status = 6
+                }
+                if (estado == 8){
+                    status = 9
+                }
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
                     idmonto = id,
@@ -237,7 +252,7 @@ class indexPorPagar : Fragment() {
                     etiqueta = etiqueta,
                     interes = interes,
                     veces = nv,
-                    estado = 1,
+                    estado = status,
                     adddate = adddate
                 )
 

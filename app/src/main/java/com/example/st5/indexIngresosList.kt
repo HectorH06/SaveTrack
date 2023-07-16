@@ -263,12 +263,19 @@ class indexIngresosList : Fragment() {
         etiqueta: Int,
         interes: Double?,
         veces: Long?,
+        estado: Int?,
         adddate: Int
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-
+            var status = 2
+            if (estado == 1) {
+                status = 2
+            }
+            if (estado == 6) {
+                status = 7
+            }
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
                 idmonto = idmonto,
@@ -280,7 +287,57 @@ class indexIngresosList : Fragment() {
                 etiqueta = etiqueta,
                 interes = interes,
                 veces = veces,
-                estado = 2,
+                estado = status,
+                adddate = adddate
+            )
+
+            montoDao.updateMonto(viejoMonto)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+
+        }
+    }
+
+    private suspend fun montoFavorito(
+        idmonto: Long,
+        concepto: String,
+        valor: Double,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
+        interes: Double?,
+        veces: Long?,
+        estado: Int?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val status = when (estado) {
+                0 -> 3
+                1 -> 4
+                5 -> 8
+                6 -> 9
+
+                3 -> 0
+                4 -> 1
+                8 -> 5
+                9 -> 6
+
+                else -> 3
+            }
+            val iduser = usuarioDao.checkId().toLong()
+            val viejoMonto = Monto(
+                idmonto = idmonto,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = veces,
+                estado = status,
                 adddate = adddate
             )
 
@@ -314,6 +371,7 @@ class indexIngresosList : Fragment() {
             val valorTextView: TextView,
             val fechaTextView: TextView,
             val etiquetaTextView: TextView,
+            val favM: Button,
             val updateM: Button,
             val deleteM: Button
         ) : RecyclerView.ViewHolder(itemView)
@@ -326,6 +384,7 @@ class indexIngresosList : Fragment() {
             val valorTextView = itemView.findViewById<TextView>(R.id.IValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.IFecha)
             val etiquetaTextView = itemView.findViewById<TextView>(R.id.IEtiqueta)
+            val favM = itemView.findViewById<Button>(R.id.favMonto)
             val updateM = itemView.findViewById<Button>(R.id.editMonto)
             val deleteM = itemView.findViewById<Button>(R.id.deleteMonto)
             return MontoViewHolder(
@@ -334,6 +393,7 @@ class indexIngresosList : Fragment() {
                 valorTextView,
                 fechaTextView,
                 etiquetaTextView,
+                favM,
                 updateM,
                 deleteM
             )
@@ -342,10 +402,43 @@ class indexIngresosList : Fragment() {
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
+            var tempstat = 5
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
             holder.fechaTextView.text = monto.fecha.toString()
             holder.etiquetaTextView.text = monto.etiqueta.toString()
+            if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6){
+                holder.favM.setBackgroundResource(R.drawable.ic_notstar)
+                tempstat = 5
+            }
+            if (monto.estado == 3 || monto.estado == 4 || monto.estado == 8 || monto.estado == 9){
+                holder.favM.setBackgroundResource(R.drawable.ic_star)
+                tempstat = 8
+            }
+            holder.favM.setOnClickListener {
+                if (tempstat == 5){
+                    holder.favM.setBackgroundResource(R.drawable.ic_star)
+                    tempstat = 8
+                }
+                if (tempstat == 8){
+                    holder.favM.setBackgroundResource(R.drawable.ic_notstar)
+                    tempstat = 5
+                }
+                lifecycleScope.launch {
+                    montoFavorito(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
+                }
+            }
             val upup = indexmontoupdate.sendMonto(
                 monto.idmonto,
                 monto.concepto,
@@ -363,43 +456,55 @@ class indexIngresosList : Fragment() {
                     .replace(R.id.index_container, upup).addToBackStack(null).commit()
             }
             holder.deleteM.setOnClickListener {
-                val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
-                    .setPositiveButton("Eliminar") { dialog, _ ->
-
-                        Log.v("Id del monto actualizado", monto.idmonto.toString())
-                        Log.v("Concepto", monto.concepto)
-                        Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha.toString())
-                        Log.v("Frecuencia", monto.frecuencia.toString())
-                        Log.v("Etiqueta", monto.etiqueta.toString())
-                        Log.v("Interes", monto.interes.toString())
-                        Log.v("Veces", monto.veces.toString())
-                        lifecycleScope.launch {
-                            montoPapelera(
-                                monto.idmonto,
-                                monto.concepto,
-                                monto.valor,
-                                monto.fecha,
-                                monto.frecuencia,
-                                monto.etiqueta,
-                                monto.interes,
-                                monto.veces,
-                                monto.adddate
-                            )
+                if (monto.estado == 3 || monto.estado == 4 || monto.estado == 8 || monto.estado == 9 || tempstat == 8) {
+                    val confirmDialog = AlertDialog.Builder(requireContext())
+                        .setTitle("El monto ${monto.concepto} no se puede eliminar porque está marcado como favorito")
+                        .setPositiveButton("Aceptar") { dialog, _ ->
+                            dialog.dismiss()
                         }
-                        dialog.dismiss()
-                        parentFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.index_container, indexmain()).addToBackStack(null)
-                            .commit()
-                    }
-                    .setNegativeButton("Cancelar") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
+                        .create()
 
-                confirmDialog.show()
+                    confirmDialog.show()
+                } else {
+                    val confirmDialog = AlertDialog.Builder(requireContext())
+                        .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
+                        .setPositiveButton("Eliminar") { dialog, _ ->
+
+                            Log.v("Id del monto actualizado", monto.idmonto.toString())
+                            Log.v("Concepto", monto.concepto)
+                            Log.v("Valor", monto.valor.toString())
+                            Log.v("Fecha", monto.fecha.toString())
+                            Log.v("Frecuencia", monto.frecuencia.toString())
+                            Log.v("Etiqueta", monto.etiqueta.toString())
+                            Log.v("Interes", monto.interes.toString())
+                            Log.v("Veces", monto.veces.toString())
+                            lifecycleScope.launch {
+                                montoPapelera(
+                                    monto.idmonto,
+                                    monto.concepto,
+                                    monto.valor,
+                                    monto.fecha,
+                                    monto.frecuencia,
+                                    monto.etiqueta,
+                                    monto.interes,
+                                    monto.veces,
+                                    monto.estado,
+                                    monto.adddate
+                                )
+                            }
+                            dialog.dismiss()
+                            parentFragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                .replace(R.id.index_container, indexmain()).addToBackStack(null)
+                                .commit()
+                        }
+                        .setNegativeButton("Cancelar") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
+
+                    confirmDialog.show()
+                }
             }
         }
 

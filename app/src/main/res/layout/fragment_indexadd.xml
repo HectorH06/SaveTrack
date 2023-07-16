@@ -44,7 +44,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.218"
-                app:srcCompat="@drawable/ic_back" />
+                app:srcCompat="@drawable/ic_back"
+                app:tint="?attr/colorOnPrimary" />
 
             <TextView
                 android:id="@+id/bar"
@@ -153,6 +154,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ValorField"
                 app:layout_constraintVertical_bias="0.892" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/checkpordelante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:translationZ="100dp"
+                app:layout_constraintEnd_toEndOf="@id/LabelField"
+                app:layout_constraintTop_toBottomOf="@+id/ValorField">
+
+                <CheckBox
+                    android:id="@+id/yocreoquesi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/b1noncell"
+                    android:buttonTint="?attr/colorOnPrimary"
+                    android:elevation="15dp"
+                    android:hint="@string/esdeuda"
+                    android:paddingStart="6dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="6dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorOnPrimary"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TableLayout
                 android:id="@+id/invisibleContainer"

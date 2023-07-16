@@ -80,9 +80,8 @@ class planesdeahorromain : Fragment() {
     private suspend fun montosget(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            val owe = 8
 
-            pda = montoDao.getGastos(owe)
+            pda = montoDao.getPDADeudas()
             Log.i("ALL MONTOS", pda.toString())
         }
         return pda
@@ -157,6 +156,97 @@ class planesdeahorromain : Fragment() {
         }
     }
 
+    private suspend fun montoPapelera(
+        idmonto: Long,
+        concepto: String,
+        valor: Double,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
+        interes: Double?,
+        veces: Long?,
+        estado: Int?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            var status = 7
+            if (estado == 5) {
+                status = 7
+            }
+            val iduser = usuarioDao.checkId().toLong()
+            val viejoMonto = Monto(
+                idmonto = idmonto,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = veces,
+                estado = status,
+                adddate = adddate
+            )
+
+            montoDao.updateMonto(viejoMonto)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+
+        }
+    }
+
+    private suspend fun montoFavorito(
+        idmonto: Long,
+        concepto: String,
+        valor: Double,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
+        interes: Double?,
+        veces: Long?,
+        estado: Int?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val status = when (estado) {
+                0 -> 3
+                1 -> 4
+                5 -> 8
+                6 -> 9
+
+                3 -> 0
+                4 -> 1
+                8 -> 5
+                9 -> 6
+
+                else -> 3
+            }
+            val iduser = usuarioDao.checkId().toLong()
+            val viejoMonto = Monto(
+                idmonto = idmonto,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = veces,
+                estado = status,
+                adddate = adddate
+            )
+
+            montoDao.updateMonto(viejoMonto)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+
+        }
+    }
+
     private inner class MontoAdapter(private val montos: List<Monto>) :
         RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
@@ -164,6 +254,7 @@ class planesdeahorromain : Fragment() {
             val conceptoTextView: TextView,
             val valorTextView: TextView,
             val fechaTextView: TextView,
+            val favM: Button,
             val updateM: Button,
             val deleteM: Button
         ) : RecyclerView.ViewHolder(itemView)
@@ -175,6 +266,7 @@ class planesdeahorromain : Fragment() {
             val conceptoTextView = itemView.findViewById<TextView>(R.id.pdaNombre)
             val valorTextView = itemView.findViewById<TextView>(R.id.pdaValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.pdaFecha)
+            val favM = itemView.findViewById<Button>(R.id.favMonto)
             val updateM = itemView.findViewById<Button>(R.id.editPda)
             val deleteM = itemView.findViewById<Button>(R.id.deletePda)
             return MontoViewHolder(
@@ -182,6 +274,7 @@ class planesdeahorromain : Fragment() {
                 conceptoTextView,
                 valorTextView,
                 fechaTextView,
+                favM,
                 updateM,
                 deleteM
             )
@@ -190,9 +283,45 @@ class planesdeahorromain : Fragment() {
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
+            var tempstat = 5
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
             holder.fechaTextView.text = monto.fecha.toString()
+            if (monto.estado == 5 || monto.estado == 6){
+                holder.favM.setBackgroundResource(R.drawable.ic_notstar)
+                tempstat = 5
+            }
+            if (monto.estado == 8 || monto.estado == 9){
+                holder.favM.setBackgroundResource(R.drawable.ic_star)
+                tempstat = 8
+            }
+            holder.favM.setOnClickListener {
+                if (tempstat == 5){
+                    holder.favM.setBackgroundResource(R.drawable.ic_star)
+                    tempstat = 8
+                }
+                if (tempstat == 8){
+                    holder.favM.setBackgroundResource(R.drawable.ic_notstar)
+                    tempstat = 5
+                }
+                lifecycleScope.launch {
+                    montoFavorito(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
+                }
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.pda_container, planesdeahorromain()).addToBackStack(null)
+                    .commit()
+            }
             val upup = indexmontoupdate.sendMonto(
                 monto.idmonto,
                 monto.concepto,
@@ -207,33 +336,58 @@ class planesdeahorromain : Fragment() {
             holder.updateM.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.historial_container, upup).addToBackStack(null).commit()
+                    .replace(R.id.pda_container, upup).addToBackStack(null).commit()
             }
             holder.deleteM.setOnClickListener {
-                val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres eliminar el monto ${monto.concepto}? Esta acción no se puede deshacer")
-                    .setPositiveButton("Guardar") { dialog, _ ->
+                if (monto.estado == 8 || monto.estado == 9 || tempstat == 8) {
+                    val confirmDialog = AlertDialog.Builder(requireContext())
+                        .setTitle("El monto ${monto.concepto} no se puede eliminar porque está marcado como favorito")
+                        .setPositiveButton("Aceptar") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
 
-                        Log.v("Id del monto actualizado", monto.idmonto.toString())
-                        Log.v("Concepto", monto.concepto)
-                        Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha.toString())
-                        Log.v("Frecuencia", monto.frecuencia.toString())
-                        Log.v("Etiqueta", monto.etiqueta.toString())
-                        Log.v("Interes", monto.interes.toString())
-                        Log.v("Veces", monto.veces.toString())
+                    confirmDialog.show()
+                } else {
+                    val confirmDialog = AlertDialog.Builder(requireContext())
+                        .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
+                        .setPositiveButton("Eliminar") { dialog, _ ->
 
-                        dialog.dismiss()
-                        parentFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.pda_container, indexmain()).addToBackStack(null).commit()
-                    }
-                    .setNegativeButton("Cancelar") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
+                            Log.v("Id del monto actualizado", monto.idmonto.toString())
+                            Log.v("Concepto", monto.concepto)
+                            Log.v("Valor", monto.valor.toString())
+                            Log.v("Fecha", monto.fecha.toString())
+                            Log.v("Frecuencia", monto.frecuencia.toString())
+                            Log.v("Etiqueta", monto.etiqueta.toString())
+                            Log.v("Interes", monto.interes.toString())
+                            Log.v("Veces", monto.veces.toString())
+                            lifecycleScope.launch {
+                                montoPapelera(
+                                    monto.idmonto,
+                                    monto.concepto,
+                                    monto.valor,
+                                    monto.fecha,
+                                    monto.frecuencia,
+                                    monto.etiqueta,
+                                    monto.interes,
+                                    monto.veces,
+                                    monto.estado,
+                                    monto.adddate
+                                )
+                            }
+                            dialog.dismiss()
+                            parentFragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                .replace(R.id.pda_container, indexmain()).addToBackStack(null)
+                                .commit()
+                        }
+                        .setNegativeButton("Cancelar") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
 
-                confirmDialog.show()
+                    confirmDialog.show()
+                }
             }
         }
 

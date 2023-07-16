@@ -95,10 +95,24 @@ class historialmain : Fragment() {
                 .replace(R.id.historial_container, Configuracion()).addToBackStack(null).commit()
         }
 
+        binding.TagsButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.historial_container, historialEtiquetas()).addToBackStack(null)
+                .commit()
+        }
+
         binding.PapeleraButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
+                .commit()
+        }
+
+        binding.GuardadosButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.historial_container, historialFavoritos()).addToBackStack(null)
                 .commit()
         }
     }

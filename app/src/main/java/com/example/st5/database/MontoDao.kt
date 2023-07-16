@@ -40,7 +40,7 @@ interface MontoDao {
     fun getOcio(): List<Monto>
     @Query("SELECT * FROM monto WHERE etiqueta = 7")
     fun getObsequios(): List<Monto>
-    @Query("SELECT * FROM monto WHERE etiqueta = 8")
+    @Query("SELECT * FROM monto WHERE estado = 5")
     fun getDeudas(): List<Monto>
     @Query("SELECT * FROM monto WHERE etiqueta = 9")
     fun getSalarios(): List<Monto>
@@ -56,7 +56,7 @@ interface MontoDao {
     fun getPasivos(): List<Monto>
     @Query("SELECT * FROM monto WHERE etiqueta = 15")
     fun getRegalos(): List<Monto>
-    @Query("SELECT * FROM monto WHERE etiqueta = 16")
+    @Query("SELECT * FROM monto WHERE estado = 5")
     fun getPrestamos(): List<Monto>
 
     // endregion
@@ -253,34 +253,34 @@ interface MontoDao {
 
 
     // region GET INGRESOS POR FECHA ESPECÍFICA
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din")
     fun getGXFecha(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY concepto ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY concepto ASC")
     fun getGXFechaAlfabetica(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY valor ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY valor ASC")
     fun getGXFechaValuados(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY frecuencia ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY frecuencia ASC")
     fun getGXFechaFrecuentes(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY etiqueta ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY etiqueta ASC")
     fun getGXFechaEtiquetados(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 AND(fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY interes ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY interes ASC")
     fun getGXFechaInteres(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY veces ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND adddate <= :din ORDER BY veces ASC")
     fun getGXFechaVeces(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5)")
     fun getGXFecha(): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 ORDER BY concepto ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) ORDER BY concepto ASC")
     fun getGXFechaAlfabetica(): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 ORDER BY valor ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) ORDER BY valor ASC")
     fun getGXFechaValuados(): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 ORDER BY frecuencia ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) ORDER BY frecuencia ASC")
     fun getGXFechaFrecuentes(): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 ORDER BY etiqueta ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) ORDER BY etiqueta ASC")
     fun getGXFechaEtiquetados(): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 ORDER BY interes ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) ORDER BY interes ASC")
     fun getGXFechaInteres(): List<Monto>
-    @Query("SELECT * FROM monto WHERE valor < 0 AND estado = 0 ORDER BY veces ASC")
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 0 OR estado = 5) ORDER BY veces ASC")
     fun getGXFechaVeces(): List<Monto>
 
     // endregion
@@ -297,6 +297,11 @@ interface MontoDao {
 
     //endregion
 
-    @Query("SELECT * FROM monto WHERE estado = 2")
+    @Query("SELECT * FROM monto WHERE (estado = 2 OR estado = 7)")
     fun getPapelera(): List<Monto>
+    @Query("SELECT * FROM monto WHERE (estado = 3 OR estado = 4 OR estado = 8 OR estado = 9)")
+    fun getFavoritos(): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE valor < 0 AND (estado = 5 OR estado = 8)")
+    fun getPDADeudas(): List<Monto>
 }

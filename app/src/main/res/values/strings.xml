@@ -130,6 +130,8 @@
     <string name="etiquetas">Etiquetas</string>
     <string name="categoria">Categoría</string>
     <string name="color">Color</string>
+    <string name="esdeuda">Deuda</string>
+    <string name="favoritos">Favoritos</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">
@@ -141,7 +143,6 @@
         <item>Gasto hormiga</item>
         <item>Ocio y demás</item>
         <item>Obsequio</item>
-        <item>Deuda</item>
     </string-array>
     <string-array name="tipooptions">
         <item>Seleccionar</item>
@@ -152,7 +153,6 @@
         <item>Manutención</item>
         <item>Ingreso pasivo</item>
         <item>Regalo</item>
-        <item>Préstamo</item>
     </string-array>
     <string-array name="frecuenciaoptions">
         <item>Seleccionar</item>

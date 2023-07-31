@@ -9,7 +9,8 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/index_background"/>
+        android:theme="@style/index_background"
+        android:contentDescription="@string/wallpaper" />
 
     <ScrollView
         android:id="@+id/scrollView2"

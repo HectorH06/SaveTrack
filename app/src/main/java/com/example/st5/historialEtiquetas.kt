@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -16,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentHistorialetiquetasBinding
-import com.example.st5.models.Monto
+import com.example.st5.models.Labels
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,7 +27,7 @@ import java.util.*
 class historialEtiquetas : Fragment() {
     private lateinit var binding: FragmentHistorialetiquetasBinding
 
-    private lateinit var montosp: List<Monto>
+    private lateinit var labelsp: List<Labels>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +48,10 @@ class historialEtiquetas : Fragment() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    val prev = indexmain()
+                    val prev = historialmain()
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.index_container, prev)
+                        .replace(R.id.historial_container, prev)
                         .addToBackStack(null).commit()
                 }
             })
@@ -76,8 +77,8 @@ class historialEtiquetas : Fragment() {
     ): View {
         binding = FragmentHistorialetiquetasBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
-            montosp = labelsget()
-            binding.displayMontos.adapter = MontoAdapter(montosp)
+            labelsp = labelsget()
+            binding.displayLabels.adapter = LabelsAdapter(labelsp)
         }
         return binding.root
     }
@@ -85,90 +86,46 @@ class historialEtiquetas : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val back = historialmain()
-
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.historial_container, back).addToBackStack(null).commit()
+                .replace(R.id.historial_container, historialEtiquetas()).addToBackStack(null).commit()
         }
 
-        binding.HNombre.setOnClickListener {
-            lifecycleScope.launch {
-                montosp = montosgetAlfabetica()
-                binding.displayMontos.adapter = MontoAdapter(montosp)
-            }
-        }
-        binding.HColor.setOnClickListener {
-            lifecycleScope.launch {
-                montosp = montosgetValuados()
-                binding.displayMontos.adapter = MontoAdapter(montosp)
-            }
+        binding.AgregarLabelButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .replace(R.id.historial_container, historialAdd()).addToBackStack(null).commit()
         }
     }
 
-    private suspend fun labelsget(): List<Monto> {
+    private suspend fun labelsget(): List<Labels> {
         withContext(Dispatchers.IO) {
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
 
-            montosp = montoDao.getFavoritos()
-            Log.i("ALL MONTOS", montosp.toString())
+            labelsp = labelsDao.getAllLabels()
+            Log.i("ALL LABELS", labelsp.toString())
         }
-        return montosp
-    }
-
-    private suspend fun montosgetAlfabetica(): List<Monto> {
-        withContext(Dispatchers.IO) {
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-
-            montosp = montoDao.getFavoritos()
-            Log.i("ALL MONTOS", montosp.toString())
-        }
-        return montosp
-    }
-
-    private suspend fun montosgetValuados(): List<Monto> {
-        withContext(Dispatchers.IO) {
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-
-            montosp = montoDao.getFavoritos()
-            Log.i("ALL MONTOS", montosp.toString())
-        }
-        return montosp
+        return labelsp
     }
 
     private suspend fun labeldelete(
-        idmonto: Long,
-        concepto: String,
-        valor: Double,
-        fecha: Int?,
-        frecuencia: Int?,
-        etiqueta: Int,
-        interes: Double?,
-        veces: Long?,
-        adddate: Int
+        idlabel: Long,
+        plabel: String,
+        color: String
     ) {
         withContext(Dispatchers.IO) {
-            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
 
-            val iduser = usuarioDao.checkId().toLong()
-            val muertoMonto = Monto(
-                idmonto = idmonto,
-                iduser = iduser,
-                concepto = concepto,
-                valor = valor,
-                fecha = fecha,
-                frecuencia = frecuencia,
-                etiqueta = etiqueta,
-                interes = interes,
-                veces = veces,
-                adddate = adddate
+            val muertoLabels = Labels(
+                idlabel = idlabel,
+                plabel = plabel,
+                color = color
             )
 
-            montoDao.deleteMonto(muertoMonto)
-            val montos = montoDao.getMonto()
-            Log.i("ALL MONTOS", montos.toString())
+            labelsDao.deleteLabel(muertoLabels)
+            val labelss = labelsDao.getAllLabels()
+            Log.i("ALL LABELS", labelss.toString())
 
             parentFragmentManager.beginTransaction()
                 .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
@@ -176,64 +133,59 @@ class historialEtiquetas : Fragment() {
         }
     }
 
-    private inner class MontoAdapter(private val montos: List<Monto>) :
-        RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
-        inner class MontoViewHolder(
+    private inner class LabelsAdapter(private val labelss: List<Labels>) :
+        RecyclerView.Adapter<LabelsAdapter.LabelsViewHolder>() {
+        inner class LabelsViewHolder(
             itemView: View,
             val nombreTextView: TextView,
-            val colorTextView: TextView,
+            val colorImageView: ImageView,
             val updateL: Button,
             val deleteL: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LabelsViewHolder {
             val itemView =
                 LayoutInflater.from(parent.context).inflate(R.layout.item_label, parent, false)
             val nombreTextView = itemView.findViewById<TextView>(R.id.LNombre)
-            val colorTextView = itemView.findViewById<TextView>(R.id.LColor)
+            val colorImageView = itemView.findViewById<ImageView>(R.id.LColor)
             val updateL = itemView.findViewById<Button>(R.id.editLabel)
             val deleteL = itemView.findViewById<Button>(R.id.deleteLabel)
-            return MontoViewHolder(
+            return LabelsViewHolder(
                 itemView,
                 nombreTextView,
-                colorTextView,
+                colorImageView,
                 updateL,
                 deleteL
             )
         }
 
 
-        override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
-            val monto = montos[position]
-            holder.nombreTextView.text = monto.concepto
-            holder.colorTextView.text = monto.valor.toString()
-            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+        override fun onBindViewHolder(holder: LabelsViewHolder, position: Int) {
+            val labels = labelss[position]
+            holder.nombreTextView.text = labels.plabel
+            holder.colorImageView.setBackgroundColor(labels.color.toInt())
+            //val upup = historiallabelsupdate.sendLabels(labels.idlabel, labels.plabel, labels.color)
             holder.updateL.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.historial_container, upup).addToBackStack(null).commit()
+                    .replace(R.id.historial_container, historialPapelera()).addToBackStack(null).commit()
             }
             holder.deleteL.setOnClickListener {
                 val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres eliminar el monto ${monto.concepto}? Esta acción no se puede deshacer")
+                    .setTitle("¿Seguro que quieres eliminar la etiqueta ${labels.plabel}? Esta acción no se puede deshacer")
                     .setPositiveButton("Guardar") { dialog, _ ->
 
-                        Log.v("Id del monto actualizado", monto.idmonto.toString())
-                        Log.v("Concepto", monto.concepto)
-                        Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha.toString())
-                        Log.v("Frecuencia", monto.frecuencia.toString())
-                        Log.v("Etiqueta", monto.etiqueta.toString())
-                        Log.v("Interes", monto.interes.toString())
-                        Log.v("Veces", monto.veces.toString())
+                        Log.v("Id de la etiqueta actualizada", labels.idlabel.toString())
+                        Log.v("Plabel", labels.plabel)
+                        Log.v("Color", labels.color)
                         lifecycleScope.launch {
-                            labeldelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+                            labeldelete(labels.idlabel, labels.plabel, labels.color)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                            .replace(R.id.historial_container, historialmain()).addToBackStack(null).commit()
                     }
                     .setNegativeButton("Cancelar") { dialog, _ ->
                         dialog.dismiss()
@@ -246,8 +198,8 @@ class historialEtiquetas : Fragment() {
 
 
         override fun getItemCount(): Int {
-            Log.v("size de montossss", montos.size.toString())
-            return montos.size
+            Log.v("size de labelsssss", labelss.size.toString())
+            return labelss.size
         }
     }
 }

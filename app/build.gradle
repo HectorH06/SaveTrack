@@ -86,4 +86,5 @@ dependencies {
     implementation 'com.kizitonwose.calendar:view:2.0.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'ca.antonious:materialdaypicker:0.7.3'
+    implementation 'com.github.yukuku:ambilwarna:2.0.1'
 }

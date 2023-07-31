@@ -16,6 +16,10 @@ interface LabelsDao {
     @Query("DELETE FROM labels")
     suspend fun clean()
 
+
+    @Query("SELECT * FROM labels")
+    fun getAllLabels(): List<Labels>
+
     @Query("SELECT MAX(idlabel) FROM labels")
     fun getMaxLabel(): Int
 

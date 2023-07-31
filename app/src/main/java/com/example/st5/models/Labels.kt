@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Labels(
     @PrimaryKey(autoGenerate = true)
-    var idlabel: Long = 17L,
+    var idlabel: Long = 0L,
 
     @ColumnInfo(name = "plabel")
     var plabel: String,
@@ -18,5 +18,5 @@ data class Labels(
     @ColumnInfo(name = "color")
     var color: String,
 ) : Parcelable {
-    constructor() : this(17L, "", "")
+    constructor() : this(0L, "", "")
 }

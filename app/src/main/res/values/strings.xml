@@ -133,6 +133,7 @@
     <string name="esdeuda">Deuda</string>
     <string name="favoritos">Favoritos</string>
     <string name="agregado">Agregado</string>
+    <string name="addlabel">Nueva Etiqueta</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

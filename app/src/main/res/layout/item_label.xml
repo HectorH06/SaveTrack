@@ -15,22 +15,21 @@
         android:minHeight="35dp"
         android:hint="@string/Nombre"
         android:paddingStart="7dp"
+        android:layout_marginEnd="16dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
         android:textSize="18sp" />
 
 
-    <TextView
+    <ImageView
         android:id="@+id/LColor"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/ic_circle"
         android:minHeight="35dp"
-        android:hint="@string/color"
-        android:textAlignment="textEnd"
-        android:paddingStart="15dp"
-        android:textColor="?attr/colorOnPrimary"
-        android:textColorHint="?attr/colorSecondary"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:contentDescription="@string/color" />
 
     <Button
         android:id="@+id/editLabel"

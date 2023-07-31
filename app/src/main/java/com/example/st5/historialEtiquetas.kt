@@ -1,6 +1,7 @@
 package com.example.st5
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.st5.database.Stlite
-import com.example.st5.databinding.FragmentHistorialpapeleraBinding
+import com.example.st5.databinding.FragmentHistorialetiquetasBinding
 import com.example.st5.models.Monto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ import java.util.*
 
 
 class historialEtiquetas : Fragment() {
-    private lateinit var binding: FragmentHistorialpapeleraBinding
+    private lateinit var binding: FragmentHistorialetiquetasBinding
 
     private lateinit var montosp: List<Monto>
 
@@ -73,9 +74,9 @@ class historialEtiquetas : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHistorialpapeleraBinding.inflate(inflater, container, false)
+        binding = FragmentHistorialetiquetasBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
-            montosp = montosget()
+            montosp = labelsget()
             binding.displayMontos.adapter = MontoAdapter(montosp)
         }
         return binding.root
@@ -92,33 +93,21 @@ class historialEtiquetas : Fragment() {
                 .replace(R.id.historial_container, back).addToBackStack(null).commit()
         }
 
-        binding.HConcepto.setOnClickListener {
+        binding.HNombre.setOnClickListener {
             lifecycleScope.launch {
                 montosp = montosgetAlfabetica()
                 binding.displayMontos.adapter = MontoAdapter(montosp)
             }
         }
-        binding.HValor.setOnClickListener {
+        binding.HColor.setOnClickListener {
             lifecycleScope.launch {
                 montosp = montosgetValuados()
                 binding.displayMontos.adapter = MontoAdapter(montosp)
             }
         }
-        binding.HVeces.setOnClickListener {
-            lifecycleScope.launch {
-                montosp = montosgetVeces()
-                binding.displayMontos.adapter = MontoAdapter(montosp)
-            }
-        }
-        binding.HEtiqueta.setOnClickListener {
-            lifecycleScope.launch {
-                montosp = montosgetEtiquetados()
-                binding.displayMontos.adapter = MontoAdapter(montosp)
-            }
-        }
     }
 
-    private suspend fun montosget(): List<Monto> {
+    private suspend fun labelsget(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
@@ -148,27 +137,7 @@ class historialEtiquetas : Fragment() {
         return montosp
     }
 
-    private suspend fun montosgetVeces(): List<Monto> {
-        withContext(Dispatchers.IO) {
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-
-            montosp = montoDao.getFavoritos()
-            Log.i("ALL MONTOS", montosp.toString())
-        }
-        return montosp
-    }
-
-    private suspend fun montosgetEtiquetados(): List<Monto> {
-        withContext(Dispatchers.IO) {
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-
-            montosp = montoDao.getFavoritos()
-            Log.i("ALL MONTOS", montosp.toString())
-        }
-        return montosp
-    }
-
-    private suspend fun montoFavorito(
+    private suspend fun labeldelete(
         idmonto: Long,
         concepto: String,
         valor: Double,
@@ -177,27 +146,14 @@ class historialEtiquetas : Fragment() {
         etiqueta: Int,
         interes: Double?,
         veces: Long?,
-        estado: Int?,
         adddate: Int
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            val status = when (estado) {
-                0 -> 3
-                1 -> 4
-                5 -> 8
-                6 -> 9
 
-                3 -> 0
-                4 -> 1
-                8 -> 5
-                9 -> 6
-
-                else -> 3
-            }
             val iduser = usuarioDao.checkId().toLong()
-            val viejoMonto = Monto(
+            val muertoMonto = Monto(
                 idmonto = idmonto,
                 iduser = iduser,
                 concepto = concepto,
@@ -207,14 +163,16 @@ class historialEtiquetas : Fragment() {
                 etiqueta = etiqueta,
                 interes = interes,
                 veces = veces,
-                estado = status,
                 adddate = adddate
             )
 
-            montoDao.updateMonto(viejoMonto)
+            montoDao.deleteMonto(muertoMonto)
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
 
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
+                .commit()
         }
     }
 
@@ -222,76 +180,67 @@ class historialEtiquetas : Fragment() {
         RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
             itemView: View,
-            val conceptoTextView: TextView,
-            val valorTextView: TextView,
-            val etiquetaTextView: TextView,
-            val favM: Button,
-            val updateM: Button
+            val nombreTextView: TextView,
+            val colorTextView: TextView,
+            val updateL: Button,
+            val deleteL: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
             val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_fav, parent, false)
-            val conceptoTextView = itemView.findViewById<TextView>(R.id.FConcepto)
-            val valorTextView = itemView.findViewById<TextView>(R.id.FValor)
-            val etiquetaTextView = itemView.findViewById<TextView>(R.id.FEtiqueta)
-            val favM = itemView.findViewById<Button>(R.id.favMonto)
-            val updateM = itemView.findViewById<Button>(R.id.editMonto)
+                LayoutInflater.from(parent.context).inflate(R.layout.item_label, parent, false)
+            val nombreTextView = itemView.findViewById<TextView>(R.id.LNombre)
+            val colorTextView = itemView.findViewById<TextView>(R.id.LColor)
+            val updateL = itemView.findViewById<Button>(R.id.editLabel)
+            val deleteL = itemView.findViewById<Button>(R.id.deleteLabel)
             return MontoViewHolder(
                 itemView,
-                conceptoTextView,
-                valorTextView,
-                etiquetaTextView,
-                favM,
-                updateM
+                nombreTextView,
+                colorTextView,
+                updateL,
+                deleteL
             )
         }
 
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
-            var tempstat = 5
-            holder.conceptoTextView.text = monto.concepto
-            holder.valorTextView.text = monto.valor.toString()
-            holder.etiquetaTextView.text = monto.etiqueta.toString()
-            if (monto.estado == 5 || monto.estado == 6){
-                holder.favM.setBackgroundResource(R.drawable.ic_star)
-                tempstat = 5
-            }
-            if (monto.estado == 8 || monto.estado == 9){
-                holder.favM.setBackgroundResource(R.drawable.ic_notstar)
-                tempstat = 8
-            }
-            holder.favM.setOnClickListener {
-                if (tempstat == 5){
-                    holder.favM.setBackgroundResource(R.drawable.ic_star)
-                    tempstat = 8
-                }
-                if (tempstat == 8){
-                    holder.favM.setBackgroundResource(R.drawable.ic_notstar)
-                    tempstat = 5
-                }
-                lifecycleScope.launch {
-                    montoFavorito(
-                        monto.idmonto,
-                        monto.concepto,
-                        monto.valor,
-                        monto.fecha,
-                        monto.frecuencia,
-                        monto.etiqueta,
-                        monto.interes,
-                        monto.veces,
-                        monto.estado,
-                        monto.adddate
-                    )
-                }
-            }
+            holder.nombreTextView.text = monto.concepto
+            holder.colorTextView.text = monto.valor.toString()
             val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
-            holder.updateM.setOnClickListener {
+            holder.updateL.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.index_container, upup).addToBackStack(null).commit()
+                    .replace(R.id.historial_container, upup).addToBackStack(null).commit()
+            }
+            holder.deleteL.setOnClickListener {
+                val confirmDialog = AlertDialog.Builder(requireContext())
+                    .setTitle("¿Seguro que quieres eliminar el monto ${monto.concepto}? Esta acción no se puede deshacer")
+                    .setPositiveButton("Guardar") { dialog, _ ->
+
+                        Log.v("Id del monto actualizado", monto.idmonto.toString())
+                        Log.v("Concepto", monto.concepto)
+                        Log.v("Valor", monto.valor.toString())
+                        Log.v("Fecha", monto.fecha.toString())
+                        Log.v("Frecuencia", monto.frecuencia.toString())
+                        Log.v("Etiqueta", monto.etiqueta.toString())
+                        Log.v("Interes", monto.interes.toString())
+                        Log.v("Veces", monto.veces.toString())
+                        lifecycleScope.launch {
+                            labeldelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+                        }
+                        dialog.dismiss()
+                        parentFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                    }
+                    .setNegativeButton("Cancelar") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+
+                confirmDialog.show()
             }
         }
 

@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.st5.database.Stlite
-import com.example.st5.databinding.FragmentHistorialpapeleraBinding
+import com.example.st5.databinding.FragmentHistorialfavoritosBinding
 import com.example.st5.models.Monto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ import java.util.*
 
 
 class historialFavoritos : Fragment() {
-    private lateinit var binding: FragmentHistorialpapeleraBinding
+    private lateinit var binding: FragmentHistorialfavoritosBinding
 
     private lateinit var montosp: List<Monto>
 
@@ -73,7 +73,7 @@ class historialFavoritos : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHistorialpapeleraBinding.inflate(inflater, container, false)
+        binding = FragmentHistorialfavoritosBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
             montosp = montosget()
             binding.displayMontos.adapter = MontoAdapter(montosp)
@@ -104,7 +104,7 @@ class historialFavoritos : Fragment() {
                 binding.displayMontos.adapter = MontoAdapter(montosp)
             }
         }
-        binding.HVeces.setOnClickListener {
+        binding.HFecha.setOnClickListener {
             lifecycleScope.launch {
                 montosp = montosgetVeces()
                 binding.displayMontos.adapter = MontoAdapter(montosp)
@@ -224,6 +224,7 @@ class historialFavoritos : Fragment() {
             itemView: View,
             val conceptoTextView: TextView,
             val valorTextView: TextView,
+            val fechaTextView: TextView,
             val etiquetaTextView: TextView,
             val favM: Button,
             val updateM: Button
@@ -235,6 +236,7 @@ class historialFavoritos : Fragment() {
                 LayoutInflater.from(parent.context).inflate(R.layout.item_fav, parent, false)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.FConcepto)
             val valorTextView = itemView.findViewById<TextView>(R.id.FValor)
+            val fechaTextView = itemView.findViewById<TextView>(R.id.FFecha)
             val etiquetaTextView = itemView.findViewById<TextView>(R.id.FEtiqueta)
             val favM = itemView.findViewById<Button>(R.id.favMonto)
             val updateM = itemView.findViewById<Button>(R.id.editMonto)
@@ -242,6 +244,7 @@ class historialFavoritos : Fragment() {
                 itemView,
                 conceptoTextView,
                 valorTextView,
+                fechaTextView,
                 etiquetaTextView,
                 favM,
                 updateM
@@ -254,6 +257,7 @@ class historialFavoritos : Fragment() {
             var tempstat = 5
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
+            holder.fechaTextView.text = monto.adddate.toString()
             holder.etiquetaTextView.text = monto.etiqueta.toString()
             if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6){
                 holder.favM.setBackgroundResource(R.drawable.ic_notstar)

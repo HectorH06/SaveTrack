@@ -1,0 +1,48 @@
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cabezaingresos"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/y1midcell"
+    android:orientation="horizontal"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/LNombre"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:hint="@string/Nombre"
+        android:paddingStart="7dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/LColor"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:hint="@string/color"
+        android:textAlignment="textEnd"
+        android:paddingStart="15dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/editLabel"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/ic_edit"
+        android:backgroundTint="?attr/colorOnPrimary" />
+
+    <Button
+        android:id="@+id/deleteLabel"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/ic_delete"
+        android:backgroundTint="?attr/colorOnPrimary"/>
+</TableRow>

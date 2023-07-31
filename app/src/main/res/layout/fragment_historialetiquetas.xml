@@ -38,17 +38,17 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/HConcepto"
+                        android:id="@+id/HNombre"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/categoria"
+                        android:hint="@string/Nombre"
                         android:maxWidth="100dp"
                         android:paddingStart="7dp"
                         android:textColor="@color/Y5"
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/HValor"
+                        android:id="@+id/HColor"
                         android:layout_width="65dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/color"

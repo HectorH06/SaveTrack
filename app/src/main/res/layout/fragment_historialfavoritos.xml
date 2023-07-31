@@ -57,10 +57,10 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/HVeces"
+                        android:id="@+id/HFecha"
                         android:layout_width="65dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/veces"
+                        android:hint="@string/agregado"
                         android:textAlignment="center"
                         android:textColor="@color/Y5"
                         android:textSize="18sp" />

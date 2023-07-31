@@ -132,6 +132,7 @@
     <string name="color">Color</string>
     <string name="esdeuda">Deuda</string>
     <string name="favoritos">Favoritos</string>
+    <string name="agregado">Agregado</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

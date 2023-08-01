@@ -32,7 +32,7 @@
 
             <stroke
                 android:width="2dp"
-                android:color="@color/Y1"/>
+                android:color="@color/O1"/>
 
             <padding android:left="1dp"
                 android:top="1dp"

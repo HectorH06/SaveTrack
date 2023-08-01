@@ -9,7 +9,10 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/finanzas_background"/>
+        android:contentDescription="@string/wallpaper"
+        android:theme="@style/finanzas_background"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <DatePicker
         android:id="@+id/FinanzasCalendar"
@@ -51,7 +54,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.218"
         app:srcCompat="@drawable/ic_back" />
 
     <ImageButton
@@ -94,7 +96,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="16dp"
         app:srcCompat="@drawable/ic_add"
-        app:tint="@color/G1" />
+        app:tint="@color/G1"
+        android:contentDescription="@string/vermas" />
 
     <ImageButton
         android:id="@+id/VerMenosMERCALIBRE"

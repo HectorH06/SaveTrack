@@ -372,6 +372,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         )
         val adapterG = ArrayAdapter.createFromResource(
             requireContext(),
+            // TODO cambiar el array para que sea extraído de la tabla labels en stlite
             R.array.etiquetaoptions,
             android.R.layout.simple_spinner_item
         )
@@ -561,6 +562,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         selectedfr = binding.FrecuenciaField.selectedItem?.toString()
 
         // region LABELS
+        // TODO OPTIMIZAR LABELS
         if (selectedLabel != null) {
             Log.v("ETIQUETA", selectedLabel.toString())
         }

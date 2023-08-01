@@ -89,7 +89,7 @@ class historialEtiquetas : Fragment() {
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.historial_container, historialEtiquetas()).addToBackStack(null).commit()
+                .replace(R.id.historial_container, historialmain()).addToBackStack(null).commit()
         }
 
         binding.AgregarLabelButton.setOnClickListener {
@@ -117,13 +117,13 @@ class historialEtiquetas : Fragment() {
         withContext(Dispatchers.IO) {
             val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
 
-            val muertoLabels = Labels(
+            val muertaLabel = Labels(
                 idlabel = idlabel,
                 plabel = plabel,
                 color = color
             )
 
-            labelsDao.deleteLabel(muertoLabels)
+            labelsDao.deleteLabel(muertaLabel)
             val labelss = labelsDao.getAllLabels()
             Log.i("ALL LABELS", labelss.toString())
 
@@ -160,16 +160,16 @@ class historialEtiquetas : Fragment() {
             )
         }
 
-
         override fun onBindViewHolder(holder: LabelsViewHolder, position: Int) {
             val labels = labelss[position]
+            Log.i("INFO", labels.idlabel.toString() + ", " + labels.plabel + ", " + labels.color)
             holder.nombreTextView.text = labels.plabel
             holder.colorImageView.setBackgroundColor(labels.color.toInt())
-            //val upup = historiallabelsupdate.sendLabels(labels.idlabel, labels.plabel, labels.color)
+            val upup = historialUpdate.sendLabel(labels.idlabel, labels.plabel, labels.color.toInt())
             holder.updateL.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.historial_container, historialPapelera()).addToBackStack(null).commit()
+                    .replace(R.id.historial_container, upup).addToBackStack(null).commit()
             }
             holder.deleteL.setOnClickListener {
                 val confirmDialog = AlertDialog.Builder(requireContext())

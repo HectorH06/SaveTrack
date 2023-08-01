@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/addlabel"
+            android:text="@string/editlabel"
             android:textColor="@color/O0"
             android:textSize="36sp"
             app:layout_constraintStart_toEndOf="@id/goback"

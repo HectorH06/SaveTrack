@@ -112,7 +112,7 @@ class historialEtiquetas : Fragment() {
     private suspend fun labeldelete(
         idlabel: Long,
         plabel: String,
-        color: String
+        color: Int
     ) {
         withContext(Dispatchers.IO) {
             val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
@@ -164,8 +164,8 @@ class historialEtiquetas : Fragment() {
             val labels = labelss[position]
             Log.i("INFO", labels.idlabel.toString() + ", " + labels.plabel + ", " + labels.color)
             holder.nombreTextView.text = labels.plabel
-            holder.colorImageView.setBackgroundColor(labels.color.toInt())
-            val upup = historialUpdate.sendLabel(labels.idlabel, labels.plabel, labels.color.toInt())
+            holder.colorImageView.setBackgroundColor(labels.color)
+            val upup = historialUpdate.sendLabel(labels.idlabel, labels.plabel, labels.color)
             holder.updateL.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
@@ -178,7 +178,7 @@ class historialEtiquetas : Fragment() {
 
                         Log.v("Id de la etiqueta actualizada", labels.idlabel.toString())
                         Log.v("Plabel", labels.plabel)
-                        Log.v("Color", labels.color)
+                        Log.v("Color", labels.color.toString())
                         lifecycleScope.launch {
                             labeldelete(labels.idlabel, labels.plabel, labels.color)
                         }

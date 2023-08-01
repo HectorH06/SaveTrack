@@ -141,19 +141,18 @@ class historialUpdate : Fragment() {
 
         binding.Confirm.setOnClickListener {
             val plabel = binding.PlabelField.text.toString()
-            val colorin = color.toString()
 
-            if (plabel != "" && colorin != "") {
+            if (plabel != "" && color != 0xffffff) {
                 val confirmDialog = AlertDialog.Builder(requireContext())
                     .setTitle("¿Seguro que quieres guardar cambios?")
                     .setPositiveButton("Guardar") { dialog, _ ->
                         Log.v("Plabel", plabel)
-                        Log.v("Color", colorin)
+                        Log.v("Color", color.toString())
 
                         val idlabel = arguments?.getLong(idl) ?: 0
 
                         lifecycleScope.launch {
-                            labeledit(idlabel, plabel, colorin)
+                            labeledit(idlabel, plabel, color)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -197,7 +196,7 @@ class historialUpdate : Fragment() {
     private suspend fun labeledit(
         idlabel: Long,
         plabel: String,
-        color: String
+        color: Int
     ) {
         withContext(Dispatchers.IO) {
             val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()

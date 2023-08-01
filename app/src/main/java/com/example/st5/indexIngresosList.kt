@@ -35,14 +35,14 @@ class indexIngresosList : Fragment() {
             val args = Bundle()
             Log.i("etiquet", etiquet.toString())
             val labe = when (etiquet) {
-                0 -> 9
-                1 -> 10
-                2 -> 11
-                3 -> 12
-                4 -> 13
-                5 -> 14
-                6 -> 15
-                7 -> 16
+                0 -> 101
+                1 -> 102
+                2 -> 103
+                3 -> 104
+                4 -> 105
+                5 -> 106
+                6 -> 107
+                7 -> 108
                 else -> null
             }
             if (labe != null) {

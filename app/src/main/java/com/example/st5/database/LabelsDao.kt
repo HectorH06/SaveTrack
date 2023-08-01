@@ -20,6 +20,18 @@ interface LabelsDao {
     @Query("SELECT * FROM labels")
     fun getAllLabels(): List<Labels>
 
+    @Query("SELECT idlabel FROM labels")
+    fun getIds(): MutableList<Long>
+    @Query("SELECT plabel FROM labels")
+    fun getPlabels(): MutableList<String>
+    @Query("SELECT color FROM labels")
+    fun getColors(): MutableList<Int>
+
+    @Query("SELECT plabel FROM labels")
+    fun getPlabelsArray(): Array<String>
+    @Query("SELECT color FROM labels")
+    fun getColorsArray(): Array<Int>
+
     @Query("SELECT MAX(idlabel) FROM labels")
     fun getMaxLabel(): Int
 
@@ -28,5 +40,5 @@ interface LabelsDao {
     @Query("SELECT plabel FROM labels WHERE idlabel = :id")
     fun getPlabel(id: Int): String
     @Query("SELECT color FROM labels WHERE idlabel = :id")
-    fun getColor(id: Int): String
+    fun getColor(id: Int): Int
 }

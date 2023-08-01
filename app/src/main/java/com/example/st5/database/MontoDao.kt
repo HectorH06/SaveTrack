@@ -42,21 +42,21 @@ interface MontoDao {
     fun getObsequios(): List<Monto>
     @Query("SELECT * FROM monto WHERE estado = 5")
     fun getDeudas(): List<Monto>
-    @Query("SELECT * FROM monto WHERE etiqueta = 9")
+    @Query("SELECT * FROM monto WHERE etiqueta = 101")
     fun getSalarios(): List<Monto>
-    @Query("SELECT * FROM monto WHERE etiqueta = 10")
+    @Query("SELECT * FROM monto WHERE etiqueta = 102")
     fun getIrregulares(): List<Monto>
-    @Query("SELECT * FROM monto WHERE etiqueta = 11")
+    @Query("SELECT * FROM monto WHERE etiqueta = 103")
     fun getBecas(): List<Monto>
-    @Query("SELECT * FROM monto WHERE etiqueta = 12")
+    @Query("SELECT * FROM monto WHERE etiqueta = 104")
     fun getPensiones(): List<Monto>
-    @Query("SELECT * FROM monto WHERE etiqueta = 13")
+    @Query("SELECT * FROM monto WHERE etiqueta = 105")
     fun getManutencion(): List<Monto>
-    @Query("SELECT * FROM monto WHERE etiqueta = 14")
+    @Query("SELECT * FROM monto WHERE etiqueta = 106")
     fun getPasivos(): List<Monto>
-    @Query("SELECT * FROM monto WHERE etiqueta = 15")
+    @Query("SELECT * FROM monto WHERE etiqueta = 107")
     fun getRegalos(): List<Monto>
-    @Query("SELECT * FROM monto WHERE estado = 5")
+    @Query("SELECT * FROM monto WHERE estado = 108")
     fun getPrestamos(): List<Monto>
 
     // endregion

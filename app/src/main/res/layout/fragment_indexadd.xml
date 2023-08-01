@@ -134,15 +134,14 @@
             </RelativeLayout>
 
             <Spinner
+                android:alpha="0"
                 android:id="@+id/LabelField"
                 android:layout_width="match_parent"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="0dp"
-                android:background="@drawable/p1bottomcell"
                 android:elevation="15dp"
-                android:inputType="text"
                 android:paddingStart="6dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="6dp"
@@ -151,10 +150,30 @@
                 android:textColorHint="?attr/colorSecondary"
                 app:layout_constraintBottom_toTopOf="@+id/invisibleContainer"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.468"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ValorField"
-                app:layout_constraintVertical_bias="0.892" />
+                app:layout_constraintTop_toBottomOf="@+id/ValorField" />
+
+            <TextView
+                android:id="@+id/LabelText"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="0dp"
+                android:hint="@string/seleccionar"
+                android:background="@drawable/p1bottomcell"
+                android:elevation="15dp"
+                android:paddingStart="6dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="6dp"
+                android:textSize="24sp"
+                android:translationZ="-10dp"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                app:layout_constraintBottom_toTopOf="@+id/invisibleContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ValorField" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/checkpordelante"

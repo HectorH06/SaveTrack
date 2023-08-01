@@ -178,6 +178,39 @@ class Login : Fragment() {
                                                                 nmembers = 1,
                                                                 enlace = ""
                                                             )
+                                                            val alimentos = Labels(
+                                                                plabel = "Alimentos",
+                                                                color = 0xFDB813
+                                                            )
+                                                            val hogar = Labels(
+                                                                plabel = "Hogar",
+                                                                color = 0x3DADF2
+                                                            )
+                                                            val bienestar = Labels(
+                                                                plabel = "Bienestar",
+                                                                color = 0x3AA824
+                                                            )
+                                                            val necesidades = Labels(
+                                                                plabel = "Otras Necesidades",
+                                                                color = 0x124A88
+                                                            )
+                                                            val gastosh = Labels(
+                                                                plabel = "Gastos Hormiga",
+                                                                color = 0xDC9225
+                                                            )
+                                                            val ocio = Labels(
+                                                                plabel = "Ocio y demás",
+                                                                color = 0xDC3545
+                                                            )
+                                                            val obsequio = Labels(
+                                                                plabel = "Obsequio",
+                                                                color = 0x5700A5
+                                                            )
+                                                            val deuda = Labels(
+                                                                plabel = "Deuda",
+                                                                color = 0xA80B1A
+                                                            )
+
                                                             val defaultAssets = Assets(
                                                                 theme = 0,
                                                                 lastprocess = 0
@@ -192,13 +225,17 @@ class Login : Fragment() {
                                                             labelsDao.clean()
 
                                                             usuarioDao.insertUsuario(nuevoUsuario)
-                                                            ingresosGastosDao.insertIngresosGastos(
-                                                                nuevosIG
-                                                            )
-                                                            montoGrupoDao.insertMontoG(
-                                                                nuevoMontoGrupo
-                                                            )
+                                                            ingresosGastosDao.insertIngresosGastos(nuevosIG)
+                                                            montoGrupoDao.insertMontoG(nuevoMontoGrupo)
                                                             gruposDao.insertGrupo(nuevoGrupo)
+                                                            labelsDao.insertLabel(alimentos)
+                                                            labelsDao.insertLabel(hogar)
+                                                            labelsDao.insertLabel(bienestar)
+                                                            labelsDao.insertLabel(necesidades)
+                                                            labelsDao.insertLabel(gastosh)
+                                                            labelsDao.insertLabel(ocio)
+                                                            labelsDao.insertLabel(obsequio)
+                                                            labelsDao.insertLabel(deuda)
                                                             assetsDao.insertAsset(defaultAssets)
 
                                                             val selected = usuarioDao.getUserData()
@@ -699,8 +736,8 @@ class Login : Fragment() {
                                                                         jsonObject6.getLong("idlabel")
                                                                     val plabel: String =
                                                                         jsonObject6.getString("plabel")
-                                                                    val color: String =
-                                                                        jsonObject6.optString("color")
+                                                                    val color: Int =
+                                                                        jsonObject6.optInt("color")
 
                                                                     val nuevasLabels = Labels(
                                                                         idlabel = idlabel,

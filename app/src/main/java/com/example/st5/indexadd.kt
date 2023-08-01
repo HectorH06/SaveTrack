@@ -41,6 +41,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private var selectedLabel: String? = "Seleccionar"
     private var selectedfr: String? = "Seleccionar"
 
+    private var mutableEtiquetas: MutableList<String> = mutableListOf()
+    private var mutableIds: MutableList<Long> = mutableListOf()
+    private var mutableColores: MutableList<Int> = mutableListOf()
+
     companion object {
         private const val switchval = "switchValue"
         fun newInstance(switchValue: Boolean): indexadd {
@@ -83,7 +87,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private suspend fun isDarkModeEnabled(context: Context): Boolean {
         var komodo: Boolean
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             val mode = assetsDao.getTheme()
@@ -110,6 +114,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         val switchValue = arguments?.getBoolean(switchval) ?: false
         lifecycleScope.launch {
             masmenos(switchValue)
+            getLabels()
         }
 
         val adapterF = ArrayAdapter.createFromResource(
@@ -122,10 +127,11 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             R.array.tipooptions,
             android.R.layout.simple_spinner_item
         )
-        val adapterG = ArrayAdapter.createFromResource(
+        val arrayEtiquetas = mutableEtiquetas
+        val adapterG = ArrayAdapter(
             requireContext(),
-            R.array.etiquetaoptions,
-            android.R.layout.simple_spinner_item
+            android.R.layout.simple_spinner_item,
+            arrayEtiquetas
         )
         adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -192,8 +198,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             }
         })
 
-        binding.yocreoquesi.setOnClickListener{
-            if (binding.yocreoquesi.isChecked){
+        binding.yocreoquesi.setOnClickListener {
+            if (binding.yocreoquesi.isChecked) {
                 displayFrecField() //Justificar la deuda y condiciones con intereses
                 displayInteresField()
             } else {
@@ -207,7 +213,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.WeekField.locale = Locale.getDefault()
         binding.WeekField.setDaySelectionChangedListener { selectedDays ->
             if (selectedDays.isNotEmpty()) {
-                var aux = selectedDays[0].name.toLowerCase()
+                val aux = selectedDays[0].name.lowercase()
                 selectedDay = when (aux) {
                     "monday" -> 41
                     "tuesday" -> 42
@@ -217,7 +223,9 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                     "saturday" -> 46
                     "sunday" -> 47
 
-                    else -> {40}
+                    else -> {
+                        40
+                    }
                 }
                 Log.i("Día seleccionado", selectedDay.toString())
             } else {
@@ -242,15 +250,15 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                             valor *= -1
                         }
 
-                        if (estado == 8 || estado == 16){
+                        if (estado == 8 || estado == 16) {
                             interes = binding.InteresField.text.toString().toDouble()
                         }
 
-                        if (binding.yocreoquesi.isChecked){
+                        if (binding.yocreoquesi.isChecked) {
                             estado = 5
                         }
 
-                        fecha = when(frecuencia){
+                        fecha = when (frecuencia) {
                             0 -> {
                                 val intyear = binding.FechaField.year - 1900
                                 Log.w("YEAR", intyear.toString())
@@ -261,17 +269,19 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                                 val datedate = "$intyear$intmonth$intday"
                                 Log.w("DATE", datedate)
 
-                                if (label == 10){
+                                if (label == 10) {
                                     40
                                 } else {
-                                datedate.toInt()
+                                    datedate.toInt()
                                 }
                             } // Único
                             1 -> {
                                 veces = 1
                                 100
                             } // Diario
-                            7, 14 -> {selectedDay} // Semanales
+                            7, 14 -> {
+                                selectedDay
+                            } // Semanales
                             30, 61, 91, 122, 183 -> {
                                 val intday = binding.FechaField.dayOfMonth
                                 Log.w("DAY", intday.toString())
@@ -319,7 +329,19 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Veces", veces.toString())
                         Log.v("Addate", adddate.toString())
                         lifecycleScope.launch {
-                            montoadd(concepto, valor, valorfinal, fecha, fechafinal, frecuencia, label, interes, veces, estado, adddate)
+                            montoadd(
+                                concepto,
+                                valor,
+                                valorfinal,
+                                fecha,
+                                fechafinal,
+                                frecuencia,
+                                label,
+                                interes,
+                                veces,
+                                estado,
+                                adddate
+                            )
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -362,6 +384,24 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         hideAll()
     }
 
+    private suspend fun getLabels() {
+        withContext(Dispatchers.IO) {
+            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
+
+            val max = labelsDao.getMaxLabel()
+
+            for (i in 1..max) {
+                mutableIds.add(labelsDao.getIdLabel(i))
+                mutableEtiquetas.add(labelsDao.getPlabel(i))
+                mutableColores.add(labelsDao.getColor(i))
+                Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
+            }
+            Log.v("idl", "$mutableIds")
+            Log.v("plabel", "$mutableEtiquetas")
+            Log.v("color", "$mutableColores")
+        }
+    }
+
     private fun masmenos(switchValue: Boolean) {
         Log.v("masomenos", switchValue.toString())
 
@@ -370,20 +410,26 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             R.array.tipooptions,
             android.R.layout.simple_spinner_item
         )
-        val adapterG = ArrayAdapter.createFromResource(
+
+        val arrayEtiquetas = mutableEtiquetas
+        // TODO cambiar el array para que sea extraído de la tabla labels en stlite
+        Log.i("ETIQUETAS", "$arrayEtiquetas")
+        val adapterG = ArrayAdapter(
             requireContext(),
-            // TODO cambiar el array para que sea extraído de la tabla labels en stlite
-            R.array.etiquetaoptions,
-            android.R.layout.simple_spinner_item
+            android.R.layout.simple_spinner_item,
+            arrayEtiquetas
         )
         adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val select = "Seleccionar"
         if (switchValue) {
             binding.ValorField.hint = "$0.00"
             binding.LabelField.adapter = adapterI
+            binding.LabelText.text = select
         } else {
             binding.ValorField.hint = "$0.00"
             binding.LabelField.adapter = adapterG
+            binding.LabelText.text = select
             binding.updownSwitch.checked = IconSwitch.Checked.RIGHT
         }
     }
@@ -428,7 +474,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private fun displayFrecField(){
+    private fun displayFrecField() {
         binding.FrecuenciaField.animate()
             .alpha(1f)
             .translationY(0f)
@@ -437,10 +483,11 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setStartDelay(200)
             .setListener(null)
             .start()
-        binding.LabelField.setBackgroundResource(R.drawable.p1midcell)
+        binding.LabelText.setBackgroundResource(R.drawable.p1midcell)
         Log.v("LABEL", label.toString())
     }
-    private fun hideFrecField(){
+
+    private fun hideFrecField() {
         hideFechaField()
         selectedfr = "Seleccionar"
         binding.FrecuenciaField.animate()
@@ -451,10 +498,11 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setStartDelay(0)
             .setListener(null)
             .start()
-        binding.LabelField.setBackgroundResource(R.drawable.p1bottomcell)
+        binding.LabelText.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("LABEL", label.toString())
     }
-    private fun displayFechaField(){
+
+    private fun displayFechaField() {
         hideWeekField()
         binding.FechaField.animate()
             .alpha(1f)
@@ -467,7 +515,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1midcell)
         Log.v("FECHA", fecha.toString())
     }
-    private fun hideFechaField(){
+
+    private fun hideFechaField() {
         binding.FechaField.animate()
             .alpha(0f)
             .translationY(-50f)
@@ -479,7 +528,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("FECHA", fecha.toString())
     }
-    private fun displayWeekField(){
+
+    private fun displayWeekField() {
         hideFechaField()
         binding.WeekField.animate()
             .alpha(1f)
@@ -492,7 +542,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("DAY OF WEEK", fecha.toString())
     }
-    private fun hideWeekField(){
+
+    private fun hideWeekField() {
         selectedDay = 39
         binding.WeekField.animate()
             .alpha(0f)
@@ -505,7 +556,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("DAY OF WEEK", fecha.toString())
     }
-    private fun displayInteresField(){
+
+    private fun displayInteresField() {
         binding.InteresField.animate()
             .alpha(1f)
             .translationY(0f)
@@ -525,7 +577,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FechaField.setBackgroundResource(R.drawable.p1midcell)
         Log.v("INTERÉS", interes.toString())
     }
-    private fun hideInteresField(){
+
+    private fun hideInteresField() {
         interes = 0.0
         binding.InteresField.animate()
             .alpha(0f)
@@ -546,12 +599,14 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.FechaField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("INTERÉS", interes.toString())
     }
-    private fun hideAll(){
+
+    private fun hideAll() {
         hideWeekField()
         hideFrecField()
         hideFechaField()
         hideInteresField()
     }
+
     private fun truncateDouble(value: Double): Double {
         val decimalFormat = DecimalFormat("#.##")
         return decimalFormat.format(value).toDouble()
@@ -561,12 +616,16 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         selectedLabel = binding.LabelField.selectedItem?.toString()
         selectedfr = binding.FrecuenciaField.selectedItem?.toString()
 
+        binding.LabelText.text = selectedLabel
         // region LABELS
-        // TODO OPTIMIZAR LABELS
         if (selectedLabel != null) {
             Log.v("ETIQUETA", selectedLabel.toString())
         }
         when (selectedLabel) {
+            "Seleccionar" -> {
+                label = 0
+                hideAll()
+            }
             "Alimento" -> {
                 label = 1
                 displayFrecField()
@@ -606,45 +665,50 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             }
 
             "Salario" -> {
-                label = 9
+                label = 101
                 displayFrecField()
                 hideInteresField()
             }
             "Venta" -> {
-                label = 10
+                label = 102
                 hideFrecField()
                 hideInteresField()
             }
             "Beca" -> {
-                label = 11
+                label = 103
                 displayFrecField()
                 hideInteresField()
             }
             "Pensión" -> {
-                label = 12
+                label = 104
                 displayFrecField()
                 hideInteresField()
             }
             "Manutención" -> {
-                label = 13
+                label = 105
                 displayFrecField()
                 hideInteresField()
             }
             "Ingreso pasivo" -> {
-                label = 14
+                label = 106
                 hideFrecField()
                 hideInteresField()
             }
             "Regalo" -> {
-                label = 15
+                label = 107
                 frecuencia = 0
                 hideFrecField()
                 hideInteresField()
             }
 
             else -> {
-                label = 0
-                hideAll()
+                for (i in 1 until mutableEtiquetas.size) {
+                    if (selectedLabel == mutableEtiquetas[i]) {
+                        label = mutableIds[i].toInt()
+                    }
+                }
+                displayFrecField()
+                displayFechaField()
             }
         }
         // endregion

@@ -61,6 +61,9 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
     private lateinit var fastable: List<Monto>
 
+    private var mutableEtiquetas: MutableList<String> = mutableListOf()
+    private var mutableIds: MutableList<Long> = mutableListOf()
+    private var mutableColores: MutableList<Int> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupAlarm()
@@ -92,7 +95,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val mode = assetsDao.getTheme()
             komodo = mode != 0
         }
-
         return komodo
     }
 
@@ -118,6 +120,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         colorsG.add(ContextCompat.getColor(requireContext(), R.color.V6))
         colorsG.add(ContextCompat.getColor(requireContext(), R.color.V7))
         colorsG.add(ContextCompat.getColor(requireContext(), R.color.V8))
+
         colorsI.add(ContextCompat.getColor(requireContext(), R.color.V9))
         colorsI.add(ContextCompat.getColor(requireContext(), R.color.V10))
         colorsI.add(ContextCompat.getColor(requireContext(), R.color.V11))
@@ -126,8 +129,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         colorsI.add(ContextCompat.getColor(requireContext(), R.color.V14))
         colorsI.add(ContextCompat.getColor(requireContext(), R.color.V7))
         colorsI.add(ContextCompat.getColor(requireContext(), R.color.V8))
-
-
 
         colorsGDraw.add(R.drawable.tty3)
         colorsGDraw.add(R.drawable.ttb2)
@@ -170,6 +171,24 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         return ((value != 0.0) || (value != -0.0))
     }
 
+    private suspend fun getLabels() {
+        withContext(Dispatchers.IO) {
+            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
+
+            val max = labelsDao.getMaxLabel()
+
+            for (i in 1..max) {
+                mutableIds.add(labelsDao.getIdLabel(i))
+                mutableEtiquetas.add(labelsDao.getPlabel(i))
+                mutableColores.add(labelsDao.getColor(i))
+                Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
+            }
+            Log.v("idl", "$mutableIds")
+            Log.v("plabel", "$mutableEtiquetas")
+            Log.v("color", "$mutableColores")
+        }
+    }
+
     //region PIECHARTS
     private suspend fun setupPieChartG() {
         setupColors()
@@ -177,6 +196,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
+            //TODO poner todo esto en un foreach label
             val alimentos = montoDao.getAlimentos()
             val hogar = montoDao.getHogar()
             val bienestar = montoDao.getBienestar()

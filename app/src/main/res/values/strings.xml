@@ -136,6 +136,7 @@
     <string name="addlabel">Nueva Etiqueta</string>
     <string name="editlabel">Editar Etiqueta</string>
     <string name="vermas">Ver más</string>
+    <string name="seleccionar">Seleccionar</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/PPP"
+    android:layout_width="140dp"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="?attr/colorSecondary"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/consejo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/layout_margin_default"
+            android:layout_marginTop="@dimen/layout_margin_default"
+            android:layout_marginEnd="@dimen/layout_margin_default"
+            android:hint="@string/consejos"
+            android:textColor="?attr/colorPrimary"
+            android:textColorHint="?attr/colorOnSecondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/aceptar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_edit"
+            android:backgroundTint="?attr/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@id/ignorar"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/ignorar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_delete"
+            android:backgroundTint="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

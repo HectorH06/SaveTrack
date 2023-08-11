@@ -246,9 +246,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                     .setPositiveButton("Guardar") { dialog, _ ->
                         var valor = valorstr.toDouble()
                         valor = truncateDouble(valor)
-                        if (label <= 7) {
-                            valor *= -1
-                        }
 
                         if (estado == 8 || estado == 16) {
                             interes = binding.InteresField.text.toString().toDouble()
@@ -285,10 +282,8 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                             30, 61, 91, 122, 183 -> {
                                 val intday = binding.FechaField.dayOfMonth
                                 Log.w("DAY", intday.toString())
-                                val datedate = "$intday"
-                                Log.w("DATE", datedate)
 
-                                datedate.toInt()
+                                intday
                             } // Mensuales
                             365 -> {
                                 val intmonth = binding.FechaField.month
@@ -755,23 +750,31 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             }
             "Bimestral" -> {
                 frecuencia = 61
+                displayFechaField()
 
                 selectedDay = 40
+                binding.FechaField.calendarViewShown = true
             }
             "Trimestral" -> {
                 frecuencia = 91
+                displayFechaField()
 
                 selectedDay = 40
+                binding.FechaField.calendarViewShown = true
             }
             "Cuatrimestral" -> {
                 frecuencia = 122
+                displayFechaField()
 
                 selectedDay = 40
+                binding.FechaField.calendarViewShown = true
             }
             "Semestral" -> {
                 frecuencia = 183
+                displayFechaField()
 
                 selectedDay = 40
+                binding.FechaField.calendarViewShown = true
             }
             "Anual" -> {
                 frecuencia = 365

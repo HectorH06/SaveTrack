@@ -71,14 +71,14 @@ class finanzasmain : Fragment() {
                 .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
         }
 
-        val consejos = finanzasconysug();
+        //val consejos = finanzasconysug();
         val stats = finanzasstatsahorro();
         val estatico = finanzasestatico();
 
         binding.VerMasMERCALIBRE.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.finanzas_container, consejos).addToBackStack(null).commit()
+                .replace(R.id.finanzas_container, stats).addToBackStack(null).commit()
         }
 
         binding.VerMenosMERCALIBRE.setOnClickListener {
@@ -87,7 +87,7 @@ class finanzasmain : Fragment() {
                 .replace(R.id.finanzas_container, stats).addToBackStack(null).commit()
         }
 
-        binding.RedirectMERCALIBRE.setOnClickListener {
+        binding.NoVerMERCALIBRE.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.finanzas_container, estatico).addToBackStack(null).commit()

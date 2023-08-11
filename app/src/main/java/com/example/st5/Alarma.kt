@@ -48,9 +48,7 @@ class Alarma : BroadcastReceiver() {
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
 
-            val dm = calendar.get(Calendar.DAY_OF_MONTH)
-            var doma = String.format("%02d", dm)
-            val dom = "5$doma".toInt()
+            val dom = calendar.get(Calendar.DAY_OF_MONTH)
             val w = calendar.get(Calendar.DAY_OF_WEEK)
             var dow = 100
             when (w) {

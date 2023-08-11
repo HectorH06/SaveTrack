@@ -288,31 +288,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             val decimalFormat = DecimalFormat("#.##")
 
-            if (isNotZero(totalAlimentos)) {
-                percentAlimento = decimalFormat.format((totalAlimentos.toFloat() / totalGastos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalHogar)) {
-                percentHogar = decimalFormat.format((totalHogar.toFloat() / totalGastos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalBienestar)) {
-                percentBienestar = decimalFormat.format((totalBienestar.toFloat() / totalGastos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalNecesidades)) {
-                percentNecesidades = decimalFormat.format((totalNecesidades.toFloat() / totalGastos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalHormiga)) {
-                percentHormiga = decimalFormat.format((totalHormiga.toFloat() / totalGastos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalOcio)) {
-                percentOcio = decimalFormat.format((totalOcio.toFloat() / totalGastos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalObsequios)) {
-                percentObsequios = decimalFormat.format((totalObsequios.toFloat() / totalGastos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalDeudas)) {
-                percentDeudas = decimalFormat.format((totalDeudas.toFloat() / totalGastos.toFloat()) * 100).toFloat()
-            }
-
             numG.add(percentAlimento)
             numG.add(percentHogar)
             numG.add(percentBienestar)
@@ -322,14 +297,14 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             numG.add(percentObsequios)
             numG.add(percentDeudas)
 
-            val chartAlimentos = totalAlimentos.toFloat() * -1
-            val chartHogar = totalHogar.toFloat() * -1
-            val chartBienestar: Float = totalBienestar.toFloat() * -1
-            val chartNecesidades = totalNecesidades.toFloat() * -1
-            val chartHormiga = totalHormiga.toFloat() * -1
-            val chartOcio = totalOcio.toFloat() * -1
-            val chartObsequios = totalObsequios.toFloat() * -1
-            val chartDeudas = totalDeudas.toFloat() * -1
+            val chartAlimentos = totalAlimentos.toFloat()
+            val chartHogar = totalHogar.toFloat()
+            val chartBienestar: Float = totalBienestar.toFloat()
+            val chartNecesidades = totalNecesidades.toFloat()
+            val chartHormiga = totalHormiga.toFloat()
+            val chartOcio = totalOcio.toFloat()
+            val chartObsequios = totalObsequios.toFloat()
+            val chartDeudas = totalDeudas.toFloat()
 
             val entries = listOf(
                 PieEntry(chartAlimentos),
@@ -354,77 +329,19 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             binding.PieChart.description.isEnabled = false
             binding.PieChart.legend.isEnabled = false
 
-            medidaT = decimalFormat.format((ingresosGastosDao.checkSummaryG() / (ingresosGastosDao.checkSummaryI() + ingresosGastosDao.checkSummaryG())) * 10).toDouble()
+            //medidaT = decimalFormat.format((ingresosGastosDao.checkSummaryG() / (ingresosGastosDao.checkSummaryI() + ingresosGastosDao.checkSummaryG())) * 10).toDouble()
         }
     }
 
-    private suspend fun setupPieChartI() {
+    private suspend fun setupPieChartI(that: Int, dom: Int, dow: Int, dai: Int) {
         setupColors()
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
-            val salarios = montoDao.getSalarios()
-            val irregulares = montoDao.getIrregulares()
-            val becas = montoDao.getBecas()
-            val pensiones = montoDao.getPensiones()
-            val manutencion = montoDao.getManutencion()
-            val pasivos = montoDao.getPasivos()
-            val regalos = montoDao.getRegalos()
-            val prestamos = montoDao.getPrestamos()
-
             val totalI = montoDao.getIngresos()
             val totalG = montoDao.getGastos()
             val totalis = montoDao.getMonto()
-
-            var totalSalarios = 0.0
-            for (monto in salarios) {
-                totalSalarios += monto.valor
-            }
-            Log.v("Salarios", totalSalarios.toString())
-
-            var totalIrregulares = 0.0
-            for (monto in irregulares) {
-                totalIrregulares += monto.valor
-            }
-            Log.v("Irregulares", totalIrregulares.toString())
-
-            var totalBecas = 0.0
-            for (monto in becas) {
-                totalBecas += monto.valor
-            }
-            Log.v("Becas", totalBecas.toString())
-
-            var totalPensiones = 0.0
-            for (monto in pensiones) {
-                totalPensiones += monto.valor
-            }
-            Log.v("Pensiones", totalPensiones.toString())
-
-            var totalManutencion = 0.0
-            for (monto in manutencion) {
-                totalManutencion += monto.valor
-            }
-            Log.v("Manutencion", totalManutencion.toString())
-
-            var totalPasivos = 0.0
-            for (monto in pasivos) {
-                totalPasivos += monto.valor
-            }
-            Log.v("Pasivos", totalPasivos.toString())
-
-            var totalRegalos = 0.0
-            for (monto in regalos) {
-                totalRegalos += monto.valor
-            }
-            Log.v("Regalos", totalRegalos.toString())
-
-            var totalPrestamos = 0.0
-            for (monto in prestamos) {
-                totalPrestamos += monto.valor
-            }
-            Log.v("Prestamos", totalPrestamos.toString())
-
 
             var totalIngresos = 0.0
             for (monto in totalI) {
@@ -444,62 +361,34 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             }
             Log.v("GRAN TOTAL", totalisimo.toString())
 
-            var percentSalarios: Float? = 0f
-            var percentIrregulares: Float? = 0f
-            var percentBecas: Float? = 0f
-            var percentPensiones: Float? = 0f
-            var percentManutencion: Float? = 0f
-            var percentPasivos: Float? = 0f
-            var percentRegalos: Float? = 0f
-            var percentPrestamos: Float? = 0f
-
+            var percentI = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
             val decimalFormat = DecimalFormat("#.##")
-
-            if (isNotZero(totalSalarios)) {
-                percentSalarios = decimalFormat.format((totalSalarios.toFloat() / totalIngresos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalIrregulares)) {
-                percentIrregulares = decimalFormat.format((totalIrregulares.toFloat() / totalIngresos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalBecas)) {
-                percentBecas = decimalFormat.format((totalBecas.toFloat() / totalIngresos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalPensiones)) {
-                percentPensiones = decimalFormat.format((totalPensiones.toFloat() / totalIngresos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalManutencion)) {
-                percentManutencion = decimalFormat.format((totalManutencion.toFloat() / totalIngresos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalPasivos)) {
-                percentPasivos = decimalFormat.format((totalPasivos.toFloat() / totalIngresos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalRegalos)) {
-                percentRegalos = decimalFormat.format((totalRegalos.toFloat() / totalIngresos.toFloat()) * 100).toFloat()
-            }
-            if (isNotZero(totalPrestamos)) {
-                percentPrestamos = decimalFormat.format((totalPrestamos.toFloat() / totalIngresos.toFloat()) * 100).toFloat()
-            }
-
-
-            numI.add(percentSalarios)
-            numI.add(percentIrregulares)
-            numI.add(percentBecas)
-            numI.add(percentPensiones)
-            numI.add(percentManutencion)
-            numI.add(percentPasivos)
-            numI.add(percentRegalos)
-            numI.add(percentPrestamos)
-
-            val entries = listOf(
-                PieEntry(totalSalarios.toFloat()),
-                PieEntry(totalIrregulares.toFloat()),
-                PieEntry(totalBecas.toFloat()),
-                PieEntry(totalPensiones.toFloat()),
-                PieEntry(totalManutencion.toFloat()),
-                PieEntry(totalPasivos.toFloat()),
-                PieEntry(totalRegalos.toFloat()),
-                PieEntry(totalPrestamos.toFloat())
+            var incomes = arrayOf(
+                montoDao.getSalariosR(that, dom, dow, dai),
+                montoDao.getIrregularesR(that, dom, dow, dai),
+                montoDao.getBecasR(that, dom, dow, dai),
+                montoDao.getPensionesR(that, dom, dow, dai),
+                montoDao.getManutencionR(that, dom, dow, dai),
+                montoDao.getPasivosR(that, dom, dow, dai),
+                montoDao.getRegalosR(that, dom, dow, dai),
+                montoDao.getPrestamosR(that, dom, dow, dai)
             )
+            var tI = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            val entries = mutableListOf(PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f))
+
+            for (i in incomes.indices) {
+                for (monto in incomes[i]) {
+                    tI[i] += monto.valor
+                    Log.v("Ingreso $i", tI[i].toString())
+                    if (isNotZero(tI[i])) {
+                        percentI[i] =
+                            decimalFormat.format((tI[i].toFloat() / totalIngresos.toFloat()) * 100)
+                                .toFloat()
+                    }
+                    numI.add(percentI[i])
+                    entries[i] = PieEntry(tI[i].toFloat())
+                }
+            }
 
             val dataSet = PieDataSet(entries, "Gastos")
             dataSet.colors = colorsI
@@ -518,7 +407,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             chart.data = data
 
-            medidaT = decimalFormat.format((ingresosGastosDao.checkSummaryG() / (ingresosGastosDao.checkSummaryI() + ingresosGastosDao.checkSummaryG())) * 10).toDouble()
+            //medidaT = decimalFormat.format((ingresosGastosDao.checkSummaryG() / (ingresosGastosDao.checkSummaryI() + ingresosGastosDao.checkSummaryG())) * 10).toDouble()
         }
     }
 
@@ -693,7 +582,28 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             }
         } else {
             lifecycleScope.launch {
-                setupPieChartI()
+                val fechaActual = LocalDate.now().toString()
+                val today: Int = fechaActual.replace("-", "").toInt()
+
+                val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val truefecha = formatoFecha.parse(fechaActual)
+                val calendar = Calendar.getInstance()
+                calendar.time = truefecha
+
+                val dom = calendar.get(Calendar.DAY_OF_MONTH)
+                val w = calendar.get(Calendar.DAY_OF_WEEK)
+                var dow = 100
+                when (w) {
+                    1 -> dow = 47
+                    2 -> dow = 41
+                    3 -> dow = 42
+                    4 -> dow = 43
+                    5 -> dow = 44
+                    6 -> dow = 45
+                    7 -> dow = 46
+                }
+
+                setupPieChartI(today, dom, dow, 100)
                 lista = indexIngresosList()
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1200, Easing.EaseInOutQuad)
@@ -940,7 +850,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
-                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                            .replace(R.id.index_container, indexmain()).addToBackStack(null)
+                            .commit()
                     }
                     .setNegativeButton("Cancelar") { dialog, _ ->
                         dialog.dismiss()

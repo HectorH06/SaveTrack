@@ -137,6 +137,10 @@
     <string name="editlabel">Editar Etiqueta</string>
     <string name="vermas">Ver más</string>
     <string name="seleccionar">Seleccionar</string>
+    <string name="vermenos">Ver menos</string>
+    <string name="nover">No ver</string>
+    <string name="consejos_y_sugerencias">Consejos y Sugerencias</string>
+    <string name="consejos">Consejos</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

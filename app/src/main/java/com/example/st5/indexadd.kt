@@ -386,10 +386,14 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             val max = labelsDao.getMaxLabel()
 
             for (i in 1..max) {
-                mutableIds.add(labelsDao.getIdLabel(i))
-                mutableEtiquetas.add(labelsDao.getPlabel(i))
-                mutableColores.add(labelsDao.getColor(i))
-                Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
+
+                if (labelsDao.getPlabel(i) != null){
+                    mutableIds.add(labelsDao.getIdLabel(i))
+                    mutableEtiquetas.add(labelsDao.getPlabel(i))
+                    mutableColores.add(labelsDao.getColor(i))
+
+                    Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
+                }
             }
             Log.v("idl", "$mutableIds")
             Log.v("plabel", "$mutableEtiquetas")
@@ -407,7 +411,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         )
 
         val arrayEtiquetas = mutableEtiquetas
-        // TODO cambiar el array para que sea extraído de la tabla labels en stlite
+
         Log.i("ETIQUETAS", "$arrayEtiquetas")
         val adapterG = ArrayAdapter(
             requireContext(),

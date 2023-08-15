@@ -124,6 +124,7 @@ class historialEtiquetas : Fragment() {
             )
 
             labelsDao.deleteLabel(muertaLabel)
+            labelsDao.cleanzero()
             val labelss = labelsDao.getAllLabels()
             Log.i("ALL LABELS", labelss.toString())
 

@@ -16,8 +16,11 @@ interface LabelsDao {
     @Query("DELETE FROM labels")
     suspend fun clean()
 
+    @Query("DELETE FROM labels WHERE idlabel = 0")
+    suspend fun cleanzero()
 
-    @Query("SELECT * FROM labels")
+
+    @Query("SELECT * FROM labels WHERE idlabel != 0")
     fun getAllLabels(): List<Labels>
 
     @Query("SELECT idlabel FROM labels")

@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import coil.size.Scale
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -29,10 +30,6 @@ class finanzasmain : Fragment() {
     private lateinit var binding: FragmentFinanzasmainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            mostrarProductos()
-        }
 
         lifecycleScope.launch {
             val isDarkMode = isDarkModeEnabled(requireContext())
@@ -72,6 +69,9 @@ class finanzasmain : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFinanzasmainBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            mostrarProductos()
+        }
         return binding.root
     }
 
@@ -153,15 +153,24 @@ class finanzasmain : Fragment() {
             val links: List<String> = query.map { it.permalink }
             val images: List<String> = query.map { it.thumb }
 
-            var i = 0
-            while (i <= images.size) {
+            var i = 1
+            if (i <= images.size) {
                 val afinity = afinityCalculator(conceptos[i], titles[i])
                 val saving = saveCalculator(precios[i], prices[i])
-
-                binding.FinanzasItemImage.load(images[i])
+                val pic = images[i]
+                Log.v("PIC", pic)
+                binding.FinanzasItemImage.load("$pic") {
+                    crossfade(true)
+                    scale(Scale.FILL)
+                }
                 binding.prodhint.text = titles[i]
                 binding.afinity.text = "$afinity%"
                 binding.saving.text = "$saving%"
+
+                Log.v(
+                    "PRODUCT DATA",
+                    "${ids[i]}, ${titles[i]}, ${prices[i]}, ${links[i]}, ${images[i]}"
+                )
 
                 binding.VerMasMERCALIBRE.setOnClickListener {
                     val url = links[i]
@@ -173,13 +182,15 @@ class finanzasmain : Fragment() {
 
                 binding.VerMenosMERCALIBRE.setOnClickListener {
                     i++
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null)
+                        .commit()
                 }
 
                 binding.NoVerMERCALIBRE.setOnClickListener {
                     Item.ItemsRepository.remove(ids[i])
                 }
             }
-            binding.FinanzasItemImage.setBackgroundResource(R.drawable.ic_notfound)
         }
     }
 

@@ -42,14 +42,14 @@
     <TextView
         android:id="@+id/prodhint"
         android:layout_width="162dp"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:textSize="22sp"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/FinanzasItemImage"
         app:layout_constraintStart_toStartOf="@id/FinanzasItemImage" />
     <TextView
         android:id="@+id/afinity"
-        android:layout_width="48dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:textSize="20sp"
         android:textColor="?attr/colorOnPrimary"
@@ -57,16 +57,17 @@
         app:layout_constraintStart_toEndOf="@id/FinanzasItemImage" />
     <TextView
         android:id="@+id/saving"
-        android:layout_width="48dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:textSize="20sp"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/afinity"
         app:layout_constraintStart_toEndOf="@id/FinanzasItemImage"/>
+
     <ImageView
         android:id="@+id/FinanzasItemImage"
-        android:layout_width="162dp"
-        android:layout_height="173dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_marginBottom="192dp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -118,7 +119,7 @@
         android:layout_width="160dp"
         android:layout_height="256dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="96dp"
         android:hint="@string/consejos_y_sugerencias"
         android:background="@drawable/consejosysugerenciasbackground"
         android:textSize="24sp"

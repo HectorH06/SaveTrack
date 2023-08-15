@@ -39,7 +39,30 @@
         app:srcCompat="@drawable/ic_settings"
         android:contentDescription="@string/configuracion"/>
 
-
+    <TextView
+        android:id="@+id/prodhint"
+        android:layout_width="162dp"
+        android:layout_height="48dp"
+        android:textSize="22sp"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintBottom_toTopOf="@id/FinanzasItemImage"
+        app:layout_constraintStart_toStartOf="@id/FinanzasItemImage" />
+    <TextView
+        android:id="@+id/afinity"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:textSize="20sp"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintTop_toTopOf="@id/FinanzasItemImage"
+        app:layout_constraintStart_toEndOf="@id/FinanzasItemImage" />
+    <TextView
+        android:id="@+id/saving"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:textSize="20sp"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintTop_toBottomOf="@id/afinity"
+        app:layout_constraintStart_toEndOf="@id/FinanzasItemImage"/>
     <ImageView
         android:id="@+id/FinanzasItemImage"
         android:layout_width="162dp"
@@ -48,7 +71,6 @@
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@tools:sample/avatars"
         android:contentDescription="@string/vermas" />
 
     <ImageButton
@@ -106,7 +128,7 @@
 
     <DatePicker
         android:id="@+id/FinanzasCalendar"
-        android:layout_width="160dp"
+        android:layout_width="128dp"
         android:layout_height="256dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="160dp"

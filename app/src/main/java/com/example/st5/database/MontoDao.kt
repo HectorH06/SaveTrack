@@ -431,4 +431,12 @@ interface MontoDao {
 
     @Query("SELECT * FROM monto WHERE etiqueta < 100 AND (estado = 5 OR estado = 8)")
     fun getPDADeudas(): List<Monto>
+
+
+    // region
+    @Query("SELECT concepto FROM monto WHERE etiqueta < 100 ORDER BY valor DESC")
+    fun getTopConceptos(): Array<String>
+    @Query("SELECT valor FROM monto WHERE etiqueta < 100 ORDER BY valor DESC")
+    fun getTopValor(): Array<Double>
+    //endregion
 }

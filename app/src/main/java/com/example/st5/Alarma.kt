@@ -265,21 +265,23 @@ class Alarma : BroadcastReceiver() {
             // Tabla Labels
             for (idlabel in 1..perocuantaslabels) {
                 Log.v("Current idmonto", idlabel.toString())
-                val viejaLabel = Labels(
-                    idlabel = labelsDao.getIdLabel(idlabel),
-                    plabel = labelsDao.getPlabel(idlabel),
-                    color = labelsDao.getColor(idlabel)
-                )
-                Log.v("Current monto $idlabel", viejaLabel.toString())
-                val jsonObjectLabels = JSONObject()
-                jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
-                jsonObjectLabels.put("plabel", viejaLabel.plabel)
-                jsonObjectLabels.put("color", viejaLabel.color)
+                if (labelsDao.getPlabel(idlabel) != null) {
+                    val viejaLabel = Labels(
+                        idlabel = labelsDao.getIdLabel(idlabel),
+                        plabel = labelsDao.getPlabel(idlabel),
+                        color = labelsDao.getColor(idlabel)
+                    )
+                    Log.v("Current monto $idlabel", viejaLabel.toString())
+                    val jsonObjectLabels = JSONObject()
+                    jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
+                    jsonObjectLabels.put("plabel", viejaLabel.plabel)
+                    jsonObjectLabels.put("color", viejaLabel.color)
 
-                jsonArrayLabels.put(jsonObjectLabels)
+                    jsonArrayLabels.put(jsonObjectLabels)
 
-                Log.v("Current object", jsonObjectLabels.toString())
-                Log.v("Current array", jsonArrayLabels.toString())
+                    Log.v("Current object", jsonObjectLabels.toString())
+                    Log.v("Current array", jsonArrayLabels.toString())
+                }
             }
 
             Log.v("jsonObjectUsuario", jsonObjectUsuario.toString())

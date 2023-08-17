@@ -103,8 +103,11 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE etiqueta = 107 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
     fun getRegalosR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE estado = 5  AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
+    @Query("SELECT * FROM monto WHERE estado = 5 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
     fun getPrestamosR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE etiqueta = :etiqueta AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
+    fun getGR(fecha: Int, dom: Int, dow: Int, dai: Int, etiqueta: Int): List<Monto>
     // endregion
 
     // region GET GASTOS/INGRESOS

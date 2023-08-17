@@ -42,13 +42,11 @@ import java.util.*
 
 class indexmain : Fragment(), OnChartValueSelectedListener {
     private lateinit var binding: FragmentIndexmainBinding
-    private val colorsG: MutableList<Int> = mutableListOf()
     private val colorsI: MutableList<Int> = mutableListOf()
 
     private val colorsGDraw: MutableList<Int> = mutableListOf()
     private val colorsIDraw: MutableList<Int> = mutableListOf()
 
-    private val textG: MutableList<String> = mutableListOf()
     private val textI: MutableList<String> = mutableListOf()
 
     private val numI: MutableList<Float?> = mutableListOf()
@@ -112,63 +110,45 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     }
 
     private fun setupColors() {
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V1))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V2))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V3))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V4))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V5))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V6))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V7))
-        colorsG.add(ContextCompat.getColor(requireContext(), R.color.V8))
+        lifecycleScope.launch {
+            getLabels()
 
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V9))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V10))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V11))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V12))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V13))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V14))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V7))
-        colorsI.add(ContextCompat.getColor(requireContext(), R.color.V8))
+            colorsI.add(ContextCompat.getColor(requireContext(), R.color.V9))
+            colorsI.add(ContextCompat.getColor(requireContext(), R.color.V10))
+            colorsI.add(ContextCompat.getColor(requireContext(), R.color.V11))
+            colorsI.add(ContextCompat.getColor(requireContext(), R.color.V12))
+            colorsI.add(ContextCompat.getColor(requireContext(), R.color.V13))
+            colorsI.add(ContextCompat.getColor(requireContext(), R.color.V14))
+            colorsI.add(ContextCompat.getColor(requireContext(), R.color.V7))
+            colorsI.add(ContextCompat.getColor(requireContext(), R.color.V8))
 
-        colorsGDraw.add(R.drawable.tty3)
-        colorsGDraw.add(R.drawable.ttb2)
-        colorsGDraw.add(R.drawable.ttg2)
-        colorsGDraw.add(R.drawable.ttb0)
-        colorsGDraw.add(R.drawable.tto1)
-        colorsGDraw.add(R.drawable.ttr1)
-        colorsGDraw.add(R.drawable.ttp1)
-        colorsGDraw.add(R.drawable.ttr0)
+            colorsGDraw.add(R.drawable.tty3)
+            colorsGDraw.add(R.drawable.ttb2)
+            colorsGDraw.add(R.drawable.ttg2)
+            colorsGDraw.add(R.drawable.ttb0)
+            colorsGDraw.add(R.drawable.tto1)
+            colorsGDraw.add(R.drawable.ttr1)
+            colorsGDraw.add(R.drawable.ttp1)
+            colorsGDraw.add(R.drawable.ttr0)
 
-        colorsIDraw.add(R.drawable.ttg4)
-        colorsIDraw.add(R.drawable.ttb4)
-        colorsIDraw.add(R.drawable.ttr2)
-        colorsIDraw.add(R.drawable.tto4)
-        colorsIDraw.add(R.drawable.tty2)
-        colorsIDraw.add(R.drawable.ttp2)
-        colorsIDraw.add(R.drawable.ttp1)
-        colorsIDraw.add(R.drawable.ttr0)
+            colorsIDraw.add(R.drawable.ttg4)
+            colorsIDraw.add(R.drawable.ttb4)
+            colorsIDraw.add(R.drawable.ttr2)
+            colorsIDraw.add(R.drawable.tto4)
+            colorsIDraw.add(R.drawable.tty2)
+            colorsIDraw.add(R.drawable.ttp2)
+            colorsIDraw.add(R.drawable.ttp1)
+            colorsIDraw.add(R.drawable.ttr0)
 
-        textG.add("Alimentos")
-        textG.add("Hogar")
-        textG.add("Bienestar")
-        textG.add("Necesidades")
-        textG.add("Gastos Hormiga")
-        textG.add("Ocio y demás")
-        textG.add("Obsequio")
-        textG.add("Deuda")
-
-        textI.add("Salarios")
-        textI.add("Ventas")
-        textI.add("Becas")
-        textI.add("Pensiones")
-        textI.add("Manutención")
-        textI.add("Ingresos Pasivos")
-        textI.add("Regalos")
-        textI.add("Préstamos")
-    }
-
-    private fun isNotZero(value: Double?): Boolean {
-        return ((value != 0.0) || (value != -0.0))
+            textI.add("Salarios")
+            textI.add("Ventas")
+            textI.add("Becas")
+            textI.add("Pensiones")
+            textI.add("Manutención")
+            textI.add("Ingresos Pasivos")
+            textI.add("Regalos")
+            textI.add("Préstamos")
+        }
     }
 
     private suspend fun getLabels() {
@@ -178,10 +158,13 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val max = labelsDao.getMaxLabel()
 
             for (i in 1..max) {
-                mutableIds.add(labelsDao.getIdLabel(i))
-                mutableEtiquetas.add(labelsDao.getPlabel(i))
-                mutableColores.add(labelsDao.getColor(i))
-                Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
+                if (labelsDao.getPlabel(i) != null){
+                    mutableIds.add(labelsDao.getIdLabel(i))
+                    mutableEtiquetas.add(labelsDao.getPlabel(i))
+                    mutableColores.add(labelsDao.getColor(i))
+
+                    Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
+                }
             }
             Log.v("idl", "$mutableIds")
             Log.v("plabel", "$mutableEtiquetas")
@@ -190,135 +173,51 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     }
 
     //region PIECHARTS
-    private suspend fun setupPieChartG() {
+    private suspend fun setupPieChartG(that: Int, dom: Int, dow: Int, dai: Int) {
         setupColors()
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+            val labelsDao = Stlite.getInstance((requireContext())).getLabelsDao()
 
-            //TODO poner todo esto en un foreach label
-            val alimentos = montoDao.getAlimentos()
-            val hogar = montoDao.getHogar()
-            val bienestar = montoDao.getBienestar()
-            val necesidades = montoDao.getNecesidades()
-            val hormiga = montoDao.getHormiga()
-            val ocio = montoDao.getOcio()
-            val obsequios = montoDao.getObsequios()
-            val deudas = montoDao.getDeudas()
+            val maxLabels = labelsDao.getMaxLabel()
 
-            val totalI = montoDao.getIngresos()
-            val totalG = montoDao.getGastos()
-            val totalis = montoDao.getMonto()
+            var expenses = mutableListOf<List<Monto>>()
+            var tG = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
-            var totalAlimentos = 0.0
-            for (monto in alimentos) {
-                totalAlimentos += monto.valor
+            for (i in 0..maxLabels) {
+                if (montoDao.getGR(that, dom, dow, dai, i) != null) {
+                    expenses.add(montoDao.getGR(that, dom, dow, dai, i))
+                }
             }
-            Log.v("Alimentos", totalAlimentos.toString())
+            val entries = mutableListOf<PieEntry>()
 
-            var totalHogar = 0.0
-            for (monto in hogar) {
-                totalHogar += monto.valor
-            }
-            Log.v("Hogar", totalHogar.toString())
-
-            var totalBienestar = 0.0
-            for (monto in bienestar) {
-                totalBienestar += monto.valor
-            }
-            Log.v("Bienestar", totalBienestar.toString())
-
-            var totalNecesidades = 0.0
-            for (monto in necesidades) {
-                totalNecesidades += monto.valor
-            }
-            Log.v("Necesidades", totalNecesidades.toString())
-
-            var totalHormiga = 0.0
-            for (monto in hormiga) {
-                totalHormiga += monto.valor
-            }
-            Log.v("Hormiga", totalHormiga.toString())
-
-            var totalOcio = 0.0
-            for (monto in ocio) {
-                totalOcio += monto.valor
-            }
-            Log.v("Ocio", totalOcio.toString())
-
-            var totalObsequios = 0.0
-            for (monto in obsequios) {
-                totalObsequios += monto.valor
-            }
-            Log.v("Obsequios", totalObsequios.toString())
-
-            var totalDeudas = 0.0
-            for (monto in deudas) {
-                totalDeudas += monto.valor
-            }
-            Log.v("Deudas", totalDeudas.toString())
-
-
-            var totalIngresos = 0.0
-            for (monto in totalI) {
-                totalIngresos += monto.valor
-            }
-            Log.v("INGRESOS", totalI.toString())
-
-            var totalGastos = 0.0
-            for (monto in totalG) {
-                totalGastos += monto.valor
-            }
-            Log.v("GASTOS", totalG.toString())
-
-            var totalisimo = 0.0
-            for (monto in totalis) {
-                totalisimo += monto.valor
-            }
+            val totalIngresos = ingresosGastosDao.checkSummaryI()
+            Log.v("INGRESOS", totalIngresos.toString())
+            val totalGastos = ingresosGastosDao.checkSummaryG()
+            Log.v("GASTOS", totalGastos.toString())
+            val totalisimo = totalIngresos - totalGastos
             Log.v("GRAN TOTAL", totalisimo.toString())
-
-            var percentAlimento: Float? = 0f
-            var percentHogar: Float? = 0f
-            var percentBienestar: Float? = 0f
-            var percentNecesidades: Float? = 0f
-            var percentHormiga: Float? = 0f
-            var percentOcio: Float? = 0f
-            var percentObsequios: Float? = 0f
-            var percentDeudas: Float? = 0f
 
             val decimalFormat = DecimalFormat("#.##")
 
-            numG.add(percentAlimento)
-            numG.add(percentHogar)
-            numG.add(percentBienestar)
-            numG.add(percentNecesidades)
-            numG.add(percentHormiga)
-            numG.add(percentOcio)
-            numG.add(percentObsequios)
-            numG.add(percentDeudas)
+            for (i in 0 until expenses.size) {
+                for (monto in expenses[i]) {
+                    if (monto.veces != 0L) {
+                        tG[i] += monto.valor
+                    }
 
-            val chartAlimentos = totalAlimentos.toFloat()
-            val chartHogar = totalHogar.toFloat()
-            val chartBienestar: Float = totalBienestar.toFloat()
-            val chartNecesidades = totalNecesidades.toFloat()
-            val chartHormiga = totalHormiga.toFloat()
-            val chartOcio = totalOcio.toFloat()
-            val chartObsequios = totalObsequios.toFloat()
-            val chartDeudas = totalDeudas.toFloat()
-
-            val entries = listOf(
-                PieEntry(chartAlimentos),
-                PieEntry(chartHogar),
-                PieEntry(chartBienestar),
-                PieEntry(chartNecesidades),
-                PieEntry(chartHormiga),
-                PieEntry(chartOcio),
-                PieEntry(chartObsequios),
-                PieEntry(chartDeudas)
-            )
+                    Log.v("Ingreso $i", tG[i].toString())
+                    if (tG[i] != 0.0 && totalGastos != 0.0) {
+                        val percentI = decimalFormat.format((tG[i].toFloat() / totalGastos.toFloat()) * 100).toFloat()
+                        numG.add(percentI)
+                    }
+                    entries.add(PieEntry(tG[i].toFloat()))
+                }
+            }
 
             val dataSet = PieDataSet(entries, "Gastos")
-            dataSet.colors = colorsG
+            dataSet.colors = mutableColores
 
             val data = PieData(dataSet)
             binding.PieChart.data = data
@@ -343,22 +242,11 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val totalG = montoDao.getGastos()
             val totalis = montoDao.getMonto()
 
-            var totalIngresos = 0.0
-            for (monto in totalI) {
-                totalIngresos += monto.valor
-            }
+            val totalIngresos = ingresosGastosDao.checkSummaryI()
             Log.v("INGRESOS", totalI.toString())
-
-            var totalGastos = 0.0
-            for (monto in totalG) {
-                totalGastos += monto.valor
-            }
+            val totalGastos = ingresosGastosDao.checkSummaryG()
             Log.v("GASTOS", totalG.toString())
-
-            var totalisimo = 0.0
-            for (monto in totalis) {
-                totalisimo += monto.valor
-            }
+            val totalisimo = totalIngresos - totalGastos
             Log.v("GRAN TOTAL", totalisimo.toString())
 
             var percentI = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
@@ -380,7 +268,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 for (monto in incomes[i]) {
                     tI[i] += monto.valor
                     Log.v("Ingreso $i", tI[i].toString())
-                    if (isNotZero(tI[i])) {
+                    if (tI[i] != 0.0 && totalIngresos != 0.0) {
                         percentI[i] =
                             decimalFormat.format((tI[i].toFloat() / totalIngresos.toFloat()) * 100)
                                 .toFloat()
@@ -572,7 +460,28 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         Log.v("masomenos", switchVal.toString())
         if (!switchVal) {
             lifecycleScope.launch {
-                setupPieChartG()
+                val fechaActual = LocalDate.now().toString()
+                val today: Int = fechaActual.replace("-", "").toInt()
+
+                val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val truefecha = formatoFecha.parse(fechaActual)
+                val calendar = Calendar.getInstance()
+                calendar.time = truefecha
+
+                val dom = calendar.get(Calendar.DAY_OF_MONTH)
+                val w = calendar.get(Calendar.DAY_OF_WEEK)
+                var dow = 100
+                when (w) {
+                    1 -> dow = 47
+                    2 -> dow = 41
+                    3 -> dow = 42
+                    4 -> dow = 43
+                    5 -> dow = 44
+                    6 -> dow = 45
+                    7 -> dow = 46
+                }
+
+                setupPieChartG(today, dom, dow, 100)
                 lista = indexGastosList()
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1200, Easing.EaseInOutQuad)
@@ -627,7 +536,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             lista = if (!switchVal) {
                 binding.MedidorDeAhorroButton.setBackgroundResource(colorsGDraw[h.x.toInt()])
                 binding.Medidor.text = numG[h.x.toInt()].toString() + "%"
-                binding.searchforlabel.text = textG[h.x.toInt()]
+                binding.searchforlabel.text = mutableEtiquetas[h.x.toInt()]
                 val iglinstance = indexGastosList.labelSearch(h.x.toInt())
                 iglinstance
             } else {

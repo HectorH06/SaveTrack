@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentFinanzasmainBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONException
@@ -181,10 +182,13 @@ class finanzasmain : Fragment() {
                 }
 
                 binding.VerMenosMERCALIBRE.setOnClickListener {
-                    i++
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null)
-                        .commit()
+                    lifecycleScope.launch {
+                        i++
+                        delay(500)
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null)
+                            .commit()
+                    }
                 }
 
                 binding.NoVerMERCALIBRE.setOnClickListener {

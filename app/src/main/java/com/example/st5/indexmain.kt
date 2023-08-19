@@ -183,7 +183,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val maxLabels = labelsDao.getMaxLabel()
 
             var expenses = mutableListOf<List<Monto>>()
-            var tG = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            var tG = mutableListOf<Double>()
 
             for (i in 0..maxLabels) {
                 if (montoDao.getGR(that, dom, dow, dai, i) != null) {
@@ -203,16 +203,17 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             for (i in 0 until expenses.size) {
                 for (monto in expenses[i]) {
-                    if (monto.veces != 0L) {
-                        tG[i] += monto.valor
+                    val current = monto.valor * (monto.veces ?: 0)
+                    if (monto.veces != null) {
+                        tG.add (current)
                     }
 
-                    Log.v("Ingreso $i", tG[i].toString())
-                    if (tG[i] != 0.0 && totalGastos != 0.0) {
-                        val percentI = decimalFormat.format((tG[i].toFloat() / totalGastos.toFloat()) * 100).toFloat()
-                        numG.add(percentI)
+                    var percentI = 0F
+                    if (current != 0.0 && totalGastos != 0.0) {
+                        percentI = decimalFormat.format((current.toFloat() * totalGastos.toFloat()) / 100).toFloat()
                     }
-                    entries.add(PieEntry(tG[i].toFloat()))
+                    numG.add(percentI)
+                    entries.add(PieEntry(current.toFloat()))
                 }
             }
 

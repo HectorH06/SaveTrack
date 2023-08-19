@@ -239,7 +239,7 @@ class perfilmain : Fragment() {
 
                     // Tabla Labels
                     for (idlabel in 1..perocuantaslabels) {
-                        if (labelsDao.getIdLabel(idlabel) != null){
+                        if (labelsDao.getIdLabel(idlabel) != null && labelsDao.getPlabel(idlabel) != null){
                             Log.v("Current idmonto", idlabel.toString())
                             val viejaLabel = Labels(
                                 idlabel = labelsDao.getIdLabel(idlabel),

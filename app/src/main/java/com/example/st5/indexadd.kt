@@ -240,7 +240,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
             var interes = 0.0
 
-            if (label != 0 && concepto != "" && valorstr != "" && valorstr != "." && selectedDay != 39) {
+            if (concepto != "" && valorstr != "" && valorstr != "." && selectedDay != 39) {
                 val confirmDialog = AlertDialog.Builder(requireContext())
                     .setTitle("¿Seguro que quieres guardar cambios?")
                     .setPositiveButton("Guardar") { dialog, _ ->
@@ -273,7 +273,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                                 }
                             } // Único
                             1 -> {
-                                veces = 1
+                                veces = 0
                                 100
                             } // Diario
                             7, 14 -> {
@@ -451,6 +451,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
             val iduser = usuarioDao.checkId().toLong()
+
             val nuevoMonto = Monto(
                 iduser = iduser,
                 concepto = concepto,
@@ -621,48 +622,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             Log.v("ETIQUETA", selectedLabel.toString())
         }
         when (selectedLabel) {
-            "Seleccionar" -> {
-                label = 0
-                hideAll()
-            }
-            "Alimento" -> {
-                label = 1
-                displayFrecField()
-                hideInteresField()
-            }
-            "Hogar" -> {
-                label = 2
-                displayFrecField()
-                hideInteresField()
-            }
-            "Bienestar" -> {
-                label = 3
-                displayFrecField()
-                hideInteresField()
-            }
-            "Otras necesidades" -> {
-                label = 4
-                displayFrecField()
-                hideInteresField()
-            }
-            "Gasto hormiga" -> {
-                label = 5
-                displayFrecField()
-                hideInteresField()
-            }
-            "Ocio y demás" -> {
-                label = 6
-                displayFrecField()
-                hideInteresField()
-            }
-            "Obsequio" -> {
-                label = 7
-                frecuencia = 0
-                hideFrecField()
-                displayFechaField()
-                hideInteresField()
-            }
-
             "Salario" -> {
                 label = 101
                 displayFrecField()

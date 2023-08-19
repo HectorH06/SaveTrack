@@ -44,4 +44,7 @@ interface LabelsDao {
     fun getPlabel(id: Int): String
     @Query("SELECT color FROM labels WHERE idlabel = :id")
     fun getColor(id: Int): Int
+
+    @Query("SELECT idlabel FROM labels WHERE plabel = :p")
+    fun getIdL(p: String): Long
 }

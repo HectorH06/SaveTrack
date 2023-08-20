@@ -631,7 +631,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     val weekMonto = monto.fecha
                     Log.v("wek", weekMonto.toString())
 
-                    if (monto.valor > 0) {
+                    if (monto.etiqueta > 100) {
                         ingresoGastoDao.updateSummaryI(
                             monto.iduser.toInt(),
                             totalIngresos + monto.valor

@@ -79,10 +79,8 @@ class Alarma : BroadcastReceiver() {
                     val weekMonto = monto.fecha
                     Log.v("wek", weekMonto.toString())
 
-                    if (monto.valor > 0) {
-                        ingresoGastoDao.updateSummaryI(
-                            monto.iduser.toInt(), totalIngresos + monto.valor
-                        )
+                    if (monto.etiqueta > 100) {
+                        ingresoGastoDao.updateSummaryI(monto.iduser.toInt(), totalIngresos + monto.valor)
                     } else {
                         var status = 0
                         if (monto.estado == 1){

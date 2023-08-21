@@ -12,19 +12,6 @@
         android:contentDescription="@string/wallpaper" />
 
     <ImageButton
-        android:id="@+id/goback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="661dp"
-        android:background="@color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back"
-        android:contentDescription="@string/goback" />
-
-    <ImageButton
         android:id="@+id/config"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +62,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ScrollView
         android:layout_width="match_parent"

@@ -15,19 +15,6 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <ImageButton
-        android:id="@+id/goback"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/transparent"
-        android:contentDescription="@string/goback"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
-
-    <ImageButton
         android:id="@+id/ConfigButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,7 +55,7 @@
         android:id="@+id/FinanzasItemImage"
         android:layout_width="160dp"
         android:layout_height="160dp"
-        android:layout_marginBottom="192dp"
+        android:layout_marginBottom="128dp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -132,18 +119,20 @@
         android:layout_width="128dp"
         android:layout_height="256dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="160dp"
+        android:layout_marginBottom="96dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/FinanzasPB"
-        style="?android:attr/progressBarStyle"
+    <ImageView
+        android:id="@+id/Economia"
         android:layout_width="160dp"
         android:layout_height="160dp"
-        android:layout_marginTop="192dp"
+        android:layout_marginTop="128dp"
         android:layout_marginEnd="16dp"
+        android:translationZ="100dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/ic_chartexample"
+        android:contentDescription="@string/economia" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

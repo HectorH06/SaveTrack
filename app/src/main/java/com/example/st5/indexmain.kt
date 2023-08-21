@@ -182,14 +182,16 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             val maxLabels = labelsDao.getMaxLabel()
 
-            var expenses = mutableListOf<List<Monto>>()
-            var tG = mutableListOf<Double>()
+            val expenses = mutableListOf<List<Monto>>()
 
             for (i in 0..maxLabels) {
-                if (montoDao.getGR(that, dom, dow, dai, i) != null) {
+                if (montoDao.getGR(that, dom, dow, dai, i).toString() != "[]") {
                     expenses.add(montoDao.getGR(that, dom, dow, dai, i))
+                } else {
+                    expenses.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, fechafinal=0, frecuencia=0, etiqueta=i, interes=0.0, veces=0L, estado=0, adddate=0)))
                 }
             }
+            Log.v("EXPENSES", expenses.toString())
             val entries = mutableListOf<PieEntry>()
 
             val totalIngresos = ingresosGastosDao.checkSummaryI()
@@ -200,21 +202,29 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             Log.v("GRAN TOTAL", totalisimo.toString())
 
             val decimalFormat = DecimalFormat("#.##")
-
+            val etiquetaSumMap = mutableMapOf<Long, Double>()
             for (i in 0 until expenses.size) {
                 for (monto in expenses[i]) {
+                    val etiqueta = monto.etiqueta.toLong()
                     val current = monto.valor * (monto.veces ?: 0)
-                    if (monto.veces != null) {
-                        tG.add (current)
-                    }
 
-                    var percentI = 0F
-                    if (current != 0.0 && totalGastos != 0.0) {
-                        percentI = decimalFormat.format((current.toFloat() * totalGastos.toFloat()) / 100).toFloat()
+                    if (etiquetaSumMap.containsKey(etiqueta)) {
+                        val currentSum = etiquetaSumMap[etiqueta] ?: 0.0
+                        etiquetaSumMap[etiqueta] = currentSum + current
+                    } else {
+                        etiquetaSumMap[etiqueta] = current
                     }
-                    numG.add(percentI)
-                    entries.add(PieEntry(current.toFloat()))
                 }
+            }
+
+            for ((etiqueta, sum) in etiquetaSumMap) {
+                val percentI = if (totalGastos != 0.0) {
+                    decimalFormat.format((sum.toFloat() * 100 / totalGastos.toFloat())).toFloat()
+                } else {
+                    0F
+                }
+                numG.add(percentI)
+                entries.add(PieEntry(sum.toFloat()))
             }
 
             val dataSet = PieDataSet(entries, "Gastos")
@@ -228,8 +238,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             binding.PieChart.setCenterTextColor(R.color.white)
             binding.PieChart.description.isEnabled = false
             binding.PieChart.legend.isEnabled = false
-
-            //medidaT = decimalFormat.format((ingresosGastosDao.checkSummaryG() / (ingresosGastosDao.checkSummaryI() + ingresosGastosDao.checkSummaryG())) * 10).toDouble()
         }
     }
 
@@ -295,8 +303,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             chart.absoluteAngles
 
             chart.data = data
-
-            //medidaT = decimalFormat.format((ingresosGastosDao.checkSummaryG() / (ingresosGastosDao.checkSummaryI() + ingresosGastosDao.checkSummaryG())) * 10).toDouble()
         }
     }
 

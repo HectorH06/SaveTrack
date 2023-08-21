@@ -141,6 +141,8 @@
     <string name="nover">No ver</string>
     <string name="consejos_y_sugerencias">Consejos y Sugerencias</string>
     <string name="consejos">Consejos</string>
+    <string name="economia">Economía</string>
+    <string name="percent">Porcentaje</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

@@ -85,10 +85,11 @@ class finanzasmain : Fragment() {
                 .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
         }
 
-        //val consejos = finanzasconysug()
-        val stats = finanzasstatsahorro()
-        val estatico = finanzasestatico()
-
+        binding.Economia.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.finanzas_container, finanzasstatsahorro()).addToBackStack(null).commit()
+        }
     }
 
     @SuppressLint("SetTextI18n")

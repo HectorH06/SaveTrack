@@ -92,12 +92,6 @@ class planesdeahorromain : Fragment() {
 
         val back = perfilmain()
 
-        binding.goback.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.perfil_container, back).addToBackStack(null).commit()
-        }
-
         binding.config.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)

@@ -33,19 +33,8 @@ class indexGastosList : Fragment() {
             val fragment = indexGastosList()
             val args = Bundle()
             Log.i("etiquet", etiquet.toString())
-            val labe = when (etiquet) {
-                0 -> 1
-                1 -> 2
-                2 -> 3
-                3 -> 4
-                4 -> 5
-                5 -> 6
-                6 -> 6
-                7 -> 8
-                else -> null
-            }
-            if (labe != null) {
-                args.putInt(etiqueta, labe)
+            if (etiquet != null) {
+                args.putInt(etiqueta, etiquet)
             }
             fragment.arguments = args
             return fragment

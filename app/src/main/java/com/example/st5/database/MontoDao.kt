@@ -108,6 +108,11 @@ interface MontoDao {
 
     @Query("SELECT * FROM monto WHERE etiqueta = :etiqueta AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
     fun getGR(fecha: Int, dom: Int, dow: Int, dai: Int, etiqueta: Int): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND etiqueta <= 100 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
+    fun getStatG(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND etiqueta > 100 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
+    fun getStatI(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
     // endregion
 
     // region GET GASTOS/INGRESOS

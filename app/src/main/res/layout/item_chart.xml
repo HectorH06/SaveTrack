@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/moneda"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="16dp"
             android:layout_marginStart="@dimen/layout_margin_default"
             android:layout_marginTop="@dimen/layout_margin_default"
             android:hint="@string/MONEDA"
@@ -28,7 +28,7 @@
         <TextView
             android:id="@+id/valor"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="16dp"
             android:layout_marginStart="@dimen/layout_margin_default"
             android:layout_marginTop="@dimen/layout_margin_default"
             android:hint="@string/Valor"
@@ -42,7 +42,7 @@
         <TextView
             android:id="@+id/porcentaje"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="16dp"
             android:layout_marginStart="@dimen/layout_margin_default"
             android:layout_marginTop="@dimen/layout_margin_default"
             android:layout_marginBottom="@dimen/layout_margin_default"

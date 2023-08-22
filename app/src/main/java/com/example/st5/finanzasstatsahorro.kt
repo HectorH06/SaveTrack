@@ -170,22 +170,55 @@ class finanzasstatsahorro : Fragment() {
 
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.moneda.text = "moneda"
-            holder.valor.text = "valor"
-            holder.porcentaje.text = "porcentaje"
-
             val chart = holder.chart
 
-            chart.setBackgroundColor(resources.getColor(R.color.N5))
+            chart.setBackgroundColor(resources.getColor(R.color.N1))
             chart.description.isEnabled = false
             chart.setTouchEnabled(true)
             chart.setDrawGridBackground(false)
             chart.isDragEnabled = true
             chart.setScaleEnabled(true)
 
-            //if (position == 2) {
-                setData(3, 100F, chart)
-            //}
+            val moneda: String
+            val valor: Float
+            val porcentaje: Float
+            val count = 14
+            val range = 20F
+
+            when (position){
+                0 -> {
+                    moneda = "Estático"
+                    valor = 10.0F
+                    porcentaje = 20.1F
+
+                    setData(count, range, chart)
+                }
+                1 -> {
+                    moneda = "Inversión"
+                    valor = 20.1F
+                    porcentaje = 30.2F
+
+                    setData(count, range, chart)
+                }
+                2 -> {
+                    moneda = "Moneda"
+                    valor = 30.2F
+                    porcentaje = 40.3F
+
+                    setData(count, range, chart)
+                }
+                else -> {
+                    moneda = "Moneda"
+                    valor = 0.0F
+                    porcentaje = 0.0F
+
+                    setData(0, 0F, chart)
+                }
+            }
+
+            holder.moneda.text = moneda
+            holder.valor.text = valor.toString()
+            holder.porcentaje.text = porcentaje.toString()
         }
 
 

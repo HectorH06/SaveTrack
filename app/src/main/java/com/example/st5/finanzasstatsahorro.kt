@@ -1,13 +1,18 @@
 package com.example.st5
 
+import android.content.Context
 import android.graphics.DashPathEffect
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentFinanzasstatsahorroBinding
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -15,12 +20,57 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class finanzasstatsahorro : Fragment() {
 
     private lateinit var binding: FragmentFinanzasstatsahorroBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                }
+            })
+    }
+
+    private suspend fun isDarkModeEnabled(context: Context): Boolean {
+        var komodo: Boolean
+
+        withContext(Dispatchers.IO) {
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+
+            val mode = assetsDao.getTheme()
+            komodo = mode != 0
+        }
+
+        return komodo
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentFinanzasstatsahorroBinding.inflate(inflater, container, false)
+        return binding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val back = finanzasmain();
@@ -28,16 +78,16 @@ class finanzasstatsahorro : Fragment() {
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.index_container, back).addToBackStack(null).commit()
+                .replace(R.id.finanzas_container, back).addToBackStack(null).commit()
         }
 
         binding.ConfigButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.index_container, Configuracion()).addToBackStack(null).commit()
+                .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
         }
 
-
+        binding.displaycharts.adapter = ChartAdapter()
     }
 
     private fun setData(count: Int, range: Float, chart: LineChart) {

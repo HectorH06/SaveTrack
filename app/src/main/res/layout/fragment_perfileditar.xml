@@ -121,7 +121,7 @@
                 android:layout_marginEnd="80dp"
                 android:background="@drawable/b1bottomcell"
                 android:elevation="15dp"
-                android:hint="@string/Edad"
+                android:hint="@string/Meta"
                 android:inputType="numberDecimal"
                 android:paddingStart="6dp"
                 android:paddingEnd="6dp"

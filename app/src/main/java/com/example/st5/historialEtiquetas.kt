@@ -195,6 +195,9 @@ class historialEtiquetas : Fragment() {
 
                 confirmDialog.show()
             }
+            if (position == labelsp.size - 1){
+                holder.itemView.setBackgroundResource(R.drawable.y1bottomcell)
+            }
         }
 
 

@@ -359,6 +359,9 @@ class historialPapelera : Fragment() {
 
                 confirmDialog.show()
             }
+            if (position == montosp.size - 1){
+                holder.itemView.setBackgroundResource(R.drawable.y1bottomcell)
+            }
         }
 
 

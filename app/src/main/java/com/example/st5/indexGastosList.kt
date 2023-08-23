@@ -464,6 +464,9 @@ class indexGastosList : Fragment() {
                     confirmDialog.show()
                 }
             }
+            if (position == gastos.size - 1){
+                holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)
+            }
         }
 
 

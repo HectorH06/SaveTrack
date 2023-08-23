@@ -315,6 +315,7 @@ class perfileditar : Fragment() {
             val nombre = usuarioDao.checkName()
             val edad = usuarioDao.checkAge()
             val chamba = usuarioDao.checkChamba()
+            val meta = usuarioDao.checkMeta()
             username = nombre
             Log.v("Name", nombre)
             Log.v("Age", edad.toString())
@@ -322,6 +323,7 @@ class perfileditar : Fragment() {
 
             binding.UsernameeditperfTV.text = nombre
             binding.AgeeditperfTV.setText(edad.toString())
+            binding.GoaleditperfTV.setText(meta.toString())
 
             val linkfoto = "http://savetrack.com.mx/images/$nombre.jpg"
             lifecycleScope.launch {
@@ -336,7 +338,7 @@ class perfileditar : Fragment() {
 
             val idt = usuarioDao.checkId()
             val nuevaEdad = binding.AgeeditperfTV.text.toString()
-            val nuevaMeta = binding.GoaleditperfTV.text.toString().toDouble()
+            val nuevaMeta = binding.GoaleditperfTV.text.toString()
 
             // ARBOL DE DECISIONES PARA CADA CASO DE CHAMBA
             // AUTÓMATA FINITO o algo así
@@ -394,7 +396,8 @@ class perfileditar : Fragment() {
             } else {
                 ok = 1
             }
-            if (nuevaMeta <= 0) {
+            val metadouble = nuevaMeta.toDouble()
+            if (metadouble <= 0.0) {
                 metachanged = false
                 withContext(Dispatchers.Default) {
                     Looper.prepare()
@@ -413,7 +416,7 @@ class perfileditar : Fragment() {
                 usuarioDao.updateChamba(idt, nuevaChamba)
             }
             if (metachanged){
-                usuarioDao.updateMeta(idt, nuevaMeta)
+                usuarioDao.updateMeta(idt, metadouble)
             }
 
             withContext(Dispatchers.Main) {

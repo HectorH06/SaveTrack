@@ -143,6 +143,7 @@
     <string name="consejos">Consejos</string>
     <string name="economia">Economía</string>
     <string name="percent">Porcentaje</string>
+    <string name="Meta">Meta</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

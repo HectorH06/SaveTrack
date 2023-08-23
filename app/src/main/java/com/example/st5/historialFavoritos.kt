@@ -306,6 +306,9 @@ class historialFavoritos : Fragment() {
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                     .replace(R.id.historial_container, upup).addToBackStack(null).commit()
             }
+            if (position == montosp.size - 1){
+                holder.itemView.setBackgroundResource(R.drawable.y1bottomcell)
+            }
         }
 
 

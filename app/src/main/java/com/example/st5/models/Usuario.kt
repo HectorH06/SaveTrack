@@ -33,6 +33,9 @@ data class Usuario(
 
     @ColumnInfo(name = "balance")
     var balance: Double?,
+
+    @ColumnInfo(name = "meta")
+    var meta: Double
 ) : Parcelable {
-    constructor() : this(0L,"", 0L, 0L, null, 0L, 0.0)
+    constructor() : this(0L,"", 0L, 0L, null, 0L, 0.0, 0.0)
 }

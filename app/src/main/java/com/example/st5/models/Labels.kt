@@ -17,6 +17,9 @@ data class Labels(
 
     @ColumnInfo(name = "color")
     var color: Int,
+
+    @ColumnInfo(name = "estado")
+    var estado: Int = 0
 ) : Parcelable {
-    constructor() : this(0L, "", 0)
+    constructor() : this(0L, "", 0, 0)
 }

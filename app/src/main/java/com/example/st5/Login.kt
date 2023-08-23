@@ -158,7 +158,8 @@ class Login : Fragment() {
                                                                 chamba = 0,
                                                                 foto = "",
                                                                 diasaho = 0,
-                                                                balance = 0.0
+                                                                balance = 0.0,
+                                                                meta = 0.0
                                                             )
                                                             val nuevosIG = IngresosGastos(
                                                                 iduser = id,
@@ -592,6 +593,8 @@ class Login : Fragment() {
                                                                 jsonObject1.optLong("diasaho")
                                                             val balance: Double =
                                                                 jsonObject1.optDouble("balance")
+                                                            val meta: Double =
+                                                                jsonObject1.optDouble("meta")
                                                             val tema: Long =
                                                                 jsonObject1.optLong("theme")
                                                             val lastprocess: Int =
@@ -653,6 +656,10 @@ class Login : Fragment() {
                                                                         jsonObject3.optInt("estado")
                                                                     val adddate: Int =
                                                                         jsonObject3.optInt("adddate")
+                                                                    val enddate: Int =
+                                                                        jsonObject3.optInt("enddate")
+                                                                    val cooldown: Int =
+                                                                        jsonObject3.optInt("cooldown")
 
                                                                     val nuevoMonto = Monto(
                                                                         idmonto = idmonto,
@@ -667,7 +674,9 @@ class Login : Fragment() {
                                                                         interes = interes,
                                                                         veces = veces,
                                                                         estado = estado,
-                                                                        adddate = adddate
+                                                                        adddate = adddate,
+                                                                        enddate = enddate,
+                                                                        cooldown = cooldown
                                                                     )
                                                                     Log.v(
                                                                         "Current monto $i",
@@ -733,11 +742,14 @@ class Login : Fragment() {
                                                                         jsonObject6.getString("plabel")
                                                                     val color: Int =
                                                                         jsonObject6.optInt("color")
+                                                                    val estado: Int =
+                                                                        jsonObject6.optInt("estado")
 
                                                                     val nuevasLabels = Labels(
                                                                         idlabel = idlabel,
                                                                         plabel = plabel,
                                                                         color = color,
+                                                                        estado = estado
                                                                     )
                                                                     Log.v(
                                                                         "Current monto $i",
@@ -766,7 +778,8 @@ class Login : Fragment() {
                                                                 chamba = chamba,
                                                                 foto = "",
                                                                 diasaho = diasaho,
-                                                                balance = balance
+                                                                balance = balance,
+                                                                meta = meta
                                                             )
 
                                                             val nuevosIG = IngresosGastos(

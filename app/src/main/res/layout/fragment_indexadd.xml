@@ -345,8 +345,35 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.468"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/InteresField"
+                    app:layout_constraintTop_toBottomOf="@id/InteresField"
                     app:layout_constraintVertical_bias="0.734" />
+
+                <DatePicker
+                    android:id="@+id/FechaFinalField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:alpha="1"
+                    android:background="@drawable/p1bottomcell"
+                    android:calendarViewShown="false"
+                    android:clickable="true"
+                    android:datePickerMode="spinner"
+                    android:elevation="15dp"
+                    android:focusable="true"
+                    android:hint="@string/Fecha"
+                    android:inputType="text"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:theme="@style/calendario_add"
+                    android:translationY="-50dp"
+                    android:translationZ="-150dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorSecondary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/InteresSeekbar"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
             </TableLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

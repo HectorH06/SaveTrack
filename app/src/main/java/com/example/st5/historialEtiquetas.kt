@@ -103,7 +103,7 @@ class historialEtiquetas : Fragment() {
         withContext(Dispatchers.IO) {
             val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
 
-            labelsp = labelsDao.getAllLabels()
+            labelsp = labelsDao.getAllLabelsZero()
             Log.i("ALL LABELS", labelsp.toString())
         }
         return labelsp
@@ -120,11 +120,11 @@ class historialEtiquetas : Fragment() {
             val muertaLabel = Labels(
                 idlabel = idlabel,
                 plabel = plabel,
-                color = color
+                color = color,
+                estado = 1
             )
 
-            labelsDao.deleteLabel(muertaLabel)
-            labelsDao.cleanzero()
+            labelsDao.updateLabel(muertaLabel)
             val labelss = labelsDao.getAllLabels()
             Log.i("ALL LABELS", labelss.toString())
 

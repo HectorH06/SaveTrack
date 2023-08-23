@@ -73,29 +73,59 @@ class Alarma : BroadcastReceiver() {
 
             if (prev != today) {
                 for (monto in montos) {
-                    val totalIngresos = ingresoGastoDao.checkSummaryI()
+                    if (monto.cooldown == 0) {
+                        val totalIngresos = ingresoGastoDao.checkSummaryI()
 
-                    Log.i("MONTO PROCESADO", monto.toString())
-                    val weekMonto = monto.fecha
-                    Log.v("wek", weekMonto.toString())
+                        Log.i("MONTO PROCESADO", monto.toString())
+                        val weekMonto = monto.fecha
+                        Log.v("wek", weekMonto.toString())
 
-                    if (monto.etiqueta > 100) {
-                        ingresoGastoDao.updateSummaryI(monto.iduser.toInt(), totalIngresos + monto.valor)
+                        if (monto.etiqueta > 100) {
+                            ingresoGastoDao.updateSummaryI(
+                                monto.iduser.toInt(),
+                                totalIngresos + monto.valor
+                            )
+                        } else {
+                            var status = 0
+                            var cooldown = 0
+                            when (monto.estado) {
+                                1 -> status = 0
+                                4 -> status = 3
+                                6 -> status = 5
+                                9 -> status = 8
+                            }
+                            when (monto.frecuencia) {
+                                14 -> cooldown = 1
+                                61 -> cooldown = 1
+                                91 -> cooldown = 2
+                                122 -> cooldown = 3
+                                183 -> cooldown = 5
+                                365 -> cooldown = 11
+                            }
+                            val toCheckMonto = Monto(
+                                idmonto = monto.idmonto,
+                                iduser = monto.iduser,
+                                concepto = monto.concepto,
+                                valor = monto.valor,
+                                fecha = monto.fecha,
+                                frecuencia = monto.frecuencia,
+                                etiqueta = monto.etiqueta,
+                                interes = monto.interes,
+                                veces = monto.veces,
+                                estado = status,
+                                adddate = monto.adddate,
+                                enddate = monto.enddate,
+                                cooldown = cooldown
+                            )
+                            montoDao.updateMonto(toCheckMonto)
+                        }
+
+                        monto.veces = monto.veces?.plus(1)
+                        montoDao.updateMonto(monto)
                     } else {
-                        var status = 0
-                        if (monto.estado == 1){
-                            status = 0
-                        }
-                        if (monto.estado == 4){
-                            status = 3
-                        }
-                        if (monto.estado == 6){
-                            status = 5
-                        }
-                        if (monto.estado == 9){
-                            status = 8
-                        }
-                        val toCheckMonto = Monto(
+                        val newcool = monto.cooldown + 1
+
+                        val toMeltMonto = Monto(
                             idmonto = monto.idmonto,
                             iduser = monto.iduser,
                             concepto = monto.concepto,
@@ -105,14 +135,13 @@ class Alarma : BroadcastReceiver() {
                             etiqueta = monto.etiqueta,
                             interes = monto.interes,
                             veces = monto.veces,
-                            estado = status,
-                            adddate = monto.adddate
+                            estado = monto.estado,
+                            adddate = monto.adddate,
+                            enddate = monto.enddate,
+                            cooldown = newcool
                         )
-                        montoDao.updateMonto(toCheckMonto)
+                        montoDao.updateMonto(toMeltMonto)
                     }
-
-                    monto.veces = monto.veces?.plus(1)
-                    montoDao.updateMonto(monto)
                 }
             }
             assetsDao.updateLastprocess(today)
@@ -142,6 +171,7 @@ class Alarma : BroadcastReceiver() {
             val diasaho = usuarioDao.checkDiasaho().toLong()
             val balance = usuarioDao.checkBalance()
             val foto = usuarioDao.checkFoto()
+            val meta = usuarioDao.checkMeta()
             val summaryingresos = ingresosGastosDao.checkSummaryI()
             val summarygastos = ingresosGastosDao.checkSummaryG()
             val tema = assetsDao.getTheme().toLong()
@@ -155,7 +185,8 @@ class Alarma : BroadcastReceiver() {
                 chamba = lachamba,
                 foto = foto,
                 diasaho = diasaho,
-                balance = balance
+                balance = balance,
+                meta = meta
             )
             val viejosIG = IngresosGastos(
                 iduser = iduser, summaryingresos = summaryingresos, summarygastos = summarygastos
@@ -172,7 +203,7 @@ class Alarma : BroadcastReceiver() {
             val viejosAssets = Assets(
                 idtheme = 0,
                 theme = tema,
-                lastprocess = lastprocess
+                lastprocess = lastprocess,
             )
 
 
@@ -192,6 +223,7 @@ class Alarma : BroadcastReceiver() {
             jsonObjectUsuario.put("foto", viejoUsuario.foto)
             jsonObjectUsuario.put("diasaho", viejoUsuario.diasaho)
             jsonObjectUsuario.put("balance", viejoUsuario.balance)
+            jsonObjectUsuario.put("meta", viejoUsuario.meta)
             jsonObjectUsuario.put("theme", viejosAssets.theme)
             jsonObjectUsuario.put("lastprocess", viejosAssets.lastprocess)
 
@@ -220,7 +252,9 @@ class Alarma : BroadcastReceiver() {
                         interes = montoDao.getInteres(idmonto),
                         veces = montoDao.getVeces(idmonto),
                         estado = montoDao.getEstado(idmonto),
-                        adddate = montoDao.getAdded(idmonto)
+                        adddate = montoDao.getAdded(idmonto),
+                        enddate = montoDao.getEnded(idmonto),
+                        cooldown = montoDao.getCooldown(idmonto)
                     )
                     Log.v("Current monto $idmonto", viejoMonto.toString())
                     val jsonObjectMonto = JSONObject()
@@ -237,6 +271,8 @@ class Alarma : BroadcastReceiver() {
                     jsonObjectMonto.put("veces", viejoMonto.veces)
                     jsonObjectMonto.put("estado", viejoMonto.estado)
                     jsonObjectMonto.put("adddate", viejoMonto.adddate)
+                    jsonObjectMonto.put("enddate", viejoMonto.enddate)
+                    jsonObjectMonto.put("cooldown", viejoMonto.cooldown)
 
                     jsonArrayMonto.put(jsonObjectMonto)
 
@@ -267,13 +303,15 @@ class Alarma : BroadcastReceiver() {
                     val viejaLabel = Labels(
                         idlabel = labelsDao.getIdLabel(idlabel),
                         plabel = labelsDao.getPlabel(idlabel),
-                        color = labelsDao.getColor(idlabel)
+                        color = labelsDao.getColor(idlabel),
+                        estado = labelsDao.getEstado(idlabel)
                     )
                     Log.v("Current monto $idlabel", viejaLabel.toString())
                     val jsonObjectLabels = JSONObject()
                     jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
                     jsonObjectLabels.put("plabel", viejaLabel.plabel)
                     jsonObjectLabels.put("color", viejaLabel.color)
+                    jsonObjectLabels.put("estado", viejaLabel.estado)
 
                     jsonArrayLabels.put(jsonObjectLabels)
 

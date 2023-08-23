@@ -188,7 +188,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 if (montoDao.getGR(that, dom, dow, dai, i).toString() != "[]") {
                     expenses.add(montoDao.getGR(that, dom, dow, dai, i))
                 } else {
-                    expenses.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, fechafinal=0, frecuencia=0, etiqueta=i, interes=0.0, veces=0L, estado=0, adddate=0)))
+                    expenses.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, fechafinal=0, frecuencia=0, etiqueta=i, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
                 }
             }
             Log.v("EXPENSES", expenses.toString())
@@ -631,21 +631,59 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             if (prev != today) {
                 for (monto in montos) {
-                    val totalIngresos = ingresoGastoDao.checkSummaryI()
+                    if (monto.cooldown == 0) {
+                        val totalIngresos = ingresoGastoDao.checkSummaryI()
 
-                    Log.i("MONTO PROCESADO", monto.toString())
-                    val weekMonto = monto.fecha
-                    Log.v("wek", weekMonto.toString())
+                        Log.i("MONTO PROCESADO", monto.toString())
+                        val weekMonto = monto.fecha
+                        Log.v("wek", weekMonto.toString())
 
-                    if (monto.etiqueta > 100) {
-                        ingresoGastoDao.updateSummaryI(
-                            monto.iduser.toInt(),
-                            totalIngresos + monto.valor
-                        )
+                        if (monto.etiqueta > 100) {
+                            ingresoGastoDao.updateSummaryI(
+                                monto.iduser.toInt(),
+                                totalIngresos + monto.valor
+                            )
+                        } else {
+                            var status = 0
+                            var cooldown = 0
+                            when (monto.estado) {
+                                1 -> status = 0
+                                4 -> status = 3
+                                6 -> status = 5
+                                9 -> status = 8
+                            }
+                            when (monto.frecuencia) {
+                                14 -> cooldown = 1
+                                61 -> cooldown = 1
+                                91 -> cooldown = 2
+                                122 -> cooldown = 3
+                                183 -> cooldown = 5
+                                365 -> cooldown = 11
+                            }
+                            val toCheckMonto = Monto(
+                                idmonto = monto.idmonto,
+                                iduser = monto.iduser,
+                                concepto = monto.concepto,
+                                valor = monto.valor,
+                                fecha = monto.fecha,
+                                frecuencia = monto.frecuencia,
+                                etiqueta = monto.etiqueta,
+                                interes = monto.interes,
+                                veces = monto.veces,
+                                estado = status,
+                                adddate = monto.adddate,
+                                enddate = monto.enddate,
+                                cooldown = cooldown
+                            )
+                            montoDao.updateMonto(toCheckMonto)
+                        }
+
                         monto.veces = monto.veces?.plus(1)
                         montoDao.updateMonto(monto)
                     } else {
-                        val toCheckMonto = Monto(
+                        val newcool = monto.cooldown + 1
+
+                        val toMeltMonto = Monto(
                             idmonto = monto.idmonto,
                             iduser = monto.iduser,
                             concepto = monto.concepto,
@@ -655,10 +693,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                             etiqueta = monto.etiqueta,
                             interes = monto.interes,
                             veces = monto.veces,
-                            estado = 0,
-                            adddate = monto.adddate
+                            estado = monto.estado,
+                            adddate = monto.adddate,
+                            enddate = monto.enddate,
+                            cooldown = newcool
                         )
-                        montoDao.updateMonto(toCheckMonto)
+                        montoDao.updateMonto(toMeltMonto)
                     }
                 }
             }
@@ -800,9 +840,19 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
                 var nv: Long? = 1
+                var cooldown = 0
                 if (veces != null)
                     nv = veces + 1
 
+                when (frecuencia) {
+                    14 -> cooldown = 1
+                    61 -> cooldown = 1
+                    91 -> cooldown = 2
+                    122 -> cooldown = 3
+                    183 -> cooldown = 5
+                    365 -> cooldown = 11
+                }
+                val enddate = montoDao.getEnded(idmonto.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
                     idmonto = idmonto,
@@ -815,7 +865,9 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     interes = interes,
                     veces = nv,
                     estado = 1,
-                    adddate = adddate
+                    adddate = adddate,
+                    enddate = enddate,
+                    cooldown = cooldown
                 )
 
                 val totalGastos = ingresoGastoDao.checkSummaryG()

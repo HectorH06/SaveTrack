@@ -41,6 +41,8 @@ class perfileditar : Fragment() {
     private lateinit var username: String
     private var edadchanged = true
     private var chambachanged = true
+    private var metachanged = true
+    private var ok = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -334,6 +336,7 @@ class perfileditar : Fragment() {
 
             val idt = usuarioDao.checkId()
             val nuevaEdad = binding.AgeeditperfTV.text.toString()
+            val nuevaMeta = binding.GoaleditperfTV.text.toString().toDouble()
 
             // ARBOL DE DECISIONES PARA CADA CASO DE CHAMBA
             // AUTÓMATA FINITO o algo así
@@ -386,7 +389,21 @@ class perfileditar : Fragment() {
                     Looper.prepare()
                     Toast.makeText(requireContext(), "La edad ingresada no es válida", Toast.LENGTH_SHORT).show()
                 }
+                ok = 0
                 Dispatchers.Default.cancel()
+            } else {
+                ok = 1
+            }
+            if (nuevaMeta <= 0) {
+                metachanged = false
+                withContext(Dispatchers.Default) {
+                    Looper.prepare()
+                    Toast.makeText(requireContext(), "Ánimo, la meta ingresada no es válida", Toast.LENGTH_SHORT).show()
+                }
+                ok = 0
+                Dispatchers.Default.cancel()
+            } else {
+                ok = 1
             }
 
             if (edadchanged){
@@ -395,7 +412,9 @@ class perfileditar : Fragment() {
             if (chambachanged){
                 usuarioDao.updateChamba(idt, nuevaChamba)
             }
-
+            if (metachanged){
+                usuarioDao.updateMeta(idt, nuevaMeta)
+            }
 
             withContext(Dispatchers.Main) {
                 if (edadchanged || chambachanged){

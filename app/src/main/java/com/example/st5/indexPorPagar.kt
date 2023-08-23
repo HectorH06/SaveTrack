@@ -155,7 +155,7 @@ class indexPorPagar : Fragment() {
 
             Log.i("todayyyy", today.toString())
 
-            fastable = montoDao.getGXFecha(today, dom, dow, 100, addd)
+            fastable = montoDao.getGXFecha(today, dom, dow, 101, addd)
             Log.i("ALL TODOLIST", fastable.toString())
         }
         return fastable
@@ -229,18 +229,22 @@ class indexPorPagar : Fragment() {
                     nv = veces + 1
 
                 var status = 1
-                if (estado == 0){
-                    status = 1
+                when (estado) {
+                    0 -> status = 1
+                    3 -> status = 4
+                    5 -> status = 6
+                    8 -> status = 9
                 }
-                if (estado == 3){
-                    status = 4
+                var cooldown = 0
+                when (frecuencia) {
+                    14 -> cooldown = 1
+                    61 -> cooldown = 1
+                    91 -> cooldown = 2
+                    122 -> cooldown = 3
+                    183 -> cooldown = 5
+                    365 -> cooldown = 11
                 }
-                if (estado == 5){
-                    status = 6
-                }
-                if (estado == 8){
-                    status = 9
-                }
+                val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
                     idmonto = id,
@@ -253,7 +257,9 @@ class indexPorPagar : Fragment() {
                     interes = interes,
                     veces = nv,
                     estado = status,
-                    adddate = adddate
+                    adddate = adddate,
+                    enddate = enddate,
+                    cooldown = cooldown
                 )
 
                 val totalGastos = ingresoGastoDao.checkSummaryG()

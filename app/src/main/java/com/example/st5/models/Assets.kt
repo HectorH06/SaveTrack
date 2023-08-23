@@ -16,7 +16,10 @@ data class Assets(
     var theme: Long,
 
     @ColumnInfo(name = "lastprocess")
-    var lastprocess: Int
+    var lastprocess: Int,
+
+    @ColumnInfo(name = "notificaciones")
+    var notificaciones: Int = 0
 ) : Parcelable {
-    constructor() : this(0L, 0L, 0)
+    constructor() : this(0L, 0L, 0, 0)
 }

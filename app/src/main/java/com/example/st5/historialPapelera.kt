@@ -20,6 +20,7 @@ import com.example.st5.models.Monto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.util.*
 
 
@@ -186,12 +187,13 @@ class historialPapelera : Fragment() {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
             var status = 0
-            if (estado == 2){
-                status = 0
+            when (estado) {
+                2 -> status = 0
+                7 -> status = 5
             }
-            if (estado == 7){
-                status = 5
-            }
+
+            val enddate = montoDao.getEnded(idmonto.toInt())
+            val cooldown = montoDao.getCooldown(idmonto.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
                 idmonto = idmonto,
@@ -204,7 +206,9 @@ class historialPapelera : Fragment() {
                 interes = interes,
                 veces = veces,
                 estado = status,
-                adddate = adddate
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
             )
 
             montoDao.updateMonto(viejoMonto)
@@ -229,6 +233,9 @@ class historialPapelera : Fragment() {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
+            val enddateStr: String = LocalDate.now().toString()
+            val enddate = enddateStr.replace("-", "").toInt()
+            val cooldown = montoDao.getCooldown(idmonto.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val muertoMonto = Monto(
                 idmonto = idmonto,
@@ -240,10 +247,13 @@ class historialPapelera : Fragment() {
                 etiqueta = etiqueta,
                 interes = interes,
                 veces = veces,
-                adddate = adddate
+                estado = 10,
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
             )
 
-            montoDao.deleteMonto(muertoMonto)
+            montoDao.updateMonto(muertoMonto)
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
 

@@ -24,6 +24,8 @@ interface UsuarioDao {
     suspend fun checkDiasaho(): Int
     @Query("SELECT balance FROM usuario")
     suspend fun checkBalance(): Double
+    @Query("SELECT meta FROM usuario")
+    suspend fun checkMeta(): Double
 
 
     @Query("DELETE FROM usuario")
@@ -42,6 +44,8 @@ interface UsuarioDao {
     suspend fun updateAge(id: Int, age: Long?)
     @Query("UPDATE usuario SET chamba = :field WHERE iduser = :id")
     suspend fun updateChamba(id: Int, field: Long?)
+    @Query("UPDATE usuario SET chamba = :meta WHERE iduser = :id")
+    suspend fun updateMeta(id: Int, meta: Double)
     @Query("UPDATE usuario SET foto = :photo WHERE iduser = :id")
     suspend fun updatePhoto(id: Int, photo: String?)
     @Query("UPDATE usuario SET diasaho = :days WHERE iduser = :id")

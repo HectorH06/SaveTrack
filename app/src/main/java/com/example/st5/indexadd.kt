@@ -38,6 +38,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private var estado: Int = 0
     private var interes: Double = 0.0
     private var selectedDay = 39
+    private var enddate = 30001231
     private var selectedLabel: String? = "Seleccionar"
     private var selectedfr: String? = "Seleccionar"
 
@@ -202,9 +203,11 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             if (binding.yocreoquesi.isChecked) {
                 displayFrecField() //Justificar la deuda y condiciones con intereses
                 displayInteresField()
+                displayFechaFinalField()
             } else {
                 hideFrecField()
                 hideInteresField()
+                hideFechaFinalField()
             }
         }
 
@@ -253,6 +256,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
                         if (binding.yocreoquesi.isChecked) {
                             estado = 5
+
                         }
 
                         fecha = when (frecuencia) {
@@ -279,22 +283,12 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                             7, 14 -> {
                                 selectedDay
                             } // Semanales
-                            30, 61, 91, 122, 183 -> {
+                            30, 61, 91, 122, 183, 365 -> {
                                 val intday = binding.FechaField.dayOfMonth
                                 Log.w("DAY", intday.toString())
 
                                 intday
                             } // Mensuales
-                            365 -> {
-                                val intmonth = binding.FechaField.month
-                                Log.w("MONTH", intmonth.toString())
-                                val intday = binding.FechaField.dayOfMonth
-                                Log.w("DAY", intday.toString())
-                                val datedate = "$intmonth-$intday"
-                                Log.w("DATE", datedate)
-
-                                datedate.toInt()
-                            } // Anual
                             else -> {
                                 val intyear = binding.FechaField.year - 1900
                                 Log.w("YEAR", intyear.toString())
@@ -464,7 +458,9 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 interes = interes,
                 veces = veces,
                 estado = estado,
-                adddate = adddate
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = 0
             )
 
             montoDao.insertMonto(nuevoMonto)
@@ -526,6 +522,33 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setListener(null)
             .start()
         binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
+        Log.v("FECHA", fecha.toString())
+    }
+
+    private fun displayFechaFinalField() {
+        hideWeekField()
+        binding.FechaFinalField.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .translationZ(150f)
+            .setDuration(300)
+            .setStartDelay(200)
+            .setListener(null)
+            .start()
+        binding.InteresField.setBackgroundResource(R.drawable.p1midcell)
+        Log.v("FECHA", fecha.toString())
+    }
+
+    private fun hideFechaFinalField() {
+        binding.FechaFinalField.animate()
+            .alpha(0f)
+            .translationY(-50f)
+            .translationZ(-150f)
+            .setDuration(200)
+            .setStartDelay(0)
+            .setListener(null)
+            .start()
+        binding.InteresField.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("FECHA", fecha.toString())
     }
 
@@ -605,6 +628,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         hideFrecField()
         hideFechaField()
         hideInteresField()
+        hideFechaFinalField()
     }
 
     private fun truncateDouble(value: Double): Double {

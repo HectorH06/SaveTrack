@@ -246,12 +246,13 @@ class indexGastosList : Fragment() {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             var status = 2
-            if (estado == 1) {
-                status = 2
+            when (estado) {
+                1 -> status = 2
+                6 -> status = 7
             }
-            if (estado == 6) {
-                status = 7
-            }
+
+            val enddate = montoDao.getEnded(idmonto.toInt())
+            val cooldown = montoDao.getCooldown(idmonto.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
                 idmonto = idmonto,
@@ -264,7 +265,9 @@ class indexGastosList : Fragment() {
                 interes = interes,
                 veces = veces,
                 estado = status,
-                adddate = adddate
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
             )
 
             montoDao.updateMonto(viejoMonto)
@@ -302,6 +305,8 @@ class indexGastosList : Fragment() {
 
                 else -> 3
             }
+            val enddate = montoDao.getEnded(idmonto.toInt())
+            val cooldown = montoDao.getCooldown(idmonto.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
                 idmonto = idmonto,
@@ -314,7 +319,9 @@ class indexGastosList : Fragment() {
                 interes = interes,
                 veces = veces,
                 estado = status,
-                adddate = adddate
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
             )
 
             montoDao.updateMonto(viejoMonto)

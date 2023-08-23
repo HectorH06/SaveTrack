@@ -99,9 +99,30 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="80dp"
                 android:layout_marginEnd="80dp"
+                android:background="@drawable/b1midcell"
+                android:elevation="15dp"
+                android:hint="@string/Edad"
+                android:inputType="number"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorOnPrimary"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@id/GoaleditperfTV"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/UsernameeditperfTV" />
+
+            <EditText
+                android:id="@+id/GoaleditperfTV"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginEnd="80dp"
                 android:background="@drawable/b1bottomcell"
                 android:elevation="15dp"
                 android:hint="@string/Edad"
+                android:inputType="numberDecimal"
                 android:paddingStart="6dp"
                 android:paddingEnd="6dp"
                 android:textColor="?attr/colorOnPrimary"
@@ -110,8 +131,7 @@
                 app:layout_constraintBottom_toTopOf="@id/chamba1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/UsernameeditperfTV" />
-
+                app:layout_constraintTop_toBottomOf="@id/AgeeditperfTV" />
 
             <CheckBox
                 android:id="@+id/chamba1"
@@ -134,7 +154,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.468"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/AgeeditperfTV"
+                app:layout_constraintTop_toBottomOf="@id/GoaleditperfTV"
                 app:layout_constraintVertical_bias="0.625" />
 
             <CheckBox
@@ -252,6 +272,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chamba5"
                 app:layout_constraintVertical_bias="0.892" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
     <androidx.constraintlayout.widget.ConstraintLayout

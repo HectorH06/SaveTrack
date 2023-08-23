@@ -46,7 +46,13 @@ data class Monto(
     var estado: Int? = 0,
 
     @ColumnInfo(name = "adddate")
-    var adddate: Int
+    var adddate: Int,
+
+    @ColumnInfo(name = "enddate")
+    var enddate: Int?,
+
+    @ColumnInfo(name = "cooldown")
+    var cooldown: Int
 ) : Parcelable {
-    constructor() : this(0L, 0L, "", 0.0, 0.0, 0, 0,0, 0, 0.0, 0L, 0, 0)
+    constructor() : this(0L, 0L, "", 0.0, 0.0, 0, 0,0, 0, 0.0, 0L, 0, 0, 0, 0)
 }

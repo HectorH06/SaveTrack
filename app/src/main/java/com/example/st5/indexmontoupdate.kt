@@ -443,6 +443,8 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
 
+            val enddate = montoDao.getEnded(id.toInt())
+            val cooldown = montoDao.getCooldown(id.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
                 idmonto = id,
@@ -454,7 +456,9 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                 etiqueta = etiqueta,
                 interes = interes,
                 veces = veces,
-                adddate = adddate
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
             )
 
             montoDao.updateMonto(viejoMonto)

@@ -178,7 +178,9 @@ class historialFavoritos : Fragment() {
         interes: Double?,
         veces: Long?,
         estado: Int?,
-        adddate: Int
+        adddate: Int,
+        enddate: Int?,
+        cooldown: Int
     ) {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
@@ -208,7 +210,9 @@ class historialFavoritos : Fragment() {
                 interes = interes,
                 veces = veces,
                 estado = status,
-                adddate = adddate
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
             )
 
             montoDao.updateMonto(viejoMonto)
@@ -287,7 +291,9 @@ class historialFavoritos : Fragment() {
                         monto.interes,
                         monto.veces,
                         monto.estado,
-                        monto.adddate
+                        monto.adddate,
+                        monto.enddate,
+                        monto.cooldown
                     )
                 }
                 parentFragmentManager.beginTransaction()

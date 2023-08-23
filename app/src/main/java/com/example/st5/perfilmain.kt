@@ -112,6 +112,7 @@ class perfilmain : Fragment() {
                     val diasaho = usuarioDao.checkDiasaho().toLong()
                     val balance = usuarioDao.checkBalance()
                     val foto = usuarioDao.checkFoto()
+                    val meta = usuarioDao.checkMeta()
                     val summaryingresos = ingresosGastosDao.checkSummaryI()
                     val summarygastos = ingresosGastosDao.checkSummaryG()
                     val tema = assetsDao.getTheme().toLong()
@@ -125,7 +126,8 @@ class perfilmain : Fragment() {
                         chamba = lachamba,
                         foto = foto,
                         diasaho = diasaho,
-                        balance = balance
+                        balance = balance,
+                        meta = meta
                     )
                     val viejosIG = IngresosGastos(
                         iduser = iduser,
@@ -195,7 +197,9 @@ class perfilmain : Fragment() {
                                 interes = montoDao.getInteres(idmonto),
                                 veces = montoDao.getVeces(idmonto),
                                 estado = montoDao.getEstado(idmonto),
-                                adddate = montoDao.getAdded(idmonto)
+                                adddate = montoDao.getAdded(idmonto),
+                                enddate = montoDao.getEnded(idmonto),
+                                cooldown = montoDao.getCooldown(idmonto)
                             )
                             Log.v("Current monto $idmonto", viejoMonto.toString())
                             val jsonObjectMonto = JSONObject()
@@ -212,6 +216,8 @@ class perfilmain : Fragment() {
                             jsonObjectMonto.put("veces", viejoMonto.veces)
                             jsonObjectMonto.put("estado", viejoMonto.estado)
                             jsonObjectMonto.put("adddate", viejoMonto.adddate)
+                            jsonObjectMonto.put("enddate", viejoMonto.enddate)
+                            jsonObjectMonto.put("cooldown", viejoMonto.cooldown)
 
                             jsonArrayMonto.put(jsonObjectMonto)
 
@@ -244,13 +250,15 @@ class perfilmain : Fragment() {
                             val viejaLabel = Labels(
                                 idlabel = labelsDao.getIdLabel(idlabel),
                                 plabel = labelsDao.getPlabel(idlabel),
-                                color = labelsDao.getColor(idlabel)
+                                color = labelsDao.getColor(idlabel),
+                                estado = labelsDao.getEstado(idlabel)
                             )
                             Log.v("Current monto $idlabel", viejaLabel.toString())
                             val jsonObjectLabels = JSONObject()
                             jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
                             jsonObjectLabels.put("plabel", viejaLabel.plabel)
                             jsonObjectLabels.put("color", viejaLabel.color)
+                            jsonObjectLabels.put("estado", viejaLabel.estado)
 
                             jsonArrayLabels.put(jsonObjectLabels)
 

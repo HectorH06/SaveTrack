@@ -169,6 +169,9 @@ class planesdeahorromain : Fragment() {
             if (estado == 5) {
                 status = 7
             }
+
+            val enddate = montoDao.getEnded(idmonto.toInt())
+            val cooldown = montoDao.getCooldown(idmonto.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
                 idmonto = idmonto,
@@ -181,7 +184,9 @@ class planesdeahorromain : Fragment() {
                 interes = interes,
                 veces = veces,
                 estado = status,
-                adddate = adddate
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
             )
 
             montoDao.updateMonto(viejoMonto)
@@ -219,6 +224,8 @@ class planesdeahorromain : Fragment() {
 
                 else -> 3
             }
+            val enddate = montoDao.getEnded(idmonto.toInt())
+            val cooldown = montoDao.getCooldown(idmonto.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
                 idmonto = idmonto,
@@ -231,7 +238,9 @@ class planesdeahorromain : Fragment() {
                 interes = interes,
                 veces = veces,
                 estado = status,
-                adddate = adddate
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
             )
 
             montoDao.updateMonto(viejoMonto)

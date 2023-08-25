@@ -19,8 +19,18 @@ private val TAB_TITLES = arrayOf(
     R.drawable.ic_finance
 )
 
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
+private val TAB_TITLES_LIGHT = arrayOf(
+    R.drawable.ic_personlight,
+    R.drawable.ic_historylight,
+    R.drawable.ic_indexlight,
+    R.drawable.ic_savingplanslight,
+    R.drawable.ic_financelight
+)
+
+class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, mode: Boolean) :
     FragmentPagerAdapter(fm) {
+
+    private val modo = mode
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
@@ -36,7 +46,12 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun getPageTitle(position: Int): CharSequence {
-        val drawable: Drawable? = context.getDrawable(TAB_TITLES[position])
+        var drawable: Drawable? = context.getDrawable(TAB_TITLES[position])
+        if (!modo){
+            drawable = context.getDrawable(TAB_TITLES_LIGHT[position])
+        }
+
+
         drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
         val spannable = SpannableStringBuilder(" ")
         spannable.setSpan(

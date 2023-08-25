@@ -647,37 +647,37 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         }
         when (selectedLabel) {
             "Salario" -> {
-                label = 101
+                label = 10001
                 displayFrecField()
                 hideInteresField()
             }
             "Venta" -> {
-                label = 102
+                label = 10002
                 hideFrecField()
                 hideInteresField()
             }
             "Beca" -> {
-                label = 103
+                label = 10003
                 displayFrecField()
                 hideInteresField()
             }
             "Pensión" -> {
-                label = 104
+                label = 10004
                 displayFrecField()
                 hideInteresField()
             }
             "Manutención" -> {
-                label = 105
+                label = 10005
                 displayFrecField()
                 hideInteresField()
             }
             "Ingreso pasivo" -> {
-                label = 106
+                label = 10006
                 hideFrecField()
                 hideInteresField()
             }
             "Regalo" -> {
-                label = 107
+                label = 10007
                 frecuencia = 0
                 hideFrecField()
                 hideInteresField()

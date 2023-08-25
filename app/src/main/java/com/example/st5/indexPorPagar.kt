@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -155,7 +156,7 @@ class indexPorPagar : Fragment() {
 
             Log.i("todayyyy", today.toString())
 
-            fastable = montoDao.getGXFecha(today, dom, dow, 101, addd)
+            fastable = montoDao.getGXFecha(today, dom, dow, 100, addd)
             Log.i("ALL TODOLIST", fastable.toString())
         }
         return fastable
@@ -167,7 +168,8 @@ class indexPorPagar : Fragment() {
             itemView: View,
             val vecesTextView: TextView,
             val conceptoTextView: TextView,
-            val valorTextView: TextView
+            val valorTextView: TextView,
+            val skipButton: ImageButton
         ) : RecyclerView.ViewHolder(itemView)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
@@ -176,7 +178,8 @@ class indexPorPagar : Fragment() {
             val vecesTextView = itemView.findViewById<TextView>(R.id.fastVeces)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.fastNombre)
             val valorTextView = itemView.findViewById<TextView>(R.id.fastValor)
-            return MontoViewHolder(itemView, vecesTextView, conceptoTextView, valorTextView)
+            val skipButton = itemView.findViewById<ImageButton>(R.id.skipMonto)
+            return MontoViewHolder(itemView, vecesTextView, conceptoTextView, valorTextView, skipButton)
         }
 
 
@@ -205,6 +208,26 @@ class indexPorPagar : Fragment() {
             holder.vecesTextView.text = monto.veces.toString()
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
+            holder.skipButton.setOnClickListener {
+                lifecycleScope.launch {
+                    skip(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
+
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.index_container, indexPorPagar()).addToBackStack(null)
+                        .commit()
+                }
+            }
         }
 
         suspend fun fup(
@@ -268,6 +291,62 @@ class indexPorPagar : Fragment() {
                     montoPresionado.iduser.toInt(),
                     totalGastos + montoPresionado.valor
                 )
+                montoDao.updateMonto(montoPresionado)
+                val montos = montoDao.getMonto()
+                Log.i("ALL MONTOS", montos.toString())
+            }
+        }
+
+        suspend fun skip(
+            id: Long,
+            concepto: String,
+            valor: Double,
+            fecha: Int?,
+            frecuencia: Int?,
+            etiqueta: Int,
+            interes: Double?,
+            veces: Long?,
+            estado: Int?,
+            adddate: Int
+        ) {
+            withContext(Dispatchers.IO) {
+                val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+                var status = 1
+                when (estado) {
+                    0 -> status = 1
+                    3 -> status = 4
+                    5 -> status = 6
+                    8 -> status = 9
+                }
+                var cooldown = 0
+                when (frecuencia) {
+                    14 -> cooldown = 1
+                    61 -> cooldown = 1
+                    91 -> cooldown = 2
+                    122 -> cooldown = 3
+                    183 -> cooldown = 5
+                    365 -> cooldown = 11
+                }
+                val enddate = montoDao.getEnded(id.toInt())
+                val iduser = usuarioDao.checkId().toLong()
+                val montoPresionado = Monto(
+                    idmonto = id,
+                    iduser = iduser,
+                    concepto = concepto,
+                    valor = valor,
+                    fecha = fecha,
+                    frecuencia = frecuencia,
+                    etiqueta = etiqueta,
+                    interes = interes,
+                    veces = veces,
+                    estado = status,
+                    adddate = adddate,
+                    enddate = enddate,
+                    cooldown = cooldown
+                )
+
                 montoDao.updateMonto(montoPresionado)
                 val montos = montoDao.getMonto()
                 Log.i("ALL MONTOS", montos.toString())

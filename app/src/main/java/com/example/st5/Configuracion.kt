@@ -21,11 +21,12 @@ import kotlinx.coroutines.withContext
 class Configuracion : Fragment() {
     private lateinit var binding: FragmentConfiguracionBinding
 
+    private var isDarkMode = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
+            isDarkMode = isDarkModeEnabled(requireContext())
 
             if (isDarkMode) {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
@@ -42,6 +43,7 @@ class Configuracion : Fragment() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     val intent = Intent(activity, Index::class.java)
+                    intent.putExtra("isDarkMode", !isDarkMode)
                     startActivity(intent)
                 }
             })
@@ -103,12 +105,12 @@ class Configuracion : Fragment() {
 
         binding.goback.setOnClickListener {
             val intent = Intent(activity, Index::class.java)
+            intent.putExtra("isDarkMode", !isDarkMode)
             startActivity(intent)
         }
 
         binding.claroscuro.setCheckedChangeListener {
 
-            // TODO AÑADIR DESTROYER DE VIEWS PARA QUE SE VUELVAN A CONSTRUIR TODAS Y NO HAYA ERRORES VISUALES
             when (binding.claroscuro.checked) {
                 IconSwitch.Checked.LEFT -> {
                     binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)

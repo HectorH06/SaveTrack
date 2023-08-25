@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
 class Starter : Fragment() {
     private lateinit var binding: FragmentStarterBinding
 
+    private var isDarkMode = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -52,6 +53,7 @@ class Starter : Fragment() {
                 )
                 if (selected.toString() != "[]") {
                     val intent = Intent(activity, Index::class.java)
+                    intent.putExtra("isDarkMode", isDarkMode)
                     startActivity(intent)
                 } else {
                     parentFragmentManager.beginTransaction()
@@ -61,7 +63,21 @@ class Starter : Fragment() {
             }
         }
         lifecycleScope.launch {
+            isDarkMode = isDarkModeEnabled()
             start()
         }
+    }
+
+    private suspend fun isDarkModeEnabled(): Boolean {
+        var komodo: Boolean
+
+        withContext(Dispatchers.IO){
+            val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
+
+            val mode = assetsDao.getTheme()
+            komodo = mode != 0
+        }
+
+        return komodo
     }
 }

@@ -638,11 +638,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                         val weekMonto = monto.fecha
                         Log.v("wek", weekMonto.toString())
 
-                        if (monto.etiqueta > 100) {
-                            ingresoGastoDao.updateSummaryI(
-                                monto.iduser.toInt(),
-                                totalIngresos + monto.valor
-                            )
+                        if (monto.etiqueta > 10000) {
+                            ingresoGastoDao.updateSummaryI(monto.iduser.toInt(), totalIngresos + monto.valor)
+                            monto.veces = monto.veces?.plus(1)
+                            montoDao.updateMonto(monto)
                         } else {
                             var status = 0
                             var cooldown = 0
@@ -677,9 +676,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                             )
                             montoDao.updateMonto(toCheckMonto)
                         }
-
-                        monto.veces = monto.veces?.plus(1)
-                        montoDao.updateMonto(monto)
                     } else {
                         val newcool = monto.cooldown + 1
 

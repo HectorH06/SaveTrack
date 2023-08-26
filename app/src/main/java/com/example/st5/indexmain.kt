@@ -347,6 +347,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 .replace(R.id.index_container, indexPorPagar()).addToBackStack(null).commit()
         }
 
+        binding.Mandados.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.index_container, indexmandados()).addToBackStack(null).commit()
+        }
+
         binding.ConfigButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)

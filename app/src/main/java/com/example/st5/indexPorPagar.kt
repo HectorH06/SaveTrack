@@ -156,7 +156,7 @@ class indexPorPagar : Fragment() {
 
             Log.i("todayyyy", today.toString())
 
-            fastable = montoDao.getGXFecha(today, dom, dow, 100, addd)
+            fastable = montoDao.getGXFecha(today, dom, dow, 101, addd)
             Log.i("ALL TODOLIST", fastable.toString())
         }
         return fastable

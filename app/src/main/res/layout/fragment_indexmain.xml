@@ -162,6 +162,22 @@
         app:srcCompat="@android:drawable/ic_menu_my_calendar"
         android:contentDescription="@string/dias_ahorrando"/>
 
+    <ImageButton
+        android:id="@+id/Mandados"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_list"
+        android:paddingTop="8dp"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        app:layout_constraintStart_toEndOf="@id/Calendario"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_my_calendar"
+        android:contentDescription="@string/dias_ahorrando"/>
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/MedidorDeAhorroButton"
         android:layout_width="45dp"

@@ -1,6 +1,6 @@
 package com.example.st5
 
-import android.app.AlertDialog
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -90,8 +90,6 @@ class planesdeahorromain : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val back = perfilmain()
-
         binding.config.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
@@ -135,7 +133,7 @@ class planesdeahorromain : Fragment() {
                 queue.add(checkDollar)
 
                 Log.v("Diasaho", diasaho.toString())
-                Log.v("Balance", balance.toString())
+                Log.v("Balance", balance)
 
                 binding.PADiasAhorrandoButton.text = buildString {
                     append("¡")
@@ -144,58 +142,17 @@ class planesdeahorromain : Fragment() {
                 }
                 binding.PASaldoActual.text = buildString {
                     append("Balance: ")
-                    append(balance.toString())
+                    append(balance)
+                }
+                binding.PASaldoActual.setOnClickListener {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null).commit()
                 }
             }
         }
         lifecycleScope.launch {
             mostrarDatos()
-        }
-    }
-
-    private suspend fun montoPapelera(
-        idmonto: Long,
-        concepto: String,
-        valor: Double,
-        fecha: Int?,
-        frecuencia: Int?,
-        etiqueta: Int,
-        interes: Double?,
-        veces: Long?,
-        estado: Int?,
-        adddate: Int
-    ) {
-        withContext(Dispatchers.IO) {
-            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            var status = 7
-            if (estado == 5) {
-                status = 7
-            }
-
-            val enddate = montoDao.getEnded(idmonto.toInt())
-            val cooldown = montoDao.getCooldown(idmonto.toInt())
-            val iduser = usuarioDao.checkId().toLong()
-            val viejoMonto = Monto(
-                idmonto = idmonto,
-                iduser = iduser,
-                concepto = concepto,
-                valor = valor,
-                fecha = fecha,
-                frecuencia = frecuencia,
-                etiqueta = etiqueta,
-                interes = interes,
-                veces = veces,
-                estado = status,
-                adddate = adddate,
-                enddate = enddate,
-                cooldown = cooldown
-            )
-
-            montoDao.updateMonto(viejoMonto)
-            val montos = montoDao.getMonto()
-            Log.i("ALL MONTOS", montos.toString())
-
         }
     }
 
@@ -253,6 +210,125 @@ class planesdeahorromain : Fragment() {
         }
     }
 
+    suspend fun fup(
+        id: Long,
+        concepto: String,
+        valor: Double,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
+        interes: Double?,
+        veces: Long?,
+        estado: Int?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+
+            var nv: Long? = 1
+            if (veces != null)
+                nv = veces + 1
+
+            var status = 6
+            when (estado) {
+                5 -> status = 6
+                8 -> status = 9
+            }
+            var cooldown = 0
+            when (frecuencia) {
+                14 -> cooldown = 1
+                61 -> cooldown = 1
+                91 -> cooldown = 2
+                122 -> cooldown = 3
+                183 -> cooldown = 5
+                365 -> cooldown = 11
+            }
+            val enddate = montoDao.getEnded(id.toInt())
+            val iduser = usuarioDao.checkId().toLong()
+            val montoPresionado = Monto(
+                idmonto = id,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = nv,
+                estado = status,
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
+            )
+
+            val totalGastos = ingresoGastoDao.checkSummaryG()
+
+            ingresoGastoDao.updateSummaryG(
+                montoPresionado.iduser.toInt(),
+                totalGastos + montoPresionado.valor
+            )
+            montoDao.updateMonto(montoPresionado)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+        }
+    }
+
+    suspend fun skip(
+        id: Long,
+        concepto: String,
+        valor: Double,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
+        interes: Double?,
+        veces: Long?,
+        estado: Int?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+            var status = 6
+            when (estado) {
+                5 -> status = 6
+                8 -> status = 9
+            }
+            var cooldown = 0
+            when (frecuencia) {
+                14 -> cooldown = 1
+                61 -> cooldown = 1
+                91 -> cooldown = 2
+                122 -> cooldown = 3
+                183 -> cooldown = 5
+                365 -> cooldown = 11
+            }
+            val enddate = montoDao.getEnded(id.toInt())
+            val iduser = usuarioDao.checkId().toLong()
+            val montoPresionado = Monto(
+                idmonto = id,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = veces,
+                estado = status,
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
+            )
+
+            montoDao.updateMonto(montoPresionado)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+        }
+    }
+
     private inner class MontoAdapter(private val montos: List<Monto>) :
         RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
@@ -261,8 +337,8 @@ class planesdeahorromain : Fragment() {
             val valorTextView: TextView,
             val fechaTextView: TextView,
             val favM: Button,
-            val updateM: Button,
-            val deleteM: Button
+            val check: Button,
+            val skip: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
@@ -272,20 +348,21 @@ class planesdeahorromain : Fragment() {
             val valorTextView = itemView.findViewById<TextView>(R.id.pdaValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.pdaFecha)
             val favM = itemView.findViewById<Button>(R.id.favMonto)
-            val updateM = itemView.findViewById<Button>(R.id.editPda)
-            val deleteM = itemView.findViewById<Button>(R.id.deletePda)
+            val check = itemView.findViewById<Button>(R.id.check)
+            val skip = itemView.findViewById<Button>(R.id.skip)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
                 valorTextView,
                 fechaTextView,
                 favM,
-                updateM,
-                deleteM
+                check,
+                skip
             )
         }
 
 
+        @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
             var tempstat = 5
@@ -295,7 +372,7 @@ class planesdeahorromain : Fragment() {
                     .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null).commit()
             }
             holder.conceptoTextView.text = monto.concepto
-            holder.valorTextView.text = monto.valor.toString()
+            holder.valorTextView.text = "${monto.valor}$"
             holder.fechaTextView.text = monto.fecha.toString()
             if (monto.estado == 5 || monto.estado == 6){
                 holder.favM.setBackgroundResource(R.drawable.ic_notstar)
@@ -332,71 +409,44 @@ class planesdeahorromain : Fragment() {
                     .replace(R.id.pda_container, planesdeahorromain()).addToBackStack(null)
                     .commit()
             }
-            val upup = indexmontoupdate.sendMonto(
-                monto.idmonto,
-                monto.concepto,
-                monto.valor,
-                monto.fecha,
-                monto.frecuencia,
-                monto.etiqueta,
-                monto.interes,
-                monto.veces,
-                monto.adddate
-            )
-            holder.updateM.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.pda_container, upup).addToBackStack(null).commit()
+            holder.check.setOnClickListener {
+                lifecycleScope.launch {
+                    fup(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
+
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.index_container, indexPorPagar()).addToBackStack(null)
+                        .commit()
+                }
             }
-            holder.deleteM.setOnClickListener {
-                if (monto.estado == 8 || monto.estado == 9 || tempstat == 8) {
-                    val confirmDialog = AlertDialog.Builder(requireContext())
-                        .setTitle("El monto ${monto.concepto} no se puede eliminar porque está marcado como favorito")
-                        .setPositiveButton("Aceptar") { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        .create()
+            holder.skip.setOnClickListener {
+                lifecycleScope.launch {
+                    skip(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
 
-                    confirmDialog.show()
-                } else {
-                    val confirmDialog = AlertDialog.Builder(requireContext())
-                        .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
-                        .setPositiveButton("Eliminar") { dialog, _ ->
-
-                            Log.v("Id del monto actualizado", monto.idmonto.toString())
-                            Log.v("Concepto", monto.concepto)
-                            Log.v("Valor", monto.valor.toString())
-                            Log.v("Fecha", monto.fecha.toString())
-                            Log.v("Frecuencia", monto.frecuencia.toString())
-                            Log.v("Etiqueta", monto.etiqueta.toString())
-                            Log.v("Interes", monto.interes.toString())
-                            Log.v("Veces", monto.veces.toString())
-                            lifecycleScope.launch {
-                                montoPapelera(
-                                    monto.idmonto,
-                                    monto.concepto,
-                                    monto.valor,
-                                    monto.fecha,
-                                    monto.frecuencia,
-                                    monto.etiqueta,
-                                    monto.interes,
-                                    monto.veces,
-                                    monto.estado,
-                                    monto.adddate
-                                )
-                            }
-                            dialog.dismiss()
-                            parentFragmentManager.beginTransaction()
-                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                                .replace(R.id.pda_container, indexmain()).addToBackStack(null)
-                                .commit()
-                        }
-                        .setNegativeButton("Cancelar") { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        .create()
-
-                    confirmDialog.show()
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.index_container, indexPorPagar()).addToBackStack(null)
+                        .commit()
                 }
             }
         }

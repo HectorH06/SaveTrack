@@ -41,7 +41,7 @@
                         android:id="@+id/HConcepto"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/Concepto"
+                        android:hint="@string/ConceptoInteres"
                         android:maxWidth="100dp"
                         android:paddingStart="7dp"
                         android:textColor="@color/G5"
@@ -51,7 +51,7 @@
                         android:id="@+id/HValor"
                         android:layout_width="65dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/Valor"
+                        android:hint="@string/ValorFinal"
                         android:textAlignment="center"
                         android:textColor="@color/G5"
                         android:textSize="18sp" />
@@ -60,7 +60,7 @@
                         android:id="@+id/HVeces"
                         android:layout_width="65dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/veces"
+                        android:hint="@string/Fecha"
                         android:textAlignment="center"
                         android:textColor="@color/G5"
                         android:textSize="18sp" />

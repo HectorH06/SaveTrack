@@ -268,39 +268,227 @@ class pdaDeudasList : Fragment() {
         }
     }
 
+    suspend fun liq(
+        id: Long,
+        concepto: String,
+        valor: Double,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
+        interes: Double?,
+        veces: Long?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+
+            var nv: Long? = 1
+            if (veces != null)
+                nv = veces + 1
+
+            var cooldown = 0
+
+            val enddate = montoDao.getEnded(id.toInt())
+            val iduser = usuarioDao.checkId().toLong()
+            val montoPresionado = Monto(
+                idmonto = id,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = nv,
+                estado = 10,
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
+            )
+
+            val totalGastos = ingresoGastoDao.checkSummaryG()
+
+            ingresoGastoDao.updateSummaryG(
+                montoPresionado.iduser.toInt(),
+                totalGastos + montoPresionado.valor
+            )
+            montoDao.updateMonto(montoPresionado)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+        }
+    }
+
+    suspend fun fup(
+        id: Long,
+        concepto: String,
+        valor: Double,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
+        interes: Double?,
+        veces: Long?,
+        estado: Int?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+
+            var nv: Long? = 1
+            if (veces != null)
+                nv = veces + 1
+
+            var status = 6
+            when (estado) {
+                5 -> status = 6
+                8 -> status = 9
+            }
+            var cooldown = 0
+            when (frecuencia) {
+                14 -> cooldown = 1
+                61 -> cooldown = 1
+                91 -> cooldown = 2
+                122 -> cooldown = 3
+                183 -> cooldown = 5
+                365 -> cooldown = 11
+            }
+            val enddate = montoDao.getEnded(id.toInt())
+            val iduser = usuarioDao.checkId().toLong()
+            val montoPresionado = Monto(
+                idmonto = id,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = nv,
+                estado = status,
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
+            )
+
+            val totalGastos = ingresoGastoDao.checkSummaryG()
+
+            ingresoGastoDao.updateSummaryG(
+                montoPresionado.iduser.toInt(),
+                totalGastos + montoPresionado.valor
+            )
+            montoDao.updateMonto(montoPresionado)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+        }
+    }
+
+    suspend fun skip(
+        id: Long,
+        concepto: String,
+        valor: Double,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
+        interes: Double?,
+        veces: Long?,
+        estado: Int?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+            var status = 6
+            when (estado) {
+                5 -> status = 6
+                8 -> status = 9
+            }
+            var cooldown = 0
+            when (frecuencia) {
+                14 -> cooldown = 1
+                61 -> cooldown = 1
+                91 -> cooldown = 2
+                122 -> cooldown = 3
+                183 -> cooldown = 5
+                365 -> cooldown = 11
+            }
+            val enddate = montoDao.getEnded(id.toInt())
+            val iduser = usuarioDao.checkId().toLong()
+            val montoPresionado = Monto(
+                idmonto = id,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = veces,
+                estado = status,
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown
+            )
+
+            montoDao.updateMonto(montoPresionado)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+        }
+    }
+
     private inner class MontoAdapter(private val montos: List<Monto>) :
         RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
             itemView: View,
             val conceptoTextView: TextView,
+            val interesTextView: TextView,
             val valorTextView: TextView,
-            val vecesTextView: TextView,
+            val valorFinalTextView: TextView,
+            val fechaTextView: TextView,
+            val fechaFinalTextView: TextView,
             val etiquetaTextView: TextView,
             val favM: Button,
             val updateM: Button,
-            val deleteM: Button
+            val deleteM: Button,
+            val liquidM: Button,
+            val check: Button,
+            val skip: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
-            val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_deuda, parent, false)
-            val conceptoTextView = itemView.findViewById<TextView>(R.id.MConcepto)
-            val valorTextView = itemView.findViewById<TextView>(R.id.MValor)
-            val vecesTextView = itemView.findViewById<TextView>(R.id.MVeces)
-            val etiquetaTextView = itemView.findViewById<TextView>(R.id.MEtiqueta)
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_deuda, parent, false)
+            val conceptoTextView = itemView.findViewById<TextView>(R.id.DConcepto)
+            val interesTextView = itemView.findViewById<TextView>(R.id.DBottom)
+            val valorTextView = itemView.findViewById<TextView>(R.id.DValor)
+            val valorFinalTextView = itemView.findViewById<TextView>(R.id.DValorFinal)
+            val fechaTextView = itemView.findViewById<TextView>(R.id.DFecha)
+            val fechaFinalTextView = itemView.findViewById<TextView>(R.id.DFechaFinal)
+            val etiquetaTextView = itemView.findViewById<TextView>(R.id.DEtiqueta)
             val favM = itemView.findViewById<Button>(R.id.favMonto)
             val updateM = itemView.findViewById<Button>(R.id.editMonto)
             val deleteM = itemView.findViewById<Button>(R.id.deleteMonto)
+            val liquidM = itemView.findViewById<Button>(R.id.liquidateMonto)
+            val check = itemView.findViewById<Button>(R.id.check)
+            val skip = itemView.findViewById<Button>(R.id.skip)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
+                interesTextView,
                 valorTextView,
-                vecesTextView,
+                valorFinalTextView,
+                fechaTextView,
+                fechaFinalTextView,
                 etiquetaTextView,
                 favM,
                 updateM,
-                deleteM
+                deleteM,
+                liquidM,
+                check,
+                skip
             )
         }
 
@@ -309,9 +497,14 @@ class pdaDeudasList : Fragment() {
             val monto = montos[position]
             var tempstat = 5
             holder.conceptoTextView.text = monto.concepto
+            holder.interesTextView.text = monto.interes.toString()
             holder.valorTextView.text = monto.valor.toString()
-            holder.vecesTextView.text = monto.veces.toString()
+            holder.fechaTextView.text = monto.fecha.toString()
+            holder.fechaFinalTextView.text = monto.enddate.toString()
             holder.etiquetaTextView.text = monto.etiqueta.toString()
+
+            holder.valorFinalTextView.text = monto.valorfinal.toString()
+
             if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6){
                 holder.favM.setBackgroundResource(R.drawable.ic_notstar)
                 tempstat = 5
@@ -399,7 +592,7 @@ class pdaDeudasList : Fragment() {
                             dialog.dismiss()
                             parentFragmentManager.beginTransaction()
                                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                                .replace(R.id.pda_container, planesdeahorromain()).addToBackStack(null)
+                                .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null)
                                 .commit()
                         }
                         .setNegativeButton("Cancelar") { dialog, _ ->
@@ -408,6 +601,65 @@ class pdaDeudasList : Fragment() {
                         .create()
 
                     confirmDialog.show()
+                }
+            }
+            holder.liquidM.setOnClickListener {
+                lifecycleScope.launch {
+                    liq(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.adddate
+                    )
+
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null)
+                        .commit()
+                }
+            }
+            holder.check.setOnClickListener {
+                lifecycleScope.launch {
+                    fup(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
+
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null)
+                        .commit()
+                }
+            }
+            holder.skip.setOnClickListener {
+                lifecycleScope.launch {
+                    skip(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
+
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null)
+                        .commit()
                 }
             }
         }

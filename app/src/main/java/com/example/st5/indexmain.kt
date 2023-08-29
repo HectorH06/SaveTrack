@@ -461,10 +461,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 val text = s.toString()
                 if (text.isNotEmpty()) {
                     binding.RangoSeekbar.progress = text.toInt()
-                }
-                rango = text.toLong()
-                lifecycleScope.launch {
-                    gi(switchVal, rango)
+                    rango = text.toLong()
+                    lifecycleScope.launch {
+                        gi(switchVal, rango)
+                    }
                 }
             }
         })

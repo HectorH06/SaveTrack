@@ -168,7 +168,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
         binding.FrecuenciaField.onItemSelectedListener = this
 
-        val max = 100
+        val max = 10000
         val min = 0
         binding.InteresSeekbar.max = max
         binding.InteresSeekbar.min = min
@@ -250,30 +250,32 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         var valor = valorstr.toDouble()
                         valor = truncateDouble(valor)
 
-                        if (estado == 8 || estado == 16) {
-                            interes = binding.InteresField.text.toString().toDouble()
-                        }
-
                         if (binding.yocreoquesi.isChecked) {
                             estado = 5
-
+                            interes = binding.InteresField.text.toString().toDouble()
+                            val day = binding.FechaField.dayOfMonth
+                            val fDay = String.format("%02d", day)
+                            val month = binding.FechaField.month + 1
+                            val fMonth = String.format("%02d", month)
+                            val year = binding.FechaField.year
+                            val datedate = "$year$fMonth$fDay"
+                            enddate = datedate.replace("-", "").toInt()
                         }
 
                         fecha = when (frecuencia) {
                             0 -> {
-                                val intyear = binding.FechaField.year - 1900
-                                Log.w("YEAR", intyear.toString())
-                                val intmonth = binding.FechaField.month
-                                Log.w("MONTH", intmonth.toString())
-                                val intday = binding.FechaField.dayOfMonth
-                                Log.w("DAY", intday.toString())
-                                val datedate = "$intyear$intmonth$intday"
-                                Log.w("DATE", datedate)
+                                val day = binding.FechaField.dayOfMonth
+                                val fDay = String.format("%02d", day)
+                                val month = binding.FechaField.month + 1
+                                val fMonth = String.format("%02d", month)
+                                val year = binding.FechaField.year
+                                val datedate = "$year$fMonth$fDay"
+                                val fsi: Int = datedate.replace("-", "").toInt()
 
                                 if (label == 10) {
                                     40
                                 } else {
-                                    datedate.toInt()
+                                    fsi
                                 }
                             } // Único
                             1 -> {

@@ -11,11 +11,14 @@ import android.content.Intent
 import android.icu.text.DecimalFormat
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -38,6 +41,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class indexmain : Fragment(), OnChartValueSelectedListener {
@@ -53,6 +57,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private val numG: MutableList<Float?> = mutableListOf()
 
     private var medidaT: Double = 0.0
+    private var rango: Long = 15L
 
     private var switchVal = false
     private var lista: Fragment = indexGastosList()
@@ -173,7 +178,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     }
 
     //region PIECHARTS
-    private suspend fun setupPieChartG(that: Int, dom: Int, dow: Int, dai: Int) {
+    private suspend fun setupPieChartG(range: Long) {
         setupColors()
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
@@ -181,16 +186,40 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val labelsDao = Stlite.getInstance((requireContext())).getLabelsDao()
 
             val maxLabels = labelsDao.getMaxLabel()
-
             val expenses = mutableListOf<List<Monto>>()
 
-            for (i in 0..maxLabels) {
-                if (montoDao.getGR(that, dom, dow, dai, i).toString() != "[]") {
-                    expenses.add(montoDao.getGR(that, dom, dow, dai, i))
-                } else {
-                    expenses.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, fechafinal=0, frecuencia=0, etiqueta=i, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
+            val fechaActual = LocalDate.now().toString()
+            val then = LocalDate.now().minusDays(range)
+            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val truefecha = formatoFecha.parse(fechaActual)
+            val calendar = Calendar.getInstance()
+            calendar.time = truefecha
+
+            for (i in 0 until range) {
+                val currentDate = then.plusDays(i)
+                val todayInt = currentDate.format(DateTimeFormatter.BASIC_ISO_DATE).toInt()
+                val dom = currentDate.dayOfMonth
+                val w = currentDate.dayOfWeek.value
+                var dow = 100
+                when (w) {
+                    1 -> dow = 47
+                    2 -> dow = 41
+                    3 -> dow = 42
+                    4 -> dow = 43
+                    5 -> dow = 44
+                    6 -> dow = 45
+                    7 -> dow = 46
+                }
+
+                for (j in 0..maxLabels) {
+                    if (montoDao.getGR(todayInt, dom, dow, 100, j, todayInt).toString() != "[]") {
+                        expenses.add(montoDao.getGR(todayInt, dom, dow, 100, j, todayInt))
+                    } else {
+                        expenses.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, fechafinal=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
+                    }
                 }
             }
+
             Log.v("EXPENSES", expenses.toString())
             val entries = mutableListOf<PieEntry>()
 
@@ -206,7 +235,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             for (i in 0 until expenses.size) {
                 for (monto in expenses[i]) {
                     val etiqueta = monto.etiqueta.toLong()
-                    val current = monto.valor * (monto.veces ?: 0)
+                    val current = monto.valor
 
                     if (etiquetaSumMap.containsKey(etiqueta)) {
                         val currentSum = etiquetaSumMap[etiqueta] ?: 0.0
@@ -217,7 +246,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 }
             }
 
-            for ((etiqueta, sum) in etiquetaSumMap) {
+            for ((_, sum) in etiquetaSumMap) {
                 val percentI = if (totalGastos != 0.0) {
                     decimalFormat.format((sum.toFloat() * 100 / totalGastos.toFloat())).toFloat()
                 } else {
@@ -241,7 +270,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         }
     }
 
-    private suspend fun setupPieChartI(that: Int, dom: Int, dow: Int, dai: Int) {
+    private suspend fun setupPieChartI(range: Long) {
         setupColors()
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
@@ -249,7 +278,14 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
             val totalI = montoDao.getIngresos()
             val totalG = montoDao.getGastos()
-            val totalis = montoDao.getMonto()
+            val incomes = mutableListOf<List<Monto>>()
+
+            val fechaActual = LocalDate.now().toString()
+            val then = LocalDate.now().minusDays(range)
+            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val truefecha = formatoFecha.parse(fechaActual)
+            val calendar = Calendar.getInstance()
+            calendar.time = truefecha
 
             val totalIngresos = ingresosGastosDao.checkSummaryI()
             Log.v("INGRESOS", totalI.toString())
@@ -258,19 +294,35 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val totalisimo = totalIngresos - totalGastos
             Log.v("GRAN TOTAL", totalisimo.toString())
 
-            var percentI = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+            val percentI = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
             val decimalFormat = DecimalFormat("#.##")
-            var incomes = arrayOf(
-                montoDao.getSalariosR(that, dom, dow, dai),
-                montoDao.getIrregularesR(that, dom, dow, dai),
-                montoDao.getBecasR(that, dom, dow, dai),
-                montoDao.getPensionesR(that, dom, dow, dai),
-                montoDao.getManutencionR(that, dom, dow, dai),
-                montoDao.getPasivosR(that, dom, dow, dai),
-                montoDao.getRegalosR(that, dom, dow, dai),
-                montoDao.getPrestamosR(that, dom, dow, dai)
-            )
-            var tI = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+
+            for (i in 0 until range) {
+                val currentDate = then.plusDays(i)
+                val todayInt = currentDate.format(DateTimeFormatter.BASIC_ISO_DATE).toInt()
+                val dom = currentDate.dayOfMonth
+                val w = currentDate.dayOfWeek.value
+                var dow = 100
+                when (w) {
+                    1 -> dow = 47
+                    2 -> dow = 41
+                    3 -> dow = 42
+                    4 -> dow = 43
+                    5 -> dow = 44
+                    6 -> dow = 45
+                    7 -> dow = 46
+                }
+
+                for (j in 10000..10007) {
+                    if (montoDao.getGR(todayInt, dom, dow, 100, j, todayInt).toString() != "[]") {
+                        incomes.add(montoDao.getGR(todayInt, dom, dow, 100, j, todayInt))
+                    } else {
+                        incomes.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, fechafinal=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
+                    }
+                }
+            }
+
+            val tI = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
             val entries = mutableListOf(PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f))
 
             for (i in incomes.indices) {
@@ -329,7 +381,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             binding.Medidor.text = mT
         }
         lifecycleScope.launch {
-            gi(switchVal)
+            gi(switchVal, rango)
             delay(500)
             binding.GraficoPastel.alpha = 0f
         }
@@ -374,9 +426,48 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 }
             }
             lifecycleScope.launch {
-                gi(switchVal)
+                gi(switchVal, rango)
             }
         }
+
+        binding.RangoSeekbar.min = 1
+        binding.RangoSeekbar.max = 12
+        binding.RangoSeekbar.progress = 8
+        binding.RangoSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val range = when (progress) {
+                    1, 2, 3, 4, 5, 6, 7 -> progress
+                    8 -> 15
+                    9 -> 30
+                    10 -> 60
+                    11 -> 180
+                    12 -> 365
+                    else -> rango
+                }
+                binding.Rango.setText(range.toString())
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+        binding.Rango.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString()
+                if (text.isNotEmpty()) {
+                    binding.RangoSeekbar.progress = text.toInt()
+                }
+                rango = text.toLong()
+                lifecycleScope.launch {
+                    gi(switchVal, rango)
+                }
+            }
+        })
 
         binding.AgregarIngresoButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -469,32 +560,11 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         return fastable
     }
 
-    private fun gi(switchVal: Boolean) {
+    private fun gi(switchVal: Boolean, range: Long) {
         Log.v("masomenos", switchVal.toString())
         if (!switchVal) {
             lifecycleScope.launch {
-                val fechaActual = LocalDate.now().toString()
-                val today: Int = fechaActual.replace("-", "").toInt()
-
-                val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val truefecha = formatoFecha.parse(fechaActual)
-                val calendar = Calendar.getInstance()
-                calendar.time = truefecha
-
-                val dom = calendar.get(Calendar.DAY_OF_MONTH)
-                val w = calendar.get(Calendar.DAY_OF_WEEK)
-                var dow = 100
-                when (w) {
-                    1 -> dow = 47
-                    2 -> dow = 41
-                    3 -> dow = 42
-                    4 -> dow = 43
-                    5 -> dow = 44
-                    6 -> dow = 45
-                    7 -> dow = 46
-                }
-
-                setupPieChartG(today, dom, dow, 100)
+                setupPieChartG(range)
                 lista = indexGastosList()
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1200, Easing.EaseInOutQuad)
@@ -504,28 +574,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             }
         } else {
             lifecycleScope.launch {
-                val fechaActual = LocalDate.now().toString()
-                val today: Int = fechaActual.replace("-", "").toInt()
-
-                val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val truefecha = formatoFecha.parse(fechaActual)
-                val calendar = Calendar.getInstance()
-                calendar.time = truefecha
-
-                val dom = calendar.get(Calendar.DAY_OF_MONTH)
-                val w = calendar.get(Calendar.DAY_OF_WEEK)
-                var dow = 100
-                when (w) {
-                    1 -> dow = 47
-                    2 -> dow = 41
-                    3 -> dow = 42
-                    4 -> dow = 43
-                    5 -> dow = 44
-                    6 -> dow = 45
-                    7 -> dow = 46
-                }
-
-                setupPieChartI(today, dom, dow, 100)
+                setupPieChartI(range)
                 lista = indexIngresosList()
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1200, Easing.EaseInOutQuad)

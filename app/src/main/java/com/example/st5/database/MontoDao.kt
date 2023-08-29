@@ -30,84 +30,9 @@ interface MontoDao {
 
     // endregion
 
-    // region GET ETIQUETAS
-    @Query("SELECT * FROM monto WHERE etiqueta = 1")
-    fun getAlimentos(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 2")
-    fun getHogar(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 3")
-    fun getBienestar(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 4")
-    fun getNecesidades(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 5")
-    fun getHormiga(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 6")
-    fun getOcio(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 7")
-    fun getObsequios(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE estado = 5")
-    fun getDeudas(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 101")
-    fun getSalarios(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 102")
-    fun getIrregulares(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 103")
-    fun getBecas(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 104")
-    fun getPensiones(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 105")
-    fun getManutencion(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 106")
-    fun getPasivos(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 107")
-    fun getRegalos(): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE estado = 108")
-    fun getPrestamos(): List<Monto>
-
-    // endregion
-
     // region
-    @Query("SELECT * FROM monto WHERE etiqueta = 101 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
-    fun getSalariosR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 102 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
-    fun getIrregularesR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 103 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
-    fun getBecasR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 104 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
-    fun getPensionesR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 105 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
-    fun getManutencionR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 106 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
-    fun getPasivosR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = 107 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
-    fun getRegalosR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE estado = 5 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
-    fun getPrestamosR(fecha: Int, dom: Int, dow: Int, dai: Int): List<Monto>
-
-    @Query("SELECT * FROM monto WHERE etiqueta = :etiqueta AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
-    fun getGR(fecha: Int, dom: Int, dow: Int, dai: Int, etiqueta: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND etiqueta = :etiqueta AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
+    fun getGR(fecha: Int, dom: Int, dow: Int, dai: Int, etiqueta: Int, din: Int): List<Monto>
 
     @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND etiqueta <= 10000 AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)")
     fun getStatG(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>

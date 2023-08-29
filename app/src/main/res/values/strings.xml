@@ -145,6 +145,8 @@
     <string name="percent">Porcentaje</string>
     <string name="Meta">Meta</string>
     <string name="skip">Skip</string>
+    <string name="rango">15</string>
+    <string name="rangotv">Rango:</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

@@ -476,17 +476,19 @@ class perfilmain : Fragment() {
 
         suspend fun mostrarDatos() {
             withContext(Dispatchers.IO) {
-                val usuarioDao = Stlite.getInstance(
-                    requireContext()
-                ).getUsuarioDao()
+                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+                val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
-
+                val totalIngresos = ingresosGastosDao.checkSummaryI()
+                val totalGastos = ingresosGastosDao.checkSummaryG()
+                val totalisimo = totalIngresos - totalGastos
+                val balance = "$totalisimo$"
                 val nombre = usuarioDao.checkName()
                 val edad = usuarioDao.checkAge()
                 val lachamba = usuarioDao.checkChamba()
                 val foto = usuarioDao.checkFoto()
                 val diasaho = usuarioDao.checkDiasaho()
-                val balance = usuarioDao.checkBalance()
+                usuarioDao.updateBalance(usuarioDao.checkId(), totalisimo)
 
                 var chamba = ""
                 val c = String.format("%06d", lachamba).toCharArray()

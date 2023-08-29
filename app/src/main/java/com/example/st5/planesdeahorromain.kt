@@ -100,12 +100,15 @@ class planesdeahorromain : Fragment() {
 
         suspend fun mostrarDatos() {
             withContext(Dispatchers.IO) {
-                val usuarioDao = Stlite.getInstance(
-                    requireContext()
-                ).getUsuarioDao()
+                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+                val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
                 val diasaho = usuarioDao.checkDiasaho()
-                val balance = usuarioDao.checkBalance()
+                val totalIngresos = ingresosGastosDao.checkSummaryI()
+                val totalGastos = ingresosGastosDao.checkSummaryG()
+                val totalisimo = totalIngresos - totalGastos
+                val balance = "$totalisimo$"
+                usuarioDao.updateBalance(usuarioDao.checkId(), totalisimo)
 
                 val durl = "http://savetrack.com.mx/dlrval.php"
                 val queue: RequestQueue = Volley.newRequestQueue(requireContext())
@@ -264,8 +267,7 @@ class planesdeahorromain : Fragment() {
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
-            val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_pda, parent, false)
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_pda, parent, false)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.pdaNombre)
             val valorTextView = itemView.findViewById<TextView>(R.id.pdaValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.pdaFecha)
@@ -287,6 +289,11 @@ class planesdeahorromain : Fragment() {
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
             var tempstat = 5
+            holder.itemView.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null).commit()
+            }
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = monto.valor.toString()
             holder.fechaTextView.text = monto.fecha.toString()

@@ -4,55 +4,57 @@
     android:id="@+id/cabezaingresos"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/p1midcell"
+    android:background="@drawable/g1midcell"
     android:orientation="horizontal"
     app:layout_constraintTop_toTopOf="parent">
 
     <TextView
-        android:id="@+id/IConcepto"
+        android:id="@+id/MConcepto"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
+        android:maxHeight="150dp"
         android:hint="@string/Concepto"
-        android:paddingStart="7dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
+        android:paddingStart="7dp"
         android:textSize="18sp" />
 
 
     <TextView
-        android:id="@+id/IValor"
+        android:id="@+id/MValor"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
+        android:maxHeight="100dp"
         android:hint="@string/Valor"
-        android:textAlignment="textEnd"
-        android:paddingStart="15dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
+        android:textAlignment="textEnd"
+        android:paddingStart="15dp"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/IFecha"
+        android:id="@+id/MVeces"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:hint="@string/Fecha"
-        android:textAlignment="textEnd"
-        android:paddingStart="15dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
+        android:textAlignment="textEnd"
+        android:paddingStart="15dp"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/IEtiqueta"
+        android:id="@+id/MEtiqueta"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
         android:hint="@string/Etiqueta"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
         android:layout_marginStart="15dp"
         android:textAlignment="textEnd"
         android:paddingEnd="7dp"
-        android:textColor="?attr/colorOnPrimary"
-        android:textColorHint="?attr/colorSecondary"
         android:textSize="18sp" />
 
     <Button
@@ -74,5 +76,5 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="@drawable/ic_delete"
-        android:backgroundTint="?attr/colorOnPrimary"/>
+        android:backgroundTint="?attr/colorOnPrimary" />
 </TableRow>

@@ -371,6 +371,26 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 5 OR estado = 8)")
     fun getPDADeudas(): List<Monto>
 
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 5 OR estado = 6 OR estado = 8)")
+    fun getDeudasList(): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 5 OR estado = 6 OR estado = 8) ORDER BY concepto ASC")
+    fun getDeudasAlfabetica(): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 5 OR estado = 6 OR estado = 8) ORDER BY valor ASC")
+    fun getDeudasValuadas(): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 5 OR estado = 6 OR estado = 8) ORDER BY frecuencia ASC")
+    fun getDeudasFrecuentes(): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 5 OR estado = 6 OR estado = 8) ORDER BY etiqueta ASC")
+    fun getDeudasEtiquetadas(): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 5 OR estado = 6 OR estado = 8) ORDER BY interes ASC")
+    fun getDeudasInteres(): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 5 OR estado = 6 OR estado = 8) ORDER BY veces ASC")
+    fun getDeudasVeces(): List<Monto>
 
     // region
     @Query("SELECT concepto FROM monto WHERE etiqueta < 10000 ORDER BY valor DESC")

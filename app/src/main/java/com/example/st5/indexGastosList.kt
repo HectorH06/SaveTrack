@@ -122,6 +122,11 @@ class indexGastosList : Fragment() {
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.index_container, back).addToBackStack(null).commit()
         }
+        binding.ConfigButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.index_container, Configuracion()).addToBackStack(null).commit()
+        }
 
         binding.AgregarGastoButton.setOnClickListener {
             parentFragmentManager.beginTransaction()

@@ -72,13 +72,6 @@
             android:backgroundTint="?attr/colorOnPrimary" />
 
         <Button
-            android:id="@+id/deleteMonto"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/ic_delete"
-            android:backgroundTint="?attr/colorOnPrimary" />
-
-        <Button
             android:id="@+id/liquidateMonto"
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -140,13 +133,6 @@
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/check"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/ic_confirm"
-            android:backgroundTint="?attr/colorOnPrimary" />
-
-        <Button
             android:id="@+id/editMonto"
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -154,10 +140,10 @@
             android:backgroundTint="?attr/colorOnPrimary" />
 
         <Button
-            android:id="@+id/skip"
+            android:id="@+id/deleteMonto"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@drawable/ic_skip"
+            android:background="@drawable/ic_delete"
             android:backgroundTint="?attr/colorOnPrimary" />
     </TableRow>
 </TableLayout>

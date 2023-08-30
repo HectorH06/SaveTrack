@@ -596,6 +596,15 @@ class indexIngresosList : Fragment() {
                 if (veces != null)
                     nv = veces + 1
 
+                val sequence = montoDao.getSequence(id.toInt())
+                val values = sequence.trim('.').split('.').map { it.toInt() }.toMutableList()
+                if (values.isNotEmpty()) {
+                    val lastIndex = values.size - 1
+                    values[lastIndex] += 1
+                }
+                val updatedString = values.joinToString(".")
+                val result = "$updatedString."
+
                 val enddate = montoDao.getEnded(id.toInt())
                 val cooldown = montoDao.getCooldown(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
@@ -611,7 +620,8 @@ class indexIngresosList : Fragment() {
                     veces = nv,
                     adddate = adddate,
                     enddate = enddate,
-                    cooldown = cooldown
+                    cooldown = cooldown,
+                    sequence = result
                 )
 
                 val totalIngresos = ingresoGastoDao.checkSummaryI()

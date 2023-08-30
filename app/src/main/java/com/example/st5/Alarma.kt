@@ -83,10 +83,12 @@ class Alarma : BroadcastReceiver() {
                         if (monto.etiqueta > 10000) {
                             ingresoGastoDao.updateSummaryI(monto.iduser.toInt(), totalIngresos + monto.valor)
                             monto.veces = monto.veces?.plus(1)
+                            monto.sequence = monto.sequence + "1."
                             montoDao.updateMonto(monto)
                         } else {
                             var status = 0
                             var cooldown = 0
+                            val sequence = monto.sequence + "0."
                             when (monto.estado) {
                                 1 -> status = 0
                                 4 -> status = 3
@@ -114,7 +116,8 @@ class Alarma : BroadcastReceiver() {
                                 estado = status,
                                 adddate = monto.adddate,
                                 enddate = monto.enddate,
-                                cooldown = cooldown
+                                cooldown = cooldown,
+                                sequence = sequence
                             )
                             montoDao.updateMonto(toCheckMonto)
                         }
@@ -242,15 +245,17 @@ class Alarma : BroadcastReceiver() {
                         valor = montoDao.getValor(idmonto),
                         valorfinal = montoDao.getValorFinal(idmonto),
                         fecha = montoDao.getFecha(idmonto),
-                        fechafinal = montoDao.getFechaFinal(idmonto),
                         frecuencia = montoDao.getFrecuencia(idmonto),
                         etiqueta = montoDao.getEtiqueta(idmonto),
                         interes = montoDao.getInteres(idmonto),
+                        tipointeres = montoDao.getTipoInteres(idmonto),
                         veces = montoDao.getVeces(idmonto),
                         estado = montoDao.getEstado(idmonto),
                         adddate = montoDao.getAdded(idmonto),
                         enddate = montoDao.getEnded(idmonto),
-                        cooldown = montoDao.getCooldown(idmonto)
+                        cooldown = montoDao.getCooldown(idmonto),
+                        delay = montoDao.getDelay(idmonto),
+                        sequence = montoDao.getSequence(idmonto)
                     )
                     Log.v("Current monto $idmonto", viejoMonto.toString())
                     val jsonObjectMonto = JSONObject()
@@ -260,15 +265,17 @@ class Alarma : BroadcastReceiver() {
                     jsonObjectMonto.put("valor", viejoMonto.valor)
                     jsonObjectMonto.put("valorfinal", viejoMonto.valorfinal)
                     jsonObjectMonto.put("fecha", viejoMonto.fecha)
-                    jsonObjectMonto.put("fechafinal", viejoMonto.fechafinal)
                     jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
                     jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
                     jsonObjectMonto.put("interes", viejoMonto.interes)
+                    jsonObjectMonto.put("tipointeres", viejoMonto.tipointeres)
                     jsonObjectMonto.put("veces", viejoMonto.veces)
                     jsonObjectMonto.put("estado", viejoMonto.estado)
                     jsonObjectMonto.put("adddate", viejoMonto.adddate)
                     jsonObjectMonto.put("enddate", viejoMonto.enddate)
                     jsonObjectMonto.put("cooldown", viejoMonto.cooldown)
+                    jsonObjectMonto.put("delay", viejoMonto.delay)
+                    jsonObjectMonto.put("sequence", viejoMonto.sequence)
 
                     jsonArrayMonto.put(jsonObjectMonto)
 

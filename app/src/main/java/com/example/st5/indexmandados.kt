@@ -244,6 +244,16 @@ class indexmandados : Fragment() {
                     183 -> cooldown = 5
                     365 -> cooldown = 11
                 }
+
+                val sequence = montoDao.getSequence(id.toInt())
+                val values = sequence.trim('.').split('.').map { it.toInt() }.toMutableList()
+                if (values.isNotEmpty()) {
+                    val lastIndex = values.size - 1
+                    values[lastIndex] += 1
+                }
+                val updatedString = values.joinToString(".")
+                val result = "$updatedString."
+
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -259,7 +269,8 @@ class indexmandados : Fragment() {
                     estado = status,
                     adddate = adddate,
                     enddate = enddate,
-                    cooldown = cooldown
+                    cooldown = cooldown,
+                    sequence = result
                 )
 
                 val totalGastos = ingresoGastoDao.checkSummaryG()

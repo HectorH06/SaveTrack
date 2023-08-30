@@ -194,6 +194,9 @@ interface MontoDao {
     @Query("SELECT interes FROM monto WHERE idmonto = :id")
     fun getInteres(id: Int): Double
 
+    @Query("SELECT tipointeres FROM monto WHERE idmonto = :id")
+    fun getTipoInteres(id: Int): Int
+
     @Query("SELECT veces FROM monto WHERE idmonto = :id")
     fun getVeces(id: Int): Long
 
@@ -208,6 +211,12 @@ interface MontoDao {
 
     @Query("SELECT cooldown FROM monto WHERE idmonto = :id")
     fun getCooldown(id: Int): Int
+
+    @Query("SELECT delay FROM monto WHERE idmonto = :id")
+    fun getDelay(id: Int): Int
+
+    @Query("SELECT sequence FROM monto WHERE idmonto = :id")
+    fun getSequence(id: Int): String
 
     // endregion
 

@@ -191,15 +191,17 @@ class perfilmain : Fragment() {
                                 valor = montoDao.getValor(idmonto),
                                 valorfinal = montoDao.getValorFinal(idmonto),
                                 fecha = montoDao.getFecha(idmonto),
-                                fechafinal = montoDao.getFechaFinal(idmonto),
                                 frecuencia = montoDao.getFrecuencia(idmonto),
                                 etiqueta = montoDao.getEtiqueta(idmonto),
                                 interes = montoDao.getInteres(idmonto),
+                                tipointeres = montoDao.getTipoInteres(idmonto),
                                 veces = montoDao.getVeces(idmonto),
                                 estado = montoDao.getEstado(idmonto),
                                 adddate = montoDao.getAdded(idmonto),
                                 enddate = montoDao.getEnded(idmonto),
-                                cooldown = montoDao.getCooldown(idmonto)
+                                cooldown = montoDao.getCooldown(idmonto),
+                                delay = montoDao.getDelay(idmonto),
+                                sequence = montoDao.getSequence(idmonto)
                             )
                             Log.v("Current monto $idmonto", viejoMonto.toString())
                             val jsonObjectMonto = JSONObject()
@@ -207,17 +209,19 @@ class perfilmain : Fragment() {
                             jsonObjectMonto.put("iduser", viejoMonto.iduser)
                             jsonObjectMonto.put("concepto", viejoMonto.concepto)
                             jsonObjectMonto.put("valor", viejoMonto.valor)
-                            jsonObjectMonto.put("valorinal", viejoMonto.valorfinal)
+                            jsonObjectMonto.put("valorfinal", viejoMonto.valorfinal)
                             jsonObjectMonto.put("fecha", viejoMonto.fecha)
-                            jsonObjectMonto.put("fechafinal", viejoMonto.fechafinal)
                             jsonObjectMonto.put("frecuencia", viejoMonto.frecuencia)
                             jsonObjectMonto.put("etiqueta", viejoMonto.etiqueta)
                             jsonObjectMonto.put("interes", viejoMonto.interes)
+                            jsonObjectMonto.put("tipointeres", viejoMonto.tipointeres)
                             jsonObjectMonto.put("veces", viejoMonto.veces)
                             jsonObjectMonto.put("estado", viejoMonto.estado)
                             jsonObjectMonto.put("adddate", viejoMonto.adddate)
                             jsonObjectMonto.put("enddate", viejoMonto.enddate)
                             jsonObjectMonto.put("cooldown", viejoMonto.cooldown)
+                            jsonObjectMonto.put("delay", viejoMonto.delay)
+                            jsonObjectMonto.put("sequence", viejoMonto.sequence)
 
                             jsonArrayMonto.put(jsonObjectMonto)
 

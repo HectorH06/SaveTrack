@@ -215,7 +215,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     if (montoDao.getGR(todayInt, dom, dow, 100, j, todayInt).toString() != "[]") {
                         expenses.add(montoDao.getGR(todayInt, dom, dow, 100, j, todayInt))
                     } else {
-                        expenses.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, fechafinal=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
+                        expenses.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
                     }
                 }
             }
@@ -317,7 +317,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     if (montoDao.getGR(todayInt, dom, dow, 100, j, todayInt).toString() != "[]") {
                         incomes.add(montoDao.getGR(todayInt, dom, dow, 100, j, todayInt))
                     } else {
-                        incomes.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, fechafinal=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
+                        incomes.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
                     }
                 }
             }
@@ -903,6 +903,16 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     183 -> cooldown = 5
                     365 -> cooldown = 11
                 }
+
+                val sequence = montoDao.getSequence(id)
+                val values = sequence.trim('.').split('.').map { it.toInt() }.toMutableList()
+                if (values.isNotEmpty()) {
+                    val lastIndex = values.size - 1
+                    values[lastIndex] += 1
+                }
+                val updatedString = values.joinToString(".")
+                val result = "$updatedString."
+
                 val enddate = montoDao.getEnded(idmonto.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -918,7 +928,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     estado = 1,
                     adddate = adddate,
                     enddate = enddate,
-                    cooldown = cooldown
+                    cooldown = cooldown,
+                    sequence = result
                 )
 
                 val totalGastos = ingresoGastoDao.checkSummaryG()

@@ -27,9 +27,6 @@ data class Monto(
     @ColumnInfo(name = "fecha")
     var fecha: Int?,
 
-    @ColumnInfo(name = "fechafinal")
-    var fechafinal: Int? = 0,
-
     @ColumnInfo(name = "frecuencia")
     var frecuencia: Int?,
 
@@ -38,6 +35,9 @@ data class Monto(
 
     @ColumnInfo(name = "interes")
     var interes: Double?,
+
+    @ColumnInfo(name = "tipointeres")
+    var tipointeres: Int = 0,
 
     @ColumnInfo(name = "veces")
     var veces: Long?,
@@ -52,7 +52,13 @@ data class Monto(
     var enddate: Int?,
 
     @ColumnInfo(name = "cooldown")
-    var cooldown: Int
+    var cooldown: Int,
+
+    @ColumnInfo(name = "delay")
+    var delay: Int = 0,
+
+    @ColumnInfo(name = "sequence")
+    var sequence: String = ""
 ) : Parcelable {
-    constructor() : this(0L, 0L, "", 0.0, 0.0, 0, 0,0, 0, 0.0, 0L, 0, 0, 0, 0)
+    constructor() : this(0L, 0L, "", 0.0, 0.0, 0,0, 0, 0.0, 0, 0L, 0, 0, 0, 0)
 }

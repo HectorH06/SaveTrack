@@ -149,6 +149,7 @@
     <string name="rangotv">Días:</string>
     <string name="ValorFinal">Valor / Final</string>
     <string name="ConceptoInteres">Concepto / Interés</string>
+    <string name="escompuesto">Interés Compuesto</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

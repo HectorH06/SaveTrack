@@ -642,14 +642,14 @@ class Login : Fragment() {
                                                                         jsonObject3.optDouble("valorfinal")
                                                                     val fecha: Int =
                                                                         jsonObject3.optInt("fecha")
-                                                                    val fechafinal: Int =
-                                                                        jsonObject3.optInt("fechafinal")
                                                                     val frecuencia: Int =
                                                                         jsonObject3.optInt("frecuencia")
                                                                     val etiqueta: Int =
                                                                         jsonObject3.optInt("etiqueta")
                                                                     val interes: Double =
                                                                         jsonObject3.optDouble("interes")
+                                                                    val tipointeres: Int =
+                                                                        jsonObject3.optInt("tipointeres")
                                                                     val veces: Long =
                                                                         jsonObject3.optLong("veces")
                                                                     val estado: Int =
@@ -660,6 +660,10 @@ class Login : Fragment() {
                                                                         jsonObject3.optInt("enddate")
                                                                     val cooldown: Int =
                                                                         jsonObject3.optInt("cooldown")
+                                                                    val delay: Int =
+                                                                        jsonObject3.optInt("delay")
+                                                                    val sequence: String =
+                                                                        jsonObject3.optString("sequence")
 
                                                                     val nuevoMonto = Monto(
                                                                         idmonto = idmonto,
@@ -668,15 +672,17 @@ class Login : Fragment() {
                                                                         valor = valor,
                                                                         valorfinal = valorfinal,
                                                                         fecha = fecha,
-                                                                        fechafinal = fechafinal,
                                                                         frecuencia = frecuencia,
                                                                         etiqueta = etiqueta,
                                                                         interes = interes,
+                                                                        tipointeres = tipointeres,
                                                                         veces = veces,
                                                                         estado = estado,
                                                                         adddate = adddate,
                                                                         enddate = enddate,
-                                                                        cooldown = cooldown
+                                                                        cooldown = cooldown,
+                                                                        delay = delay,
+                                                                        sequence = sequence
                                                                     )
                                                                     Log.v(
                                                                         "Current monto $i",

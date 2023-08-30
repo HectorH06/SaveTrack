@@ -37,6 +37,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private var fecha: Int = 0
     private var estado: Int = 0
     private var interes: Double = 0.0
+    private var tipointeres: Int = 0
     private var selectedDay = 39
     private var enddate = 30001231
     private var selectedLabel: String? = "Seleccionar"
@@ -260,6 +261,13 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                             val year = binding.FechaField.year
                             val datedate = "$year$fMonth$fDay"
                             enddate = datedate.replace("-", "").toInt()
+
+                            tipointeres = if (binding.interesCompuesto.isChecked) {
+                                2
+                            } else {
+                                1
+                            }
+
                         }
 
                         fecha = when (frecuencia) {
@@ -309,7 +317,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         val adddate = adddateStr.replace("-", "").toInt()
 
                         val valorfinal = valor
-                        val fechafinal = fecha
 
                         Log.v("Concepto", concepto)
                         Log.v("Valor", valor.toString())
@@ -325,10 +332,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                                 valor,
                                 valorfinal,
                                 fecha,
-                                fechafinal,
                                 frecuencia,
                                 label,
                                 interes,
+                                tipointeres,
                                 veces,
                                 estado,
                                 adddate
@@ -434,10 +441,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         valor: Double,
         valorfinal: Double?,
         fecha: Int,
-        fechafinal: Int?,
         frecuencia: Int,
         etiqueta: Int,
         interes: Double,
+        tipointeres: Int,
         veces: Long?,
         estado: Int,
         adddate: Int
@@ -454,10 +461,10 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 valor = valor,
                 valorfinal = valorfinal,
                 fecha = fecha,
-                fechafinal = fechafinal,
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
                 interes = interes,
+                tipointeres = tipointeres,
                 veces = veces,
                 estado = estado,
                 adddate = adddate,

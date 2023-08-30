@@ -255,6 +255,8 @@ class planesdeahorromain : Fragment() {
             val updatedString = values.joinToString(".")
             val result = "$updatedString."
 
+            var delay = montoDao.getDelay(id.toInt()) - 1
+            delay = maxOf(delay, 0)
             val enddate = montoDao.getEnded(id.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val montoPresionado = Monto(
@@ -271,6 +273,7 @@ class planesdeahorromain : Fragment() {
                 adddate = adddate,
                 enddate = enddate,
                 cooldown = cooldown,
+                delay = delay,
                 sequence = result
             )
 
@@ -302,7 +305,7 @@ class planesdeahorromain : Fragment() {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
-            var status = 6
+            var status = estado
             when (estado) {
                 5 -> status = 6
                 8 -> status = 9
@@ -316,6 +319,8 @@ class planesdeahorromain : Fragment() {
                 183 -> cooldown = 5
                 365 -> cooldown = 11
             }
+            var delay = montoDao.getDelay(id.toInt()) - 1
+            delay = maxOf(delay, 0)
             val enddate = montoDao.getEnded(id.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val montoPresionado = Monto(
@@ -331,7 +336,64 @@ class planesdeahorromain : Fragment() {
                 estado = status,
                 adddate = adddate,
                 enddate = enddate,
+                delay = delay,
                 cooldown = cooldown
+            )
+
+            montoDao.updateMonto(montoPresionado)
+            val montos = montoDao.getMonto()
+            Log.i("ALL MONTOS", montos.toString())
+        }
+    }
+
+    suspend fun delay(
+        id: Long,
+        concepto: String,
+        valor: Double,
+        fecha: Int?,
+        frecuencia: Int?,
+        etiqueta: Int,
+        interes: Double?,
+        veces: Long?,
+        estado: Int?,
+        adddate: Int
+    ) {
+        withContext(Dispatchers.IO) {
+            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+            var cooldown = 0
+            when (frecuencia) {
+                14 -> cooldown = 1
+                61 -> cooldown = 1
+                91 -> cooldown = 2
+                122 -> cooldown = 3
+                183 -> cooldown = 5
+                365 -> cooldown = 11
+            }
+
+            val delay = if (montoDao.getDelay(id.toInt()) != 0) {
+                montoDao.getDelay(id.toInt()) + 1
+            } else {
+                2
+            }
+            val enddate = montoDao.getEnded(id.toInt())
+            val iduser = usuarioDao.checkId().toLong()
+            val montoPresionado = Monto(
+                idmonto = id,
+                iduser = iduser,
+                concepto = concepto,
+                valor = valor,
+                fecha = fecha,
+                frecuencia = frecuencia,
+                etiqueta = etiqueta,
+                interes = interes,
+                veces = veces,
+                estado = estado,
+                adddate = adddate,
+                enddate = enddate,
+                cooldown = cooldown,
+                delay = delay
             )
 
             montoDao.updateMonto(montoPresionado)
@@ -349,7 +411,8 @@ class planesdeahorromain : Fragment() {
             val fechaTextView: TextView,
             val favM: Button,
             val check: Button,
-            val skip: Button
+            val skip: Button,
+            val delay: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
@@ -361,6 +424,7 @@ class planesdeahorromain : Fragment() {
             val favM = itemView.findViewById<Button>(R.id.favMonto)
             val check = itemView.findViewById<Button>(R.id.check)
             val skip = itemView.findViewById<Button>(R.id.skip)
+            val delay = itemView.findViewById<Button>(R.id.delay)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
@@ -368,7 +432,8 @@ class planesdeahorromain : Fragment() {
                 fechaTextView,
                 favM,
                 check,
-                skip
+                skip,
+                delay
             )
         }
 
@@ -443,6 +508,26 @@ class planesdeahorromain : Fragment() {
             holder.skip.setOnClickListener {
                 lifecycleScope.launch {
                     skip(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
+
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.index_container, indexPorPagar()).addToBackStack(null)
+                        .commit()
+                }
+            }
+            holder.delay.setOnClickListener {
+                lifecycleScope.launch {
+                    delay(
                         monto.idmonto,
                         monto.concepto,
                         monto.valor,

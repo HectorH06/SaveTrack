@@ -146,7 +146,8 @@ class indexmandados : Fragment() {
             val vecesTextView: TextView,
             val conceptoTextView: TextView,
             val valorTextView: TextView,
-            val skipButton: ImageButton
+            val skipButton: ImageButton,
+            val delayButton: ImageButton
         ) : RecyclerView.ViewHolder(itemView)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
@@ -156,7 +157,8 @@ class indexmandados : Fragment() {
             val conceptoTextView = itemView.findViewById<TextView>(R.id.fastNombre)
             val valorTextView = itemView.findViewById<TextView>(R.id.fastValor)
             val skipButton = itemView.findViewById<ImageButton>(R.id.skipMonto)
-            return MontoViewHolder(itemView, vecesTextView, conceptoTextView, valorTextView, skipButton)
+            val delayButton = itemView.findViewById<ImageButton>(R.id.delayMonto)
+            return MontoViewHolder(itemView, vecesTextView, conceptoTextView, valorTextView, skipButton, delayButton)
         }
 
 
@@ -188,6 +190,26 @@ class indexmandados : Fragment() {
             holder.skipButton.setOnClickListener {
                 lifecycleScope.launch {
                     skip(
+                        monto.idmonto,
+                        monto.concepto,
+                        monto.valor,
+                        monto.fecha,
+                        monto.frecuencia,
+                        monto.etiqueta,
+                        monto.interes,
+                        monto.veces,
+                        monto.estado,
+                        monto.adddate
+                    )
+
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.index_container, indexPorPagar()).addToBackStack(null)
+                        .commit()
+                }
+            }
+            holder.delayButton.setOnClickListener {
+                lifecycleScope.launch {
+                    delay(
                         monto.idmonto,
                         monto.concepto,
                         monto.valor,
@@ -254,6 +276,8 @@ class indexmandados : Fragment() {
                 val updatedString = values.joinToString(".")
                 val result = "$updatedString."
 
+                var delay = montoDao.getDelay(id.toInt()) - 1
+                delay = maxOf(delay, 0)
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -270,6 +294,7 @@ class indexmandados : Fragment() {
                     adddate = adddate,
                     enddate = enddate,
                     cooldown = cooldown,
+                    delay = delay,
                     sequence = result
                 )
 
@@ -317,6 +342,8 @@ class indexmandados : Fragment() {
                     183 -> cooldown = 5
                     365 -> cooldown = 11
                 }
+                var delay = montoDao.getDelay(id.toInt()) - 1
+                delay = maxOf(delay, 0)
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -332,6 +359,62 @@ class indexmandados : Fragment() {
                     estado = status,
                     adddate = adddate,
                     enddate = enddate,
+                    delay = delay,
+                    cooldown = cooldown
+                )
+
+                montoDao.updateMonto(montoPresionado)
+                val montos = montoDao.getMonto()
+                Log.i("ALL MONTOS", montos.toString())
+            }
+        }
+
+        suspend fun delay(
+            id: Long,
+            concepto: String,
+            valor: Double,
+            fecha: Int?,
+            frecuencia: Int?,
+            etiqueta: Int,
+            interes: Double?,
+            veces: Long?,
+            estado: Int?,
+            adddate: Int
+        ) {
+            withContext(Dispatchers.IO) {
+                val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+                var cooldown = 0
+                when (frecuencia) {
+                    14 -> cooldown = 1
+                    61 -> cooldown = 1
+                    91 -> cooldown = 2
+                    122 -> cooldown = 3
+                    183 -> cooldown = 5
+                    365 -> cooldown = 11
+                }
+                val delay = if (montoDao.getDelay(id.toInt()) != 0) {
+                    montoDao.getDelay(id.toInt()) + 1
+                } else {
+                    2
+                }
+                val enddate = montoDao.getEnded(id.toInt())
+                val iduser = usuarioDao.checkId().toLong()
+                val montoPresionado = Monto(
+                    idmonto = id,
+                    iduser = iduser,
+                    concepto = concepto,
+                    valor = valor,
+                    fecha = fecha,
+                    frecuencia = frecuencia,
+                    etiqueta = etiqueta,
+                    interes = interes,
+                    veces = veces,
+                    estado = estado,
+                    adddate = adddate,
+                    enddate = enddate,
+                    delay = delay,
                     cooldown = cooldown
                 )
 

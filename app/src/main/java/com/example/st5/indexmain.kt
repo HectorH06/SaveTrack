@@ -163,7 +163,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val max = labelsDao.getMaxLabel()
 
             for (i in 1..max) {
-                if (labelsDao.getPlabel(i) != null){
+                if (labelsDao.getPlabel(i) != ""){
                     mutableIds.add(labelsDao.getIdLabel(i))
                     mutableEtiquetas.add(labelsDao.getPlabel(i))
                     mutableColores.add(labelsDao.getColor(i))
@@ -696,10 +696,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                         if (monto.etiqueta > 10000) {
                             ingresoGastoDao.updateSummaryI(monto.iduser.toInt(), totalIngresos + monto.valor)
                             monto.veces = monto.veces?.plus(1)
+                            monto.sequence = monto.sequence + "1."
                             montoDao.updateMonto(monto)
                         } else {
                             var status = 0
                             var cooldown = 0
+                            val sequence = monto.sequence + "0."
                             when (monto.estado) {
                                 1 -> status = 0
                                 4 -> status = 3
@@ -727,7 +729,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                                 estado = status,
                                 adddate = monto.adddate,
                                 enddate = monto.enddate,
-                                cooldown = cooldown
+                                cooldown = cooldown,
+                                sequence = sequence
                             )
                             montoDao.updateMonto(toCheckMonto)
                         }
@@ -784,7 +787,9 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val valorTextView: TextView,
             val fechaTextView: TextView,
             val updateM: Button,
-            val checkM: Button
+            val checkM: Button,
+            val delayM: Button,
+            val skipM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
@@ -796,13 +801,17 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val fechaTextView = itemView.findViewById<TextView>(R.id.pFecha)
             val updateM = itemView.findViewById<Button>(R.id.editP)
             val checkM = itemView.findViewById<Button>(R.id.checkP)
+            val delayM = itemView.findViewById<Button>(R.id.delayP)
+            val skipM = itemView.findViewById<Button>(R.id.skipP)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
                 valorTextView,
                 fechaTextView,
                 updateM,
-                checkM
+                checkM,
+                delayM,
+                skipM
             )
         }
 
@@ -831,17 +840,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             holder.checkM.setOnClickListener {
                 val confirmDialog = AlertDialog.Builder(requireContext())
                     .setTitle("¿Seguro que quieres marcar el gasto ${monto.concepto} como pagado?")
-                    .setPositiveButton("Eliminar") { dialog, _ ->
-
-                        Log.v("Id del monto actualizado", monto.idmonto.toString())
-                        Log.v("Concepto", monto.concepto)
-                        Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha.toString())
-                        Log.v("Frecuencia", monto.frecuencia.toString())
-                        Log.v("Etiqueta", monto.etiqueta.toString())
-                        Log.v("Interes", monto.interes.toString())
-                        Log.v("Veces", monto.veces.toString())
-
+                    .setPositiveButton("Confirmar") { dialog, _ ->
                         lifecycleScope.launch {
                             montoCheck(
                                 monto.idmonto,
@@ -852,6 +851,66 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                                 monto.etiqueta,
                                 monto.interes,
                                 monto.veces,
+                                monto.adddate
+                            )
+                        }
+                        dialog.dismiss()
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.index_container, indexmain()).addToBackStack(null)
+                            .commit()
+                    }
+                    .setNegativeButton("Cancelar") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+
+                confirmDialog.show()
+            }
+            holder.delayM.setOnClickListener {
+                val confirmDialog = AlertDialog.Builder(requireContext())
+                    .setTitle("¿Seguro que quieres posponer el gasto ${monto.concepto}?")
+                    .setPositiveButton("Posponer") { dialog, _ ->
+                        lifecycleScope.launch {
+                            delay(
+                                monto.idmonto,
+                                monto.concepto,
+                                monto.valor,
+                                monto.fecha,
+                                monto.frecuencia,
+                                monto.etiqueta,
+                                monto.interes,
+                                monto.veces,
+                                monto.estado,
+                                monto.adddate
+                            )
+                        }
+                        dialog.dismiss()
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.index_container, indexmain()).addToBackStack(null)
+                            .commit()
+                    }
+                    .setNegativeButton("Cancelar") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+
+                confirmDialog.show()
+            }
+            holder.skipM.setOnClickListener {
+                val confirmDialog = AlertDialog.Builder(requireContext())
+                    .setTitle("¿Seguro que quieres omitir el gasto ${monto.concepto} por hoy?")
+                    .setPositiveButton("Confirmar") { dialog, _ ->
+                        lifecycleScope.launch {
+                            skip(
+                                monto.idmonto,
+                                monto.concepto,
+                                monto.valor,
+                                monto.fecha,
+                                monto.frecuencia,
+                                monto.etiqueta,
+                                monto.interes,
+                                monto.veces,
+                                monto.estado,
                                 monto.adddate
                             )
                         }
@@ -890,11 +949,20 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
                 val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
+                val estado = montoDao.getEstado(idmonto.toInt())
+
                 var nv: Long? = 1
-                var cooldown = 0
                 if (veces != null)
                     nv = veces + 1
 
+                var status = 1
+                when (estado) {
+                    0 -> status = 1
+                    3 -> status = 4
+                    5 -> status = 6
+                    8 -> status = 9
+                }
+                var cooldown = 0
                 when (frecuencia) {
                     14 -> cooldown = 1
                     61 -> cooldown = 1
@@ -913,6 +981,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 val updatedString = values.joinToString(".")
                 val result = "$updatedString."
 
+                var delay = montoDao.getDelay(idmonto.toInt()) - 1
+                delay = maxOf(delay, 0)
                 val enddate = montoDao.getEnded(idmonto.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -925,10 +995,11 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     etiqueta = etiqueta,
                     interes = interes,
                     veces = nv,
-                    estado = 1,
+                    estado = status,
                     adddate = adddate,
                     enddate = enddate,
                     cooldown = cooldown,
+                    delay = delay,
                     sequence = result
                 )
 
@@ -938,12 +1009,123 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     montoPresionado.iduser.toInt(),
                     totalGastos + montoPresionado.valor
                 )
+                montoDao.updateMonto(montoPresionado)
+                val montos = montoDao.getMonto()
+                Log.i("ALL MONTOS", montos.toString())
+            }
+        }
+
+        suspend fun skip(
+            id: Long,
+            concepto: String,
+            valor: Double,
+            fecha: Int?,
+            frecuencia: Int?,
+            etiqueta: Int,
+            interes: Double?,
+            veces: Long?,
+            estado: Int?,
+            adddate: Int
+        ) {
+            withContext(Dispatchers.IO) {
+                val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+                var status = 1
+                when (estado) {
+                    0 -> status = 1
+                    3 -> status = 4
+                    5 -> status = 6
+                    8 -> status = 9
+                }
+                var cooldown = 0
+                when (frecuencia) {
+                    14 -> cooldown = 1
+                    61 -> cooldown = 1
+                    91 -> cooldown = 2
+                    122 -> cooldown = 3
+                    183 -> cooldown = 5
+                    365 -> cooldown = 11
+                }
+                var delay = montoDao.getDelay(id.toInt()) - 1
+                delay = maxOf(delay, 0)
+                val enddate = montoDao.getEnded(id.toInt())
+                val iduser = usuarioDao.checkId().toLong()
+                val montoPresionado = Monto(
+                    idmonto = id,
+                    iduser = iduser,
+                    concepto = concepto,
+                    valor = valor,
+                    fecha = fecha,
+                    frecuencia = frecuencia,
+                    etiqueta = etiqueta,
+                    interes = interes,
+                    veces = veces,
+                    estado = status,
+                    adddate = adddate,
+                    enddate = enddate,
+                    delay = delay,
+                    cooldown = cooldown
+                )
 
                 montoDao.updateMonto(montoPresionado)
                 val montos = montoDao.getMonto()
                 Log.i("ALL MONTOS", montos.toString())
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+            }
+        }
+
+        suspend fun delay(
+            id: Long,
+            concepto: String,
+            valor: Double,
+            fecha: Int?,
+            frecuencia: Int?,
+            etiqueta: Int,
+            interes: Double?,
+            veces: Long?,
+            estado: Int?,
+            adddate: Int
+        ) {
+            withContext(Dispatchers.IO) {
+                val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+                var cooldown = 0
+                when (frecuencia) {
+                    14 -> cooldown = 1
+                    61 -> cooldown = 1
+                    91 -> cooldown = 2
+                    122 -> cooldown = 3
+                    183 -> cooldown = 5
+                    365 -> cooldown = 11
+                }
+                val delay = if (montoDao.getDelay(id.toInt()) != 0) {
+                    montoDao.getDelay(id.toInt()) + 1
+                } else {
+                    2
+                }
+                val enddate = montoDao.getEnded(id.toInt())
+                val iduser = usuarioDao.checkId().toLong()
+                val montoPresionado = Monto(
+                    idmonto = id,
+                    iduser = iduser,
+                    concepto = concepto,
+                    valor = valor,
+                    fecha = fecha,
+                    frecuencia = frecuencia,
+                    etiqueta = etiqueta,
+                    interes = interes,
+                    veces = veces,
+                    estado = estado,
+                    adddate = adddate,
+                    enddate = enddate,
+                    delay = delay,
+                    cooldown = cooldown
+                )
+
+                montoDao.updateMonto(montoPresionado)
+                val montos = montoDao.getMonto()
+                Log.i("ALL MONTOS", montos.toString())
             }
         }
     }

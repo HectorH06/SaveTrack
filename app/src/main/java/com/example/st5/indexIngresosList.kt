@@ -540,7 +540,7 @@ class indexIngresosList : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder2 {
             val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_fastadd, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.item_fasti, parent, false)
             val vecesTextView = itemView.findViewById<TextView>(R.id.fastVeces)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.fastNombre)
             val valorTextView = itemView.findViewById<TextView>(R.id.fastValor)

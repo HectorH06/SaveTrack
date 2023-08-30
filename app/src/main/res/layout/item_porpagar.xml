@@ -77,5 +77,23 @@
             app:layout_constraintTop_toBottomOf="@id/editP"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <Button
+            android:id="@+id/delayP"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_delay"
+            android:backgroundTint="?attr/colorOnSecondary"
+            app:layout_constraintTop_toBottomOf="@id/checkP"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/skipP"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_cancel"
+            android:backgroundTint="?attr/colorOnSecondary"
+            app:layout_constraintTop_toBottomOf="@id/delayP"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

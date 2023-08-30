@@ -58,7 +58,7 @@ data class Monto(
     var delay: Int = 0,
 
     @ColumnInfo(name = "sequence")
-    var sequence: String = ""
+    var sequence: String = "0."
 ) : Parcelable {
     constructor() : this(0L, 0L, "", 0.0, 0.0, 0,0, 0, 0.0, 0, 0L, 0, 0, 0, 0)
 }

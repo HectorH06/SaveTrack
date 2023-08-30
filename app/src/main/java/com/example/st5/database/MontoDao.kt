@@ -158,9 +158,6 @@ interface MontoDao {
     @Query("SELECT fecha FROM monto WHERE idmonto = :id")
     fun getFecha(id: Int): Int
 
-    @Query("SELECT fechafinal FROM monto WHERE idmonto = :id")
-    fun getFechaFinal(id: Int): Int
-
     @Query("SELECT frecuencia FROM monto WHERE idmonto = :id")
     fun getFrecuencia(id: Int): Int
 

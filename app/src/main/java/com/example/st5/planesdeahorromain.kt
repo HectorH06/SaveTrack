@@ -442,6 +442,10 @@ class planesdeahorromain : Fragment() {
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
             var tempstat = 5
+
+            if (monto.delay == 2) holder.itemView.setBackgroundColor(resources.getColor(R.color.O0))
+            if (monto.delay > 2) holder.itemView.setBackgroundColor(resources.getColor(R.color.R0))
+
             holder.itemView.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)

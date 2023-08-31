@@ -50,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/cancshape"
-        app:srcCompat="@drawable/ic_cancel"
+        app:srcCompat="@drawable/ic_skip"
         android:contentDescription="@string/skip" />
 
     <ImageButton
@@ -58,7 +58,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="12dp"
-        app:layout_constraintEnd_toStartOf="@id/skipMonto"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/skipshape"
         app:srcCompat="@drawable/ic_delay"

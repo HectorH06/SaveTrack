@@ -205,10 +205,12 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 displayFrecField() //Justificar la deuda y condiciones con intereses
                 displayInteresField()
                 displayFechaFinalField()
+                displayIC()
             } else {
                 hideFrecField()
                 hideInteresField()
                 hideFechaFinalField()
+                hideIC()
             }
         }
 
@@ -632,12 +634,34 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         Log.v("INTERÉS", interes.toString())
     }
 
+    private fun displayIC() {
+        binding.interesCompuesto.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .translationZ(150f)
+            .setDuration(300)
+            .setStartDelay(200)
+            .setListener(null)
+            .start()
+    }
+
+    private fun hideIC() {
+        binding.interesCompuesto.animate()
+            .alpha(0f)
+            .translationY(-50f)
+            .translationZ(-150f)
+            .setDuration(200)
+            .setStartDelay(0)
+            .setListener(null)
+            .start()
+    }
     private fun hideAll() {
         hideWeekField()
         hideFrecField()
         hideFechaField()
         hideInteresField()
         hideFechaFinalField()
+        hideIC()
     }
 
     private fun truncateDouble(value: Double): Double {

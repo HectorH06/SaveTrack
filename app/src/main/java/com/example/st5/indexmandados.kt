@@ -164,6 +164,9 @@ class indexmandados : Fragment() {
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
+
+            if (monto.delay >= 2) holder.itemView.setBackgroundResource(R.drawable.fastshapedelayed)
+
             holder.itemView.setOnClickListener {
                 lifecycleScope.launch {
                     fup(

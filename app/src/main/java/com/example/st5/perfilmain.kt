@@ -31,6 +31,8 @@ class perfilmain : Fragment() {
 
     private val jsonArrayMonto = JSONArray()
     private val jsonArrayLabels = JSONArray()
+    private val jsonArrayEventos = JSONArray()
+    private val jsonArrayConySug = JSONArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,9 +101,13 @@ class perfilmain : Fragment() {
                     val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
                     val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
                     val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
+                    val eventosDao = Stlite.getInstance(requireContext()).getEventosDao()
+                    val conySugDao = Stlite.getInstance(requireContext()).getConySugDao()
 
                     val perocuantosmontos = montoDao.getMaxMonto()
                     val perocuantaslabels = labelsDao.getMaxLabel()
+                    val perocuantoseventos = eventosDao.getMaxEvento()
+                    val perocuantosconsejos = conySugDao.getMaxConsejo()
                     Log.v("CUANTOS MONTOS", perocuantosmontos.toString())
                     Log.v("CUANTOS MONTOS", perocuantosmontos.toString())
 
@@ -250,14 +256,14 @@ class perfilmain : Fragment() {
                     // Tabla Labels
                     for (idlabel in 1..perocuantaslabels) {
                         if (labelsDao.getIdLabel(idlabel) != null && labelsDao.getPlabel(idlabel) != null){
-                            Log.v("Current idmonto", idlabel.toString())
+                            Log.v("Current idlabel", idlabel.toString())
                             val viejaLabel = Labels(
                                 idlabel = labelsDao.getIdLabel(idlabel),
                                 plabel = labelsDao.getPlabel(idlabel),
                                 color = labelsDao.getColor(idlabel),
                                 estado = labelsDao.getEstado(idlabel)
                             )
-                            Log.v("Current monto $idlabel", viejaLabel.toString())
+                            Log.v("Current label $idlabel", viejaLabel.toString())
                             val jsonObjectLabels = JSONObject()
                             jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
                             jsonObjectLabels.put("plabel", viejaLabel.plabel)
@@ -269,7 +275,65 @@ class perfilmain : Fragment() {
                             Log.v("Current object", jsonObjectLabels.toString())
                             Log.v("Current array", jsonArrayLabels.toString())
                         } else {
-                            Log.v("Current monto $idlabel", "VACÍO")
+                            Log.v("Current label $idlabel", "VACÍO")
+                        }
+                    }
+
+                    for (idevento in 1..perocuantoseventos) {
+                        if (eventosDao.getIdevento(idevento) != null && eventosDao.getNombre(idevento) != null){
+                            Log.v("Current evento", idevento.toString())
+                            val viejoEvento = Eventos(
+                                idevento = eventosDao.getIdevento(idevento),
+                                nombre = eventosDao.getNombre(idevento),
+                                fecha = eventosDao.getFecha(idevento),
+                                estado = eventosDao.getEstado(idevento),
+                                adddate = eventosDao.getAddDate(idevento)
+                            )
+                            Log.v("Current evento $idevento", viejoEvento.toString())
+                            val jsonObjectLabels = JSONObject()
+                            jsonObjectLabels.put("idlabel", viejoEvento.idevento)
+                            jsonObjectLabels.put("plabel", viejoEvento.nombre)
+                            jsonObjectLabels.put("color", viejoEvento.fecha)
+                            jsonObjectLabels.put("estado", viejoEvento.estado)
+                            jsonObjectLabels.put("adddate", viejoEvento.adddate)
+
+                            jsonArrayLabels.put(jsonObjectLabels)
+
+                            Log.v("Current object", jsonObjectLabels.toString())
+                            Log.v("Current array", jsonArrayLabels.toString())
+                        } else {
+                            Log.v("Current evento $idevento", "VACÍO")
+                        }
+                    }
+
+                    for (idcon in 1..perocuantosconsejos) {
+                        if (conySugDao.getIdcon(idcon) != null && conySugDao.getNombre(idcon) != null){
+                            Log.v("Current idcon", idcon.toString())
+                            val viejoConsejo = ConySug(
+                                idcon = conySugDao.getIdcon(idcon),
+                                nombre = conySugDao.getNombre(idcon),
+                                contenido = conySugDao.getContenido(idcon),
+                                estado = conySugDao.getEstado(idcon),
+                                flag = conySugDao.getFlag(idcon),
+                                type = conySugDao.getType(idcon),
+                                style = conySugDao.getStyle(idcon)
+                            )
+                            Log.v("Current consejo $idcon", viejoConsejo.toString())
+                            val jsonObjectLabels = JSONObject()
+                            jsonObjectLabels.put("idlabel", viejoConsejo.idcon)
+                            jsonObjectLabels.put("plabel", viejoConsejo.nombre)
+                            jsonObjectLabels.put("color", viejoConsejo.contenido)
+                            jsonObjectLabels.put("estado", viejoConsejo.estado)
+                            jsonObjectLabels.put("flag", viejoConsejo.flag)
+                            jsonObjectLabels.put("type", viejoConsejo.type)
+                            jsonObjectLabels.put("style", viejoConsejo.style)
+
+                            jsonArrayLabels.put(jsonObjectLabels)
+
+                            Log.v("Current object", jsonObjectLabels.toString())
+                            Log.v("Current array", jsonArrayLabels.toString())
+                        } else {
+                            Log.v("Current consejo $idcon", "VACÍO")
                         }
                     }
 
@@ -436,6 +500,60 @@ class perfilmain : Fragment() {
                         "uploadReq", upload6Req.toString()
                     )
                     queue.add(upload6Req)
+
+                    val upload7url =
+                        "http://savetrack.com.mx/backupput7.php?username=$username&backup=$jsonArrayEventos"
+                    val upload7Req: StringRequest =
+                        object : StringRequest(Method.PUT,
+                            upload7url,
+                            Response.Listener { response ->
+                                Log.d(
+                                    "response", response
+                                )
+                            },
+                            Response.ErrorListener { error ->
+                                Log.e(
+                                    "API error",
+                                    "error => $error"
+                                )
+                            }) {
+                            override fun getBody(): ByteArray {
+                                return upload7url.toByteArray(
+                                    Charset.defaultCharset()
+                                )
+                            }
+                        }
+                    Log.d(
+                        "uploadReq", upload7Req.toString()
+                    )
+                    queue.add(upload7Req)
+
+                    val upload8url =
+                        "http://savetrack.com.mx/backupput8.php?username=$username&backup=$jsonArrayConySug"
+                    val upload8Req: StringRequest =
+                        object : StringRequest(Method.PUT,
+                            upload8url,
+                            Response.Listener { response ->
+                                Log.d(
+                                    "response", response
+                                )
+                            },
+                            Response.ErrorListener { error ->
+                                Log.e(
+                                    "API error",
+                                    "error => $error"
+                                )
+                            }) {
+                            override fun getBody(): ByteArray {
+                                return upload8url.toByteArray(
+                                    Charset.defaultCharset()
+                                )
+                            }
+                        }
+                    Log.d(
+                        "uploadReq", upload8Req.toString()
+                    )
+                    queue.add(upload8Req)
 
                     usuarioDao.clean()
                     ingresosGastosDao.clean()

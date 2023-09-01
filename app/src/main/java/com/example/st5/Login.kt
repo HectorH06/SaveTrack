@@ -129,27 +129,15 @@ class Login : Fragment() {
                                                         id: Long, username: String
                                                     ) {
                                                         withContext(Dispatchers.IO) {
-                                                            val usuarioDao =
-                                                                Stlite.getInstance(requireContext())
-                                                                    .getUsuarioDao()
-                                                            val ingresosGastosDao =
-                                                                Stlite.getInstance(requireContext())
-                                                                    .getIngresosGastosDao()
-                                                            val montoDao =
-                                                                Stlite.getInstance(requireContext())
-                                                                    .getMontoDao()
-                                                            val montoGrupoDao =
-                                                                Stlite.getInstance(requireContext())
-                                                                    .getMontoGrupoDao()
-                                                            val gruposDao =
-                                                                Stlite.getInstance(requireContext())
-                                                                    .getGruposDao()
-                                                            val assetsDao =
-                                                                Stlite.getInstance(requireContext())
-                                                                    .getAssetsDao()
-                                                            val labelsDao =
-                                                                Stlite.getInstance(requireContext())
-                                                                    .getLabelsDao()
+                                                            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+                                                            val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+                                                            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+                                                            val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
+                                                            val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+                                                            val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
+                                                            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
+                                                            val eventosDao = Stlite.getInstance(requireContext()).getEventosDao()
+                                                            val conySugDao = Stlite.getInstance(requireContext()).getConySugDao()
 
                                                             val nuevoUsuario = Usuario(
                                                                 iduser = id,
@@ -220,6 +208,8 @@ class Login : Fragment() {
                                                             gruposDao.clean()
                                                             assetsDao.clean()
                                                             labelsDao.clean()
+                                                            eventosDao.clean()
+                                                            conySugDao.clean()
 
                                                             usuarioDao.insertUsuario(nuevoUsuario)
                                                             ingresosGastosDao.insertIngresosGastos(nuevosIG)
@@ -235,10 +225,7 @@ class Login : Fragment() {
                                                             assetsDao.insertAsset(defaultAssets)
 
                                                             val selected = usuarioDao.getUserData()
-                                                            Log.v(
-                                                                "SELECTED USERS",
-                                                                selected.toString()
-                                                            )
+                                                            Log.v("SELECTED USERS", selected.toString())
 
                                                             /*
                                                             UPLOADING BACKUP
@@ -246,99 +233,43 @@ class Login : Fragment() {
 
                                                             // Tabla Usuario
                                                             val jsonObjectUsuario = JSONObject()
-                                                            jsonObjectUsuario.put(
-                                                                "iduser",
-                                                                nuevoUsuario.iduser
-                                                            )
-                                                            jsonObjectUsuario.put(
-                                                                "edad",
-                                                                nuevoUsuario.edad
-                                                            )
-                                                            jsonObjectUsuario.put(
-                                                                "nombre",
-                                                                nuevoUsuario.nombre
-                                                            )
-                                                            jsonObjectUsuario.put(
-                                                                "chamba",
-                                                                nuevoUsuario.chamba
-                                                            )
-                                                            jsonObjectUsuario.put(
-                                                                "diasaho",
-                                                                nuevoUsuario.diasaho
-                                                            )
-                                                            jsonObjectUsuario.put(
-                                                                "balance",
-                                                                nuevoUsuario.balance
-                                                            )
+                                                            jsonObjectUsuario.put("iduser", nuevoUsuario.iduser)
+                                                            jsonObjectUsuario.put("edad", nuevoUsuario.edad)
+                                                            jsonObjectUsuario.put("nombre", nuevoUsuario.nombre)
+                                                            jsonObjectUsuario.put("chamba", nuevoUsuario.chamba)
+                                                            jsonObjectUsuario.put("diasaho", nuevoUsuario.diasaho)
+                                                            jsonObjectUsuario.put("balance", nuevoUsuario.balance)
 
                                                             // Tabla IngresosGastos
-                                                            val jsonObjectIngresosGastos =
-                                                                JSONObject()
-                                                            jsonObjectIngresosGastos.put(
-                                                                "iduser",
-                                                                nuevosIG.iduser
-                                                            )
-                                                            jsonObjectIngresosGastos.put(
-                                                                "summaryingresos",
-                                                                nuevosIG.summaryingresos
-                                                            )
-                                                            jsonObjectIngresosGastos.put(
-                                                                "summarygastos",
-                                                                nuevosIG.summarygastos
-                                                            )
+                                                            val jsonObjectIngresosGastos = JSONObject()
+                                                            jsonObjectIngresosGastos.put("iduser", nuevosIG.iduser)
+                                                            jsonObjectIngresosGastos.put("summaryingresos", nuevosIG.summaryingresos)
+                                                            jsonObjectIngresosGastos.put("summarygastos", nuevosIG.summarygastos)
 
                                                             // Tabla Monto
                                                             val jsonObjectMonto = JSONObject()
 
                                                             // Tabla MontoGrupo
                                                             val jsonObjectMontoGrupo = JSONObject()
-                                                            jsonObjectMontoGrupo.put(
-                                                                "idmonto",
-                                                                nuevoMontoGrupo.idmonto
-                                                            )
-                                                            jsonObjectMontoGrupo.put(
-                                                                "idgrupo",
-                                                                nuevoMontoGrupo.idgrupo
-                                                            )
-                                                            jsonObjectMontoGrupo.put(
-                                                                "iduser",
-                                                                nuevoMontoGrupo.iduser
-                                                            )
+                                                            jsonObjectMontoGrupo.put("idmonto", nuevoMontoGrupo.idmonto)
+                                                            jsonObjectMontoGrupo.put("idgrupo", nuevoMontoGrupo.idgrupo)
+                                                            jsonObjectMontoGrupo.put("iduser", nuevoMontoGrupo.iduser)
 
                                                             // Tabla Grupos
                                                             val jsonObjectGrupos = JSONObject()
-                                                            jsonObjectGrupos.put(
-                                                                "Id",
-                                                                nuevoGrupo.Id
-                                                            )
-                                                            jsonObjectGrupos.put(
-                                                                "name",
-                                                                nuevoGrupo.name
-                                                            )
-                                                            jsonObjectGrupos.put(
-                                                                "description",
-                                                                nuevoGrupo.description
-                                                            )
-                                                            jsonObjectGrupos.put(
-                                                                "admin",
-                                                                nuevoGrupo.admin
-                                                            )
-                                                            jsonObjectGrupos.put(
-                                                                "nmembers",
-                                                                nuevoGrupo.nmembers
-                                                            )
-                                                            jsonObjectGrupos.put(
-                                                                "enlace",
-                                                                nuevoGrupo.enlace
-                                                            )
+                                                            jsonObjectGrupos.put("Id", nuevoGrupo.Id)
+                                                            jsonObjectGrupos.put("name", nuevoGrupo.name)
+                                                            jsonObjectGrupos.put("description", nuevoGrupo.description)
+                                                            jsonObjectGrupos.put("admin", nuevoGrupo.admin)
+                                                            jsonObjectGrupos.put("nmembers", nuevoGrupo.nmembers)
+                                                            jsonObjectGrupos.put("enlace", nuevoGrupo.enlace)
 
                                                             // Tabla Labels
                                                             val jsonObjectLabels = JSONObject()
+                                                            val jsonObjectEventos = JSONObject()
+                                                            val jsonObjectConySug = JSONObject()
 
-                                                            Log.v(
-                                                                "jsonObjectUsuario",
-                                                                jsonObjectUsuario.toString()
-                                                            )
+                                                            Log.v("jsonObjectUsuario", jsonObjectUsuario.toString())
 
                                                             val uploadurl =
                                                                 "http://savetrack.com.mx/backupput.php?username=$username&backup=$jsonObjectUsuario"
@@ -502,11 +433,65 @@ class Login : Fragment() {
                                                             )
                                                             queue.add(upload6Req)
 
-                                                            val url7 =
+                                                            val upload7url =
+                                                                "http://savetrack.com.mx/backupput7.php?username=$username&backup=$jsonObjectEventos"
+                                                            val upload7Req: StringRequest =
+                                                                object : StringRequest(Method.PUT,
+                                                                    upload7url,
+                                                                    Response.Listener { response ->
+                                                                        Log.d(
+                                                                            "response", response
+                                                                        )
+                                                                    },
+                                                                    Response.ErrorListener { error ->
+                                                                        Log.e(
+                                                                            "API error",
+                                                                            "error => $error"
+                                                                        )
+                                                                    }) {
+                                                                    override fun getBody(): ByteArray {
+                                                                        return idurl.toByteArray(
+                                                                            Charset.defaultCharset()
+                                                                        )
+                                                                    }
+                                                                }
+                                                            Log.d(
+                                                                "uploadReq", upload7Req.toString()
+                                                            )
+                                                            queue.add(upload7Req)
+
+                                                            val upload8url =
+                                                                "http://savetrack.com.mx/backupput8.php?username=$username&backup=$jsonObjectConySug"
+                                                            val upload8Req: StringRequest =
+                                                                object : StringRequest(Method.PUT,
+                                                                    upload8url,
+                                                                    Response.Listener { response ->
+                                                                        Log.d(
+                                                                            "response", response
+                                                                        )
+                                                                    },
+                                                                    Response.ErrorListener { error ->
+                                                                        Log.e(
+                                                                            "API error",
+                                                                            "error => $error"
+                                                                        )
+                                                                    }) {
+                                                                    override fun getBody(): ByteArray {
+                                                                        return idurl.toByteArray(
+                                                                            Charset.defaultCharset()
+                                                                        )
+                                                                    }
+                                                                }
+                                                            Log.d(
+                                                                "uploadReq", upload8Req.toString()
+                                                            )
+                                                            queue.add(upload8Req)
+
+                                                            val url9 =
                                                                 "http://savetrack.com.mx/images/inipic.php?username=$username"
                                                             val stringRequest =
                                                                 object : StringRequest(
-                                                                    Method.POST, url7,
+                                                                    Method.POST, url9,
                                                                     Response.Listener { response ->
                                                                         try {
                                                                             Log.d(
@@ -698,46 +683,25 @@ class Login : Fragment() {
                                                                 }
                                                             }
 
-                                                            val jsonObject4 =
-                                                                JSONObject(URL("http://savetrack.com.mx/backupget4.php?username=$username").readText())
-                                                            val idmontog: Long =
-                                                                jsonObject4.getLong("idmonto")
-                                                            val idg: Long =
-                                                                jsonObject4.getLong("idgrupo")
-                                                            val idusemg: Long =
-                                                                jsonObject4.getLong("iduser")
-                                                            val montoGrupoDao = Stlite.getInstance(
-                                                                requireContext()
-                                                            ).getMontoGrupoDao()
+                                                            val jsonObject4 = JSONObject(URL("http://savetrack.com.mx/backupget4.php?username=$username").readText())
+                                                            val idmontog: Long = jsonObject4.getLong("idmonto")
+                                                            val idg: Long = jsonObject4.getLong("idgrupo")
+                                                            val idusemg: Long = jsonObject4.getLong("iduser")
+                                                            val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
 
-                                                            val jsonObject5 =
-                                                                JSONObject(URL("http://savetrack.com.mx/backupget5.php?username=$username").readText())
-                                                            val idgru: Long =
-                                                                jsonObject5.getLong("Id")
-                                                            val nameg: String =
-                                                                jsonObject5.getString("name")
-                                                            val description: String =
-                                                                jsonObject5.optString("description")
-                                                            val admin: Long =
-                                                                jsonObject5.getLong("admin")
-                                                            val nmembers: Long =
-                                                                jsonObject5.optLong("nmembers")
-                                                            val enlace: String =
-                                                                jsonObject5.getString("enlace")
-                                                            val gruposDao = Stlite.getInstance(
-                                                                requireContext()
-                                                            ).getGruposDao()
+                                                            val jsonObject5 = JSONObject(URL("http://savetrack.com.mx/backupget5.php?username=$username").readText())
+                                                            val idgru: Long = jsonObject5.getLong("Id")
+                                                            val nameg: String = jsonObject5.getString("name")
+                                                            val description: String = jsonObject5.optString("description")
+                                                            val admin: Long = jsonObject5.getLong("admin")
+                                                            val nmembers: Long = jsonObject5.optLong("nmembers")
+                                                            val enlace: String = jsonObject5.getString("enlace")
+                                                            val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
 
-                                                            val jsonArray6 =
-                                                                JSONArray(URL("http://savetrack.com.mx/backupget6.php?username=$username").readText())
-                                                            val labelsDao =
-                                                                Stlite.getInstance(requireContext())
-                                                                    .getLabelsDao()
+                                                            val jsonArray6 = JSONArray(URL("http://savetrack.com.mx/backupget6.php?username=$username").readText())
+                                                            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
                                                             labelsDao.clean()
-                                                            Log.v(
-                                                                "jsonArray6",
-                                                                jsonArray6.toString()
-                                                            )
+                                                            Log.v("jsonArray6", jsonArray6.toString())
                                                             for (i in 0 until jsonArray6.length()) {
                                                                 val jsonObject6 =
                                                                     jsonArray6.getJSONObject(i)
@@ -773,9 +737,81 @@ class Login : Fragment() {
                                                                 }
                                                             }
 
-                                                            val assetsDao =
-                                                                Stlite.getInstance(requireContext())
-                                                                    .getAssetsDao()
+                                                            val jsonArray7 = JSONArray(URL("http://savetrack.com.mx/backupget7.php?username=$username").readText())
+                                                            val eventosDao = Stlite.getInstance(requireContext()).getEventosDao()
+                                                            eventosDao.clean()
+                                                            Log.v("jsonArray7", jsonArray7.toString())
+                                                            for (i in 0 until jsonArray7.length()) {
+                                                                val jsonObject7 =
+                                                                    jsonArray7.getJSONObject(i)
+                                                                if (jsonObject7.getLong("idevento") != null) {
+                                                                    val idevento: Long = jsonObject7.getLong("idevento")
+                                                                    val nombre: String = jsonObject7.getString("nombre")
+                                                                    val fecha: Int = jsonObject7.optInt("fecha")
+                                                                    val estado: Int = jsonObject7.optInt("estado")
+                                                                    val adddate: Int = jsonObject7.optInt("adddate")
+
+                                                                    val nuevosEventos = Eventos(
+                                                                        idevento = idevento,
+                                                                        nombre = nombre,
+                                                                        fecha = fecha,
+                                                                        estado = estado,
+                                                                        adddate = adddate
+                                                                    )
+                                                                    Log.v(
+                                                                        "Current monto $i",
+                                                                        nuevosEventos.toString()
+                                                                    )
+
+                                                                    eventosDao.insertEvento(nuevosEventos)
+                                                                } else {
+                                                                    Log.v(
+                                                                        "Current monto $i",
+                                                                        "VACÍO"
+                                                                    )
+                                                                }
+                                                            }
+
+                                                            val jsonArray8 = JSONArray(URL("http://savetrack.com.mx/backupget8.php?username=$username").readText())
+                                                            val conySugDao = Stlite.getInstance(requireContext()).getConySugDao()
+                                                            eventosDao.clean()
+                                                            Log.v("jsonArray8", jsonArray8.toString())
+                                                            for (i in 0 until jsonArray8.length()) {
+                                                                val jsonObject8 =
+                                                                    jsonArray8.getJSONObject(i)
+                                                                if (jsonObject8.getLong("idevento") != null) {
+                                                                    val idcon: Long = jsonObject8.getLong("idcon")
+                                                                    val nombre: String = jsonObject8.getString("nombre")
+                                                                    val contenido: String = jsonObject8.optString("contenido")
+                                                                    val estado: Int = jsonObject8.optInt("estado")
+                                                                    val flag: Int = jsonObject8.optInt("flag")
+                                                                    val type: Int = jsonObject8.optInt("type")
+                                                                    val style: Int = jsonObject8.optInt("style")
+
+                                                                    val nuevosConySug = ConySug(
+                                                                        idcon = idcon,
+                                                                        nombre = nombre,
+                                                                        contenido = contenido,
+                                                                        estado = estado,
+                                                                        flag = flag,
+                                                                        type = type,
+                                                                        style = style
+                                                                    )
+                                                                    Log.v(
+                                                                        "Current monto $i",
+                                                                        nuevosConySug.toString()
+                                                                    )
+
+                                                                    conySugDao.insertConoSug(nuevosConySug)
+                                                                } else {
+                                                                    Log.v(
+                                                                        "Current monto $i",
+                                                                        "VACÍO"
+                                                                    )
+                                                                }
+                                                            }
+
+                                                            val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
 
                                                             val nuevoUsuario = Usuario(
                                                                 iduser = idu,
@@ -819,21 +855,13 @@ class Login : Fragment() {
                                                             assetsDao.clean()
 
                                                             usuarioDao.insertUsuario(nuevoUsuario)
-                                                            ingresosGastosDao.insertIngresosGastos(
-                                                                nuevosIG
-                                                            )
-                                                            montoGrupoDao.insertMontoG(
-                                                                nuevoMontoGrupo
-                                                            )
+                                                            ingresosGastosDao.insertIngresosGastos(nuevosIG)
+                                                            montoGrupoDao.insertMontoG(nuevoMontoGrupo)
                                                             gruposDao.insertGrupo(nuevoGrupo)
                                                             assetsDao.insertAsset(defaultAssets)
 
                                                             val selected = usuarioDao.getUserData()
-                                                            Log.v(
-                                                                "SELECTED USERS",
-                                                                selected.toString()
-                                                            )
-
+                                                            Log.v("SELECTED USERS", selected.toString())
                                                         }
                                                     }
                                                     lifecycleScope.launch {

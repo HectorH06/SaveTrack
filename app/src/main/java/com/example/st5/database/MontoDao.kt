@@ -285,25 +285,25 @@ interface MontoDao {
 
 
     // region GET INGRESOS POR FECHA ESPECÍFICA
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR ((estado = 1 OR estado = 4 OR estado = 6 OR estado = 9) AND (delay >= 1))) AND enddate >= :din AND adddate <= :din")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din")
     fun getGXFecha(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR ((estado = 1 OR estado = 4 OR estado = 6 OR estado = 9) AND (delay >= 1))) AND enddate >= :din AND adddate <= :din ORDER BY concepto ASC")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din ORDER BY concepto ASC")
     fun getGXFechaAlfabetica(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR ((estado = 1 OR estado = 4 OR estado = 6 OR estado = 9) AND (delay >= 1))) AND adddate <= :din ORDER BY valor ASC")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND adddate <= :din ORDER BY valor ASC")
     fun getGXFechaValuados(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR ((estado = 1 OR estado = 4 OR estado = 6 OR estado = 9) AND (delay >= 1))) AND enddate >= :din AND adddate <= :din ORDER BY frecuencia ASC")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din ORDER BY frecuencia ASC")
     fun getGXFechaFrecuentes(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR ((estado = 1 OR estado = 4 OR estado = 6 OR estado = 9) AND (delay >= 1))) AND enddate >= :din AND adddate <= :din ORDER BY etiqueta ASC")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din ORDER BY etiqueta ASC")
     fun getGXFechaEtiquetados(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR ((estado = 1 OR estado = 4 OR estado = 6 OR estado = 9) AND (delay >= 1))) AND enddate >= :din AND adddate <= :din ORDER BY interes ASC")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din ORDER BY interes ASC")
     fun getGXFechaInteres(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR ((estado = 1 OR estado = 4 OR estado = 6 OR estado = 9) AND (delay >= 1))) AND enddate >= :din AND adddate <= :din ORDER BY veces ASC")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din ORDER BY veces ASC")
     fun getGXFechaVeces(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
     @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 0 OR estado = 3 OR estado = 5 OR estado = 8)")

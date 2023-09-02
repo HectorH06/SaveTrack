@@ -276,11 +276,17 @@ class indexPorPagar : Fragment() {
                     nv = veces + 1
 
                 var status = estado
-                when (estado) {
-                    0 -> status = 1
-                    3 -> status = 4
-                    5 -> status = 6
-                    8 -> status = 9
+                var delay = montoDao.getDelay(id.toInt())
+                if (delay != 0) {
+                    delay -= 1
+                    delay = maxOf(delay, 0)
+                } else {
+                    when (estado) {
+                        0 -> status = 1
+                        3 -> status = 4
+                        5 -> status = 6
+                        8 -> status = 9
+                    }
                 }
                 var cooldown = 0
                 when (frecuencia) {
@@ -300,9 +306,7 @@ class indexPorPagar : Fragment() {
                 }
                 val updatedString = values.joinToString(".")
                 val result = "$updatedString."
-
-                var delay = montoDao.getDelay(id.toInt()) - 1
-                delay = maxOf(delay, 0)
+                val tipointeres = montoDao.getTipoInteres(id.toInt())
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -314,6 +318,7 @@ class indexPorPagar : Fragment() {
                     frecuencia = frecuencia,
                     etiqueta = etiqueta,
                     interes = interes,
+                    tipointeres = tipointeres,
                     veces = nv,
                     estado = status,
                     adddate = adddate,
@@ -352,11 +357,17 @@ class indexPorPagar : Fragment() {
                 val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
                 var status = estado
-                when (estado) {
-                    0 -> status = 1
-                    3 -> status = 4
-                    5 -> status = 6
-                    8 -> status = 9
+                var delay = montoDao.getDelay(id.toInt())
+                if (delay != 0) {
+                    delay -= 1
+                    delay = maxOf(delay, 0)
+                } else {
+                    when (estado) {
+                        0 -> status = 1
+                        3 -> status = 4
+                        5 -> status = 6
+                        8 -> status = 9
+                    }
                 }
                 var cooldown = 0
                 when (frecuencia) {
@@ -367,8 +378,8 @@ class indexPorPagar : Fragment() {
                     183 -> cooldown = 5
                     365 -> cooldown = 11
                 }
-                var delay = montoDao.getDelay(id.toInt()) - 1
-                delay = maxOf(delay, 0)
+                val sequence = montoDao.getSequence(id.toInt())
+                val tipointeres = montoDao.getTipoInteres(id.toInt())
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -380,11 +391,13 @@ class indexPorPagar : Fragment() {
                     frecuencia = frecuencia,
                     etiqueta = etiqueta,
                     interes = interes,
+                    tipointeres = tipointeres,
                     veces = veces,
                     estado = status,
                     adddate = adddate,
                     enddate = enddate,
                     delay = delay,
+                    sequence = sequence,
                     cooldown = cooldown
                 )
 
@@ -410,6 +423,13 @@ class indexPorPagar : Fragment() {
                 val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
                 val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
+                var status = estado
+                when (estado) {
+                    0 -> status = 1
+                    3 -> status = 4
+                    5 -> status = 6
+                    8 -> status = 9
+                }
                 var cooldown = 0
                 when (frecuencia) {
                     14 -> cooldown = 1
@@ -419,11 +439,9 @@ class indexPorPagar : Fragment() {
                     183 -> cooldown = 5
                     365 -> cooldown = 11
                 }
-                val delay = if (montoDao.getDelay(id.toInt()) != 0) {
-                    montoDao.getDelay(id.toInt()) + 1
-                } else {
-                    2
-                }
+                val delay = montoDao.getDelay(id.toInt()) + 1
+                val sequence = montoDao.getSequence(id.toInt())
+                val tipointeres = montoDao.getTipoInteres(id.toInt())
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -435,11 +453,13 @@ class indexPorPagar : Fragment() {
                     frecuencia = frecuencia,
                     etiqueta = etiqueta,
                     interes = interes,
+                    tipointeres = tipointeres,
                     veces = veces,
-                    estado = estado,
+                    estado = status,
                     adddate = adddate,
                     enddate = enddate,
                     delay = delay,
+                    sequence = sequence,
                     cooldown = cooldown
                 )
 

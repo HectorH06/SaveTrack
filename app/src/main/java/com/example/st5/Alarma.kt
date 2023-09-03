@@ -73,7 +73,7 @@ class Alarma : BroadcastReceiver() {
 
             val montos = montoDao.getMontoXFecha(today, dom, dow, 100, addd)
 
-            if (prev != today) {
+            if (prev < today) {
                 for (monto in montos) {
                     if (monto.cooldown == 0) {
                         val totalIngresos = ingresoGastoDao.checkSummaryI()

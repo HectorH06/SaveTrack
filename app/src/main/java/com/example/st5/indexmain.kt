@@ -177,6 +177,14 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         }
     }
 
+    private fun sequenceGet(s: String, t: Int, f: Int?): Int {
+        val numeros = s.split(".").map { it.toIntOrNull() }
+        val frec = maxOf(f ?: 1, 1)
+        val last = maxOf(t/frec, 1)
+        val ultimosXNumeros = numeros.filterNotNull().takeLast(last)
+        return ultimosXNumeros.sum()
+    }
+
     //region PIECHARTS
     private suspend fun setupPieChartG(range: Long) {
         setupColors()
@@ -211,14 +219,16 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     7 -> dow = 46
                 }
 
+                Log.i("FECHAAA", "$todayInt")
                 for (j in 0..maxLabels) {
                     if (montoDao.getGR(todayInt, dom, dow, 100, j, todayInt).toString() != "[]") {
                         expenses.add(montoDao.getGR(todayInt, dom, dow, 100, j, todayInt))
-                    } else {
-                        Log.e("EMPTY", "[]")
-                        expenses.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
                     }
                 }
+            }
+
+            for (j in 1..maxLabels) { //Para que no salte colores
+                expenses.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0, sequence = "0.")))
             }
 
             Log.v("EXPENSES", expenses.toString())
@@ -236,7 +246,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             for (i in 0 until expenses.size) {
                 for (monto in expenses[i]) {
                     val etiqueta = monto.etiqueta.toLong()
-                    val current = monto.valor
+                    val times = sequenceGet(monto.sequence, range.toInt(), monto.frecuencia)
+                    val current = monto.valor * times
 
                     if (etiquetaSumMap.containsKey(etiqueta)) {
                         val currentSum = etiquetaSumMap[etiqueta] ?: 0.0
@@ -295,7 +306,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val totalisimo = totalIngresos - totalGastos
             Log.v("GRAN TOTAL", totalisimo.toString())
 
-            val percentI = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+            val percentI = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
             val decimalFormat = DecimalFormat("#.##")
 
             for (i in 0 until range) {
@@ -323,8 +334,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 }
             }
 
-            val tI = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-            val entries = mutableListOf(PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f))
+            val tI = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            val entries = mutableListOf(PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f))
 
             for (i in incomes.indices) {
                 for (monto in incomes[i]) {
@@ -461,7 +472,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString()
                 if (text.isNotEmpty()) {
-                    binding.RangoSeekbar.progress = text.toInt()
                     rango = text.toLong()
                     lifecycleScope.launch {
                         gi(switchVal, rango)

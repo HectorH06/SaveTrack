@@ -181,11 +181,14 @@
     <ScrollView
         android:id="@+id/LayoutPendientes"
         android:layout_width="60dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="64dp"
+        android:layout_marginTop="120dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/AgregarIngresoButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/searchforlabel">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:id="@+id/ProductoPorPagar"

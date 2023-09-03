@@ -246,7 +246,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
             var interes = 0.0
 
-            if (concepto != "" && valorstr != "" && valorstr != "." && selectedDay != 39) {
+            if (label != 0 && concepto != "" && valorstr != "" && valorstr != "." && selectedDay != 39) {
                 val confirmDialog = AlertDialog.Builder(requireContext())
                     .setTitle("¿Seguro que quieres guardar cambios?")
                     .setPositiveButton("Guardar") { dialog, _ ->
@@ -282,11 +282,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                                 val datedate = "$year$fMonth$fDay"
                                 val fsi: Int = datedate.replace("-", "").toInt()
 
-                                if (label == 10) {
-                                    40
-                                } else {
-                                    fsi
-                                }
+                                fsi
                             } // Único
                             1 -> {
                                 veces = 0
@@ -390,6 +386,9 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
             val max = labelsDao.getMaxLabel()
 
+            mutableIds.add(0)
+            mutableEtiquetas.add("Seleccionar")
+            mutableColores.add(222222)
             for (i in 1..max) {
 
                 if (labelsDao.getPlabel(i) != null){
@@ -716,8 +715,11 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 hideInteresField()
             }
 
+            "Seleccionar" -> {
+                label = 0
+            }
             else -> {
-                for (i in 1 until mutableEtiquetas.size) {
+                for (i in 0 until mutableEtiquetas.size) {
                     if (selectedLabel == mutableEtiquetas[i]) {
                         label = mutableIds[i].toInt()
                     }

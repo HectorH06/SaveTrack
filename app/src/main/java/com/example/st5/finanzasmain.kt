@@ -3,6 +3,7 @@ package com.example.st5
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.icu.text.DecimalFormat
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,7 @@ import org.json.JSONException
 
 class finanzasmain : Fragment() {
     private lateinit var binding: FragmentFinanzasmainBinding
+    private val decimalFormat = DecimalFormat("#.##")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -90,8 +92,16 @@ class finanzasmain : Fragment() {
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.finanzas_container, finanzasstatsahorro()).addToBackStack(null).commit()
         }
+
     }
 
+    private fun bajarfoto(link: String) {
+        binding.FinanzasItemImage.load(link) {
+            crossfade(true)
+            placeholder(R.drawable.ic_notfound)
+            scale(Scale.FILL)
+        }
+    }
     @SuppressLint("SetTextI18n")
     private suspend fun mostrarProductos() {
         withContext(Dispatchers.IO) {
@@ -159,15 +169,16 @@ class finanzasmain : Fragment() {
             if (i <= images.size) {
                 val afinity = afinityCalculator(conceptos[i], titles[i])
                 val saving = saveCalculator(precios[i], prices[i])
+                val fAfinity = decimalFormat.format(afinity)
+                val fSaving = decimalFormat.format(saving)
                 val pic = images[i]
-                Log.v("PIC", pic)
-                binding.FinanzasItemImage.load("$pic") {
-                    crossfade(true)
-                    scale(Scale.FILL)
+                Log.v("PIC", adaptLink(pic))
+                lifecycleScope.launch {
+                    bajarfoto(adaptLink(pic))
                 }
                 binding.prodhint.text = titles[i]
-                binding.afinity.text = "$afinity%"
-                binding.saving.text = "$saving%"
+                binding.afinity.text = "$fAfinity%"
+                binding.saving.text = "$fSaving%"
 
                 Log.v(
                     "PRODUCT DATA",
@@ -179,7 +190,6 @@ class finanzasmain : Fragment() {
                     val intent = Intent(Intent.ACTION_VIEW)
                     intent.data = Uri.parse(url)
                     startActivity(intent)
-                    lifecycleScope.launch { mostrarProductos() }
                 }
 
                 binding.VerMenosMERCALIBRE.setOnClickListener {
@@ -196,6 +206,15 @@ class finanzasmain : Fragment() {
                     Item.ItemsRepository.remove(ids[i])
                 }
             }
+        }
+    }
+
+    private fun adaptLink(link: String): String {
+        return if (link.endsWith(".jpg", ignoreCase = true)) {
+            link.replace(".jpg", ".webp", ignoreCase = true)
+            link.replace("http://", "https://")
+        } else {
+            link
         }
     }
 

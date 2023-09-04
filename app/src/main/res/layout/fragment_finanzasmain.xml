@@ -39,6 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="4dp"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintTop_toTopOf="@id/FinanzasItemImage"
         app:layout_constraintStart_toEndOf="@id/FinanzasItemImage" />
@@ -47,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:textSize="20sp"
+        android:layout_marginStart="4dp"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/afinity"
         app:layout_constraintStart_toEndOf="@id/FinanzasItemImage"/>
@@ -57,6 +60,7 @@
         android:layout_height="160dp"
         android:layout_marginBottom="128dp"
         android:layout_marginStart="16dp"
+        android:background="@drawable/p1table"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@string/vermas" />
@@ -103,8 +107,8 @@
 
     <TextView
         android:id="@+id/FinanzasConsejosySugerencias"
-        android:layout_width="160dp"
-        android:layout_height="256dp"
+        android:layout_width="128dp"
+        android:layout_height="160dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="96dp"
         android:hint="@string/consejos_y_sugerencias"
@@ -116,10 +120,10 @@
 
     <DatePicker
         android:id="@+id/FinanzasCalendar"
-        android:layout_width="128dp"
+        android:layout_width="64dp"
         android:layout_height="256dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

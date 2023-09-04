@@ -287,9 +287,9 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+            val labelsDao = Stlite.getInstance((requireContext())).getLabelsDao()
 
-            val totalI = montoDao.getIngresos()
-            val totalG = montoDao.getGastos()
+            val maxLabels = labelsDao.getMaxLabel()
             val incomes = mutableListOf<List<Monto>>()
 
             val fechaActual = LocalDate.now().toString()
@@ -298,16 +298,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val truefecha = formatoFecha.parse(fechaActual)
             val calendar = Calendar.getInstance()
             calendar.time = truefecha
-
-            val totalIngresos = ingresosGastosDao.checkSummaryI()
-            Log.v("INGRESOS", totalI.toString())
-            val totalGastos = ingresosGastosDao.checkSummaryG()
-            Log.v("GASTOS", totalG.toString())
-            val totalisimo = totalIngresos - totalGastos
-            Log.v("GRAN TOTAL", totalisimo.toString())
-
-            val percentI = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
-            val decimalFormat = DecimalFormat("#.##")
 
             for (i in 0 until range) {
                 val currentDate = then.plusDays(i)
@@ -325,48 +315,66 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     7 -> dow = 46
                 }
 
-                for (j in 10000..10007) {
+                Log.i("FECHAAA", "$todayInt")
+                for (j in 10001..10007) {
                     if (montoDao.getGR(todayInt, dom, dow, 100, j, todayInt).toString() != "[]") {
                         incomes.add(montoDao.getGR(todayInt, dom, dow, 100, j, todayInt))
-                    } else {
-                        incomes.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0)))
                     }
                 }
             }
 
-            val tI = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-            val entries = mutableListOf(PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f), PieEntry(0f))
+            for (j in 10001..10007) { //Para que no salte colores
+                incomes.add(listOf(Monto(idmonto=0, iduser=0, concepto="", valor=0.0, valorfinal=0.0, fecha=0, frecuencia=0, etiqueta=j, interes=0.0, veces=0L, estado=0, adddate=0, enddate = 0, cooldown = 0, sequence = "0.")))
+            }
 
-            for (i in incomes.indices) {
+            Log.v("incomes", incomes.toString())
+            val entries = mutableListOf<PieEntry>()
+
+            val totalIngresos = ingresosGastosDao.checkSummaryI()
+            Log.v("INGRESOS", totalIngresos.toString())
+            val totalGastos = ingresosGastosDao.checkSummaryG()
+            Log.v("GASTOS", totalGastos.toString())
+            val totalisimo = totalIngresos - totalGastos
+            Log.v("GRAN TOTAL", totalisimo.toString())
+
+            val decimalFormat = DecimalFormat("#.##")
+            val etiquetaSumMap = mutableMapOf<Long, Double>()
+            for (i in 0 until incomes.size) {
                 for (monto in incomes[i]) {
-                    tI[i] += monto.valor
-                    Log.v("Ingreso $i", tI[i].toString())
-                    if (tI[i] != 0.0 && totalIngresos != 0.0) {
-                        percentI[i] =
-                            decimalFormat.format((tI[i].toFloat() / totalIngresos.toFloat()) * 100)
-                                .toFloat()
+                    val etiqueta = monto.etiqueta.toLong()
+                    val times = sequenceGet(monto.sequence, range.toInt(), monto.frecuencia)
+                    val current = monto.valor * times
+
+                    if (etiquetaSumMap.containsKey(etiqueta)) {
+                        val currentSum = etiquetaSumMap[etiqueta] ?: 0.0
+                        etiquetaSumMap[etiqueta] = currentSum + current
+                    } else {
+                        etiquetaSumMap[etiqueta] = current
                     }
-                    numI.add(percentI[i])
-                    entries[i] = PieEntry(tI[i].toFloat())
                 }
+            }
+
+            for ((_, sum) in etiquetaSumMap) {
+                val percentI = if (totalIngresos != 0.0) {
+                    decimalFormat.format((sum.toFloat() * 100 / totalIngresos.toFloat())).toFloat()
+                } else {
+                    0F
+                }
+                numI.add(percentI)
+                entries.add(PieEntry(sum.toFloat()))
             }
 
             val dataSet = PieDataSet(entries, "Gastos")
             dataSet.colors = colorsI
 
             val data = PieData(dataSet)
-            val chart = binding.PieChart
+            binding.PieChart.data = data
 
-            chart.centerText = "$totalIngresos$ - $totalGastos$ = $totalisimo$"
-            chart.setCenterTextSize(24f)
-            chart.holeRadius = 48f
-            chart.setCenterTextColor(R.color.white)
-            chart.description.isEnabled = false
-            chart.legend.isEnabled = false
-            chart.isRotationEnabled = true
-            chart.absoluteAngles
-
-            chart.data = data
+            binding.PieChart.centerText = "$totalIngresos$ - $totalGastos$ = $totalisimo$"
+            binding.PieChart.setCenterTextSize(24f)
+            binding.PieChart.setCenterTextColor(R.color.white)
+            binding.PieChart.description.isEnabled = false
+            binding.PieChart.legend.isEnabled = false
         }
     }
 

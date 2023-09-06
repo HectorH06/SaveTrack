@@ -271,6 +271,11 @@ class indexPorPagar : Fragment() {
                 val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
                 val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
+                var valorfinal = montoDao.getValorFinal(id.toInt())
+                if (estado == 5 || estado == 8){
+                    valorfinal -= valor
+                }
+
                 var nv: Long? = 1
                 if (veces != null)
                     nv = veces + 1
@@ -314,6 +319,7 @@ class indexPorPagar : Fragment() {
                     iduser = iduser,
                     concepto = concepto,
                     valor = valor,
+                    valorfinal = valorfinal,
                     fecha = fecha,
                     frecuencia = frecuencia,
                     etiqueta = etiqueta,
@@ -380,6 +386,7 @@ class indexPorPagar : Fragment() {
                 }
                 val sequence = montoDao.getSequence(id.toInt())
                 val tipointeres = montoDao.getTipoInteres(id.toInt())
+                val valorfinal = montoDao.getValorFinal(id.toInt())
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -387,6 +394,7 @@ class indexPorPagar : Fragment() {
                     iduser = iduser,
                     concepto = concepto,
                     valor = valor,
+                    valorfinal = valorfinal,
                     fecha = fecha,
                     frecuencia = frecuencia,
                     etiqueta = etiqueta,
@@ -442,6 +450,7 @@ class indexPorPagar : Fragment() {
                 val delay = montoDao.getDelay(id.toInt()) + 1
                 val sequence = montoDao.getSequence(id.toInt())
                 val tipointeres = montoDao.getTipoInteres(id.toInt())
+                val valorfinal = montoDao.getValorFinal(id.toInt())
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -449,6 +458,7 @@ class indexPorPagar : Fragment() {
                     iduser = iduser,
                     concepto = concepto,
                     valor = valor,
+                    valorfinal = valorfinal,
                     fecha = fecha,
                     frecuencia = frecuencia,
                     etiqueta = etiqueta,

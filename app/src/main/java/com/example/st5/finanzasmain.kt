@@ -203,7 +203,13 @@ class finanzasmain : Fragment() {
                 }
 
                 binding.NoVerMERCALIBRE.setOnClickListener {
-                    Item.ItemsRepository.remove(ids[i])
+                    lifecycleScope.launch {
+                        Item.ItemsRepository.remove(ids[i])
+                        delay(500)
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null)
+                            .commit()
+                    }
                 }
             }
         }

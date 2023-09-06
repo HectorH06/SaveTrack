@@ -291,12 +291,14 @@ class pdaDeudasList : Fragment() {
             val cooldown = 0
 
             val enddate = montoDao.getEnded(id.toInt())
+            val valorfinal = montoDao.getValorFinal(id.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val montoPresionado = Monto(
                 idmonto = id,
                 iduser = iduser,
                 concepto = concepto,
                 valor = valor,
+                valorfinal = valorfinal,
                 fecha = fecha,
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
@@ -312,7 +314,7 @@ class pdaDeudasList : Fragment() {
 
             ingresoGastoDao.updateSummaryG(
                 montoPresionado.iduser.toInt(),
-                totalGastos + montoPresionado.valor
+                totalGastos + montoPresionado.valorfinal!!
             )
             montoDao.updateMonto(montoPresionado)
             val montos = montoDao.getMonto()

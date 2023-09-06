@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.time.LocalDate
+import java.time.Period
 import java.util.*
 
 class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
@@ -252,25 +253,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                     .setPositiveButton("Guardar") { dialog, _ ->
                         var valor = valorstr.toDouble()
                         valor = truncateDouble(valor)
-
-                        if (binding.yocreoquesi.isChecked) {
-                            estado = 5
-                            interes = binding.InteresField.text.toString().toDouble()
-                            val day = binding.FechaField.dayOfMonth
-                            val fDay = String.format("%02d", day)
-                            val month = binding.FechaField.month + 1
-                            val fMonth = String.format("%02d", month)
-                            val year = binding.FechaField.year
-                            val datedate = "$year$fMonth$fDay"
-                            enddate = datedate.replace("-", "").toInt()
-
-                            tipointeres = if (binding.interesCompuesto.isChecked) {
-                                2
-                            } else {
-                                1
-                            }
-
-                        }
+                        var valorfinal = valor
 
                         fecha = when (frecuencia) {
                             0 -> {
@@ -314,7 +297,55 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         val adddateStr: String = LocalDate.now().toString()
                         val adddate = adddateStr.replace("-", "").toInt()
 
-                        val valorfinal = valor
+                        if (binding.yocreoquesi.isChecked) {
+                            estado = 5
+                            interes = binding.InteresField.text.toString().toDouble()
+                            val day = binding.FechaField.dayOfMonth
+                            val fDay = String.format("%02d", day)
+                            val month = binding.FechaField.month + 1
+                            val fMonth = String.format("%02d", month)
+                            val year = binding.FechaField.year
+                            val datedate = "$year$fMonth$fDay"
+                            enddate = datedate.replace("-", "").toInt()
+
+                            val addY = adddate.toString().substring(0, 4).toInt()
+                            val addM = adddate.toString().substring(4, 6).toInt()
+                            val addD = adddate.toString().substring(6, 8).toInt()
+                            val endY = enddate.toString().substring(0, 4).toInt()
+                            val endM = enddate.toString().substring(4, 6).toInt()
+                            val endD = enddate.toString().substring(6, 8).toInt()
+                            val addedAt = LocalDate.of(addY, addM, addD)
+                            val toEnd = LocalDate.of(endY, endM, endD)
+                            val duracion: Int = when (frecuencia) {
+                                0 -> { 1 }
+                                1 -> { Period.between(addedAt, toEnd).days }
+                                7 -> { (Period.between(addedAt, toEnd).days)/7 }
+                                14 -> { (Period.between(addedAt, toEnd).days)/14 }
+                                30 -> { Period.between(addedAt, toEnd).months }
+                                61 -> { (Period.between(addedAt, toEnd).months)/2 }
+                                91 -> { (Period.between(addedAt, toEnd).months)/3 }
+                                122 -> { (Period.between(addedAt, toEnd).months)/4 }
+                                183 -> { (Period.between(addedAt, toEnd).months)/6 }
+                                365 -> { (Period.between(addedAt, toEnd).years) }
+                                else -> { 1 }
+                            }
+
+                            val tasa: Double
+                            tipointeres = if (binding.interesCompuesto.isChecked) {
+                                tasa = interes/duracion
+                                valor = ((valorfinal/duracion) + valorfinal*(tasa/100))
+                                for (i in 0..duracion) {
+                                    valorfinal = ((valorfinal) + valorfinal*(tasa/100))
+                                }
+
+                                2
+                            } else {
+                                valorfinal = (valorfinal + ((valorfinal * interes)/100))
+                                valor = valorfinal/duracion
+
+                                1
+                            }
+                        }
 
                         Log.v("Concepto", concepto)
                         Log.v("Valor", valor.toString())

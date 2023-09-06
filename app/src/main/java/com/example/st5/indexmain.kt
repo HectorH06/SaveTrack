@@ -969,6 +969,13 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
                 val estado = montoDao.getEstado(idmonto.toInt())
+                val enddate = montoDao.getEnded(idmonto.toInt())
+                val tipointeres = montoDao.getTipoInteres(idmonto.toInt())
+                var valorfinal = montoDao.getValorFinal(idmonto.toInt())
+
+                if (estado == 5 || estado == 8){
+                    valorfinal -= valor
+                }
 
                 var nv: Long? = 1
                 if (veces != null)
@@ -997,7 +1004,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     365 -> cooldown = 11
                 }
 
-                val sequence = montoDao.getSequence(id)
+                val sequence = montoDao.getSequence(idmonto.toInt())
                 val values = sequence.trim('.').split('.').map { it.toInt() }.toMutableList()
                 if (values.isNotEmpty()) {
                     val lastIndex = values.size - 1
@@ -1006,17 +1013,18 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 val updatedString = values.joinToString(".")
                 val result = "$updatedString."
 
-                val enddate = montoDao.getEnded(idmonto.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
                     idmonto = idmonto,
                     iduser = iduser,
                     concepto = concepto,
                     valor = valor,
+                    valorfinal = valorfinal,
                     fecha = fecha,
                     frecuencia = frecuencia,
                     etiqueta = etiqueta,
                     interes = interes,
+                    tipointeres = tipointeres,
                     veces = nv,
                     estado = status,
                     adddate = adddate,
@@ -1078,6 +1086,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 }
                 val sequence = montoDao.getSequence(id.toInt())
                 val tipointeres = montoDao.getTipoInteres(id.toInt())
+                val valorfinal = montoDao.getValorFinal(id.toInt())
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -1085,6 +1094,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     iduser = iduser,
                     concepto = concepto,
                     valor = valor,
+                    valorfinal = valorfinal,
                     fecha = fecha,
                     frecuencia = frecuencia,
                     etiqueta = etiqueta,
@@ -1133,6 +1143,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 val delay = montoDao.getDelay(id.toInt()) + 1
                 val sequence = montoDao.getSequence(id.toInt())
                 val tipointeres = montoDao.getTipoInteres(id.toInt())
+                val valorfinal = montoDao.getValorFinal(id.toInt())
                 val enddate = montoDao.getEnded(id.toInt())
                 val iduser = usuarioDao.checkId().toLong()
                 val montoPresionado = Monto(
@@ -1140,6 +1151,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     iduser = iduser,
                     concepto = concepto,
                     valor = valor,
+                    valorfinal = valorfinal,
                     fecha = fecha,
                     frecuencia = frecuencia,
                     etiqueta = etiqueta,

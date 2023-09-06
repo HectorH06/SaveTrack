@@ -188,6 +188,10 @@ class pdaDeudasList : Fragment() {
             val status = 7
 
             val enddate = montoDao.getEnded(idmonto.toInt())
+            val valorfinal = montoDao.getValorFinal(idmonto.toInt())
+            val tipointeres = montoDao.getTipoInteres(idmonto.toInt())
+            val delay = montoDao.getDelay(idmonto.toInt())
+            val sequence = montoDao.getSequence(idmonto.toInt())
             val cooldown = montoDao.getCooldown(idmonto.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
@@ -195,15 +199,19 @@ class pdaDeudasList : Fragment() {
                 iduser = iduser,
                 concepto = concepto,
                 valor = valor,
+                valorfinal = valorfinal,
                 fecha = fecha,
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
                 interes = interes,
+                tipointeres = tipointeres,
                 veces = veces,
                 estado = status,
                 adddate = adddate,
                 enddate = enddate,
-                cooldown = cooldown
+                cooldown = cooldown,
+                delay = delay,
+                sequence = sequence
             )
 
             montoDao.updateMonto(viejoMonto)
@@ -243,6 +251,10 @@ class pdaDeudasList : Fragment() {
             }
 
             val enddate = montoDao.getEnded(idmonto.toInt())
+            val valorfinal = montoDao.getValorFinal(idmonto.toInt())
+            val tipointeres = montoDao.getTipoInteres(idmonto.toInt())
+            val delay = montoDao.getDelay(idmonto.toInt())
+            val sequence = montoDao.getSequence(idmonto.toInt())
             val cooldown = montoDao.getCooldown(idmonto.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
@@ -250,15 +262,19 @@ class pdaDeudasList : Fragment() {
                 iduser = iduser,
                 concepto = concepto,
                 valor = valor,
+                valorfinal = valorfinal,
                 fecha = fecha,
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
                 interes = interes,
+                tipointeres = tipointeres,
                 veces = veces,
                 estado = status,
                 adddate = adddate,
                 enddate = enddate,
-                cooldown = cooldown
+                cooldown = cooldown,
+                delay = delay,
+                sequence = sequence
             )
 
             montoDao.updateMonto(viejoMonto)
@@ -292,6 +308,9 @@ class pdaDeudasList : Fragment() {
 
             val enddate = montoDao.getEnded(id.toInt())
             val valorfinal = montoDao.getValorFinal(id.toInt())
+            val tipointeres = montoDao.getTipoInteres(id.toInt())
+            val delay = montoDao.getDelay(id.toInt())
+            val sequence = montoDao.getSequence(id.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val montoPresionado = Monto(
                 idmonto = id,
@@ -303,11 +322,14 @@ class pdaDeudasList : Fragment() {
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
                 interes = interes,
+                tipointeres = tipointeres,
                 veces = nv,
                 estado = 10,
                 adddate = adddate,
                 enddate = enddate,
-                cooldown = cooldown
+                cooldown = cooldown,
+                delay = delay,
+                sequence = sequence
             )
 
             val totalGastos = ingresoGastoDao.checkSummaryG()

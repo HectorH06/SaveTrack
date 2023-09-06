@@ -203,21 +203,29 @@ class historialFavoritos : Fragment() {
 
                 else -> 3
             }
+            val valorfinal = montoDao.getValorFinal(idmonto.toInt())
+            val tipointeres = montoDao.getTipoInteres(idmonto.toInt())
+            val delay = montoDao.getDelay(idmonto.toInt())
+            val sequence = montoDao.getSequence(idmonto.toInt())
             val iduser = usuarioDao.checkId().toLong()
             val viejoMonto = Monto(
                 idmonto = idmonto,
                 iduser = iduser,
                 concepto = concepto,
                 valor = valor,
+                valorfinal = valorfinal,
                 fecha = fecha,
                 frecuencia = frecuencia,
                 etiqueta = etiqueta,
                 interes = interes,
+                tipointeres = tipointeres,
                 veces = veces,
                 estado = status,
                 adddate = adddate,
                 enddate = enddate,
-                cooldown = cooldown
+                cooldown = cooldown,
+                delay = delay,
+                sequence = sequence
             )
 
             montoDao.updateMonto(viejoMonto)

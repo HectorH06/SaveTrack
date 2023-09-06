@@ -90,7 +90,6 @@ class Alarma : BroadcastReceiver() {
                         } else {
                             var status = 0
                             var cooldown = 0
-                            val delay = monto.delay
                             val sequence = monto.sequence + "0."
                             when (monto.estado) {
                                 1 -> status = 0
@@ -111,6 +110,7 @@ class Alarma : BroadcastReceiver() {
                                 iduser = monto.iduser,
                                 concepto = monto.concepto,
                                 valor = monto.valor,
+                                valorfinal = monto.valorfinal,
                                 fecha = monto.fecha,
                                 frecuencia = monto.frecuencia,
                                 etiqueta = monto.etiqueta,
@@ -120,8 +120,8 @@ class Alarma : BroadcastReceiver() {
                                 estado = status,
                                 adddate = monto.adddate,
                                 enddate = monto.enddate,
-                                delay = delay,
                                 cooldown = cooldown,
+                                delay = monto.delay,
                                 sequence = sequence
                             )
                             montoDao.updateMonto(toCheckMonto)
@@ -134,6 +134,7 @@ class Alarma : BroadcastReceiver() {
                             iduser = monto.iduser,
                             concepto = monto.concepto,
                             valor = monto.valor,
+                            valorfinal = monto.valorfinal,
                             fecha = monto.fecha,
                             frecuencia = monto.frecuencia,
                             etiqueta = monto.etiqueta,

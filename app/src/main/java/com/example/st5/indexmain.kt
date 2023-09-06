@@ -740,15 +740,18 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                                 iduser = monto.iduser,
                                 concepto = monto.concepto,
                                 valor = monto.valor,
+                                valorfinal = monto.valorfinal,
                                 fecha = monto.fecha,
                                 frecuencia = monto.frecuencia,
                                 etiqueta = monto.etiqueta,
                                 interes = monto.interes,
+                                tipointeres = monto.tipointeres,
                                 veces = monto.veces,
                                 estado = status,
                                 adddate = monto.adddate,
                                 enddate = monto.enddate,
                                 cooldown = cooldown,
+                                delay = monto.delay,
                                 sequence = sequence
                             )
                             montoDao.updateMonto(toCheckMonto)
@@ -761,15 +764,19 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                             iduser = monto.iduser,
                             concepto = monto.concepto,
                             valor = monto.valor,
+                            valorfinal = monto.valorfinal,
                             fecha = monto.fecha,
                             frecuencia = monto.frecuencia,
                             etiqueta = monto.etiqueta,
                             interes = monto.interes,
+                            tipointeres = monto.tipointeres,
                             veces = monto.veces,
                             estado = monto.estado,
                             adddate = monto.adddate,
                             enddate = monto.enddate,
-                            cooldown = newcool
+                            cooldown = newcool,
+                            delay = monto.delay,
+                            sequence = monto.sequence
                         )
                         montoDao.updateMonto(toMeltMonto)
                     }

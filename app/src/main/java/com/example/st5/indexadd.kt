@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.time.LocalDate
-import java.time.Period
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
@@ -300,11 +300,11 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                         if (binding.yocreoquesi.isChecked) {
                             estado = 5
                             interes = binding.InteresField.text.toString().toDouble()
-                            val day = binding.FechaField.dayOfMonth
+                            val day = binding.FechaFinalField.dayOfMonth
                             val fDay = String.format("%02d", day)
-                            val month = binding.FechaField.month + 1
+                            val month = binding.FechaFinalField.month + 1
                             val fMonth = String.format("%02d", month)
-                            val year = binding.FechaField.year
+                            val year = binding.FechaFinalField.year
                             val datedate = "$year$fMonth$fDay"
                             enddate = datedate.replace("-", "").toInt()
 
@@ -316,32 +316,33 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                             val endD = enddate.toString().substring(6, 8).toInt()
                             val addedAt = LocalDate.of(addY, addM, addD)
                             val toEnd = LocalDate.of(endY, endM, endD)
+                            Log.v("FECHASASAS", "$addedAt, $toEnd, ${ChronoUnit.DAYS.between(addedAt, toEnd)}")
                             val duracion: Int = when (frecuencia) {
                                 0 -> { 1 }
-                                1 -> { Period.between(addedAt, toEnd).days }
-                                7 -> { (Period.between(addedAt, toEnd).days)/7 }
-                                14 -> { (Period.between(addedAt, toEnd).days)/14 }
-                                30 -> { Period.between(addedAt, toEnd).months }
-                                61 -> { (Period.between(addedAt, toEnd).months)/2 }
-                                91 -> { (Period.between(addedAt, toEnd).months)/3 }
-                                122 -> { (Period.between(addedAt, toEnd).months)/4 }
-                                183 -> { (Period.between(addedAt, toEnd).months)/6 }
-                                365 -> { (Period.between(addedAt, toEnd).years) }
+                                1 -> { ChronoUnit.DAYS.between(addedAt, toEnd).toInt() }
+                                7 -> { ChronoUnit.DAYS.between(addedAt, toEnd).toInt()/7 }
+                                14 -> { ChronoUnit.DAYS.between(addedAt, toEnd).toInt()/14 }
+                                30 -> { ChronoUnit.MONTHS.between(addedAt, toEnd).toInt() }
+                                61 -> { ChronoUnit.MONTHS.between(addedAt, toEnd).toInt()/2 }
+                                91 -> { ChronoUnit.MONTHS.between(addedAt, toEnd).toInt()/3 }
+                                122 -> { ChronoUnit.MONTHS.between(addedAt, toEnd).toInt()/4 }
+                                183 -> { ChronoUnit.MONTHS.between(addedAt, toEnd).toInt()/6 }
+                                365 -> { ChronoUnit.YEARS.between(addedAt, toEnd).toInt() }
                                 else -> { 1 }
                             }
 
-                            val tasa: Double
+                            val tasa: Double = interes / duracion
+                            val aux = valorfinal
                             tipointeres = if (binding.interesCompuesto.isChecked) {
-                                tasa = interes/duracion
-                                valor = ((valorfinal/duracion) + valorfinal*(tasa/100))
-                                for (i in 0..duracion) {
-                                    valorfinal = ((valorfinal) + valorfinal*(tasa/100))
+                                valor = (aux / duracion) + aux * (tasa / 100)
+                                for (i in 0 until duracion) {
+                                    valorfinal += valorfinal * (tasa / 100)
                                 }
 
                                 2
                             } else {
-                                valorfinal = (valorfinal + ((valorfinal * interes)/100))
-                                valor = valorfinal/duracion
+                                valorfinal += (valorfinal * interes) / 100
+                                valor = valorfinal / duracion
 
                                 1
                             }

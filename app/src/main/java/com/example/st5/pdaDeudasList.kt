@@ -20,6 +20,7 @@ import com.example.st5.models.Monto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.DecimalFormat
 import java.util.*
 
 
@@ -344,6 +345,11 @@ class pdaDeudasList : Fragment() {
         }
     }
 
+    private fun truncateDouble(value: Double): Double {
+        val decimalFormat = DecimalFormat("#.##")
+        return decimalFormat.format(value).toDouble()
+    }
+
     private inner class MontoAdapter(private val montos: List<Monto>) :
         RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
@@ -397,12 +403,11 @@ class pdaDeudasList : Fragment() {
             var tempstat = 5
             holder.conceptoTextView.text = monto.concepto
             holder.interesTextView.text = monto.interes.toString()
-            holder.valorTextView.text = monto.valor.toString()
+            holder.valorTextView.text = truncateDouble(monto.valor).toString()
+            holder.valorFinalTextView.text = monto.valorfinal?.let { truncateDouble(it).toString() }
             holder.fechaTextView.text = monto.fecha.toString()
             holder.fechaFinalTextView.text = monto.enddate.toString()
             holder.etiquetaTextView.text = monto.etiqueta.toString()
-
-            holder.valorFinalTextView.text = monto.valorfinal.toString()
 
             if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6) {
                 holder.favM.setBackgroundResource(R.drawable.ic_notstar)

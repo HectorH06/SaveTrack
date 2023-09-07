@@ -37,6 +37,7 @@ class Alarma : BroadcastReceiver() {
 
     private suspend fun procesarMontos(context: Context) {
         withContext(Dispatchers.IO) {
+            val usuarioDao = Stlite.getInstance(context).getUsuarioDao()
             val montoDao = Stlite.getInstance(context).getMontoDao()
             val ingresoGastoDao = Stlite.getInstance(context).getIngresosGastosDao()
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
@@ -70,6 +71,12 @@ class Alarma : BroadcastReceiver() {
 
             Log.i("todayyyy", today.toString())
             Log.i("prevvvvv", prev.toString())
+
+            if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta()) {
+                usuarioDao.updateDiasaho(usuarioDao.checkId(), 0L)
+            } else {
+                usuarioDao.updateDiasaho(usuarioDao.checkId(), usuarioDao.checkDiasaho() + 1L)
+            }
 
             val montos = montoDao.getMontoXFecha(today, dom, dow, 100, addd)
 

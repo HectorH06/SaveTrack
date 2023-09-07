@@ -153,8 +153,8 @@
     <string name="notificaciones">Notificaciones</string>
     <string name="modo">Modo</string>
     <string name="faq">FAQ</string>
-    <string name="madeby">Hecho con amor por Héctor Heredia</string>
-    <string name="creator">hector8heredia@gmail.com</string>
+    <string name="madeby">Hecho con amor por</string>
+    <string name="creator">hector8heredia@gmail.com y lamc1211@hotmail.com</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

@@ -1,8 +1,11 @@
 package com.example.st5
 
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -82,8 +85,6 @@ class Configuracion : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val back = perfilmain()
-
         val adapterF = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.frecuenciaoptions,
@@ -129,5 +130,23 @@ class Configuracion : Fragment() {
                 else -> {}
             }
         }
+
+        binding.manu.setOnClickListener {
+            manu()
+        }
+    }
+
+    private fun manu() {
+        val pdfUrl = "http://savetrack.com.mx/Manu.pdf"
+        val request = DownloadManager.Request(Uri.parse(pdfUrl))
+        request.setTitle("Descarga de Manual para el Usuario")
+        request.setDescription("Descargando archivo PDF")
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "ManualDeUsuarioSavetrack07092023.pdf")
+        val downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager.enqueue(request)
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(pdfUrl)
+        startActivity(intent)
     }
 }

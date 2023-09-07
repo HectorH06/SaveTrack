@@ -117,12 +117,14 @@ class Configuracion : Fragment() {
                     lifecycleScope.launch{
                         updateTheme(requireContext(), 0)
                     }
+                    isDarkMode = true
                 }
                 IconSwitch.Checked.RIGHT -> {
                     binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
                     lifecycleScope.launch{
                         updateTheme(requireContext(), 1)
                     }
+                    isDarkMode = false
                 }
                 else -> {}
             }

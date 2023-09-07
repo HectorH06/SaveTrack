@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,11 +25,36 @@
         app:srcCompat="@drawable/ic_back"
         app:tint="?attr/colorPrimary" />
 
+    <TextView
+        android:id="@+id/bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/configuracion"
+        android:textSize="36sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/goback"/>
+
+    <TextView
+        android:id="@+id/Modo"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="@string/modo"
+        android:textSize="24sp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/goback"/>
+
     <com.polyak.iconswitch.IconSwitch
         android:id="@+id/claroscuro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/Modo"
+        android:layout_marginEnd="32dp"
         android:trackTint="@color/N2"
         app:isw_icon_left="@drawable/ic_lightm"
         app:isw_icon_right="@drawable/ic_darkm"
@@ -39,4 +64,76 @@
         app:isw_inactive_tint_icon_right="@color/N5"
         app:isw_thumb_color_left="@color/N5"
         app:isw_thumb_color_right="@color/N0" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <TextView
+        android:id="@+id/Notificaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="@string/notificaciones"
+        android:textSize="24sp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Modo"/>
+
+    <com.polyak.iconswitch.IconSwitch
+        android:id="@+id/notificame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/Notificaciones"
+        android:layout_marginEnd="32dp"
+        android:trackTint="@color/B2"
+        app:isw_icon_left="@drawable/ic_activenotif"
+        app:isw_icon_right="@drawable/ic_offnotif"
+        app:isw_inactive_tint_icon_left="@color/B2"
+        app:isw_active_tint_icon_left="@color/N0"
+        app:isw_active_tint_icon_right="@color/B2"
+        app:isw_inactive_tint_icon_right="@color/B2"
+        app:isw_thumb_color_left="@color/B2"
+        app:isw_thumb_color_right="@color/N0" />
+
+    <TextView
+        android:id="@+id/faq"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="@string/faq"
+        android:textSize="24sp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Notificaciones" />
+
+    <Button
+        android:id="@+id/manu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/faq"
+        android:textSize="24sp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="64dp"
+        android:background="@color/B2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Notificaciones" />
+
+    <TextView
+        android:id="@+id/by"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:text="@string/madeby"
+        android:textAlignment="textEnd"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/email" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/creator"
+        android:textAlignment="textEnd"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

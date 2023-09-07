@@ -150,6 +150,11 @@
     <string name="ValorFinal">Valor / Final</string>
     <string name="ConceptoInteres">Concepto / Interés</string>
     <string name="escompuesto">Interés Compuesto</string>
+    <string name="notificaciones">Notificaciones</string>
+    <string name="modo">Modo</string>
+    <string name="faq">FAQ</string>
+    <string name="madeby">Hecho con amor por Héctor Heredia</string>
+    <string name="creator">hector8heredia@gmail.com</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

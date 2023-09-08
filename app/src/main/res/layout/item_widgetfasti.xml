@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fastAddW"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fastshape"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/fastVeces"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/veces"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnSecondary"
+        android:textColorHint="?attr/colorSecondary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/venta"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnSecondary"
+        android:textColorHint="?attr/colorSecondary" />
+
+    <TextView
+        android:id="@+id/fastValor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/Valor"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnSecondary"
+        android:textColorHint="?attr/colorSecondary" />
+</LinearLayout>

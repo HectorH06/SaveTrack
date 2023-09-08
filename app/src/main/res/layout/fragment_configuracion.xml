@@ -87,7 +87,7 @@
         android:trackTint="@color/B2"
         app:isw_icon_left="@drawable/ic_activenotif"
         app:isw_icon_right="@drawable/ic_offnotif"
-        app:isw_inactive_tint_icon_left="@color/B2"
+        app:isw_inactive_tint_icon_left="@color/B0"
         app:isw_active_tint_icon_left="@color/N0"
         app:isw_active_tint_icon_right="@color/B2"
         app:isw_inactive_tint_icon_right="@color/B2"

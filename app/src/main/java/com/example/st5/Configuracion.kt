@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -25,17 +24,24 @@ class Configuracion : Fragment() {
     private lateinit var binding: FragmentConfiguracionBinding
 
     private var isDarkMode = false
+    private var notifActive = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
             isDarkMode = isDarkModeEnabled(requireContext())
+            notifActive = areNotifEnabled(requireContext())
 
             if (isDarkMode) {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
                 binding.claroscuro.checked = IconSwitch.Checked.RIGHT
             } else {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+            }
+            if (notifActive) {
+                binding.notificame.checked = IconSwitch.Checked.LEFT
+            } else {
+                binding.notificame.checked = IconSwitch.Checked.RIGHT
             }
 
             Log.i("MODO", isDarkMode.toString())
@@ -54,23 +60,37 @@ class Configuracion : Fragment() {
 
     private suspend fun isDarkModeEnabled(context: Context): Boolean {
         var komodo: Boolean
-
         withContext(Dispatchers.IO){
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
-
             val mode = assetsDao.getTheme()
             komodo = mode != 0
         }
-
         return komodo
     }
 
-    private suspend fun updateTheme(context: Context, komodo: Long){
+    private suspend fun areNotifEnabled(context: Context): Boolean {
+        var modo: Boolean
+        withContext(Dispatchers.IO){
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+            val mode = assetsDao.getNotif()
+            modo = mode != 0
+        }
+        return modo
+    }
 
+    private suspend fun updateTheme(context: Context, komodo: Long){
         withContext(Dispatchers.IO){
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             assetsDao.updateTheme(komodo)
+        }
+    }
+
+    private suspend fun updateNotif(context: Context, modo: Long){
+        withContext(Dispatchers.IO){
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+
+            assetsDao.updateNotif(modo)
         }
     }
 
@@ -85,25 +105,6 @@ class Configuracion : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapterF = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.frecuenciaoptions,
-            android.R.layout.simple_spinner_item
-        )
-        val adapterI = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.tipooptions,
-            android.R.layout.simple_spinner_item
-        )
-        val adapterG = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.etiquetaoptions,
-            android.R.layout.simple_spinner_item
-        )
-        adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
         binding.goback.setOnClickListener {
             val intent = Intent(activity, Index::class.java)
             intent.putExtra("isDarkMode", !isDarkMode)
@@ -111,7 +112,6 @@ class Configuracion : Fragment() {
         }
 
         binding.claroscuro.setCheckedChangeListener {
-
             when (binding.claroscuro.checked) {
                 IconSwitch.Checked.LEFT -> {
                     binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
@@ -126,6 +126,24 @@ class Configuracion : Fragment() {
                         updateTheme(requireContext(), 1)
                     }
                     isDarkMode = false
+                }
+                else -> {}
+            }
+        }
+
+        binding.notificame.setCheckedChangeListener {
+            when (binding.notificame.checked) {
+                IconSwitch.Checked.LEFT -> {
+                    lifecycleScope.launch{
+                        updateNotif(requireContext(), 0)
+                    }
+                    notifActive = true
+                }
+                IconSwitch.Checked.RIGHT -> {
+                    lifecycleScope.launch{
+                        updateNotif(requireContext(), 1)
+                    }
+                    notifActive = false
                 }
                 else -> {}
             }

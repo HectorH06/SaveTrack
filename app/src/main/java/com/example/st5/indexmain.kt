@@ -40,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import notificationManager
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -47,32 +48,30 @@ import java.util.*
 class indexmain : Fragment(), OnChartValueSelectedListener {
     private lateinit var binding: FragmentIndexmainBinding
     private val colorsI: MutableList<Int> = mutableListOf()
-
     private val colorsGDraw: MutableList<Int> = mutableListOf()
     private val colorsIDraw: MutableList<Int> = mutableListOf()
 
     private val textI: MutableList<String> = mutableListOf()
-
     private val numI: MutableList<Float?> = mutableListOf()
     private val numG: MutableList<Float?> = mutableListOf()
 
     private var medidaT: Double = 0.0
     private var rango: Long = 15L
-
     private var switchVal = false
     private var lista: Fragment = indexGastosList()
 
     private lateinit var fastable: List<Monto>
-
     private var mutableEtiquetas: MutableList<String> = mutableListOf()
     private var mutableIds: MutableList<Long> = mutableListOf()
     private var mutableColores: MutableList<Int> = mutableListOf()
+
+    private var notifActive = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupAlarm()
         lifecycleScope.launch {
             val isDarkMode = isDarkModeEnabled(requireContext())
-
+            notifActive = areNotifEnabled(requireContext())
             if (isDarkMode) {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
             } else {
@@ -91,14 +90,22 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
     private suspend fun isDarkModeEnabled(context: Context): Boolean {
         var komodo: Boolean
-
         withContext(Dispatchers.IO) {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
-
             val mode = assetsDao.getTheme()
             komodo = mode != 0
         }
         return komodo
+    }
+
+    private suspend fun areNotifEnabled(context: Context): Boolean {
+        var modo: Boolean
+        withContext(Dispatchers.IO){
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+            val mode = assetsDao.getNotif()
+            modo = mode != 0
+        }
+        return modo
     }
 
     override fun onCreateView(
@@ -287,9 +294,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
-            val labelsDao = Stlite.getInstance((requireContext())).getLabelsDao()
-
-            val maxLabels = labelsDao.getMaxLabel()
             val incomes = mutableListOf<List<Monto>>()
 
             val fechaActual = LocalDate.now().toString()
@@ -385,6 +389,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
         val addWithSwitchOn = indexadd.newInstance(true)
         val addWithSwitchOff = indexadd.newInstance(false)
+
+        val notificationHelper = notificationManager(requireContext())
+        if (notifActive)
+        notificationHelper.sendNotification(R.drawable.logo, "Ejemplo de Notificacion", "Estás en indexmain :D")
 
         lifecycleScope.launch {
             procesarMontos()

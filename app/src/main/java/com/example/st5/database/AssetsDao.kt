@@ -22,4 +22,8 @@ interface AssetsDao {
     @Query("SELECT lastprocess FROM assets")
     fun getLastProcess(): Int
 
+    @Query("SELECT notificaciones FROM assets")
+    fun getNotif(): Int
+    @Query("UPDATE assets SET notificaciones = :mode")
+    fun updateNotif(mode: Long)
 }

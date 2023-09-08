@@ -65,10 +65,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private var mutableIds: MutableList<Long> = mutableListOf()
     private var mutableColores: MutableList<Int> = mutableListOf()
 
+    private lateinit var notificationHelper: notificationManager
     private var notifActive = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupAlarm()
+        notificationHelper = notificationManager(requireContext())
         lifecycleScope.launch {
             val isDarkMode = isDarkModeEnabled(requireContext())
             notifActive = areNotifEnabled(requireContext())
@@ -104,6 +106,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
             val mode = assetsDao.getNotif()
             modo = mode != 0
+            Log.v("NOTIF", "$modo")
         }
         return modo
     }
@@ -390,9 +393,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         val addWithSwitchOn = indexadd.newInstance(true)
         val addWithSwitchOff = indexadd.newInstance(false)
 
-        val notificationHelper = notificationManager(requireContext())
-        if (notifActive)
-        notificationHelper.sendNotification(R.drawable.logo, "Ejemplo de Notificacion", "Estás en indexmain :D")
+        notificationHelper.sendNotification(R.drawable.logo, "Ejemplo de Notificacion", "indexmain")
 
         lifecycleScope.launch {
             procesarMontos()

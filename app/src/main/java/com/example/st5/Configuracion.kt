@@ -37,6 +37,8 @@ class Configuracion : Fragment() {
                 binding.claroscuro.checked = IconSwitch.Checked.RIGHT
             } else {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+                binding.claroscuro.checked = IconSwitch.Checked.LEFT
+                isDarkMode = true
             }
             if (notifActive) {
                 binding.notificame.checked = IconSwitch.Checked.LEFT
@@ -135,13 +137,13 @@ class Configuracion : Fragment() {
             when (binding.notificame.checked) {
                 IconSwitch.Checked.LEFT -> {
                     lifecycleScope.launch{
-                        updateNotif(requireContext(), 0)
+                        updateNotif(requireContext(), 1)
                     }
                     notifActive = true
                 }
                 IconSwitch.Checked.RIGHT -> {
                     lifecycleScope.launch{
-                        updateNotif(requireContext(), 1)
+                        updateNotif(requireContext(), 0)
                     }
                     notifActive = false
                 }

@@ -2,6 +2,7 @@ package com.example.st5
 
 import android.content.Context
 import android.content.Intent
+import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -604,7 +605,8 @@ class perfilmain : Fragment() {
                 val totalIngresos = ingresosGastosDao.checkSummaryI()
                 val totalGastos = ingresosGastosDao.checkSummaryG()
                 val totalisimo = totalIngresos - totalGastos
-                val balance = "$totalisimo$"
+                val decimalFormat = DecimalFormat("#.##")
+                val balance = "${decimalFormat.format(totalisimo)}$"
                 val nombre = usuarioDao.checkName()
                 val edad = usuarioDao.checkAge()
                 val lachamba = usuarioDao.checkChamba()

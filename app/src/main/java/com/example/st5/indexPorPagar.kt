@@ -186,7 +186,7 @@ class indexPorPagar : Fragment() {
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
-
+            val decoder = Decoder(requireContext())
             if (monto.delay >= 2) holder.itemView.setBackgroundResource(R.drawable.fastshapedelayed)
 
             holder.itemView.setOnClickListener {
@@ -211,7 +211,7 @@ class indexPorPagar : Fragment() {
             }
             holder.vecesTextView.text = monto.veces.toString()
             holder.conceptoTextView.text = monto.concepto
-            holder.valorTextView.text = monto.valor.toString()
+            holder.valorTextView.text = decoder.format(monto.valor).toString()
             holder.skipButton.setOnClickListener {
                 lifecycleScope.launch {
                     skip(

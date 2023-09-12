@@ -272,10 +272,13 @@ class historialFavoritos : Fragment() {
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
             var tempstat = 5
+            val decoder = Decoder(requireContext())
             holder.conceptoTextView.text = monto.concepto
-            holder.valorTextView.text = monto.valor.toString()
-            holder.fechaTextView.text = monto.adddate.toString()
-            holder.etiquetaTextView.text = monto.etiqueta.toString()
+            holder.valorTextView.text = decoder.format(monto.valor).toString()
+            holder.fechaTextView.text = decoder.date(monto.adddate)
+            lifecycleScope.launch {
+                holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
+            }
             if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6){
                 holder.favM.setBackgroundResource(R.drawable.ic_notstar)
                 tempstat = 5

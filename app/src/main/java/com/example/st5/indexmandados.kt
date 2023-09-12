@@ -94,14 +94,13 @@ class indexmandados : Fragment() {
 
     private suspend fun totalGastos(): String {
         var totalG: Double
-
+        val decoder = Decoder(requireContext())
         withContext(Dispatchers.IO) {
             val igDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
             totalG = igDao.checkSummaryG()
         }
-
-        return totalG.toString()
+        return decoder.format(totalG).toString()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -164,6 +163,7 @@ class indexmandados : Fragment() {
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
+            val decoder = Decoder(requireContext())
 
             if (monto.delay >= 1) holder.itemView.setBackgroundResource(R.drawable.fastshapedelayed)
 
@@ -191,7 +191,7 @@ class indexmandados : Fragment() {
             }
             holder.vecesTextView.text = monto.veces.toString()
             holder.conceptoTextView.text = monto.concepto
-            holder.valorTextView.text = monto.valor.toString()
+            holder.valorTextView.text = decoder.format(monto.valor).toString()
             holder.skipButton.setOnClickListener {
                 lifecycleScope.launch {
                     skip(

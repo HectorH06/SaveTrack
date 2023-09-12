@@ -320,10 +320,13 @@ class historialPapelera : Fragment() {
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
+            val decoder = Decoder(requireContext())
             holder.conceptoTextView.text = monto.concepto
-            holder.valorTextView.text = monto.valor.toString()
+            holder.valorTextView.text = decoder.format(monto.valor).toString()
             holder.vecesTextView.text = monto.veces.toString()
-            holder.etiquetaTextView.text = monto.etiqueta.toString()
+            lifecycleScope.launch {
+                holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
+            }
             holder.zM.setOnClickListener {
                 val confirmDialog = AlertDialog.Builder(requireContext())
                     .setTitle("¿Seguro que quieres recuperar el monto ${monto.concepto}?")

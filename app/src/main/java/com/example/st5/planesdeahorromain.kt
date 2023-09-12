@@ -2,6 +2,7 @@ package com.example.st5
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -105,7 +106,8 @@ class planesdeahorromain : Fragment() {
                 val totalIngresos = ingresosGastosDao.checkSummaryI()
                 val totalGastos = ingresosGastosDao.checkSummaryG()
                 val totalisimo = totalIngresos - totalGastos
-                val balance = "$totalisimo$"
+                val decimalFormat = DecimalFormat("#.##")
+                val balance = "${decimalFormat.format(totalisimo)}$"
                 usuarioDao.updateBalance(usuarioDao.checkId(), totalisimo)
 
                 val durl = "http://savetrack.com.mx/dlrval.php"
@@ -467,6 +469,8 @@ class planesdeahorromain : Fragment() {
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
             var tempstat = 5
+            val decimalFormat = DecimalFormat("#.##")
+            val decoder = Decoder(requireContext())
 
             if (monto.delay == 2) holder.itemView.setBackgroundColor(resources.getColor(R.color.O0))
             if (monto.delay > 2) holder.itemView.setBackgroundColor(resources.getColor(R.color.R0))
@@ -477,8 +481,8 @@ class planesdeahorromain : Fragment() {
                     .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null).commit()
             }
             holder.conceptoTextView.text = monto.concepto
-            holder.valorTextView.text = "${monto.valor}$"
-            holder.fechaTextView.text = monto.fecha.toString()
+            holder.valorTextView.text = "${decimalFormat.format(monto.valor)}$"
+            holder.fechaTextView.text = monto.fecha?.let { decoder.date(it) }
             if (monto.estado == 5 || monto.estado == 6){
                 holder.favM.setBackgroundResource(R.drawable.ic_notstar)
                 tempstat = 5

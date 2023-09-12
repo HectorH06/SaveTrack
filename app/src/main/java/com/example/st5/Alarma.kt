@@ -13,6 +13,7 @@ import com.example.st5.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import notificationManager
 import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.Charset
@@ -26,6 +27,7 @@ class Alarma : BroadcastReceiver() {
     private val jsonArrayEventos = JSONArray()
     private val jsonArrayConySug = JSONArray()
 
+    private lateinit var notificationHelper: notificationManager
     override fun onReceive(context: Context?, intent: Intent?) {
         runBlocking {
             if (context != null) {
@@ -74,6 +76,8 @@ class Alarma : BroadcastReceiver() {
 
             if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta()) {
                 usuarioDao.updateDiasaho(usuarioDao.checkId(), 0L)
+                notificationHelper = notificationManager(context)
+                notificationHelper.sendNotification(R.drawable.logo, "No tienes lana we", "Tienes ${usuarioDao.checkBalance()}")
             } else {
                 usuarioDao.updateDiasaho(usuarioDao.checkId(), usuarioDao.checkDiasaho() + 1L)
             }

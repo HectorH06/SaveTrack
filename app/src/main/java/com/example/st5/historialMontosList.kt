@@ -505,10 +505,14 @@ class historialMontosList : Fragment() {
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
             var tempstat = 5
+            val decoder = Decoder(requireContext())
             holder.conceptoTextView.text = monto.concepto
-            holder.valorTextView.text = monto.valor.toString()
+            holder.valorTextView.text = decoder.format(monto.valor).toString()
             holder.vecesTextView.text = monto.veces.toString()
-            holder.etiquetaTextView.text = monto.etiqueta.toString()
+            lifecycleScope.launch {
+                holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
+            }
+
             if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6){
                 holder.favM.setBackgroundResource(R.drawable.ic_notstar)
                 tempstat = 5

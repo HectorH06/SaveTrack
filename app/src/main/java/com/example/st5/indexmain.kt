@@ -284,7 +284,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val data = PieData(dataSet)
             binding.PieChart.data = data
 
-            binding.PieChart.centerText = "$totalIngresos$ - $totalGastos$ = $totalisimo$"
+            binding.PieChart.centerText = "${truncateDouble(totalIngresos)}$ - ${truncateDouble(totalGastos)}$ = ${truncateDouble(totalisimo)}$"
             binding.PieChart.setCenterTextSize(24f)
             binding.PieChart.setCenterTextColor(R.color.white)
             binding.PieChart.description.isEnabled = false
@@ -377,7 +377,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val data = PieData(dataSet)
             binding.PieChart.data = data
 
-            binding.PieChart.centerText = "$totalIngresos$ - $totalGastos$ = $totalisimo$"
+            binding.PieChart.centerText = "${truncateDouble(totalIngresos)}$ - ${truncateDouble(totalGastos)}$ = ${truncateDouble(totalisimo)}$"
             binding.PieChart.setCenterTextSize(24f)
             binding.PieChart.setCenterTextColor(R.color.white)
             binding.PieChart.description.isEnabled = false
@@ -611,6 +611,11 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 binding.searchforlabel.hint = "Ingresos"
             }
         }
+    }
+
+    private fun truncateDouble(value: Double): Double {
+        val decimalFormat = DecimalFormat("#.##")
+        return decimalFormat.format(value).toDouble()
     }
 
     inner class pieChartOnChartValueSelectedListener : OnChartValueSelectedListener {
@@ -854,7 +859,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
             holder.conceptoTextView.text = monto.concepto
-            holder.valorTextView.text = monto.valor.toString()
+            holder.valorTextView.text = truncateDouble(monto.valor).toString()
             holder.fechaTextView.text = monto.fecha.toString()
             val upup = indexmontoupdate.sendMonto(
                 monto.idmonto,

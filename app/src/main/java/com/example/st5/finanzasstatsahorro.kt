@@ -1,5 +1,6 @@
 package com.example.st5
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.DashPathEffect
 import android.os.Bundle
@@ -145,8 +146,8 @@ class finanzasstatsahorro : Fragment() {
             Log.v("FECHA", "$todayInt / $dom / $dow")
 
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            ingresos = montoDao.getStatI(todayInt, dom, dow, 100, todayInt).sumByDouble { it.valor }.toFloat()
-            gastos = montoDao.getStatG(todayInt, dom, dow, 100, todayInt).sumByDouble { it.valor }.toFloat()
+            ingresos = montoDao.getStatI(todayInt, dom, dow, 100, todayInt).sumOf { it.valor }.toFloat()
+            gastos = montoDao.getStatG(todayInt, dom, dow, 100, todayInt).sumOf { it.valor }.toFloat()
         }
         Log.v("INGRESOS & GASTOS", "$ingresos - $gastos = ${ingresos - gastos}")
         return ingresos - gastos
@@ -197,6 +198,7 @@ class finanzasstatsahorro : Fragment() {
         queue.add(checkDollar)
         return dollarValue
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setData(count: Int, chart: LineChart, position: Int) {
         val values = ArrayList<Entry>()
         val range = 0F

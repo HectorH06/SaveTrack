@@ -401,14 +401,17 @@ class pdaDeudasList : Fragment() {
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
             var tempstat = 5
+            val decoder = Decoder(requireContext())
+
             holder.conceptoTextView.text = monto.concepto
             holder.interesTextView.text = monto.interes.toString()
             holder.valorTextView.text = truncateDouble(monto.valor).toString()
             holder.valorFinalTextView.text = monto.valorfinal?.let { truncateDouble(it).toString() }
-            holder.fechaTextView.text = monto.fecha.toString()
-            holder.fechaFinalTextView.text = monto.enddate.toString()
-            holder.etiquetaTextView.text = monto.etiqueta.toString()
-
+            holder.fechaTextView.text = monto.fecha?.let { decoder.date(it) }
+            holder.fechaFinalTextView.text = monto.enddate?.let { decoder.date(it) }
+            lifecycleScope.launch {
+                holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
+            }
             if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6) {
                 holder.favM.setBackgroundResource(R.drawable.ic_notstar)
                 tempstat = 5

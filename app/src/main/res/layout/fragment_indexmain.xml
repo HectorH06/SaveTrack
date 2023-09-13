@@ -114,8 +114,7 @@
             app:layout_constraintTop_toBottomOf="@id/SultanOfSwing"
             android:layout_marginTop="60dp"
             android:layout_marginStart="80dp"
-            android:autofillHints=""
-            android:inputType="number" />
+            android:autofillHints="" />
 
         <SeekBar
             android:id="@+id/RangoSeekbar"

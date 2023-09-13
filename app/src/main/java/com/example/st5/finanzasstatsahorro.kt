@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.DashPathEffect
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -30,6 +33,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONException
+import org.json.JSONObject
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -40,9 +45,13 @@ class finanzasstatsahorro : Fragment() {
 
     private lateinit var binding: FragmentFinanzasstatsahorroBinding
 
-    private val ahorros: MutableList<Float> = mutableListOf()
-    private var dolarCompra = 0F
-    private var dolarVenta = 0F
+    private val ahorrosMap = mutableMapOf<LocalDate, Float>()
+    private val currencyData = mutableMapOf<String, MutableList<Float>>()
+    private val currencies = arrayOf("USD", "CAD", "EUR")
+    private var dollarC = 0F
+    private var dollarV = 0F
+    private var rango: Long = 3L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,6 +71,13 @@ class finanzasstatsahorro : Fragment() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                        .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null).commit()
+                    val fragmentToRemove = parentFragmentManager.findFragmentByTag("finanzasstatsahorro")
+                    if (fragmentToRemove != null) {
+                        parentFragmentManager.beginTransaction().remove(fragmentToRemove).commit()
+                    }
                 }
             })
     }
@@ -84,12 +100,14 @@ class finanzasstatsahorro : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFinanzasstatsahorroBinding.inflate(inflater, container, false)
-        dolarCompra = getDollarCompra()
-        dolarVenta = getDollarVenta()
         lifecycleScope.launch {
+            getDivisas()
+            getDollarCompra()
+            getDollarVenta()
             getAhorros()
             delay(500)
-            Log.v("AHORROXDIA", ahorros.toString())
+            Log.v("AHORROXDIA", ahorrosMap.toString())
+            Log.v("DIVISAS", currencyData.toString())
             binding.displaycharts.adapter = ChartAdapter()
         }
         return binding.root
@@ -103,6 +121,10 @@ class finanzasstatsahorro : Fragment() {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.finanzas_container, back).addToBackStack(null).commit()
+            val fragmentToRemove = parentFragmentManager.findFragmentByTag("finanzasstatsahorro")
+            if (fragmentToRemove != null) {
+                parentFragmentManager.beginTransaction().remove(fragmentToRemove).commit()
+            }
         }
 
         binding.ConfigButton.setOnClickListener {
@@ -110,23 +132,51 @@ class finanzasstatsahorro : Fragment() {
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
         }
+
+        binding.RangoSeekbar.min = 3
+        binding.RangoSeekbar.max = 5
+        binding.RangoSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                binding.RangoTV.text = progress.toString()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+        binding.RangoTV.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString()
+                if (text.isNotEmpty()) {
+                    rango = text.toLong()
+                    lifecycleScope.launch {
+                        getDivisas()
+                        getAhorros()
+                    }
+                }
+            }
+        })
     }
 
     private fun getAhorros() {
         val today = LocalDate.now()
-        val twoWeeksAgo = today.minusWeeks(2)
+        val weeksAgo = today.minusWeeks(5)
 
-        val daysInRange = ChronoUnit.DAYS.between(twoWeeksAgo, today)
+        val daysInRange = ChronoUnit.DAYS.between(weeksAgo, today)
 
         for (i in 0 until daysInRange) {
             lifecycleScope.launch {
-                val currentDate = twoWeeksAgo.plusDays(i)
+                val currentDate = weeksAgo.plusDays(i)
                 val dayAhorro = getAhorrosXDia(currentDate)
-                ahorros.add(dayAhorro)
+                ahorrosMap[currentDate] = dayAhorro
             }
         }
     }
-
     private suspend fun getAhorrosXDia(date: LocalDate): Float {
         var ingresos = 0F
         var gastos = 0F
@@ -153,16 +203,15 @@ class finanzasstatsahorro : Fragment() {
         Log.v("INGRESOS & GASTOS", "$ingresos - $gastos = ${ingresos - gastos}")
         return ingresos - gastos
     }
-    private fun getDollarCompra() : Float {
-        var dollarValue = "0"
+    private fun getDollarCompra() {
 
         val durl = "http://savetrack.com.mx/dlrvalCompra.php"
         val queue: RequestQueue = Volley.newRequestQueue(requireContext())
         val checkDollar = StringRequest(
             Request.Method.GET, durl,
             { response ->
-                dollarValue = response.toString()
-                Log.d("DÓLAR COMPRA", dollarValue)
+                dollarC = response.toString().toFloat()
+                Log.d("DÓLAR COMPRA", dollarC.toString())
             },
             { error ->
                 Toast.makeText(
@@ -174,18 +223,16 @@ class finanzasstatsahorro : Fragment() {
             }
         )
         queue.add(checkDollar)
-        return dollarValue.toFloat()
     }
-    private fun getDollarVenta() : Float {
-        var dollarValue = "0"
+    private fun getDollarVenta() {
 
         val durl = "http://savetrack.com.mx/dlrvalVenta.php"
         val queue: RequestQueue = Volley.newRequestQueue(requireContext())
         val checkDollar = StringRequest(
             Request.Method.GET, durl,
             { response ->
-                dollarValue = response.toString()
-                Log.d("DÓLAR VENTA", dollarValue)
+                dollarV = response.toString().toFloat()
+                Log.d("DÓLAR VENTA", dollarV.toString())
             },
             { error ->
                 Toast.makeText(
@@ -197,81 +244,267 @@ class finanzasstatsahorro : Fragment() {
             }
         )
         queue.add(checkDollar)
-        return dollarValue.toFloat()
+    }
+    private fun getDivisas() {
+        val baseUrl = "http://savetrack.com.mx/divisas.php?basecurrency=MXN"
+
+        val currentDate = LocalDate.now()
+        val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val queue: RequestQueue = Volley.newRequestQueue(requireContext())
+        for (i in 0 until rango) {
+            val date = currentDate.minusDays(i)
+            val formattedDate = date.format(dateFormat)
+            val apiUrl = "$baseUrl&date=$formattedDate&currencies=${currencies.joinToString(",")}"
+
+            val checkDollar = StringRequest(
+                Request.Method.GET, apiUrl,
+                { response ->
+                    Log.v("RES", response)
+                    try {
+                        val responseData = JSONObject(response)
+                        Log.v("Try", "$responseData")
+                        for (currency in currencies) {
+                            val value = 1/responseData.optDouble(currency)
+                            Log.v("VALUES", "$value")
+                            if (!currencyData.containsKey(currency)) {
+                                currencyData[currency] = mutableListOf()
+                            }
+                            currencyData[currency]?.add(value.toFloat())
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                { error ->
+                    Toast.makeText(
+                        requireContext(),
+                        "No se ha podido conectar al valor del dólar hoy",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.d("error => $error", "SIE API ERROR")
+                }
+            )
+            queue.add(checkDollar)
+        }
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setData(count: Int, chart: LineChart, position: Int) {
         val values = Stack<Entry>()
+        val values2 = Stack<Entry>()
+        val values3 = Stack<Entry>()
         val range = 0F
 
+        Log.v("DIVISAS", currencyData.toString())
+        val ahorros = ahorrosMap.toSortedMap().values.toList()
         when (position) {
             0 -> {
                 for (i in 0 until count) {
-                    values.add(Entry(i.toFloat(), ahorros[i], resources.getDrawable(R.drawable.ic_bubbles)))
-
+                    values.add(Entry(i.toFloat(), ahorros[i]*dollarC, resources.getDrawable(R.drawable.ic_bubbles)))
                 }
-                Log.v("VALALAL", "$ahorros")
-                val set1: LineDataSet
+                for (i in 0 until count) {
+                    values2.add(Entry(i.toFloat(), ahorros[i]*dollarV, resources.getDrawable(R.drawable.ic_bubbles)))
+                }
+
+                val setA: LineDataSet
+                val setB: LineDataSet
                 if (chart.data != null && chart.data.dataSetCount > 0) {
-                    set1 = chart.data.getDataSetByIndex(0) as LineDataSet
-                    set1.values = values
-                    set1.notifyDataSetChanged()
+                    setA = chart.data.getDataSetByIndex(0) as LineDataSet
+                    setA.values = values
+                    setA.notifyDataSetChanged()
+                    setB = chart.data.getDataSetByIndex(0) as LineDataSet
+                    setB.values = values2
+                    setB.notifyDataSetChanged()
+
                     chart.data.notifyDataChanged()
                     chart.notifyDataSetChanged()
                 } else {
-                    set1 = LineDataSet(values, "Ahorros")
-                    set1.setDrawIcons(false)
-                    set1.enableDashedLine(16f, 0f, 0f)
-                    set1.color = R.color.P1
-                    set1.setCircleColor(R.color.R0)
-                    set1.lineWidth = 10f
-                    set1.circleRadius = 3f
-                    set1.setDrawCircleHole(true)
-                    set1.formLineWidth = 1f
-                    set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-                    set1.formSize = 15f
-                    set1.valueTextSize = 9f
-                    set1.enableDashedHighlightLine(10f, 5f, 0f)
-                    set1.setDrawFilled(false)
-                    set1.fillFormatter =
-                        IFillFormatter { dataSet, dataProvider -> chart.axisLeft.axisMinimum }
-                    set1.fillColor = R.color.G2
+                    setA = LineDataSet(values, "Estático en MXN")
+                    setA.setDrawIcons(false)
+                    setA.enableDashedLine(16f, 0f, 0f)
+                    setA.color = R.color.P1
+                    setA.setCircleColor(R.color.R0)
+                    setA.lineWidth = 10f
+                    setA.circleRadius = 3f
+                    setA.setDrawCircleHole(true)
+                    setA.formLineWidth = 1f
+                    setA.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+                    setA.formSize = 15f
+                    setA.valueTextSize = 9f
+                    setA.enableDashedHighlightLine(10f, 5f, 0f)
+                    setA.setDrawFilled(false)
+                    setA.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
+                    setA.fillColor = R.color.G2
+
+                    setB = LineDataSet(values2, "Estático en USD")
+                    setB.setDrawIcons(false)
+                    setB.enableDashedLine(16f, 0f, 0f)
+                    setB.color = R.color.P1
+                    setB.setCircleColor(R.color.R0)
+                    setB.lineWidth = 10f
+                    setB.circleRadius = 3f
+                    setB.setDrawCircleHole(true)
+                    setB.formLineWidth = 1f
+                    setB.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+                    setB.formSize = 15f
+                    setB.valueTextSize = 9f
+                    setB.enableDashedHighlightLine(10f, 5f, 0f)
+                    setB.setDrawFilled(false)
+                    setB.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
+                    setB.fillColor = R.color.G2
 
                     val dataSets: ArrayList<ILineDataSet> = ArrayList()
-                    dataSets.add(set1)
+                    dataSets.add(setA)
+                    dataSets.add(setB)
                     val data = LineData(dataSets)
 
                     chart.data = data
                 }
-            } // TODO arreglar los problemas con el acomodo de los valores en la gráfica
+            }
             1 -> {
-                val dolaresList = ArrayList<Entry>()
-
+                val dolaresList = currencyData["USD"]
+                
                 for (i in 0 until count) {
-                    val current = ahorros[i]*dolarCompra
-                    Log.v("CURRENT COMPRA", dolarCompra.toString())
-                    values.add(Entry(i.toFloat(), current, resources.getDrawable(R.drawable.ic_bubbles)))
-                }
-                for (i in 0 until count) {
-                    val current = ahorros[i]*dolarVenta
-                    Log.v("CURRENT VENTA", dolarVenta.toString())
-                    dolaresList.add(Entry(i.toFloat(), current, resources.getDrawable(R.drawable.ic_bubbles)))
+                    val current = dolaresList?.get(i)
+                    Log.v("CURRENT COMPRA", dollarC.toString())
+                    values.add(current?.let {
+                        Entry(i.toFloat(),
+                            it, resources.getDrawable(R.drawable.ic_bubbles))
+                    })
                 }
 
-                val setC: LineDataSet
-                val setV: LineDataSet
+                val setA: LineDataSet
+                val setB: LineDataSet
                 if (chart.data != null && chart.data.dataSetCount > 0) {
-                    setC = chart.data.getDataSetByIndex(0) as LineDataSet
-                    setC.values = values
-                    setC.notifyDataSetChanged()
-                    setV = chart.data.getDataSetByIndex(0) as LineDataSet
-                    setV.values = values
-                    setV.notifyDataSetChanged()
+                    setA = chart.data.getDataSetByIndex(0) as LineDataSet
+                    setA.values = values
+                    setA.notifyDataSetChanged()
+                    setB = chart.data.getDataSetByIndex(0) as LineDataSet
+                    setB.values = values
+                    setB.notifyDataSetChanged()
 
                     chart.data.notifyDataChanged()
                     chart.notifyDataSetChanged()
                 } else {
-                    setC = LineDataSet(values, "Compra")
+                    setA = LineDataSet(values, "Compra")
+                    setA.setDrawIcons(false)
+                    setA.enableDashedLine(16f, 0f, 0f)
+                    setA.color = R.color.P1
+                    setA.setCircleColor(R.color.R0)
+                    setA.lineWidth = 10f
+                    setA.circleRadius = 3f
+                    setA.setDrawCircleHole(true)
+                    setA.formLineWidth = 1f
+                    setA.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+                    setA.formSize = 15f
+                    setA.valueTextSize = 9f
+                    setA.enableDashedHighlightLine(10f, 5f, 0f)
+                    setA.setDrawFilled(false)
+                    setA.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
+                    setA.fillColor = R.color.G2
+
+                    setB = LineDataSet(values, "Venta")
+                    setB.setDrawIcons(false)
+                    setB.enableDashedLine(16f, 0f, 0f)
+                    setB.color = R.color.P1
+                    setB.setCircleColor(R.color.R0)
+                    setB.lineWidth = 10f
+                    setB.circleRadius = 3f
+                    setB.setDrawCircleHole(true)
+                    setB.formLineWidth = 1f
+                    setB.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+                    setB.formSize = 15f
+                    setB.valueTextSize = 9f
+                    setB.enableDashedHighlightLine(10f, 5f, 0f)
+                    setB.setDrawFilled(false)
+                    setB.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
+                    setB.fillColor = R.color.G2
+
+                    val dataSets: ArrayList<ILineDataSet> = ArrayList()
+                    dataSets.add(setA)
+                    dataSets.add(setB)
+                    val data = LineData(dataSets)
+
+                    chart.data = data
+                }
+            }
+            2 -> {
+                val usd = "USD"
+                val eur = "EUR"
+                val cad = "CAD"
+                val dolaresList = currencyData[usd]
+                val eurosList = currencyData[eur]
+                val canadaList = currencyData[cad]
+
+                for (i in 0 until count) {
+                    val current1 = dolaresList?.get(i)
+                    values.add(current1?.let {
+                        Entry(i.toFloat(),
+                            it, resources.getDrawable(R.drawable.ic_bubbles))
+                    })
+                    val current2 = eurosList?.get(i)
+                    values2.add(current2?.let {
+                        Entry(i.toFloat(),
+                            it, resources.getDrawable(R.drawable.ic_bubbles))
+                    })
+                    val current3 = canadaList?.get(i)
+                    values3.add(current3?.let {
+                        Entry(i.toFloat(),
+                            it, resources.getDrawable(R.drawable.ic_bubbles))
+                    })
+                }
+
+                val setA: LineDataSet
+                val setB: LineDataSet
+                val setC: LineDataSet
+                if (chart.data != null && chart.data.dataSetCount > 0) {
+                    setA = chart.data.getDataSetByIndex(0) as LineDataSet
+                    setA.values = values
+                    setA.notifyDataSetChanged()
+                    setB = chart.data.getDataSetByIndex(0) as LineDataSet
+                    setB.values = values2
+                    setB.notifyDataSetChanged()
+                    setC = chart.data.getDataSetByIndex(0) as LineDataSet
+                    setC.values = values3
+                    setC.notifyDataSetChanged()
+
+                    chart.data.notifyDataChanged()
+                    chart.notifyDataSetChanged()
+                } else {
+                    setA = LineDataSet(values, usd)
+                    setA.setDrawIcons(false)
+                    setA.enableDashedLine(16f, 0f, 0f)
+                    setA.color = R.color.P1
+                    setA.setCircleColor(R.color.R0)
+                    setA.lineWidth = 10f
+                    setA.circleRadius = 3f
+                    setA.setDrawCircleHole(true)
+                    setA.formLineWidth = 1f
+                    setA.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+                    setA.formSize = 15f
+                    setA.valueTextSize = 9f
+                    setA.enableDashedHighlightLine(10f, 5f, 0f)
+                    setA.setDrawFilled(false)
+                    setA.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
+                    setA.fillColor = R.color.G2
+
+                    setB = LineDataSet(values2, eur)
+                    setB.setDrawIcons(false)
+                    setB.enableDashedLine(16f, 0f, 0f)
+                    setB.color = R.color.P1
+                    setB.setCircleColor(R.color.R0)
+                    setB.lineWidth = 10f
+                    setB.circleRadius = 3f
+                    setB.setDrawCircleHole(true)
+                    setB.formLineWidth = 1f
+                    setB.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+                    setB.formSize = 15f
+                    setB.valueTextSize = 9f
+                    setB.enableDashedHighlightLine(10f, 5f, 0f)
+                    setB.setDrawFilled(false)
+                    setB.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
+                    setB.fillColor = R.color.G2
+
+                    setC = LineDataSet(values3, cad)
                     setC.setDrawIcons(false)
                     setC.enableDashedLine(16f, 0f, 0f)
                     setC.color = R.color.P1
@@ -285,67 +518,13 @@ class finanzasstatsahorro : Fragment() {
                     setC.valueTextSize = 9f
                     setC.enableDashedHighlightLine(10f, 5f, 0f)
                     setC.setDrawFilled(false)
-                    setC.fillFormatter = IFillFormatter { dataSet, dataProvider -> chart.axisLeft.axisMinimum }
+                    setC.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
                     setC.fillColor = R.color.G2
 
-                    setV = LineDataSet(dolaresList, "Venta")
-                    setV.setDrawIcons(false)
-                    setV.enableDashedLine(16f, 0f, 0f)
-                    setV.color = R.color.P1
-                    setV.setCircleColor(R.color.R0)
-                    setV.lineWidth = 10f
-                    setV.circleRadius = 3f
-                    setV.setDrawCircleHole(true)
-                    setV.formLineWidth = 1f
-                    setV.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-                    setV.formSize = 15f
-                    setV.valueTextSize = 9f
-                    setV.enableDashedHighlightLine(10f, 5f, 0f)
-                    setV.setDrawFilled(false)
-                    setV.fillFormatter = IFillFormatter { dataSet, dataProvider -> chart.axisLeft.axisMinimum }
-                    setV.fillColor = R.color.G2
-
                     val dataSets: ArrayList<ILineDataSet> = ArrayList()
+                    dataSets.add(setA)
+                    dataSets.add(setB)
                     dataSets.add(setC)
-                    dataSets.add(setV)
-                    val data = LineData(dataSets)
-
-                    chart.data = data
-                }
-            }
-            2 -> {
-                for (i in 0 until count) {
-                    values.add(Entry(i.toFloat(), ahorros[i], resources.getDrawable(R.drawable.ic_bubbles)))
-                }
-
-                val set1: LineDataSet
-                if (chart.data != null && chart.data.dataSetCount > 0) {
-                    set1 = chart.data.getDataSetByIndex(0) as LineDataSet
-                    set1.values = values
-                    set1.notifyDataSetChanged()
-                    chart.data.notifyDataChanged()
-                    chart.notifyDataSetChanged()
-                } else {
-                    set1 = LineDataSet(values, "DataSet 1")
-                    set1.setDrawIcons(false)
-                    set1.enableDashedLine(16f, 0f, 0f)
-                    set1.color = R.color.P1
-                    set1.setCircleColor(R.color.R0)
-                    set1.lineWidth = 10f
-                    set1.circleRadius = 3f
-                    set1.setDrawCircleHole(true)
-                    set1.formLineWidth = 1f
-                    set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-                    set1.formSize = 15f
-                    set1.valueTextSize = 9f
-                    set1.enableDashedHighlightLine(10f, 5f, 0f)
-                    set1.setDrawFilled(false)
-                    set1.fillFormatter =
-                        IFillFormatter { dataSet, dataProvider -> chart.axisLeft.axisMinimum }
-                    set1.fillColor = R.color.G2
-
-                    val dataSets: ArrayList<ILineDataSet> = ArrayList()
-                    dataSets.add(set1)
                     val data = LineData(dataSets)
 
                     chart.data = data
@@ -385,7 +564,7 @@ class finanzasstatsahorro : Fragment() {
                     set1.enableDashedHighlightLine(10f, 5f, 0f)
                     set1.setDrawFilled(false)
                     set1.fillFormatter =
-                        IFillFormatter { dataSet, dataProvider -> chart.axisLeft.axisMinimum }
+                        IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
                     set1.fillColor = R.color.G2
 
                     val dataSets: ArrayList<ILineDataSet> = ArrayList()
@@ -425,10 +604,10 @@ class finanzasstatsahorro : Fragment() {
         }
 
 
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
             val chart = holder.chart
 
-            chart.setBackgroundColor(resources.getColor(R.color.N1))
+            chart.setBackgroundColor(resources.getColor(R.color.B1))
             chart.description.isEnabled = false
             chart.setTouchEnabled(true)
             chart.setDrawGridBackground(false)
@@ -436,44 +615,67 @@ class finanzasstatsahorro : Fragment() {
             chart.setScaleEnabled(true)
 
             val moneda: String
-            val valor: Float
-            val porcentaje: Float
-            val count = 14
+            val valor: String
+            val porcentaje: String
+            val count = rango.toInt()
+
+            binding.RangoSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                    when (position) {
+                        0 -> {
+                            setData(count, chart, position)
+                        }
+                        1 -> {
+                            setData(count, chart, position)
+                        }
+                        2 -> {
+                            setData(count, chart, position)
+                        }
+                        else -> {
+                            setData(0, chart, 0)
+                        }
+                    }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
 
             when (position) {
                 0 -> {
                     moneda = "Estático"
-                    valor = 10.0F
-                    porcentaje = 20.1F
+                    valor = "Ingresos: $"
+                    porcentaje = "Gastos: $"
 
                     setData(count, chart, position)
                 }
                 1 -> {
                     moneda = "Inversión"
-                    valor = 20.1F
-                    porcentaje = 30.2F
+                    valor = "Compra: $dollarC"
+                    porcentaje = "Venta: $dollarV"
 
                     setData(count, chart, position)
                 }
                 2 -> {
                     moneda = "Moneda"
-                    valor = 30.2F
-                    porcentaje = 40.3F
+                    valor = "30.2F"
+                    porcentaje = "40.3F"
 
                     setData(count, chart, position)
                 }
                 else -> {
                     moneda = "Moneda"
-                    valor = 0.0F
-                    porcentaje = 0.0F
+                    valor = "0.0F"
+                    porcentaje = "0.0F"
 
                     setData(0, chart, 0)
                 }
             }
 
             holder.moneda.text = moneda
-            holder.valor.text = valor.toString()
-            holder.porcentaje.text = porcentaje.toString()
+            holder.valor.text = valor
+            holder.porcentaje.text = porcentaje
         }
 
 

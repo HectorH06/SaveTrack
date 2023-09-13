@@ -393,8 +393,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         val addWithSwitchOn = indexadd.newInstance(true)
         val addWithSwitchOff = indexadd.newInstance(false)
 
-        notificationHelper.sendNotification(R.drawable.logo, "Ejemplo de Notificacion", "indexmain")
-
         lifecycleScope.launch {
             procesarMontos()
 

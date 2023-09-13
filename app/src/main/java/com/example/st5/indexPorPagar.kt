@@ -95,14 +95,14 @@ class indexPorPagar : Fragment() {
 
     private suspend fun totalGastos(): String {
         var totalG: Double
-
+        val decoder = Decoder(requireContext())
         withContext(Dispatchers.IO) {
             val igDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
             totalG = igDao.checkSummaryG()
         }
 
-        return totalG.toString()
+        return decoder.format(totalG).toString()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

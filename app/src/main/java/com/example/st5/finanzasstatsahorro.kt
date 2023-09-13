@@ -33,6 +33,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.*
 
 
 class finanzasstatsahorro : Fragment() {
@@ -83,8 +84,8 @@ class finanzasstatsahorro : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFinanzasstatsahorroBinding.inflate(inflater, container, false)
-        dolarCompra = getDollarCompra().toFloat()
-        dolarVenta = getDollarVenta().toFloat()
+        dolarCompra = getDollarCompra()
+        dolarVenta = getDollarVenta()
         lifecycleScope.launch {
             getAhorros()
             delay(500)
@@ -152,7 +153,7 @@ class finanzasstatsahorro : Fragment() {
         Log.v("INGRESOS & GASTOS", "$ingresos - $gastos = ${ingresos - gastos}")
         return ingresos - gastos
     }
-    private fun getDollarCompra() : String {
+    private fun getDollarCompra() : Float {
         var dollarValue = "0"
 
         val durl = "http://savetrack.com.mx/dlrvalCompra.php"
@@ -173,9 +174,9 @@ class finanzasstatsahorro : Fragment() {
             }
         )
         queue.add(checkDollar)
-        return dollarValue
+        return dollarValue.toFloat()
     }
-    private fun getDollarVenta() : String {
+    private fun getDollarVenta() : Float {
         var dollarValue = "0"
 
         val durl = "http://savetrack.com.mx/dlrvalVenta.php"
@@ -196,19 +197,20 @@ class finanzasstatsahorro : Fragment() {
             }
         )
         queue.add(checkDollar)
-        return dollarValue
+        return dollarValue.toFloat()
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setData(count: Int, chart: LineChart, position: Int) {
-        val values = ArrayList<Entry>()
+        val values = Stack<Entry>()
         val range = 0F
 
         when (position) {
             0 -> {
                 for (i in 0 until count) {
                     values.add(Entry(i.toFloat(), ahorros[i], resources.getDrawable(R.drawable.ic_bubbles)))
-                }
 
+                }
+                Log.v("VALALAL", "$ahorros")
                 val set1: LineDataSet
                 if (chart.data != null && chart.data.dataSetCount > 0) {
                     set1 = chart.data.getDataSetByIndex(0) as LineDataSet

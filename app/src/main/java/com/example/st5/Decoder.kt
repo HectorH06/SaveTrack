@@ -45,7 +45,7 @@ class Decoder (context: Context) {
 
     fun date (date: Int): String {
         val datedate = when (date) {
-            in 1..30 -> {
+            in 1..31 -> {
                 val aux = "300012$date"
                 val calendar = Calendar.getInstance()
                 val formatoFecha = SimpleDateFormat("yyyyMMdd", Locale.getDefault())

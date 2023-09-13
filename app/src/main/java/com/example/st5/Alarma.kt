@@ -28,6 +28,7 @@ class Alarma : BroadcastReceiver() {
     private val jsonArrayConySug = JSONArray()
 
     private lateinit var notificationHelper: notificationManager
+    private lateinit var decoder: Decoder
     override fun onReceive(context: Context?, intent: Intent?) {
         runBlocking {
             if (context != null) {
@@ -44,6 +45,8 @@ class Alarma : BroadcastReceiver() {
             val ingresoGastoDao = Stlite.getInstance(context).getIngresosGastosDao()
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
+            notificationHelper = notificationManager(context)
+            decoder = Decoder(context)
             val fechaActual = LocalDate.now().toString()
             val today: Int = fechaActual.replace("-", "").toInt()
             val prev = assetsDao.getLastProcess()
@@ -76,8 +79,7 @@ class Alarma : BroadcastReceiver() {
 
             if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta()) {
                 usuarioDao.updateDiasaho(usuarioDao.checkId(), 0L)
-                notificationHelper = notificationManager(context)
-                notificationHelper.sendNotification(R.drawable.logo, "No tienes lana we", "Tienes ${usuarioDao.checkBalance()}")
+                notificationHelper.sendNotification(R.drawable.logo, "No tienes lana we", "Tienes ${decoder.format(usuarioDao.checkBalance())} pesos")
             } else {
                 usuarioDao.updateDiasaho(usuarioDao.checkId(), usuarioDao.checkDiasaho() + 1L)
             }

@@ -194,7 +194,7 @@ class finanzasmain : Fragment() {
 
                 binding.VerMenosMERCALIBRE.setOnClickListener {
                     lifecycleScope.launch {
-                        i++
+                        Item.ItemsRepository.remove(ids[i])
                         delay(500)
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null)

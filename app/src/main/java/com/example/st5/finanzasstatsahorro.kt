@@ -439,17 +439,17 @@ class finanzasstatsahorro : Fragment() {
                     val current1 = dolaresList?.get(i)
                     values.add(current1?.let {
                         Entry(i.toFloat(),
-                            it, resources.getDrawable(R.drawable.ic_bubbles))
+                            it, resources.getDrawable(R.drawable.ic_dollar))
                     })
                     val current2 = eurosList?.get(i)
                     values2.add(current2?.let {
                         Entry(i.toFloat(),
-                            it, resources.getDrawable(R.drawable.ic_bubbles))
+                            it, resources.getDrawable(R.drawable.ic_euro))
                     })
                     val current3 = canadaList?.get(i)
                     values3.add(current3?.let {
                         Entry(i.toFloat(),
-                            it, resources.getDrawable(R.drawable.ic_bubbles))
+                            it, resources.getDrawable(R.drawable.ic_dollar))
                     })
                 }
 
@@ -583,7 +583,8 @@ class finanzasstatsahorro : Fragment() {
             val moneda: TextView,
             val valor: TextView,
             val porcentaje: TextView,
-            val chart: LineChart
+            val chart: LineChart,
+            val table: RecyclerView
         ) : RecyclerView.ViewHolder(itemView)
 
 
@@ -594,15 +595,16 @@ class finanzasstatsahorro : Fragment() {
             val valor = itemView.findViewById<TextView>(R.id.valor)
             val porcentaje = itemView.findViewById<TextView>(R.id.porcentaje)
             val chart = itemView.findViewById<LineChart>(R.id.thechart)
+            val table = itemView.findViewById<RecyclerView>(R.id.displayStats)
             return ViewHolder(
                 itemView,
                 moneda,
                 valor,
                 porcentaje,
-                chart
+                chart,
+                table
             )
         }
-
 
         override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
             val chart = holder.chart
@@ -668,7 +670,7 @@ class finanzasstatsahorro : Fragment() {
                     moneda = "Moneda"
                     valor = "0.0F"
                     porcentaje = "0.0F"
-
+                    holder.table.adapter = DivisaAdapter()
                     setData(0, chart, 0)
                 }
             }
@@ -676,8 +678,70 @@ class finanzasstatsahorro : Fragment() {
             holder.moneda.text = moneda
             holder.valor.text = valor
             holder.porcentaje.text = porcentaje
+
         }
 
+        override fun getItemCount(): Int {
+            return 3
+        }
+    }
+
+    private inner class DivisaAdapter : RecyclerView.Adapter<DivisaAdapter.MontoViewHolder>() {
+        inner class MontoViewHolder(
+            itemView: View,
+            val divisaTextView: TextView,
+            val valorTextView: TextView,
+            val porcentajeTextView: TextView
+        ) : RecyclerView.ViewHolder(itemView)
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_divisa, parent, false)
+            val divisaTextView = itemView.findViewById<TextView>(R.id.DNombre)
+            val valorTextView = itemView.findViewById<TextView>(R.id.DValor)
+            val porcentajeTextView = itemView.findViewById<TextView>(R.id.DPorcentaje)
+            return MontoViewHolder(
+                itemView,
+                divisaTextView,
+                valorTextView,
+                porcentajeTextView
+            )
+        }
+
+        override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
+            val usd = "USD"
+            val eur = "EUR"
+            val cad = "CAD"
+            val dolaresList: MutableList<Float> = currencyData[usd] ?: ArrayList()
+            val eurosList: MutableList<Float> = currencyData[eur] ?: ArrayList()
+            val canadaList: MutableList<Float> = currencyData[cad] ?: ArrayList()
+            val porcentajeUSD = ((dolaresList[dolaresList.size - 1] - dolaresList[0]) / (maxOf(dolaresList[0], 1F)*100))
+            val porcentajeEUR = ((eurosList[eurosList.size - 1] - eurosList[0]) / (maxOf(eurosList[0], 1F)*100))
+            val porcentajeCAD = ((canadaList[canadaList.size - 1] - canadaList[0]) / (maxOf(canadaList[0], 1F)*100))
+            when (position) {
+                0 -> {
+                    holder.itemView.setBackgroundResource(R.drawable.p1topcell)
+                    holder.divisaTextView.text = usd
+                    holder.valorTextView.text = dolaresList[dolaresList.size - 1].toString()
+                    holder.porcentajeTextView.text = porcentajeUSD.toString()
+                }
+                1 -> {
+                    holder.divisaTextView.text = eur
+                    holder.valorTextView.text = eurosList[eurosList.size - 1].toString()
+                    holder.porcentajeTextView.text = porcentajeEUR.toString()
+                }
+                2 -> {
+                    holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)
+                    holder.divisaTextView.text = cad
+                    holder.valorTextView.text = canadaList[canadaList.size - 1].toString()
+                    holder.porcentajeTextView.text = porcentajeCAD.toString()
+                }
+                else -> {
+                    holder.divisaTextView.text = usd
+                    holder.valorTextView.text = eur
+                    holder.porcentajeTextView.text = cad
+                }
+            }
+        }
 
         override fun getItemCount(): Int {
             return 3

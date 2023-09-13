@@ -1,0 +1,40 @@
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cabezadivisa"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/p1midcell"
+    android:orientation="horizontal"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/DNombre"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/DValor"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/DPorcentaje"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        android:textSize="18sp" />
+</TableRow>

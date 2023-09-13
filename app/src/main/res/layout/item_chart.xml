@@ -53,6 +53,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/valor" />
 
+        <TableLayout
+            android:id="@+id/cabeza"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="10dp"
+            android:stretchColumns="0,1"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/displayStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="@+id/cabeza"
+                app:layout_constraintTop_toBottomOf="@+id/cabeza" />
+        </TableLayout>
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/thechart"
             android:layout_width="match_parent"

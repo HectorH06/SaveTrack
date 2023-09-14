@@ -10,9 +10,11 @@
 
     <TextView
         android:id="@+id/DNombre"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
         android:layout_marginEnd="16dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
@@ -20,21 +22,25 @@
 
     <TextView
         android:id="@+id/DValor"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
         android:layout_marginEnd="16dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/DPorcentaje"
-        android:layout_width="80dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
         android:layout_marginEnd="16dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 </TableRow>

@@ -4,7 +4,7 @@
     android:id="@+id/chart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="@color/G2"
+    app:cardBackgroundColor="@color/B2"
     app:cardCornerRadius="6dp"
     app:cardElevation="0dp"
     app:cardUseCompatPadding="true">
@@ -19,7 +19,6 @@
             android:layout_height="16dp"
             android:layout_marginStart="@dimen/layout_margin_default"
             android:layout_marginTop="@dimen/layout_margin_default"
-            android:hint="@string/MONEDA"
             android:textColor="?attr/colorOnPrimary"
             android:textColorHint="?attr/colorSecondary"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +30,6 @@
             android:layout_height="16dp"
             android:layout_marginStart="@dimen/layout_margin_default"
             android:layout_marginTop="@dimen/layout_margin_default"
-            android:hint="@string/Valor"
             android:textColor="?attr/colorOnPrimary"
             android:textColorHint="?attr/colorSecondary"
             android:maxLines="7"
@@ -46,7 +44,6 @@
             android:layout_marginStart="@dimen/layout_margin_default"
             android:layout_marginTop="@dimen/layout_margin_default"
             android:layout_marginBottom="@dimen/layout_margin_default"
-            android:hint="@string/percent"
             android:textColor="?attr/colorOnPrimary"
             android:textColorHint="?attr/colorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -56,12 +53,12 @@
         <TableLayout
             android:id="@+id/cabeza"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="10dp"
-            android:stretchColumns="0,1"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:stretchColumns="0,1,2">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/displayStats"

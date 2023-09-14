@@ -87,12 +87,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="32dp"
         android:autofillHints="" />
 
     <SeekBar
         android:id="@+id/RangoSeekbar"
         android:progressTint="?attr/colorPrimaryVariant"
-        android:thumbTint="?attr/colorPrimary"
+        android:thumbTint="?attr/colorSecondary"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textAlignment="center"
@@ -104,5 +105,5 @@
         android:translationZ="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="85dp" />
+        android:layout_marginEnd="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -102,10 +102,9 @@ class finanzasstatsahorro : Fragment() {
         binding = FragmentFinanzasstatsahorroBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
             getDivisas()
-            getDollarCompra()
-            getDollarVenta()
+            getDollar()
             getAhorros()
-            delay(500)
+            delay(3000)
             Log.v("AHORROXDIA", ahorrosMap.toString())
             Log.v("DIVISAS", currencyData.toString())
             binding.displaycharts.adapter = ChartAdapter()
@@ -133,8 +132,8 @@ class finanzasstatsahorro : Fragment() {
                 .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
         }
 
-        binding.RangoSeekbar.min = 3
-        binding.RangoSeekbar.max = 5
+        binding.RangoSeekbar.min = 4
+        binding.RangoSeekbar.max = 6
         binding.RangoSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 binding.RangoTV.text = progress.toString()
@@ -150,13 +149,14 @@ class finanzasstatsahorro : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString()
                 if (text.isNotEmpty()) {
-                    rango = text.toLong()
+                    rango = text.toLong() - 1
                     lifecycleScope.launch {
-                        getDivisas()
                         getAhorros()
+                        binding.displaycharts.adapter = ChartAdapter()
                     }
                 }
             }
@@ -203,9 +203,10 @@ class finanzasstatsahorro : Fragment() {
         Log.v("INGRESOS & GASTOS", "$ingresos - $gastos = ${ingresos - gastos}")
         return ingresos - gastos
     }
-    private fun getDollarCompra() {
+    private suspend fun getDollar() {
 
         val durl = "http://savetrack.com.mx/dlrvalCompra.php"
+        val durl2 = "http://savetrack.com.mx/dlrvalVenta.php"
         val queue: RequestQueue = Volley.newRequestQueue(requireContext())
         val checkDollar = StringRequest(
             Request.Method.GET, durl,
@@ -223,13 +224,8 @@ class finanzasstatsahorro : Fragment() {
             }
         )
         queue.add(checkDollar)
-    }
-    private fun getDollarVenta() {
-
-        val durl = "http://savetrack.com.mx/dlrvalVenta.php"
-        val queue: RequestQueue = Volley.newRequestQueue(requireContext())
-        val checkDollar = StringRequest(
-            Request.Method.GET, durl,
+        val checkDollar2 = StringRequest(
+            Request.Method.GET, durl2,
             { response ->
                 dollarV = response.toString().toFloat()
                 Log.d("DÓLAR VENTA", dollarV.toString())
@@ -243,16 +239,19 @@ class finanzasstatsahorro : Fragment() {
                 Log.d("error => $error", "SIE API ERROR")
             }
         )
-        queue.add(checkDollar)
+        queue.add(checkDollar2)
+        delay(400)
     }
     private fun getDivisas() {
         val baseUrl = "http://savetrack.com.mx/divisas.php?basecurrency=MXN"
 
-        val currentDate = LocalDate.now()
+        val today = LocalDate.now()
+        val ago = today.minusDays(5)
+        val daysInRange = ChronoUnit.DAYS.between(ago, today)
         val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val queue: RequestQueue = Volley.newRequestQueue(requireContext())
-        for (i in 0 until rango) {
-            val date = currentDate.minusDays(i)
+        for (i in 0 .. daysInRange) {
+            val date = ago.plusDays(i)
             val formattedDate = date.format(dateFormat)
             val apiUrl = "$baseUrl&date=$formattedDate&currencies=${currencies.joinToString(",")}"
 
@@ -296,13 +295,14 @@ class finanzasstatsahorro : Fragment() {
 
         Log.v("DIVISAS", currencyData.toString())
         val ahorros = ahorrosMap.toSortedMap().values.toList()
+        val size = ahorros.size - 1
         when (position) {
             0 -> {
-                for (i in 0 until count) {
-                    values.add(Entry(i.toFloat(), ahorros[i]*dollarC, resources.getDrawable(R.drawable.ic_bubbles)))
-                }
-                for (i in 0 until count) {
-                    values2.add(Entry(i.toFloat(), ahorros[i]*dollarV, resources.getDrawable(R.drawable.ic_bubbles)))
+                var j = 0F
+                for (i in size - count .. size) {
+                    j++
+                    values.add(Entry(j, ahorros[i], R.drawable.ic_bubbles))
+                    values2.add(Entry(j, ahorros[i], R.drawable.ic_bubbles))
                 }
 
                 val setA: LineDataSet
@@ -322,7 +322,7 @@ class finanzasstatsahorro : Fragment() {
                     setA.setDrawIcons(false)
                     setA.enableDashedLine(16f, 0f, 0f)
                     setA.color = R.color.P1
-                    setA.setCircleColor(R.color.R0)
+                    setA.setCircleColor(R.color.G0)
                     setA.lineWidth = 10f
                     setA.circleRadius = 3f
                     setA.setDrawCircleHole(true)
@@ -333,13 +333,13 @@ class finanzasstatsahorro : Fragment() {
                     setA.enableDashedHighlightLine(10f, 5f, 0f)
                     setA.setDrawFilled(false)
                     setA.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
-                    setA.fillColor = R.color.G2
+                    setA.fillColor = R.color.B1
 
                     setB = LineDataSet(values2, "Estático en USD")
                     setB.setDrawIcons(false)
                     setB.enableDashedLine(16f, 0f, 0f)
                     setB.color = R.color.P1
-                    setB.setCircleColor(R.color.R0)
+                    setB.setCircleColor(R.color.G0)
                     setB.lineWidth = 10f
                     setB.circleRadius = 3f
                     setB.setDrawCircleHole(true)
@@ -350,7 +350,7 @@ class finanzasstatsahorro : Fragment() {
                     setB.enableDashedHighlightLine(10f, 5f, 0f)
                     setB.setDrawFilled(false)
                     setB.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
-                    setB.fillColor = R.color.G2
+                    setB.fillColor = R.color.R0
 
                     val dataSets: ArrayList<ILineDataSet> = ArrayList()
                     dataSets.add(setA)
@@ -362,14 +362,14 @@ class finanzasstatsahorro : Fragment() {
             }
             1 -> {
                 val dolaresList = currencyData["USD"]
-                
-                for (i in 0 until count) {
-                    val current = dolaresList?.get(i)
-                    Log.v("CURRENT COMPRA", dollarC.toString())
-                    values.add(current?.let {
-                        Entry(i.toFloat(),
-                            it, resources.getDrawable(R.drawable.ic_bubbles))
-                    })
+                var j = 0F
+                if (dolaresList != null) {
+                    for (i in dolaresList.size - count - 1 until dolaresList.size) {
+                        j++
+                        val current = dolaresList[i]
+                        Log.v("CURRENT COMPRA", dollarC.toString())
+                        values.add(Entry(j, current, R.drawable.ic_bubbles))
+                    }
                 }
 
                 val setA: LineDataSet
@@ -389,7 +389,7 @@ class finanzasstatsahorro : Fragment() {
                     setA.setDrawIcons(false)
                     setA.enableDashedLine(16f, 0f, 0f)
                     setA.color = R.color.P1
-                    setA.setCircleColor(R.color.R0)
+                    setA.setCircleColor(R.color.G0)
                     setA.lineWidth = 10f
                     setA.circleRadius = 3f
                     setA.setDrawCircleHole(true)
@@ -400,13 +400,13 @@ class finanzasstatsahorro : Fragment() {
                     setA.enableDashedHighlightLine(10f, 5f, 0f)
                     setA.setDrawFilled(false)
                     setA.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
-                    setA.fillColor = R.color.G2
+                    setA.fillColor = R.color.B1
 
                     setB = LineDataSet(values, "Venta")
                     setB.setDrawIcons(false)
                     setB.enableDashedLine(16f, 0f, 0f)
                     setB.color = R.color.P1
-                    setB.setCircleColor(R.color.R0)
+                    setB.setCircleColor(R.color.G0)
                     setB.lineWidth = 10f
                     setB.circleRadius = 3f
                     setB.setDrawCircleHole(true)
@@ -417,7 +417,7 @@ class finanzasstatsahorro : Fragment() {
                     setB.enableDashedHighlightLine(10f, 5f, 0f)
                     setB.setDrawFilled(false)
                     setB.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
-                    setB.fillColor = R.color.G2
+                    setB.fillColor = R.color.R0
 
                     val dataSets: ArrayList<ILineDataSet> = ArrayList()
                     dataSets.add(setA)
@@ -435,22 +435,21 @@ class finanzasstatsahorro : Fragment() {
                 val eurosList = currencyData[eur]
                 val canadaList = currencyData[cad]
 
-                for (i in 0 until count) {
-                    val current1 = dolaresList?.get(i)
-                    values.add(current1?.let {
-                        Entry(i.toFloat(),
-                            it, resources.getDrawable(R.drawable.ic_dollar))
-                    })
-                    val current2 = eurosList?.get(i)
-                    values2.add(current2?.let {
-                        Entry(i.toFloat(),
-                            it, resources.getDrawable(R.drawable.ic_euro))
-                    })
-                    val current3 = canadaList?.get(i)
-                    values3.add(current3?.let {
-                        Entry(i.toFloat(),
-                            it, resources.getDrawable(R.drawable.ic_dollar))
-                    })
+                var j = 0F
+                if (dolaresList != null) {
+                    for (i in dolaresList.size - count - 1 until dolaresList.size) {
+                        j++
+                        val current1 = dolaresList[i]
+                        values.add(Entry(j, current1, R.drawable.ic_dollar))
+                        val current2 = eurosList?.get(i)
+                        values2.add(current2?.let {
+                            Entry(j, it, R.drawable.ic_euro)
+                        })
+                        val current3 = canadaList?.get(i)
+                        values3.add(current3?.let {
+                            Entry(j, it, R.drawable.ic_dollar)
+                        })
+                    }
                 }
 
                 val setA: LineDataSet
@@ -474,7 +473,7 @@ class finanzasstatsahorro : Fragment() {
                     setA.setDrawIcons(false)
                     setA.enableDashedLine(16f, 0f, 0f)
                     setA.color = R.color.P1
-                    setA.setCircleColor(R.color.R0)
+                    setA.setCircleColor(R.color.G0)
                     setA.lineWidth = 10f
                     setA.circleRadius = 3f
                     setA.setDrawCircleHole(true)
@@ -485,13 +484,13 @@ class finanzasstatsahorro : Fragment() {
                     setA.enableDashedHighlightLine(10f, 5f, 0f)
                     setA.setDrawFilled(false)
                     setA.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
-                    setA.fillColor = R.color.G2
+                    setA.fillColor = R.color.B1
 
                     setB = LineDataSet(values2, eur)
                     setB.setDrawIcons(false)
                     setB.enableDashedLine(16f, 0f, 0f)
                     setB.color = R.color.P1
-                    setB.setCircleColor(R.color.R0)
+                    setB.setCircleColor(R.color.G0)
                     setB.lineWidth = 10f
                     setB.circleRadius = 3f
                     setB.setDrawCircleHole(true)
@@ -502,13 +501,13 @@ class finanzasstatsahorro : Fragment() {
                     setB.enableDashedHighlightLine(10f, 5f, 0f)
                     setB.setDrawFilled(false)
                     setB.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
-                    setB.fillColor = R.color.G2
+                    setB.fillColor = R.color.R0
 
                     setC = LineDataSet(values3, cad)
                     setC.setDrawIcons(false)
                     setC.enableDashedLine(16f, 0f, 0f)
                     setC.color = R.color.P1
-                    setC.setCircleColor(R.color.R0)
+                    setC.setCircleColor(R.color.G0)
                     setC.lineWidth = 10f
                     setC.circleRadius = 3f
                     setC.setDrawCircleHole(true)
@@ -532,13 +531,7 @@ class finanzasstatsahorro : Fragment() {
             }
             else -> {
                 for (i in 0 until count) {
-                    values.add(
-                        Entry(
-                            i.toFloat(),
-                            range,
-                            resources.getDrawable(R.drawable.ic_bubbles)
-                        )
-                    )
+                    values.add(Entry(i.toFloat(), range, R.drawable.ic_bubbles))
                 }
 
                 val set1: LineDataSet
@@ -606,10 +599,11 @@ class finanzasstatsahorro : Fragment() {
             )
         }
 
+        @SuppressLint("ResourceAsColor")
         override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
             val chart = holder.chart
 
-            chart.setBackgroundColor(resources.getColor(R.color.B1))
+            chart.setBackgroundColor(R.color.N1)
             chart.description.isEnabled = false
             chart.setTouchEnabled(true)
             chart.setDrawGridBackground(false)
@@ -621,34 +615,18 @@ class finanzasstatsahorro : Fragment() {
             val porcentaje: String
             val count = rango.toInt()
 
-            binding.RangoSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    when (position) {
-                        0 -> {
-                            setData(count, chart, position)
-                        }
-                        1 -> {
-                            setData(count, chart, position)
-                        }
-                        2 -> {
-                            setData(count, chart, position)
-                        }
-                        else -> {
-                            setData(0, chart, 0)
-                        }
-                    }
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-            })
-
+            val ahorros = ahorrosMap.toSortedMap().values.toList()
+            val size = ahorros.size - 1
+            var balance = 0F
+            for (i in size - count .. size) {
+                balance += ahorros[i]
+            }
+            val percent = ((ahorros[size] - ahorros[size - count]) / maxOf(ahorros[size - count], 1F))*100
             when (position) {
                 0 -> {
                     moneda = "Estático"
-                    valor = "Ingresos: $"
-                    porcentaje = "Gastos: $"
+                    valor = "Balance: $balance$"
+                    porcentaje = "Crecimiento: $percent%"
 
                     setData(count, chart, position)
                 }
@@ -661,16 +639,15 @@ class finanzasstatsahorro : Fragment() {
                 }
                 2 -> {
                     moneda = "Moneda"
-                    valor = "30.2F"
-                    porcentaje = "40.3F"
-
+                    valor = ""
+                    porcentaje = ""
+                    holder.table.adapter = DivisaAdapter()
                     setData(count, chart, position)
                 }
                 else -> {
                     moneda = "Moneda"
                     valor = "0.0F"
                     porcentaje = "0.0F"
-                    holder.table.adapter = DivisaAdapter()
                     setData(0, chart, 0)
                 }
             }
@@ -707,38 +684,40 @@ class finanzasstatsahorro : Fragment() {
             )
         }
 
+        @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
+            val count = rango.toInt()
             val usd = "USD"
             val eur = "EUR"
             val cad = "CAD"
             val dolaresList: MutableList<Float> = currencyData[usd] ?: ArrayList()
             val eurosList: MutableList<Float> = currencyData[eur] ?: ArrayList()
             val canadaList: MutableList<Float> = currencyData[cad] ?: ArrayList()
-            val porcentajeUSD = ((dolaresList[dolaresList.size - 1] - dolaresList[0]) / (maxOf(dolaresList[0], 1F)*100))
-            val porcentajeEUR = ((eurosList[eurosList.size - 1] - eurosList[0]) / (maxOf(eurosList[0], 1F)*100))
-            val porcentajeCAD = ((canadaList[canadaList.size - 1] - canadaList[0]) / (maxOf(canadaList[0], 1F)*100))
+            val porcentajeUSD = ((dolaresList[dolaresList.size - 1] - dolaresList[dolaresList.size - 1 - count]) / (maxOf(dolaresList[dolaresList.size - 1 - count], 1F)))*100
+            val porcentajeEUR = ((eurosList[eurosList.size - 1] - eurosList[eurosList.size - 1 - count]) / (maxOf(eurosList[eurosList.size - 1 - count], 1F)))*100
+            val porcentajeCAD = ((canadaList[canadaList.size - 1] - canadaList[canadaList.size - 1 - count]) / (maxOf(canadaList[canadaList.size - 1 - count], 1F)))*100
             when (position) {
                 0 -> {
                     holder.itemView.setBackgroundResource(R.drawable.p1topcell)
                     holder.divisaTextView.text = usd
-                    holder.valorTextView.text = dolaresList[dolaresList.size - 1].toString()
-                    holder.porcentajeTextView.text = porcentajeUSD.toString()
+                    holder.valorTextView.text = "${dolaresList[dolaresList.size - 1]}$"
+                    holder.porcentajeTextView.text = "$porcentajeUSD%"
                 }
                 1 -> {
                     holder.divisaTextView.text = eur
-                    holder.valorTextView.text = eurosList[eurosList.size - 1].toString()
-                    holder.porcentajeTextView.text = porcentajeEUR.toString()
+                    holder.valorTextView.text = "${eurosList[eurosList.size - 1]}$"
+                    holder.porcentajeTextView.text = "$porcentajeEUR%"
                 }
                 2 -> {
                     holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)
                     holder.divisaTextView.text = cad
-                    holder.valorTextView.text = canadaList[canadaList.size - 1].toString()
-                    holder.porcentajeTextView.text = porcentajeCAD.toString()
+                    holder.valorTextView.text = "${canadaList[canadaList.size - 1]}$"
+                    holder.porcentajeTextView.text = "$porcentajeCAD%"
                 }
                 else -> {
-                    holder.divisaTextView.text = usd
-                    holder.valorTextView.text = eur
-                    holder.porcentajeTextView.text = cad
+                    holder.divisaTextView.text = "$usd%"
+                    holder.valorTextView.text = "$eur%"
+                    holder.porcentajeTextView.text = "$cad%"
                 }
             }
         }

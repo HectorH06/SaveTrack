@@ -748,6 +748,8 @@ class Login : Fragment() {
                                                                     val idevento: Long = jsonObject7.getLong("idevento")
                                                                     val nombre: String = jsonObject7.getString("nombre")
                                                                     val fecha: Int = jsonObject7.optInt("fecha")
+                                                                    val frecuencia: Int = jsonObject7.optInt("frecuencia")
+                                                                    val etiqueta: Int = jsonObject7.optInt("etiqueta")
                                                                     val estado: Int = jsonObject7.optInt("estado")
                                                                     val adddate: Int = jsonObject7.optInt("adddate")
 
@@ -755,6 +757,8 @@ class Login : Fragment() {
                                                                         idevento = idevento,
                                                                         nombre = nombre,
                                                                         fecha = fecha,
+                                                                        frecuencia = frecuencia,
+                                                                        etiqueta = etiqueta,
                                                                         estado = estado,
                                                                         adddate = adddate
                                                                     )
@@ -766,7 +770,7 @@ class Login : Fragment() {
                                                                     eventosDao.insertEvento(nuevosEventos)
                                                                 } else {
                                                                     Log.v(
-                                                                        "Current monto $i",
+                                                                        "Current evento $i",
                                                                         "VACÍO"
                                                                     )
                                                                 }
@@ -774,12 +778,12 @@ class Login : Fragment() {
 
                                                             val jsonArray8 = JSONArray(URL("http://savetrack.com.mx/backupget8.php?username=$username").readText())
                                                             val conySugDao = Stlite.getInstance(requireContext()).getConySugDao()
-                                                            eventosDao.clean()
+                                                            conySugDao.clean()
                                                             Log.v("jsonArray8", jsonArray8.toString())
                                                             for (i in 0 until jsonArray8.length()) {
                                                                 val jsonObject8 =
                                                                     jsonArray8.getJSONObject(i)
-                                                                if (jsonObject8.getLong("idevento") != null) {
+                                                                if (jsonObject8.getLong("idcon") != null) {
                                                                     val idcon: Long = jsonObject8.getLong("idcon")
                                                                     val nombre: String = jsonObject8.getString("nombre")
                                                                     val contenido: String = jsonObject8.optString("contenido")
@@ -805,7 +809,7 @@ class Login : Fragment() {
                                                                     conySugDao.insertConoSug(nuevosConySug)
                                                                 } else {
                                                                     Log.v(
-                                                                        "Current monto $i",
+                                                                        "Current consejo $i",
                                                                         "VACÍO"
                                                                     )
                                                                 }

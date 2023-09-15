@@ -16,13 +16,19 @@ data class Eventos(
     var nombre: String,
 
     @ColumnInfo(name = "fecha")
-    var fecha: Int?,
+    var fecha: Int,
+
+    @ColumnInfo(name = "frecuencia")
+    var frecuencia: Int,
+
+    @ColumnInfo(name = "etiqueta")
+    var etiqueta: Int,
 
     @ColumnInfo(name = "estado")
-    var estado: Int? = 0,
+    var estado: Int,
 
     @ColumnInfo(name = "adddate")
     var adddate: Int
 ) : Parcelable {
-    constructor() : this(0L, "", 0, 0, 0)
+    constructor() : this(0L, "", 0, 0, 0, 0, 0)
 }

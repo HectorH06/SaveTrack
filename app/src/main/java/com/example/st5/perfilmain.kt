@@ -178,6 +178,7 @@ class perfilmain : Fragment() {
                     jsonObjectUsuario.put("foto", viejoUsuario.foto)
                     jsonObjectUsuario.put("diasaho", viejoUsuario.diasaho)
                     jsonObjectUsuario.put("balance", viejoUsuario.balance)
+                    jsonObjectUsuario.put("meta", viejoUsuario.meta)
                     jsonObjectUsuario.put("theme", viejosAssets.theme)
                     jsonObjectUsuario.put("lastprocess", viejosAssets.lastprocess)
 
@@ -287,21 +288,25 @@ class perfilmain : Fragment() {
                                 idevento = eventosDao.getIdevento(idevento),
                                 nombre = eventosDao.getNombre(idevento),
                                 fecha = eventosDao.getFecha(idevento),
+                                frecuencia = eventosDao.getFrecuencia(idevento),
+                                etiqueta = eventosDao.getEtiqueta(idevento),
                                 estado = eventosDao.getEstado(idevento),
                                 adddate = eventosDao.getAddDate(idevento)
                             )
                             Log.v("Current evento $idevento", viejoEvento.toString())
-                            val jsonObjectLabels = JSONObject()
-                            jsonObjectLabels.put("idlabel", viejoEvento.idevento)
-                            jsonObjectLabels.put("plabel", viejoEvento.nombre)
-                            jsonObjectLabels.put("color", viejoEvento.fecha)
-                            jsonObjectLabels.put("estado", viejoEvento.estado)
-                            jsonObjectLabels.put("adddate", viejoEvento.adddate)
+                            val jsonObjectEventos = JSONObject()
+                            jsonObjectEventos.put("idevento", viejoEvento.idevento)
+                            jsonObjectEventos.put("nombre", viejoEvento.nombre)
+                            jsonObjectEventos.put("fecha", viejoEvento.fecha)
+                            jsonObjectEventos.put("frecuencia", viejoEvento.frecuencia)
+                            jsonObjectEventos.put("etiqueta", viejoEvento.etiqueta)
+                            jsonObjectEventos.put("estado", viejoEvento.estado)
+                            jsonObjectEventos.put("adddate", viejoEvento.adddate)
 
-                            jsonArrayLabels.put(jsonObjectLabels)
+                            jsonArrayEventos.put(jsonObjectEventos)
 
-                            Log.v("Current object", jsonObjectLabels.toString())
-                            Log.v("Current array", jsonArrayLabels.toString())
+                            Log.v("Current object", jsonObjectEventos.toString())
+                            Log.v("Current array", jsonArrayEventos.toString())
                         } else {
                             Log.v("Current evento $idevento", "VACÍO")
                         }
@@ -320,19 +325,19 @@ class perfilmain : Fragment() {
                                 style = conySugDao.getStyle(idcon)
                             )
                             Log.v("Current consejo $idcon", viejoConsejo.toString())
-                            val jsonObjectLabels = JSONObject()
-                            jsonObjectLabels.put("idlabel", viejoConsejo.idcon)
-                            jsonObjectLabels.put("plabel", viejoConsejo.nombre)
-                            jsonObjectLabels.put("color", viejoConsejo.contenido)
-                            jsonObjectLabels.put("estado", viejoConsejo.estado)
-                            jsonObjectLabels.put("flag", viejoConsejo.flag)
-                            jsonObjectLabels.put("type", viejoConsejo.type)
-                            jsonObjectLabels.put("style", viejoConsejo.style)
+                            val jsonObjectCon = JSONObject()
+                            jsonObjectCon.put("idlabel", viejoConsejo.idcon)
+                            jsonObjectCon.put("plabel", viejoConsejo.nombre)
+                            jsonObjectCon.put("color", viejoConsejo.contenido)
+                            jsonObjectCon.put("estado", viejoConsejo.estado)
+                            jsonObjectCon.put("flag", viejoConsejo.flag)
+                            jsonObjectCon.put("type", viejoConsejo.type)
+                            jsonObjectCon.put("style", viejoConsejo.style)
 
-                            jsonArrayLabels.put(jsonObjectLabels)
+                            jsonArrayConySug.put(jsonObjectCon)
 
-                            Log.v("Current object", jsonObjectLabels.toString())
-                            Log.v("Current array", jsonArrayLabels.toString())
+                            Log.v("Current object", jsonObjectCon.toString())
+                            Log.v("Current array", jsonArrayConySug.toString())
                         } else {
                             Log.v("Current consejo $idcon", "VACÍO")
                         }

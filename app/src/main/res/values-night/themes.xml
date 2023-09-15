@@ -26,4 +26,16 @@
     <style name="finanzas_background" parent="Theme.AppTheme">
         <item name="android:background">@drawable/gradient_background_finanzas2</item>
     </style>
+
+    <style name="calendario_add" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorAccent">@color/transparent</item>
+        <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textColorPrimaryInverse">?attr/colorPrimary</item>
+        <item name="android:textColorSecondaryInverse">?attr/colorSecondaryVariant</item>
+        <item name="android:colorControlHighlight">?attr/colorPrimary</item>
+        <item name="android:colorControlActivated">?attr/colorSecondary</item>
+        <item name="android:calendarTextColor">?attr/colorPrimary</item>
+        <item name="android:dayOfWeekBackground">?attr/colorPrimary</item>
+    </style>
 </resources>

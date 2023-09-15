@@ -1,4 +1,4 @@
-
+package com.example.st5
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,7 +10,7 @@ import androidx.core.app.NotificationManagerCompat
 
 class notificationManager(private val context: Context) {
 
-    private val channelId = "mi_canal_de_notificaciones"
+    private val channelId = "Canal1"
 
     init {
         createNotificationChannel()

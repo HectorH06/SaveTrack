@@ -798,9 +798,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
                 selectedDay = 40
                 binding.FechaField.calendarViewShown = true
-
-                // TODO guardar día del mes (para meses irregulares, tomar el número máximo del mes si el día rebasa, ej: 31 de enero sería 28 de febrero o 29 si es año biciesto, pero si se elige el 28 de febrero)
-                // TODO procesos en segundo plano
             }
             "Bimestral" -> {
                 frecuencia = 61

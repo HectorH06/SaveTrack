@@ -4,7 +4,7 @@
         <shape android:shape="oval">
             <solid android:color="@color/G0" />
             <gradient
-                android:startColor="@color/G3"
+                android:startColor="@color/G2"
                 android:endColor="@color/G1"
                 android:type="linear"
                 android:angle="0"/>
@@ -25,7 +25,7 @@
         <shape android:shape="oval">
             <solid android:color="@color/G1" />
             <gradient
-                android:startColor="@color/G4"
+                android:startColor="@color/G3"
                 android:endColor="@color/G2"
                 android:type="linear"
                 android:angle="0"/>

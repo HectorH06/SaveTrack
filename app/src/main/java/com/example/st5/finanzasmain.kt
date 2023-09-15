@@ -93,6 +93,11 @@ class finanzasmain : Fragment() {
                 .replace(R.id.finanzas_container, finanzasstatsahorro()).addToBackStack(null).commit()
         }
 
+        binding.FinanzasCalendar.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.finanzas_container, finanzasEventos()).addToBackStack(null).commit()
+        }
     }
 
     private fun bajarfoto(link: String) {

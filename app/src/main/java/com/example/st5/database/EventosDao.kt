@@ -20,6 +20,10 @@ interface EventosDao {
     fun getNombre(id: Int): String
     @Query("SELECT fecha FROM eventos WHERE idevento = :id")
     fun getFecha(id: Int): Int
+    @Query("SELECT frecuencia FROM eventos WHERE idevento = :id")
+    fun getFrecuencia(id: Int): Int
+    @Query("SELECT etiqueta FROM eventos WHERE idevento = :id")
+    fun getEtiqueta(id: Int): Int
     @Query("SELECT estado FROM eventos WHERE idevento = :id")
     fun getEstado(id: Int): Int
     @Query("SELECT adddate FROM eventos WHERE idevento = :id")

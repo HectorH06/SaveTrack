@@ -246,7 +246,7 @@ class finanzasstatsahorro : Fragment() {
         val baseUrl = "http://savetrack.com.mx/divisas.php?basecurrency=MXN"
 
         val today = LocalDate.now()
-        val ago = today.minusDays(5)
+        val ago = today.minusDays(7)
         val daysInRange = ChronoUnit.DAYS.between(ago, today)
         val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val queue: RequestQueue = Volley.newRequestQueue(requireContext())

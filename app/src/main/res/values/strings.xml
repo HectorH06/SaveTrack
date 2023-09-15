@@ -155,6 +155,8 @@
     <string name="faq">FAQ</string>
     <string name="madeby">Hecho con amor por</string>
     <string name="creator">hector8heredia@gmail.com y lamc1211@hotmail.com</string>
+    <string name="nuevo_evento">Nuevo Evento</string>
+    <string name="adde">Añadir Evento</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">
@@ -183,6 +185,15 @@
         <item>Diario</item>
         <item>Semanal</item>
         <item>Quincenal</item>
+        <item>Mensual</item>
+        <item>Bimestral</item>
+        <item>Trimestral</item>
+        <item>Cuatrimestral</item>
+        <item>Semestral</item>
+        <item tools:ignore="Typos">Anual</item>
+    </string-array><string-array name="frecuenciaoptionseventos">
+        <item>Seleccionar</item>
+        <item>Única vez</item>
         <item>Mensual</item>
         <item>Bimestral</item>
         <item>Trimestral</item>

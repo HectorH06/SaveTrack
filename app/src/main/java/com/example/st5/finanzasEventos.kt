@@ -10,11 +10,15 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager.widget.ViewPager
+import com.example.st5.calendar.MonthsPagerAdapter
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentFinanzaseventosBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.util.*
 
 class finanzasEventos : Fragment() {
     private lateinit var binding: FragmentFinanzaseventosBinding
@@ -32,12 +36,30 @@ class finanzasEventos : Fragment() {
             }
 
             Log.i("MODO", isDarkMode.toString())
+
+            val hoy = LocalDate.now()
+            val day = hoy.dayOfMonth
+            val fDay = String.format("%02d", day)
+            val month = hoy.monthValue
+            val fMonth = String.format("%02d", month)
+            val year = hoy.year
+            val fecha = "$year$fMonth$fDay"
+            val today: Int = fecha.replace("-", "").toInt()
+            Log.v("today", "$today")
+            val monthsPagerAdapter = MonthsPagerAdapter(requireContext(), isDarkMode, today)
+            val viewPager: ViewPager = binding.calendarView
+            viewPager.adapter = monthsPagerAdapter
+
+            viewPager.currentItem = month - 1
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                        .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null).commit()
                 }
             })
     }
@@ -55,23 +77,71 @@ class finanzasEventos : Fragment() {
         return komodo
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFinanzaseventosBinding.inflate(inflater, container, false)
+        val hoy = LocalDate.now()
+        val month = hoy.monthValue - 1
+        val year = hoy.year
+        val mesesito = when (month) {
+            0 -> "Enero"
+            1 -> "Febrero"
+            2 -> "Marzo"
+            3 -> "Abril"
+            4 -> "Mayo"
+            5 -> "Junio"
+            6 -> "Julio"
+            7 -> "Agosto"
+            8 -> "Septiembre"
+            9 -> "Octubre"
+            10 -> "Noviembre"
+            11 -> "Diciembre"
+            else -> "cualquier mes"
+        }
+
+        binding.bar.text = "$mesesito $year"
         return binding.root
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val hoy = LocalDate.now()
+        val month = hoy.monthValue - 1
+        val year = hoy.year
+        val mesesito = when (month) {
+            0 -> "Enero"
+            1 -> "Febrero"
+            2 -> "Marzo"
+            3 -> "Abril"
+            4 -> "Mayo"
+            5 -> "Junio"
+            6 -> "Julio"
+            7 -> "Agosto"
+            8 -> "Septiembre"
+            9 -> "Octubre"
+            10 -> "Noviembre"
+            11 -> "Diciembre"
+            else -> "cualquier mes"
+        }
+
+        binding.bar.text = "$mesesito $year"
 
         binding.ConfigButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
+        }
+
+        binding.goback.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null).commit()
         }
 
         binding.AgregarEventoButton.setOnClickListener {

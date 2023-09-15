@@ -1,69 +1,44 @@
 package com.example.st5.calendar
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ImageSpan
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import com.example.st5.*
+import android.view.View
+import android.view.ViewGroup
+import androidx.viewpager.widget.PagerAdapter
+import com.example.st5.CalendarAgenda
 
-private val TAB_TITLES = arrayOf(
-    R.drawable.ic_person,
-    R.drawable.ic_history,
-    R.drawable.ic_index,
-    R.drawable.ic_savingplans,
-    R.drawable.ic_finance
-)
-
-private val TAB_TITLES_LIGHT = arrayOf(
-    R.drawable.ic_personlight,
-    R.drawable.ic_historylight,
-    R.drawable.ic_indexlight,
-    R.drawable.ic_savingplanslight,
-    R.drawable.ic_financelight
-)
-
-class MonthsPagerAdapter(private val context: Context, fm: FragmentManager, mode: Boolean) :
-    FragmentPagerAdapter(fm) {
-
-    private val modo = mode
-
-    override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> containerPerfil.newInstance(position)
-            1 -> containerHistorial.newInstance(position)
-            2 -> containerIndex.newInstance(position)
-            3 -> containerPlanesDeAhorro.newInstance(position)
-            4 -> containerFinanzas.newInstance(position)
-
-            else -> containerIndex.newInstance(position)
-        }
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun getPageTitle(position: Int): CharSequence {
-        var drawable: Drawable? = context.getDrawable(TAB_TITLES[position])
-        if (!modo){
-            drawable = context.getDrawable(TAB_TITLES_LIGHT[position])
-        }
-
-
-        drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        val spannable = SpannableStringBuilder(" ")
-        spannable.setSpan(
-            drawable?.let { ImageSpan(it) },
-            0,
-            1,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        return spannable
-    }
+class MonthsPagerAdapter(private val context: Context, private val mode: Boolean, private val today: Int) : PagerAdapter() {
 
     override fun getCount(): Int {
-        return 5
+        return 12
+    }
+
+    override fun isViewFromObject(view: View, `object`: Any): Boolean {
+        return view == `object`
+    }
+
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        val calendarAgenda = when (position) {
+            0 -> CalendarAgenda.newInstance(position, context, mode, today)
+            1 -> CalendarAgenda.newInstance(position, context, mode, today)
+            2 -> CalendarAgenda.newInstance(position, context, mode, today)
+            3 -> CalendarAgenda.newInstance(position, context, mode, today)
+            4 -> CalendarAgenda.newInstance(position, context, mode, today)
+            5 -> CalendarAgenda.newInstance(position, context, mode, today)
+            6 -> CalendarAgenda.newInstance(position, context, mode, today)
+            7 -> CalendarAgenda.newInstance(position, context, mode, today)
+            8 -> CalendarAgenda.newInstance(position, context, mode, today)
+            9 -> CalendarAgenda.newInstance(position, context, mode, today)
+            10 -> CalendarAgenda.newInstance(position, context, mode, today)
+            11 -> CalendarAgenda.newInstance(position, context, mode, today)
+            12 -> CalendarAgenda.newInstance(position, context, mode, today)
+            else -> CalendarAgenda.newInstance(0, context, mode, today)
+        }
+
+        container.addView(calendarAgenda)
+        return calendarAgenda
+    }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(`object` as View)
     }
 }

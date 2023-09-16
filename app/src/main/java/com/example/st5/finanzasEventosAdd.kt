@@ -163,11 +163,21 @@ class finanzasEventosAdd : Fragment(), AdapterView.OnItemSelectedListener {
 
                                 fsi
                             } // Único
-                            30, 61, 91, 122, 183, 365 -> {
+                            30 -> {
                                 val intday = binding.FechaField.dayOfMonth
                                 Log.w("DAY", intday.toString())
 
                                 intday
+                            }
+                            61, 91, 122, 183, 365 -> {
+                                val day = binding.FechaField.dayOfMonth
+                                val fDay = String.format("%02d", day)
+                                val month = binding.FechaField.month + 1
+                                val fMonth = String.format("%02d", month)
+                                val datedate = "5$fMonth$fDay"
+                                val fsi: Int = datedate.toInt()
+
+                                fsi
                             } // Mensuales
                             else -> {
                                 val intyear = binding.FechaField.year - 1900

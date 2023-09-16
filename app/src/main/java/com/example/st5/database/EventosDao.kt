@@ -13,6 +13,8 @@ interface EventosDao {
 
     @Query("SELECT MAX(idevento) FROM eventos")
     fun getMaxEvento(): Int
+    @Query("SELECT * FROM eventos")
+    fun getAllEventos(): List<Eventos>
 
     @Query("SELECT idevento FROM eventos WHERE idevento = :id")
     fun getIdevento(id: Int): Long
@@ -28,4 +30,7 @@ interface EventosDao {
     fun getEstado(id: Int): Int
     @Query("SELECT adddate FROM eventos WHERE idevento = :id")
     fun getAddDate(id: Int): Int
+
+    @Query("SELECT * FROM eventos WHERE adddate <= :fecha AND (fecha = :fecha OR fecha = :dom OR fecha = :dommon)")
+    fun getEventosXFecha(fecha: Int, dom: Int, dommon: Int): List<Eventos>
 }

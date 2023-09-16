@@ -45,11 +45,13 @@
         android:layout_height="wrap_content"
         android:text="@string/Mes"
         android:textColor="?attr/colorOnPrimary"
-        android:textSize="36sp"
+        android:textSize="28sp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/goback" />
+        app:layout_constraintStart_toEndOf="@id/goback"
+        app:layout_constraintEnd_toStartOf="@id/ConfigButton" />
 
     <ImageButton
         android:id="@+id/AgregarEventoButton"

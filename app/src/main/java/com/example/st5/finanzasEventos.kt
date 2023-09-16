@@ -22,12 +22,12 @@ import java.util.*
 
 class finanzasEventos : Fragment() {
     private lateinit var binding: FragmentFinanzaseventosBinding
-
+    private var isDarkMode = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
+            isDarkMode = isDarkModeEnabled(requireContext())
 
             if (isDarkMode) {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
@@ -46,11 +46,11 @@ class finanzasEventos : Fragment() {
             val fecha = "$year$fMonth$fDay"
             val today: Int = fecha.replace("-", "").toInt()
             Log.v("today", "$today")
-            val monthsPagerAdapter = MonthsPagerAdapter(requireContext(), isDarkMode, today)
+            val monthsPagerAdapter = MonthsPagerAdapter(requireContext(), isDarkMode, day, month+299)
             val viewPager: ViewPager = binding.calendarView
             viewPager.adapter = monthsPagerAdapter
 
-            viewPager.currentItem = month - 1
+            viewPager.currentItem = month + 299 // 299 porque es 300 (mitad del viewpager configurado a +-25 años) - 1 (porque monthvalue va del 1 al 12)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -104,33 +104,11 @@ class finanzasEventos : Fragment() {
 
         binding.bar.text = "$mesesito $year"
         return binding.root
-
     }
 
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val hoy = LocalDate.now()
-        val month = hoy.monthValue - 1
-        val year = hoy.year
-        val mesesito = when (month) {
-            0 -> "Enero"
-            1 -> "Febrero"
-            2 -> "Marzo"
-            3 -> "Abril"
-            4 -> "Mayo"
-            5 -> "Junio"
-            6 -> "Julio"
-            7 -> "Agosto"
-            8 -> "Septiembre"
-            9 -> "Octubre"
-            10 -> "Noviembre"
-            11 -> "Diciembre"
-            else -> "cualquier mes"
-        }
-
-        binding.bar.text = "$mesesito $year"
 
         binding.ConfigButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -149,5 +127,37 @@ class finanzasEventos : Fragment() {
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.finanzas_container, finanzasEventosAdd()).addToBackStack(null).commit()
         }
+
+        binding.calendarView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageSelected(position: Int) {
+                val year = 1998 + (position / 12)
+                val mesesito = when (position % 12) {
+                    0 -> "Enero"
+                    1 -> "Febrero"
+                    2 -> "Marzo"
+                    3 -> "Abril"
+                    4 -> "Mayo"
+                    5 -> "Junio"
+                    6 -> "Julio"
+                    7 -> "Agosto"
+                    8 -> "Septiembre"
+                    9 -> "Octubre"
+                    10 -> "Noviembre"
+                    11 -> "Diciembre"
+                    else -> "cualquier mes"
+                }
+
+                val masomenos = position - 300L
+                val hoy = LocalDate.now().plusMonths(masomenos)
+                val day = hoy.dayOfMonth
+                val fDay = String.format("%02d", day)
+                val month = position % 12
+                val fMonth = String.format("%02d", month)
+                val fecha = "$year$fMonth$fDay"
+                binding.bar.text = "$mesesito $year"
+            }
+        })
     }
 }

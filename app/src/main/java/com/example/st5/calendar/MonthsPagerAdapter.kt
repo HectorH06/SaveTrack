@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.example.st5.CalendarAgenda
 
-class MonthsPagerAdapter(private val context: Context, private val mode: Boolean, private val today: Int, private val actualPosition: Int) : PagerAdapter() {
+class MonthsPagerAdapter(private val context: Context, private val mode: Boolean, private val today: Int) : PagerAdapter() {
 
     override fun getCount(): Int {
         return 600
@@ -17,8 +17,9 @@ class MonthsPagerAdapter(private val context: Context, private val mode: Boolean
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val realPosition = position % 12
-        val calendarAgenda = CalendarAgenda.newInstance(realPosition, context, mode, today, actualPosition)
+        val monthPosition = position % 12
+        val year = 1998 + (position / 12)
+        val calendarAgenda = CalendarAgenda.newInstance(monthPosition, context, mode, today, year)
         container.addView(calendarAgenda)
         return calendarAgenda
     }

@@ -40,17 +40,20 @@ class finanzasEventos : Fragment() {
             val hoy = LocalDate.now()
             val day = hoy.dayOfMonth
             val fDay = String.format("%02d", day)
-            val month = hoy.monthValue
+            val month = hoy.monthValue - 1
             val fMonth = String.format("%02d", month)
             val year = hoy.year
             val fecha = "$year$fMonth$fDay"
             val today: Int = fecha.replace("-", "").toInt()
             Log.v("today", "$today")
-            val monthsPagerAdapter = MonthsPagerAdapter(requireContext(), isDarkMode, day, month+299)
+
+            val startYear = 1998
+
+            val monthsPagerAdapter = MonthsPagerAdapter(requireContext(), isDarkMode, day)
             val viewPager: ViewPager = binding.calendarView
             viewPager.adapter = monthsPagerAdapter
 
-            viewPager.currentItem = month + 299 // 299 porque es 300 (mitad del viewpager configurado a +-25 años) - 1 (porque monthvalue va del 1 al 12)
+            viewPager.currentItem = month + (year - startYear) * 12 // 299 porque es 300 (mitad del viewpager configurado a +-25 años) - 1 (porque monthvalue va del 1 al 12)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -132,7 +135,8 @@ class finanzasEventos : Fragment() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageScrollStateChanged(state: Int) {}
             override fun onPageSelected(position: Int) {
-                val year = 1998 + (position / 12)
+                val startYear = LocalDate.now().year - 25
+                val year = position / 12 + startYear
                 val mesesito = when (position % 12) {
                     0 -> "Enero"
                     1 -> "Febrero"
@@ -149,13 +153,6 @@ class finanzasEventos : Fragment() {
                     else -> "cualquier mes"
                 }
 
-                val masomenos = position - 300L
-                val hoy = LocalDate.now().plusMonths(masomenos)
-                val day = hoy.dayOfMonth
-                val fDay = String.format("%02d", day)
-                val month = position % 12
-                val fMonth = String.format("%02d", month)
-                val fecha = "$year$fMonth$fDay"
                 binding.bar.text = "$mesesito $year"
             }
         })

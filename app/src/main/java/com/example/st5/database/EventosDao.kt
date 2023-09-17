@@ -8,6 +8,9 @@ interface EventosDao {
     @Insert
     fun insertEvento(eventos: Eventos)
 
+    @Update
+    fun updateEvento(eventos: Eventos)
+
     @Query("DELETE FROM eventos")
     fun clean()
 

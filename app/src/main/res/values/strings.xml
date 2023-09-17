@@ -157,6 +157,9 @@
     <string name="creator">hector8heredia@gmail.com y lamc1211@hotmail.com</string>
     <string name="nuevo_evento">Nuevo Evento</string>
     <string name="adde">Añadir Evento</string>
+    <string name="evento">Evento</string>
+    <string name="eventos">Eventos</string>
+    <string name="updatee">Actualizar Evento</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

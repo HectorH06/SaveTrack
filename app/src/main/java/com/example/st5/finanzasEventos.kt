@@ -131,6 +131,12 @@ class finanzasEventos : Fragment() {
                 .replace(R.id.finanzas_container, finanzasEventosAdd()).addToBackStack(null).commit()
         }
 
+        binding.VerEventosButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.finanzas_container, finanzasEventosList()).addToBackStack(null).commit()
+        }
+
         binding.calendarView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageScrollStateChanged(state: Int) {}

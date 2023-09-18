@@ -162,7 +162,7 @@ class finanzasEventosList : Fragment() {
             eventosDao.updateEvento(muertoEvento)
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
+                .replace(R.id.finanzas_container, historialPapelera()).addToBackStack(null)
                 .commit()
         }
     }

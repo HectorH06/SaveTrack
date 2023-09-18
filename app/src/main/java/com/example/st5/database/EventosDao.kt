@@ -16,7 +16,7 @@ interface EventosDao {
 
     @Query("SELECT MAX(idevento) FROM eventos")
     fun getMaxEvento(): Int
-    @Query("SELECT * FROM eventos")
+    @Query("SELECT * FROM eventos WHERE estado != 4")
     fun getAllEventos(): List<Eventos>
 
     @Query("SELECT idevento FROM eventos WHERE idevento = :id")

@@ -41,14 +41,14 @@ class finanzasEventosUpdate : Fragment(), AdapterView.OnItemSelectedListener {
     private var mutableColores: MutableList<Int> = mutableListOf()
 
     companion object {
-        private const val idm = "ide"
+        private const val idv = "ide"
         fun sendEvento(
             ide: Long
         ): finanzasEventosUpdate {
             val fragment = finanzasEventosUpdate()
             val args = Bundle()
-            args.putLong(idm, ide)
-            Log.i("id", idm)
+            args.putLong(idv, ide)
+            Log.i("idv", idv)
             fragment.arguments = args
             return fragment
         }
@@ -75,7 +75,7 @@ class finanzasEventosUpdate : Fragment(), AdapterView.OnItemSelectedListener {
                 override fun handleOnBackPressed() {
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.finanzas_container, finanzasEventos()).addToBackStack(null).commit()
+                        .replace(R.id.finanzas_container, finanzasEventosList()).addToBackStack(null).commit()
                 }
             })
     }
@@ -98,10 +98,10 @@ class finanzasEventosUpdate : Fragment(), AdapterView.OnItemSelectedListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFinanzaseventosupdateBinding.inflate(inflater, container, false)
-        val ide = arguments?.getInt(idm)
+        val ide = arguments?.getLong(idv)
         lifecycleScope.launch {
             if (ide != null) {
-                getEvento(ide)
+                getEvento(ide.toInt())
             }
             binding.ConceptoField.setText(nEvento)
         }
@@ -112,7 +112,7 @@ class finanzasEventosUpdate : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val ide = arguments?.getInt(idm)
+        val ide = arguments?.getLong(idv)
         lifecycleScope.launch {
             getLabels()
         }
@@ -163,7 +163,7 @@ class finanzasEventosUpdate : Fragment(), AdapterView.OnItemSelectedListener {
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.finanzas_container, finanzasEventos()).addToBackStack(null).commit()
+                .replace(R.id.finanzas_container, finanzasEventosList()).addToBackStack(null).commit()
         }
 
         binding.Confirm.setOnClickListener {
@@ -221,7 +221,7 @@ class finanzasEventosUpdate : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.v("Etiqueta", label.toString())
                         lifecycleScope.launch {
                             if (ide != null) {
-                                eventoadd(
+                                eventoupdate(
                                     ide.toLong(),
                                     concepto,
                                     fecha,
@@ -303,7 +303,7 @@ class finanzasEventosUpdate : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private suspend fun eventoadd(
+    private suspend fun eventoupdate(
         ide: Long,
         nombre: String,
         fecha: Int,
@@ -326,6 +326,8 @@ class finanzasEventosUpdate : Fragment(), AdapterView.OnItemSelectedListener {
             )
 
             eventosDao.updateEvento(updateEvento)
+            val eventos = eventosDao.getAllEventos()
+            Log.i("ALL LABELS", "$eventos")
         }
     }
 
@@ -360,37 +362,30 @@ class finanzasEventosUpdate : Fragment(), AdapterView.OnItemSelectedListener {
             "Única vez" -> {
                 frecuencia = 0
                 selectedDay = 40
-                binding.FechaField.calendarViewShown = false
             }
             "Mensual" -> {
                 frecuencia = 30
                 selectedDay = 40
-                binding.FechaField.calendarViewShown = true
             }
             "Bimestral" -> {
                 frecuencia = 61
                 selectedDay = 40
-                binding.FechaField.calendarViewShown = true
             }
             "Trimestral" -> {
                 frecuencia = 91
                 selectedDay = 40
-                binding.FechaField.calendarViewShown = true
             }
             "Cuatrimestral" -> {
                 frecuencia = 122
                 selectedDay = 40
-                binding.FechaField.calendarViewShown = true
             }
             "Semestral" -> {
                 frecuencia = 183
                 selectedDay = 40
-                binding.FechaField.calendarViewShown = true
             }
             "Anual" -> {
                 frecuencia = 365
                 selectedDay = 40
-                binding.FechaField.calendarViewShown = true
             }
 
             else -> {

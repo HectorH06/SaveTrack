@@ -60,18 +60,18 @@ class Decoder (context: Context) {
                 var month = calendar.get(Calendar.MONTH)
                 if (calendar.get(Calendar.DAY_OF_MONTH) > calendarToday.get(Calendar.DAY_OF_MONTH)) month++
                 val mes = when (month) {
-                    0 -> "Enero"
-                    1 -> "Febrero"
-                    2 -> "Marzo"
-                    3 -> "Abril"
-                    4 -> "Mayo"
-                    5 -> "Junio"
-                    6 -> "Julio"
-                    7 -> "Agosto"
-                    8 -> "Septiembre"
-                    9 -> "Octubre"
-                    10 -> "Noviembre"
-                    11 -> "Diciembre"
+                    1 -> "Enero"
+                    2 -> "Febrero"
+                    3 -> "Marzo"
+                    4 -> "Abril"
+                    5 -> "Mayo"
+                    6 -> "Junio"
+                    7 -> "Julio"
+                    8 -> "Agosto"
+                    9 -> "Septiembre"
+                    10 -> "Octubre"
+                    11 -> "Noviembre"
+                    12 -> "Diciembre"
                     else -> "cualquier mes"
                 }
 
@@ -86,6 +86,40 @@ class Decoder (context: Context) {
             46 -> "Sábado"
             47 -> "Domingo"
             100 -> "Diario"
+
+            in 50000 .. 59999 -> {
+                val aux = "300$date"
+                val calendar = Calendar.getInstance()
+                val formatoFecha = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                val truefecha = formatoFecha.parse(aux)
+                calendar.time = truefecha
+
+                val now = LocalDate.now()
+                val calendarToday = Calendar.getInstance()
+                val today = formatoFecha.parse(now.toString())
+                calendarToday.time = today
+
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                var month = calendar.get(Calendar.MONTH)
+                if (calendar.get(Calendar.DAY_OF_MONTH) > calendarToday.get(Calendar.DAY_OF_MONTH)) month++
+                val mes = when (month) {
+                    1 -> "Enero"
+                    2 -> "Febrero"
+                    3 -> "Marzo"
+                    4 -> "Abril"
+                    5 -> "Mayo"
+                    6 -> "Junio"
+                    7 -> "Julio"
+                    8 -> "Agosto"
+                    9 -> "Septiembre"
+                    10 -> "Octubre"
+                    11 -> "Noviembre"
+                    12 -> "Diciembre"
+                    else -> "cualquier mes"
+                }
+
+                "$day de $mes"
+            }
 
             in 10000000..30000001 -> {
                 val formatoFecha = SimpleDateFormat("yyyyMMdd", Locale.getDefault())

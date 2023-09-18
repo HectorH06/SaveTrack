@@ -26,6 +26,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
 import java.nio.charset.Charset
+import java.time.LocalDate
 import java.util.*
 
 class Login : Fragment() {
@@ -196,6 +197,27 @@ class Login : Fragment() {
                                                                 color = -11075418
                                                             )
 
+                                                            val adddateStr: String = LocalDate.now().toString()
+                                                            val adddate = adddateStr.replace("-", "").toInt()
+
+                                                            val navidad = Eventos(
+                                                                nombre = "Navidad",
+                                                                fecha = 51225,
+                                                                frecuencia = 365,
+                                                                etiqueta = 7,
+                                                                estado = 0,
+                                                                adddate = adddate
+                                                            )
+
+                                                            val anuevo = Eventos(
+                                                                nombre = "Año nuevo",
+                                                                fecha = 50101,
+                                                                frecuencia = 365,
+                                                                etiqueta = 6,
+                                                                estado = 0,
+                                                                adddate = adddate
+                                                            )
+
                                                             val defaultAssets = Assets(
                                                                 theme = 0,
                                                                 lastprocess = 0
@@ -222,6 +244,8 @@ class Login : Fragment() {
                                                             labelsDao.insertLabel(gastosh)
                                                             labelsDao.insertLabel(ocio)
                                                             labelsDao.insertLabel(obsequio)
+                                                            eventosDao.insertEvento(navidad)
+                                                            eventosDao.insertEvento(anuevo)
                                                             assetsDao.insertAsset(defaultAssets)
 
                                                             val selected = usuarioDao.getUserData()

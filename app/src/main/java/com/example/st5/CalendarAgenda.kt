@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,10 @@ class CalendarAgenda @JvmOverloads constructor(
 ) : GridLayout(context, attrs, defStyleAttr) {
 
     private lateinit var eventos: List<Eventos>
+
+    private var mutableEtiquetas: MutableList<String> = mutableListOf()
+    private var mutableIds: MutableList<Long> = mutableListOf()
+    private var mutableColores: MutableList<Int> = mutableListOf()
     init {
         rowCount = 7
         columnCount = 7
@@ -50,6 +55,7 @@ class CalendarAgenda @JvmOverloads constructor(
         val scope = CoroutineScope(Dispatchers.Main)
         scope.launch {
             eventos = getEventos()
+            getLabels()
             Log.v("Los Eventos", "$eventos")
 
             val hoy = LocalDate.now()
@@ -164,6 +170,27 @@ class CalendarAgenda @JvmOverloads constructor(
         return eventos
     }
 
+    private suspend fun getLabels() {
+        withContext(Dispatchers.IO) {
+            val labelsDao = Stlite.getInstance(context).getLabelsDao()
+
+            val max = labelsDao.getMaxLabel()
+
+            for (i in 1..max) {
+                if (labelsDao.getPlabel(i) != ""){
+                    mutableIds.add(labelsDao.getIdLabel(i))
+                    mutableEtiquetas.add(labelsDao.getPlabel(i))
+                    mutableColores.add(labelsDao.getColor(i))
+
+                    Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
+                }
+            }
+            Log.v("idl", "$mutableIds")
+            Log.v("plabel", "$mutableEtiquetas")
+            Log.v("color", "$mutableColores")
+        }
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(sectionNumber: Int, context: Context, komodo: Boolean, today: Int, actualPosition: Int): CalendarAgenda {
@@ -176,15 +203,18 @@ class CalendarAgenda @JvmOverloads constructor(
         inner class EventoViewHolder(
             itemView: View,
             val eventoTextView: TextView,
+            val cardView: CardView
         ) : RecyclerView.ViewHolder(itemView)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventoViewHolder {
             val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_agenda, parent, false)
             val eventoTextView = itemView.findViewById<TextView>(R.id.nombreEvento)
+            val cardView = itemView.findViewById<CardView>(R.id.item_agenda)
             return EventoViewHolder(
                 itemView,
-                eventoTextView
+                eventoTextView,
+                cardView
             )
         }
 
@@ -210,6 +240,7 @@ class CalendarAgenda @JvmOverloads constructor(
                 val evento = eventosCumplen.getOrNull(position)
                 if (evento != null) {
                     holder.eventoTextView.text = evento.nombre
+                    holder.cardView.setCardBackgroundColor(mutableColores[evento.etiqueta - 1])
                 }
             }
         }

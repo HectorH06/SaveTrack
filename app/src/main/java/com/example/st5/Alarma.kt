@@ -5,18 +5,25 @@ import android.content.Context
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.util.Log
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.models.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.nio.charset.Charset
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 class Alarma : BroadcastReceiver() {
@@ -25,19 +32,55 @@ class Alarma : BroadcastReceiver() {
     private val jsonArrayEventos = JSONArray()
     private val jsonArrayConySug = JSONArray()
 
+    private val currencyData = mutableMapOf<String, MutableList<Float>>()
+    private val currencies = arrayOf("USD")
+    private var dolaresList: MutableList<Float> = mutableListOf()
+
     private lateinit var notificationHelper: notificationManager
     private lateinit var decoder: Decoder
     override fun onReceive(context: Context?, intent: Intent?) {
         runBlocking {
             if (context != null) {
+                getDivisas(context)
                 procesarMontos(context)
                 respaldo(context)
             }
         }
     }
 
+    private fun callDollarNotif(dolarA: Float, dolarH: Float) {
+        Log.v("DOLARESHOY", "AYER: $dolarA, HOY: $dolarH")
+
+        val dif = dolarA - dolarH
+        val mindif = 0.05
+        val percent = (dif / dolarA) * 100
+        if (dif >= mindif) {
+            notificationHelper.sendNotification(
+                "General",
+                R.drawable.logo1,
+                "El dólar subió",
+                "Subió $dif ($percent)",
+                0,
+                0,
+                0
+            )
+        }
+        if (dif <=  mindif) {
+            notificationHelper.sendNotification(
+                "General",
+                R.drawable.logo1,
+                "El dólar bajó",
+                "Bajó $dif ($percent%)",
+                0,
+                0,
+                0
+            )
+        }
+    }
+
     private suspend fun procesarMontos(context: Context) {
         withContext(Dispatchers.IO) {
+            delay(5000)
             val usuarioDao = Stlite.getInstance(context).getUsuarioDao()
             val montoDao = Stlite.getInstance(context).getMontoDao()
             val ingresoGastoDao = Stlite.getInstance(context).getIngresosGastosDao()
@@ -77,10 +120,19 @@ class Alarma : BroadcastReceiver() {
 
             if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta()) {
                 usuarioDao.updateDiasaho(usuarioDao.checkId(), 0L)
-                notificationHelper.sendNotification("General", R.drawable.logo1, "No tienes lana we", "Tienes ${decoder.format(usuarioDao.checkBalance())} pesos", 0, 0L)
+                notificationHelper.sendNotification(
+                    "General",
+                    R.drawable.logo1,
+                    "No tienes lana we",
+                    "Tienes ${decoder.format(usuarioDao.checkBalance())} pesos",
+                    0,
+                    0L,
+                    0
+                )
             } else {
                 usuarioDao.updateDiasaho(usuarioDao.checkId(), usuarioDao.checkDiasaho() + 1L)
             }
+
 
             val montos = montoDao.getMontoXFecha(today, dom, dow, 100, addd)
 
@@ -94,7 +146,10 @@ class Alarma : BroadcastReceiver() {
                         Log.v("wek", weekMonto.toString())
 
                         if (monto.etiqueta > 10000) {
-                            ingresoGastoDao.updateSummaryI(monto.iduser.toInt(), totalIngresos + monto.valor)
+                            ingresoGastoDao.updateSummaryI(
+                                monto.iduser.toInt(),
+                                totalIngresos + monto.valor
+                            )
                             monto.veces = monto.veces?.plus(1)
                             monto.sequence = monto.sequence + "1."
                             montoDao.updateMonto(monto)
@@ -348,7 +403,7 @@ class Alarma : BroadcastReceiver() {
             }
 
             for (idevento in 1..perocuantoseventos) {
-                if (eventosDao.getIdevento(idevento) != null && eventosDao.getNombre(idevento) != null){
+                if (eventosDao.getIdevento(idevento) != null && eventosDao.getNombre(idevento) != null) {
                     Log.v("Current evento", idevento.toString())
                     val viejoEvento = Eventos(
                         idevento = eventosDao.getIdevento(idevento),
@@ -379,7 +434,7 @@ class Alarma : BroadcastReceiver() {
             }
 
             for (idcon in 1..perocuantosconsejos) {
-                if (conySugDao.getIdcon(idcon) != null && conySugDao.getNombre(idcon) != null){
+                if (conySugDao.getIdcon(idcon) != null && conySugDao.getNombre(idcon) != null) {
                     Log.v("Current idcon", idcon.toString())
                     val viejoConsejo = ConySug(
                         idcon = conySugDao.getIdcon(idcon),
@@ -611,6 +666,60 @@ class Alarma : BroadcastReceiver() {
             Log.v(
                 "POST SELECTED USERS", selectedafter.toString()
             )
+        }
+    }
+
+    private fun getDivisas(context: Context) {
+        val baseUrl = "http://savetrack.com.mx/divisas.php?basecurrency=MXN"
+
+        val today = LocalDate.now()
+        val ago = today.minusDays(2)
+        val daysInRange = ChronoUnit.DAYS.between(ago, today)
+        val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val queue: RequestQueue = Volley.newRequestQueue(context)
+        for (i in 0..daysInRange) {
+            val date = ago.plusDays(i)
+            val formattedDate = date.format(dateFormat)
+            val apiUrl = "$baseUrl&date=$formattedDate&currencies=${currencies.joinToString(",")}"
+
+            val checkDollar = StringRequest(
+                Request.Method.GET, apiUrl,
+                { response ->
+                    Log.v("RES", response)
+                    try {
+                        val responseData = JSONObject(response)
+                        Log.v("Try", "$responseData")
+                        for (currency in currencies) {
+                            val value = 1 / responseData.optDouble(currency)
+                            Log.v("VALUES", "$value")
+                            if (!currencyData.containsKey(currency)) {
+                                currencyData[currency] = mutableListOf()
+                            }
+                            currencyData[currency]?.add(value.toFloat())
+                            Log.v("currencyData", "$currencyData")
+                            Log.v("currencyCURRENT", "$currency")
+                            Log.v("currencyUSD", "${currencyData[currency]}")
+                            if ((currencyData[currency]?.size ?: 0) > 1) {
+                                callDollarNotif(
+                                    currencyData[currency]?.get(0) ?: 0F,
+                                    currencyData[currency]?.get(1) ?: 0F
+                                )
+                            }
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                { error ->
+                    Toast.makeText(
+                        context,
+                        "No se ha podido conectar al valor del dólar hoy",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.d("error => $error", "SIE API ERROR")
+                }
+            )
+            queue.add(checkDollar)
         }
     }
 }

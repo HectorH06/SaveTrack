@@ -3,10 +3,8 @@ package com.example.st5
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
 import android.util.Log
 import com.example.st5.database.Stlite
-import com.example.st5.models.Monto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -16,142 +14,103 @@ import java.util.*
 class Recordatorios : BroadcastReceiver() {
     private lateinit var notificationHelper: notificationManager
     private lateinit var decoder: Decoder
+
     override fun onReceive(context: Context?, intent: Intent?) {
         runBlocking {
             if (context != null) {
-                procesarMontos(context)
+                recordar(context)
             }
         }
     }
-
-    private suspend fun procesarMontos(context: Context) {
+    private suspend fun recordar(context: Context) {
         withContext(Dispatchers.IO) {
-            val usuarioDao = Stlite.getInstance(context).getUsuarioDao()
             val montoDao = Stlite.getInstance(context).getMontoDao()
-            val ingresoGastoDao = Stlite.getInstance(context).getIngresosGastosDao()
-            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+            val eventosDao = Stlite.getInstance(context).getEventosDao()
 
             notificationHelper = notificationManager(context)
             decoder = Decoder(context)
-            val fechaActual = LocalDate.now().toString()
-            val today: Int = fechaActual.replace("-", "").toInt()
-            val prev = assetsDao.getLastProcess()
 
-            val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val truefecha = formatoFecha.parse(fechaActual)
+            val hoy = LocalDate.now()
             val calendar = Calendar.getInstance()
-            calendar.time = truefecha
+            val year = hoy.year
+            val month = hoy.monthValue - 1
+            val day = hoy.dayOfMonth
+            calendar.set(year, month, day)
 
-            val dom = calendar.get(Calendar.DAY_OF_MONTH)
-            val w = calendar.get(Calendar.DAY_OF_WEEK)
-            var dow = 100
-            when (w) {
-                1 -> dow = 47
-                2 -> dow = 41
-                3 -> dow = 42
-                4 -> dow = 43
-                5 -> dow = 44
-                6 -> dow = 45
-                7 -> dow = 46
-            }
+            val fDay = String.format("%02d", day)
+            val fMonth = String.format("%02d", month)
+            val datedate = "$year$fMonth$fDay"
+            val today: Int = datedate.replace("-", "").toInt()
+            val anual: Int = "5$fMonth$fDay".toInt()
+
+            val futuro = hoy.plusDays(7)
+            val calendarFuturo = Calendar.getInstance()
+            val yearFuturo = futuro.year
+            val monthFuturo = futuro.monthValue - 1
+            val dayFuturo = futuro.dayOfMonth
+            calendarFuturo.set(yearFuturo, monthFuturo, dayFuturo)
+
+            val fDayFuturo = String.format("%02d", dayFuturo)
+            val fMonthFuturo = String.format("%02d", monthFuturo)
+            val datedateFuturo = "$yearFuturo$fMonthFuturo$fDayFuturo"
+            val tomorrow: Int = datedateFuturo.replace("-", "").toInt()
+            val anualFuturo: Int = "5$fMonthFuturo$fDayFuturo".toInt()
 
             val addd: Int = today
 
-            Log.i("DOM", dom.toString())
-            Log.i("DOW", dow.toString())
+            val montos = montoDao.getDelayed(addd)
+            val eventosList = eventosDao.getEventosX2Fechas(today, anual, day, tomorrow, anualFuturo, dayFuturo)
 
-            Log.i("todayyyy", today.toString())
-            Log.i("prevvvvv", prev.toString())
-
-            if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta()) {
-                usuarioDao.updateDiasaho(usuarioDao.checkId(), 0L)
-                notificationHelper.sendNotification("General", R.drawable.logo, "No tienes lana we", "Tienes ${decoder.format(usuarioDao.checkBalance())} pesos", 0, 0L)
-            } else {
-                usuarioDao.updateDiasaho(usuarioDao.checkId(), usuarioDao.checkDiasaho() + 1L)
+            for (monto in montos) {
+                Log.v("notifmonto", monto.concepto)
+                if (monto.delay >= 3) {
+                    notificationHelper.sendNotification(
+                        "Recordatorios",
+                        R.drawable.ic_calendar,
+                        "URGENTE",
+                        "Has pospuesto demasiado el monto ${monto.concepto}",
+                        1,
+                        monto.idmonto,
+                        1
+                    )
+                } else {
+                    notificationHelper.sendNotification(
+                        "Recordatorios",
+                        R.drawable.ic_calendar,
+                        "Paga tus deudas",
+                        "El monto ${monto.concepto} se paga hoy",
+                        1,
+                        monto.idmonto,
+                        1
+                    )
+                }
             }
-
-            val montos = montoDao.getMontoXFecha(today, dom, dow, 100, addd)
-
-            if (prev < today) {
-                for (monto in montos) {
-                    if (monto.cooldown == 0) {
-                        val totalIngresos = ingresoGastoDao.checkSummaryI()
-
-                        Log.i("MONTO PROCESADO", monto.toString())
-                        val weekMonto = monto.fecha
-                        Log.v("wek", weekMonto.toString())
-
-                        if (monto.etiqueta > 10000) {
-                            ingresoGastoDao.updateSummaryI(monto.iduser.toInt(), totalIngresos + monto.valor)
-                            monto.veces = monto.veces?.plus(1)
-                            monto.sequence = monto.sequence + "1."
-                            montoDao.updateMonto(monto)
-                        } else {
-                            var status = 0
-                            var cooldown = 0
-                            val sequence = monto.sequence + "0."
-                            when (monto.estado) {
-                                1 -> status = 0
-                                4 -> status = 3
-                                6 -> status = 5
-                                9 -> status = 8
-                            }
-                            when (monto.frecuencia) {
-                                14 -> cooldown = 1
-                                61 -> cooldown = 1
-                                91 -> cooldown = 2
-                                122 -> cooldown = 3
-                                183 -> cooldown = 5
-                                365 -> cooldown = 11
-                            }
-                            val toCheckMonto = Monto(
-                                idmonto = monto.idmonto,
-                                iduser = monto.iduser,
-                                concepto = monto.concepto,
-                                valor = monto.valor,
-                                valorfinal = monto.valorfinal,
-                                fecha = monto.fecha,
-                                frecuencia = monto.frecuencia,
-                                etiqueta = monto.etiqueta,
-                                interes = monto.interes,
-                                tipointeres = monto.tipointeres,
-                                veces = monto.veces,
-                                estado = status,
-                                adddate = monto.adddate,
-                                enddate = monto.enddate,
-                                cooldown = cooldown,
-                                delay = monto.delay,
-                                sequence = sequence
-                            )
-                            montoDao.updateMonto(toCheckMonto)
-                        }
-                    } else {
-                        val newcool = monto.cooldown + 1
-
-                        val toMeltMonto = Monto(
-                            idmonto = monto.idmonto,
-                            iduser = monto.iduser,
-                            concepto = monto.concepto,
-                            valor = monto.valor,
-                            valorfinal = monto.valorfinal,
-                            fecha = monto.fecha,
-                            frecuencia = monto.frecuencia,
-                            etiqueta = monto.etiqueta,
-                            interes = monto.interes,
-                            tipointeres = monto.tipointeres,
-                            veces = monto.veces,
-                            estado = monto.estado,
-                            adddate = monto.adddate,
-                            enddate = monto.enddate,
-                            cooldown = newcool,
-                            delay = monto.delay,
-                            sequence = monto.sequence
+            for (eventos in eventosList) {
+                Log.v("notifevento", eventos.nombre)
+                if (eventos.estado == 0) {
+                    if (eventosList.size == 1) {
+                        notificationHelper.sendNotification(
+                            "Recordatorios",
+                            R.drawable.ic_calendar,
+                            "Hoy hay un evento",
+                            "${eventos.nombre} es hoy",
+                            2,
+                            eventos.idevento,
+                            2
                         )
-                        montoDao.updateMonto(toMeltMonto)
+                    } else {
+                        notificationHelper.sendNotification(
+                            "Recordatorios",
+                            R.drawable.ic_calendar,
+                            "Hoy hay ${eventosList.size} eventos",
+                            "${eventos.nombre} es hoy",
+                            2,
+                            eventos.idevento,
+                            2
+                        )
                     }
                 }
             }
-            assetsDao.updateLastprocess(today)
         }
     }
 }

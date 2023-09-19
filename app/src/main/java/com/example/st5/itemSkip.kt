@@ -16,16 +16,17 @@ class itemSkip : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val type = intent?.getIntExtra("type", 0)
         val id = intent?.getIntExtra("id", 0)
+        Log.v("BROADCAST", "$type, $id")
         val scope = CoroutineScope(Dispatchers.Main)
         if (context != null) {
             scope.launch {
                 when (type) {
-                    0 -> { // Es monto
+                    1 -> { // Es monto
                         if (id != null) {
                             skipM(id.toLong(), context)
                         }
                     }
-                    1 -> { // Es evento
+                    2 -> { // Es evento
                         if (id != null) {
                             skipE(id.toLong(), context)
                         }

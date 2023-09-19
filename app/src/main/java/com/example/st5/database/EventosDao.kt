@@ -36,4 +36,6 @@ interface EventosDao {
 
     @Query("SELECT * FROM eventos WHERE adddate <= :fecha AND (fecha = :fecha OR fecha = :dom OR fecha = :dommon)")
     fun getEventosXFecha(fecha: Int, dom: Int, dommon: Int): List<Eventos>
+    @Query("SELECT * FROM eventos WHERE adddate <= :fecha AND (fecha = :fecha OR fecha = :dom OR fecha = :dommon OR fecha = :futuro OR fecha = :domFuturo OR fecha = :dommonFuturo)")
+    fun getEventosX2Fechas(fecha: Int, dom: Int, dommon: Int, futuro: Int, domFuturo: Int, dommonFuturo: Int): List<Eventos>
 }

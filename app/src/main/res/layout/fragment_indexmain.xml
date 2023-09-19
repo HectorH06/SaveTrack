@@ -193,6 +193,7 @@
             android:id="@+id/ProductoPorPagar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/p1table"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView

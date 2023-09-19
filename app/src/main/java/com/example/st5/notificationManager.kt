@@ -14,8 +14,8 @@ import androidx.core.app.NotificationManagerCompat
 class notificationManager(private val context: Context) {
 
     private val generalChannelId = "General"
-    private val newsChannelId = "Recordatorios"
-    private val updatesChannelId = "Grupos"
+    private val recordatoriosChannelId = "Recordatorios"
+    private val gruposChannelId = "Grupos"
 
     init {
         createNotificationChannels()
@@ -30,14 +30,14 @@ class notificationManager(private val context: Context) {
         )
 
         createNotificationChannel(
-            newsChannelId,
+            recordatoriosChannelId,
             "Recordatorios",
             "Pagos y eventos",
             NotificationManager.IMPORTANCE_HIGH
         )
 
         createNotificationChannel(
-            updatesChannelId,
+            gruposChannelId,
             "Grupos",
             "Información relevante de tus grupos",
             NotificationManager.IMPORTANCE_LOW
@@ -57,17 +57,20 @@ class notificationManager(private val context: Context) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
-    fun sendNotification(channelId: String, icon: Int, title: String, message: String, type: Int, id: Long) {
-        val delay = Intent(context, itemDelay::class.java)
-        delay.putExtra("type", type)
-        delay.putExtra("id", id)
-        val pDelay = PendingIntent.getBroadcast(context, 0, delay, PendingIntent.FLAG_UPDATE_CURRENT)
-        val skip = Intent(context, itemSkip::class.java)
-        skip.putExtra("type", type)
-        skip.putExtra("id", id)
-        val pSkip = PendingIntent.getBroadcast(context, 0, skip, PendingIntent.FLAG_UPDATE_CURRENT)
+    fun sendNotification(channelId: String, icon: Int, title: String, message: String, type: Int, id: Long, notify: Int) {
+        val delay = Intent(context, itemDelay::class.java).apply {
+            putExtra("type", type)
+            putExtra("id", id)
+        }
+        val skip = Intent(context, itemSkip::class.java).apply {
+            putExtra("type", type)
+            putExtra("id", id)
+        }
         val go = Intent(context, perfilmain::class.java)
-        val pGo = PendingIntent.getBroadcast(context, 0, go, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val pDelay = PendingIntent.getBroadcast(context, 1, delay, PendingIntent.FLAG_IMMUTABLE)
+        val pSkip = PendingIntent.getBroadcast(context, 2, skip, PendingIntent.FLAG_IMMUTABLE)
+        val pGo = PendingIntent.getBroadcast(context, 3, go, PendingIntent.FLAG_IMMUTABLE)
 
         val builder = when (channelId) {
             "General" -> {
@@ -75,14 +78,14 @@ class notificationManager(private val context: Context) {
                     .setSmallIcon(icon)
                     .setContentTitle(title)
                     .setContentText(message)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
             }
             "Recordatorios" -> {
                 NotificationCompat.Builder(context, channelId)
                     .setSmallIcon(icon)
                     .setContentTitle(title)
                     .setContentText(message)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .addAction(R.drawable.ic_delay, "Posponer", pDelay)
                     .addAction(R.drawable.ic_skip, "Omitir", pSkip)
             }
@@ -111,7 +114,7 @@ class notificationManager(private val context: Context) {
             ) {
                 return
             }
-            notify(0, builder.build())
+            notify(notify, builder.build())
         }
     }
 }

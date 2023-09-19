@@ -284,7 +284,7 @@ interface MontoDao {
     // endregion
 
 
-    // region GET INGRESOS POR FECHA ESPECÍFICA
+    // region GET GASTOS POR FECHA ESPECÍFICA
     @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din")
     fun getGXFecha(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
@@ -380,4 +380,7 @@ interface MontoDao {
     @Query("SELECT valor FROM monto WHERE etiqueta < 10000 ORDER BY valor DESC")
     fun getTopValor(): Array<Double>
     //endregion
+
+    @Query("SELECT * FROM monto WHERE (estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) OR delay >= 1 AND enddate >= :din AND adddate <= :din")
+    fun getDelayed(din: Int): List<Monto>
 }

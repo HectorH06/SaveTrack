@@ -804,15 +804,24 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
 
-        val intent = Intent(requireContext(), Alarma::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, FLAG_IMMUTABLE)
-
         val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
+
+        val alarma = Intent(requireContext(), Alarma::class.java)
+        val pendingAlarma = PendingIntent.getBroadcast(requireContext(), 0, alarma, FLAG_IMMUTABLE)
+        val recordatorios = Intent(requireContext(), Recordatorios::class.java)
+        val pendingRecordatorios = PendingIntent.getBroadcast(requireContext(), 0, recordatorios, FLAG_IMMUTABLE)
+
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY,
-            pendingIntent
+            pendingAlarma
+        )
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingRecordatorios
         )
     }
 

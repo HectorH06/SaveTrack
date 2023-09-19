@@ -46,6 +46,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
         <receiver android:name=".Alarma" />
+        <receiver android:name=".Recordatorios" />
         <receiver
             android:name=".widgetProvider"
             android:label="WidgetAddI"

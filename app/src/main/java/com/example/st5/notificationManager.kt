@@ -15,6 +15,7 @@ class notificationManager(private val context: Context) {
 
     private val generalChannelId = "General"
     private val recordatoriosChannelId = "Recordatorios"
+    private val eventosChannelId = "Eventos"
     private val gruposChannelId = "Grupos"
 
     init {
@@ -27,6 +28,13 @@ class notificationManager(private val context: Context) {
             "Notificaciones Generales",
             "Estado de ahorro y actualización del dólar",
             NotificationManager.IMPORTANCE_DEFAULT
+        )
+
+        createNotificationChannel(
+            eventosChannelId,
+            "Eventos",
+            "Pagos y eventos",
+            NotificationManager.IMPORTANCE_HIGH
         )
 
         createNotificationChannel(
@@ -81,6 +89,15 @@ class notificationManager(private val context: Context) {
                     .setPriority(NotificationCompat.PRIORITY_LOW)
             }
             "Recordatorios" -> {
+                NotificationCompat.Builder(context, channelId)
+                    .setSmallIcon(icon)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .addAction(R.drawable.ic_delay, "Posponer", pDelay)
+                    .addAction(R.drawable.ic_skip, "Omitir", pSkip)
+            }
+            "Eventos" -> {
                 NotificationCompat.Builder(context, channelId)
                     .setSmallIcon(icon)
                     .setContentTitle(title)

@@ -33,7 +33,7 @@ class Recordatorios : BroadcastReceiver() {
             val hoy = LocalDate.now()
             val calendar = Calendar.getInstance()
             val year = hoy.year
-            val month = hoy.monthValue - 1
+            val month = hoy.monthValue
             val day = hoy.dayOfMonth
             calendar.set(year, month, day)
 
@@ -46,7 +46,7 @@ class Recordatorios : BroadcastReceiver() {
             val futuro = hoy.plusDays(7)
             val calendarFuturo = Calendar.getInstance()
             val yearFuturo = futuro.year
-            val monthFuturo = futuro.monthValue - 1
+            val monthFuturo = futuro.monthValue
             val dayFuturo = futuro.dayOfMonth
             calendarFuturo.set(yearFuturo, monthFuturo, dayFuturo)
 
@@ -59,6 +59,7 @@ class Recordatorios : BroadcastReceiver() {
             val addd: Int = today
 
             val montos = montoDao.getDelayed(addd)
+            Log.v("TODAYS", "$today, $anual, $day, $tomorrow, $anualFuturo, $dayFuturo")
             val eventosList = eventosDao.getEventosX2Fechas(today, anual, day, tomorrow, anualFuturo, dayFuturo)
 
             for (monto in montos) {
@@ -90,7 +91,7 @@ class Recordatorios : BroadcastReceiver() {
                 if (eventos.estado == 0) {
                     if (eventosList.size == 1) {
                         notificationHelper.sendNotification(
-                            "Recordatorios",
+                            "Eventos",
                             R.drawable.ic_calendar,
                             "Hoy hay un evento",
                             "${eventos.nombre} es hoy",
@@ -100,7 +101,7 @@ class Recordatorios : BroadcastReceiver() {
                         )
                     } else {
                         notificationHelper.sendNotification(
-                            "Recordatorios",
+                            "Eventos",
                             R.drawable.ic_calendar,
                             "Hoy hay ${eventosList.size} eventos",
                             "${eventos.nombre} es hoy",

@@ -19,7 +19,6 @@ import java.nio.charset.Charset
 import java.time.LocalDate
 import java.util.*
 
-
 class Alarma : BroadcastReceiver() {
     private val jsonArrayMonto = JSONArray()
     private val jsonArrayLabels = JSONArray()
@@ -78,7 +77,7 @@ class Alarma : BroadcastReceiver() {
 
             if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta()) {
                 usuarioDao.updateDiasaho(usuarioDao.checkId(), 0L)
-                notificationHelper.sendNotification(R.drawable.logo, "No tienes lana we", "Tienes ${decoder.format(usuarioDao.checkBalance())} pesos")
+                notificationHelper.sendNotification("General", R.drawable.logo1, "No tienes lana we", "Tienes ${decoder.format(usuarioDao.checkBalance())} pesos", 0, 0L)
             } else {
                 usuarioDao.updateDiasaho(usuarioDao.checkId(), usuarioDao.checkDiasaho() + 1L)
             }

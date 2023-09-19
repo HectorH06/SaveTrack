@@ -571,7 +571,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 else -> ""
             }
 
-            binding.Calendario.text = "$semanita $dom de $mesesito del $yyy"
+            binding.Calendario.text = "$semanita $dom de $mesesito"
             val addd: Int = today
 
             Log.i("DOM", dom.toString())
@@ -829,7 +829,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val skipM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
             val itemView =
                 LayoutInflater.from(parent.context).inflate(R.layout.item_porpagar, parent, false)
@@ -962,6 +961,15 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                     .create()
 
                 confirmDialog.show()
+            }
+            if (position == 0){
+                holder.itemView.setBackgroundResource(R.drawable.p1topitem)
+            }
+            if (position == montos.size - 1){
+                holder.itemView.setBackgroundResource(R.drawable.p1bottomitem)
+            }
+            if (position == 0 && montos.size - 1 == 0){
+                holder.itemView.setBackgroundResource(R.drawable.p1onlyitem)
             }
         }
 

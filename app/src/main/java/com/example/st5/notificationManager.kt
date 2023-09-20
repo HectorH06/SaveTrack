@@ -80,12 +80,19 @@ class notificationManager(private val context: Context) {
         val pSkip = PendingIntent.getBroadcast(context, 2, skip, PendingIntent.FLAG_IMMUTABLE)
         val pGo = PendingIntent.getBroadcast(context, 3, go, PendingIntent.FLAG_IMMUTABLE)
 
+        val montos = Intent(context, indexmandados::class.java)
+        val pMontos = PendingIntent.getBroadcast(context, 4, montos, PendingIntent.FLAG_IMMUTABLE)
+        val eventos = Intent(context, finanzasEventos::class.java)
+        val pEventos = PendingIntent.getBroadcast(context, 4, eventos, PendingIntent.FLAG_IMMUTABLE)
+
         val builder = when (channelId) {
             "General" -> {
                 NotificationCompat.Builder(context, channelId)
                     .setSmallIcon(icon)
                     .setContentTitle(title)
                     .setContentText(message)
+                    .setOnlyAlertOnce(true)
+                    .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_LOW)
             }
             "Recordatorios" -> {
@@ -94,6 +101,9 @@ class notificationManager(private val context: Context) {
                     .setContentTitle(title)
                     .setContentText(message)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setOnlyAlertOnce(true)
+                    .setAutoCancel(true)
+                    .setContentIntent(pMontos)
                     .addAction(R.drawable.ic_delay, "Posponer", pDelay)
                     .addAction(R.drawable.ic_skip, "Omitir", pSkip)
             }
@@ -102,7 +112,10 @@ class notificationManager(private val context: Context) {
                     .setSmallIcon(icon)
                     .setContentTitle(title)
                     .setContentText(message)
+                    .setOnlyAlertOnce(true)
+                    .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setContentIntent(pEventos)
                     .addAction(R.drawable.ic_delay, "Posponer", pDelay)
                     .addAction(R.drawable.ic_skip, "Omitir", pSkip)
             }
@@ -111,6 +124,8 @@ class notificationManager(private val context: Context) {
                     .setSmallIcon(icon)
                     .setContentTitle(title)
                     .setContentText(message)
+                    .setOnlyAlertOnce(true)
+                    .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .addAction(R.drawable.ic_go, "Ir", pGo)
             }
@@ -119,6 +134,8 @@ class notificationManager(private val context: Context) {
                     .setSmallIcon(icon)
                     .setContentTitle(title)
                     .setContentText(message)
+                    .setOnlyAlertOnce(true)
+                    .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             }
         }

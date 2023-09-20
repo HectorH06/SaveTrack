@@ -72,7 +72,7 @@ class Recordatorios : BroadcastReceiver() {
                         "Has pospuesto demasiado el monto ${monto.concepto}",
                         1,
                         monto.idmonto,
-                        1
+                        monto.idmonto.toInt() + 10
                     )
                 } else {
                     notificationHelper.sendNotification(
@@ -82,7 +82,7 @@ class Recordatorios : BroadcastReceiver() {
                         "El monto ${monto.concepto} se paga hoy",
                         1,
                         monto.idmonto,
-                        1
+                        monto.idmonto.toInt() + 10
                     )
                 }
             }
@@ -97,7 +97,7 @@ class Recordatorios : BroadcastReceiver() {
                             "${eventos.nombre} es hoy",
                             2,
                             eventos.idevento,
-                            2
+                            eventos.idevento.toInt() + 1000
                         )
                     } else {
                         notificationHelper.sendNotification(
@@ -107,7 +107,7 @@ class Recordatorios : BroadcastReceiver() {
                             "${eventos.nombre} es hoy",
                             2,
                             eventos.idevento,
-                            2
+                            eventos.idevento.toInt() + 1000
                         )
                     }
                 }

@@ -45,8 +45,12 @@
             android:label="index"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
-        <receiver android:name=".Alarma" />
+        <receiver android:enabled="true" android:name=".Alarma"
+            android:exported="true">
+        </receiver>
         <receiver android:name=".Recordatorios" />
+        <receiver android:name=".itemDelay" />
+        <receiver android:name=".itemSkip" />
         <receiver
             android:name=".widgetProvider"
             android:label="WidgetAddI"

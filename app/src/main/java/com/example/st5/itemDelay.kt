@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import com.example.st5.database.Stlite
 import com.example.st5.models.Eventos
 import com.example.st5.models.Monto
@@ -15,8 +16,9 @@ import kotlinx.coroutines.withContext
 class itemDelay : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val type = intent?.getIntExtra("type", 0)
-        val id = intent?.getIntExtra("id", 0)
+        val id = intent?.getLongExtra("id", 0)
         Log.v("BROADCAST", "$type, $id")
+        Toast.makeText(context, "Se pospuso", Toast.LENGTH_SHORT).show()
         val scope = CoroutineScope(Dispatchers.Main)
         if (context != null) {
             scope.launch {

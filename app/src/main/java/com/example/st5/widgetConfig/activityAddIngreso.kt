@@ -1,23 +1,24 @@
-package com.example.st5
+package com.example.st5.widgetConfig
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.st5.databinding.ActivityMainBinding
+import com.example.st5.R
+import com.example.st5.databinding.WidgetContainerBinding
 
-class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+class activityAddIngreso : AppCompatActivity() {
+    lateinit var binding: WidgetContainerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.commit {
-            replace<Starter>(R.id.FragContainer, "Starter")
+            replace<addIngreso>(R.id.FragContainer, "addIngreso")
             setReorderingAllowed(true)
             addToBackStack(null)
 
-            val fragment: Starter? = supportFragmentManager.findFragmentByTag("Starter") as Starter?
+            val fragment: addIngreso? = supportFragmentManager.findFragmentByTag("addIngreso") as addIngreso?
         }
     }
 }

@@ -423,8 +423,6 @@
             android:contentDescription="@string/confirmar"
             app:layout_constraintBottom_toTopOf="@id/Cancel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintVertical_bias="0.767"
             app:srcCompat="@drawable/ic_confirm" />
 
         <ImageButton
@@ -437,8 +435,6 @@
             android:contentDescription="@string/Cancelar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintVertical_bias="0.949"
             app:srcCompat="@drawable/ic_cancel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

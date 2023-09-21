@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/LNombre"
-        android:layout_width="80dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:hint="@string/Nombre"
@@ -36,7 +36,8 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="@drawable/ic_edit"
-        android:backgroundTint="?attr/colorOnPrimary" />
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:layout_marginStart="32dp"/>
 
     <Button
         android:id="@+id/deleteLabel"

@@ -1,7 +1,7 @@
 <TableRow
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cabezaingresos"
+    android:id="@+id/cabezaadd"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/p1midcell"
@@ -9,70 +9,57 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <TextView
-        android:id="@+id/IConcepto"
+        android:id="@+id/WConcepto"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:hint="@string/Concepto"
         android:paddingStart="7dp"
-        android:textColor="?attr/colorOnPrimary"
-        android:textColorHint="?attr/colorSecondary"
+        android:textColor="@color/X0"
+        android:textColorHint="@color/X0"
         android:textSize="14sp" />
 
 
     <TextView
-        android:id="@+id/IValor"
+        android:id="@+id/WValor"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:hint="@string/Valor"
         android:textAlignment="textEnd"
         android:paddingStart="15dp"
-        android:textColor="?attr/colorOnPrimary"
-        android:textColorHint="?attr/colorSecondary"
+        android:textColor="@color/X0"
+        android:textColorHint="@color/X0"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/IFecha"
+        android:id="@+id/WVeces"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:hint="@string/Fecha"
         android:textAlignment="textEnd"
         android:paddingStart="15dp"
-        android:textColor="?attr/colorOnPrimary"
-        android:textColorHint="?attr/colorSecondary"
+        android:textColor="@color/X0"
+        android:textColorHint="@color/X0"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/IEtiqueta"
+        android:id="@+id/WEtiqueta"
         android:layout_width="72dp"
         android:layout_height="wrap_content"
         android:hint="@string/Etiqueta"
         android:layout_marginStart="15dp"
         android:textAlignment="textEnd"
         android:paddingEnd="7dp"
-        android:textColor="?attr/colorOnPrimary"
-        android:textColorHint="?attr/colorSecondary"
+        android:textColor="@color/X0"
+        android:textColorHint="@color/X0"
         android:textSize="14sp" />
 
     <Button
-        android:id="@+id/favMonto"
+        android:id="@+id/addMonto"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:background="@drawable/ic_notstar"
-        android:backgroundTint="?attr/colorOnPrimary" />
-
-    <Button
-        android:id="@+id/editMonto"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:background="@drawable/ic_edit"
-        android:backgroundTint="?attr/colorOnPrimary" />
-
-    <Button
-        android:id="@+id/deleteMonto"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:background="@drawable/ic_delete"
-        android:backgroundTint="?attr/colorOnPrimary"/>
+        android:background="@drawable/ic_add"
+        android:backgroundTint="@color/X0"
+        android:layout_marginStart="26dp"/>
 </TableRow>

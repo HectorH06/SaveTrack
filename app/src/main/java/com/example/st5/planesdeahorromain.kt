@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -433,6 +434,7 @@ class planesdeahorromain : Fragment() {
         RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
             itemView: View,
+            val cardView: CardView,
             val conceptoTextView: TextView,
             val valorTextView: TextView,
             val fechaTextView: TextView,
@@ -445,6 +447,7 @@ class planesdeahorromain : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
             val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_pda, parent, false)
+            val cardView = itemView.findViewById<CardView>(R.id.PPP)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.pdaNombre)
             val valorTextView = itemView.findViewById<TextView>(R.id.pdaValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.pdaFecha)
@@ -454,6 +457,7 @@ class planesdeahorromain : Fragment() {
             val delay = itemView.findViewById<Button>(R.id.delay)
             return MontoViewHolder(
                 itemView,
+                cardView,
                 conceptoTextView,
                 valorTextView,
                 fechaTextView,
@@ -472,8 +476,8 @@ class planesdeahorromain : Fragment() {
             val decimalFormat = DecimalFormat("#.##")
             val decoder = Decoder(requireContext())
 
-            if (monto.delay == 2) holder.itemView.setBackgroundColor(resources.getColor(R.color.O0))
-            if (monto.delay > 2) holder.itemView.setBackgroundColor(resources.getColor(R.color.R0))
+            if (monto.delay == 2) holder.cardView.setCardBackgroundColor(resources.getColor(R.color.O0))
+            if (monto.delay > 2) holder.cardView.setCardBackgroundColor(resources.getColor(R.color.R0))
 
             holder.itemView.setOnClickListener {
                 parentFragmentManager.beginTransaction()

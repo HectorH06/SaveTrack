@@ -57,13 +57,13 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
-            android:id="@+id/ProductoPorPagarTableRow"
+            android:id="@+id/ConySugTableRow"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/displayPda"
+                android:id="@+id/displayCS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

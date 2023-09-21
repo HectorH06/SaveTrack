@@ -100,8 +100,7 @@
                 android:contentDescription="@string/nuevo_ingreso"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cabezaingresos"
-                app:srcCompat="@drawable/ic_add"
-                app:tint="@color/G1" />
+                app:srcCompat="@drawable/ic_add" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fastAdd"
@@ -180,7 +179,6 @@
             android:contentDescription="@string/goback"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back"
-            app:tint="?attr/colorOnPrimary" />
+            app:srcCompat="@drawable/ic_back" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

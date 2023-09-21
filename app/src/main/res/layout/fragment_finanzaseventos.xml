@@ -63,8 +63,7 @@
         android:contentDescription="@string/nuevo_evento"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/calendarContainer"
-        app:srcCompat="@drawable/ic_add"
-        app:tint="@color/G1" />
+        app:srcCompat="@drawable/ic_add" />
 
     <ImageButton
         android:id="@+id/VerEventosButton"

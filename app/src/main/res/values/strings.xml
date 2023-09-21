@@ -160,6 +160,8 @@
     <string name="evento">Evento</string>
     <string name="eventos">Eventos</string>
     <string name="updatee">Actualizar Evento</string>
+    <string name="addingresoswidget">Añadir widget de ingreso</string>
+    <string name="elegir">Elegir</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

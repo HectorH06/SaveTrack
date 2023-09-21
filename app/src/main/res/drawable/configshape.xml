@@ -9,10 +9,6 @@
                 android:type="linear"
                 android:angle="0"/>
 
-            <stroke
-                android:width="2dp"
-                android:color="@color/black"/>
-
             <padding android:left="1dp"
                 android:top="1dp"
                 android:right="1dp"
@@ -25,14 +21,10 @@
         <shape android:shape="oval">
             <solid android:color="@color/N1" />
             <gradient
-                android:startColor="@color/N4"
+                android:startColor="@color/N3"
                 android:endColor="@color/N2"
                 android:type="linear"
                 android:angle="0"/>
-
-            <stroke
-                android:width="2dp"
-                android:color="@color/black"/>
 
             <padding android:left="1dp"
                 android:top="1dp"

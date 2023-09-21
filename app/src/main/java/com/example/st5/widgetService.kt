@@ -32,7 +32,7 @@ class widgetService : Service() {
         fun newIncrementIntent(context: Context): PendingIntent {
             val intent = Intent(context, widgetService::class.java)
             intent.action = ACTION_INCREMENT
-            return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            return PendingIntent.getService(context, 1000, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
         fun getCount(context: Context, appWidgetId: Int): Int {

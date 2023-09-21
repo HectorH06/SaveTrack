@@ -9,10 +9,6 @@
                 android:type="linear"
                 android:angle="0"/>
 
-            <stroke
-                android:width="2dp"
-                android:color="@color/O1"/>
-
             <padding android:left="1dp"
                 android:top="1dp"
                 android:right="1dp"
@@ -29,10 +25,6 @@
                 android:endColor="@color/Y2"
                 android:type="linear"
                 android:angle="0"/>
-
-            <stroke
-                android:width="2dp"
-                android:color="@color/O1"/>
 
             <padding android:left="1dp"
                 android:top="1dp"

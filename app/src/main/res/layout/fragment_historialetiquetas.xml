@@ -76,8 +76,7 @@
                 android:contentDescription="@string/nuevo_ingreso"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cabezalabels"
-                app:srcCompat="@drawable/ic_add"
-                app:tint="@color/G1" />
+                app:srcCompat="@drawable/ic_add" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

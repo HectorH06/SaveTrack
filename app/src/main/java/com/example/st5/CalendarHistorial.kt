@@ -244,7 +244,7 @@ class CalendarHistorial @JvmOverloads constructor(
 
             if (montosCumplen.isNotEmpty()) {
                 val monto = montosCumplen.getOrNull(position)
-                if (monto != null) {
+                if (monto != null && monto.etiqueta < 10000) {
                     holder.montoTextView.text = monto.concepto
                     holder.cardView.setCardBackgroundColor(mutableColores[monto.etiqueta - 1])
                 }

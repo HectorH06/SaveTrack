@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/PConcepto"
-        android:layout_width="80dp"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:maxHeight="150dp"
@@ -18,12 +18,12 @@
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
         android:paddingStart="7dp"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
 
     <TextView
         android:id="@+id/PValor"
-        android:layout_width="60dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:maxHeight="100dp"
@@ -32,22 +32,22 @@
         android:textColorHint="?attr/colorSecondary"
         android:textAlignment="textEnd"
         android:paddingStart="15dp"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/PVeces"
-        android:layout_width="60dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:hint="@string/Fecha"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
         android:textAlignment="textEnd"
         android:paddingStart="15dp"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/PEtiqueta"
-        android:layout_width="50dp"
+        android:layout_width="72dp"
         android:layout_height="wrap_content"
         android:hint="@string/Etiqueta"
         android:textColor="?attr/colorOnPrimary"
@@ -55,19 +55,19 @@
         android:layout_marginStart="15dp"
         android:textAlignment="textEnd"
         android:paddingEnd="7dp"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/getbackMonto"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:background="@drawable/ic_getback"
         android:backgroundTint="?attr/colorOnPrimary" />
 
     <Button
         android:id="@+id/killMonto"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:background="@drawable/ic_delete"
         android:backgroundTint="?attr/colorOnPrimary" />
 </TableRow>

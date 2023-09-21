@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -16,7 +15,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
 
     <application
         android:allowBackup="true"
@@ -50,7 +48,13 @@
         </receiver>
         <receiver android:name=".Recordatorios" />
         <receiver android:name=".itemDelay" />
-        <receiver android:name=".itemSkip" />
+
+        <activity
+            android:name=".widgetConfig.activityAddIngreso"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="activityAddIngreso"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
         <receiver
             android:name=".widgetProvider"
             android:label="WidgetAddI"
@@ -60,13 +64,11 @@
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@layout/item_widgetfasti" />
+                android:resource="@xml/widget_info" />
         </receiver>
 
         <service
             android:name=".widgetService"
             android:exported="false" />
-
     </application>
-
 </manifest>

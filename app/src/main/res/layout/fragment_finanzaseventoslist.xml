@@ -92,7 +92,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="16dp"
                             android:background="@drawable/confshape"
-                            app:tint="@color/G1"
                             app:srcCompat="@drawable/ic_add"
                             android:contentDescription="@string/nuevo_evento"/>
 
@@ -140,7 +139,6 @@
             android:contentDescription="@string/goback"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back"
-            app:tint="?attr/colorOnPrimary" />
+            app:srcCompat="@drawable/ic_back" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

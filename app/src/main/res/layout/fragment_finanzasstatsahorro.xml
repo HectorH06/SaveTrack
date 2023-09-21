@@ -46,8 +46,7 @@
         android:contentDescription="@string/goback"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back"
-        app:tint="?attr/colorOnPrimary" />
+        app:srcCompat="@drawable/ic_back" />
 
     <ScrollView
         android:layout_width="match_parent"

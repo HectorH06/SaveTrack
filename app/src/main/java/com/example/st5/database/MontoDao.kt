@@ -1,7 +1,6 @@
 package com.example.st5.database
 
 import androidx.room.*
-import com.example.st5.models.Eventos
 import com.example.st5.models.Monto
 
 @Dao
@@ -44,9 +43,13 @@ interface MontoDao {
     // region GET GASTOS/INGRESOS
     @Query("SELECT * FROM monto WHERE etiqueta > 10000")
     fun getIngresos(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta > 10000 ORDER BY :filter ASC")
+    fun getIngresosOrdered(filter: String): List<Monto>
 
     @Query("SELECT * FROM monto WHERE etiqueta < 10000")
     fun getGastos(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 ORDER BY :filter ASC")
+    fun getGastosOrdered(filter: String): List<Monto>
 
     @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND etiqueta = :e")
     fun getIngresos(e: Int): List<Monto>
@@ -382,7 +385,7 @@ interface MontoDao {
     fun getTopValor(): Array<Double>
     //endregion
 
-    @Query("SELECT * FROM monto WHERE (estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) OR delay >= 1 AND enddate >= :din AND adddate <= :din")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) OR delay >= 1 AND enddate >= :din AND adddate <= :din")
     fun getDelayed(din: Int): List<Monto>
     @Query("SELECT * FROM monto WHERE estado != 10")
     fun getAllMontos(): List<Monto>

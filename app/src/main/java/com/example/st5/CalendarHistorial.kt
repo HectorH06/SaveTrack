@@ -193,8 +193,8 @@ class CalendarHistorial @JvmOverloads constructor(
 
     companion object {
         @JvmStatic
-        fun newInstance(sectionNumber: Int, context: Context, komodo: Boolean, today: Int, actualPosition: Int): CalendarAgenda {
-            return CalendarAgenda(context, sectionNumber, komodo, today, actualPosition)
+        fun newInstance(sectionNumber: Int, context: Context, komodo: Boolean, today: Int, actualPosition: Int): CalendarHistorial {
+            return CalendarHistorial(context, sectionNumber, komodo, today, actualPosition)
         }
     }
 
@@ -239,7 +239,7 @@ class CalendarHistorial @JvmOverloads constructor(
                     else -> 100
                 }
 
-                monto.fecha == day || monto.fecha == current || monto.fecha == 100 || monto.fecha == dow
+                (monto.fecha == day || monto.fecha == current || monto.fecha == dow) && monto.adddate <= current && monto.enddate!! >= current
             }
 
             if (montosCumplen.isNotEmpty()) {
@@ -275,11 +275,11 @@ class CalendarHistorial @JvmOverloads constructor(
 
                 Log.v("SEARCHING COUNT", "$day, $dow, $current")
 
-                if (monto.fecha == day || monto.fecha == current || monto.fecha == 100 || monto.fecha == dow) {
+                if ((monto.fecha == day || monto.fecha == current || monto.fecha == dow) && monto.adddate <= current && monto.enddate!! >= current) {
                     count++
                 }
 
-                if (count >= 3) {
+                if (count >= 2) {
                     break
                 }
             }

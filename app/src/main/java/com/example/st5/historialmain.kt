@@ -10,20 +10,24 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager.widget.ViewPager
+import com.example.st5.calendar.HistorialPagerAdapter
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentHistorialmainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 class historialmain : Fragment() {
     private lateinit var binding: FragmentHistorialmainBinding
+    private var isDarkMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
+            isDarkMode = isDarkModeEnabled(requireContext())
 
             if (isDarkMode) {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_historial2)
@@ -32,6 +36,24 @@ class historialmain : Fragment() {
             }
 
             Log.i("MODO", isDarkMode.toString())
+
+            val hoy = LocalDate.now()
+            val day = hoy.dayOfMonth
+            val fDay = String.format("%02d", day)
+            val month = hoy.monthValue - 1
+            val fMonth = String.format("%02d", month)
+            val year = hoy.year
+            val fecha = "$year$fMonth$fDay"
+            val today: Int = fecha.replace("-", "").toInt()
+            Log.v("today", "$today")
+
+            val startYear = 1998
+
+            val monthsPagerAdapter = HistorialPagerAdapter(requireContext(), isDarkMode, day)
+            val viewPager: ViewPager = binding.calendarView
+            viewPager.adapter = monthsPagerAdapter
+
+            viewPager.currentItem = month + (year - startYear) * 12
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -90,6 +112,32 @@ class historialmain : Fragment() {
         }
 
          */
+
+        binding.calendarView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageSelected(position: Int) {
+                val startYear = LocalDate.now().year - 25
+                val year = position / 12 + startYear
+                val mesesito = when (position % 12) {
+                    0 -> "Enero"
+                    1 -> "Febrero"
+                    2 -> "Marzo"
+                    3 -> "Abril"
+                    4 -> "Mayo"
+                    5 -> "Junio"
+                    6 -> "Julio"
+                    7 -> "Agosto"
+                    8 -> "Septiembre"
+                    9 -> "Octubre"
+                    10 -> "Noviembre"
+                    11 -> "Diciembre"
+                    else -> "cualquier mes"
+                }
+
+
+            }
+        })
 
         binding.ConfigButton.setOnClickListener {
             parentFragmentManager.beginTransaction()

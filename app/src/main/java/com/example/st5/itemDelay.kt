@@ -1,5 +1,6 @@
 package com.example.st5
 
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,22 +16,30 @@ import kotlinx.coroutines.withContext
 
 class itemDelay : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        val type = intent?.getIntExtra("type", 0)
-        val id = intent?.getLongExtra("id", 0)
-        Log.v("BROADCAST", "$type, $id")
+        val typee = intent?.getIntExtra("type", 0)
+        val idd = intent?.getLongExtra("idd", 0)
+        val notificationId = intent?.getIntExtra("notif", 0)
+        Log.v("BROADCAST", "$typee, $idd, $notificationId")
         Toast.makeText(context, "Se pospuso", Toast.LENGTH_SHORT).show()
         val scope = CoroutineScope(Dispatchers.Main)
+
+        if (notificationId != null) {
+            val notificationManager =
+                context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.cancel(notificationId)
+        }
+
         if (context != null) {
             scope.launch {
-                when (type) {
+                when (typee) {
                     1 -> { // Es monto
-                        if (id != null) {
-                            delayM(id.toLong(), context)
+                        if (idd != null) {
+                            delayM(idd.toLong(), context)
                         }
                     }
                     2 -> { // Es evento
-                        if (id != null) {
-                            delayE(id.toLong(), context)
+                        if (idd != null) {
+                            delayE(idd.toLong(), context)
                         }
                     }
                     else -> {}
@@ -128,7 +137,7 @@ class itemDelay : BroadcastReceiver() {
 
             eventosDao.updateEvento(updateEvento)
             val eventos = eventosDao.getAllEventos()
-            Log.i("ALL LABELS", "$eventos")
+            Log.i("ALL EVENTOS", "$eventos")
         }
     }
 }

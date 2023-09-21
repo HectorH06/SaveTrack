@@ -12,14 +12,28 @@
         android:contentDescription="@string/wallpaper" />
 
     <DatePicker
-        android:id="@+id/calendarView"
+        android:id="@+id/calendarPick"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:layout_marginTop="32dp"
         android:theme="@style/historial"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TagsButton" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/calendarContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        app:layout_constraintTop_toBottomOf="@id/ConfigButton"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="220dp"
+        android:layout_marginBottom="16dp" >
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/ConfigButton"

@@ -78,7 +78,7 @@ class Recordatorios : BroadcastReceiver() {
                     notificationHelper.sendNotification(
                         "Recordatorios",
                         R.drawable.ic_calendar,
-                        "Paga tus deudas",
+                        monto.concepto,
                         "El monto ${monto.concepto} se paga hoy",
                         1,
                         monto.idmonto,

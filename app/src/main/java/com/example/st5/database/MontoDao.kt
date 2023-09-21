@@ -1,6 +1,7 @@
 package com.example.st5.database
 
 import androidx.room.*
+import com.example.st5.models.Eventos
 import com.example.st5.models.Monto
 
 @Dao
@@ -383,4 +384,6 @@ interface MontoDao {
 
     @Query("SELECT * FROM monto WHERE (estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) OR delay >= 1 AND enddate >= :din AND adddate <= :din")
     fun getDelayed(din: Int): List<Monto>
+    @Query("SELECT * FROM monto WHERE estado != 10")
+    fun getAllMontos(): List<Monto>
 }

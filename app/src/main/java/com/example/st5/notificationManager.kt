@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -65,25 +66,23 @@ class notificationManager(private val context: Context) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
-    fun sendNotification(channelId: String, icon: Int, title: String, message: String, type: Int, id: Long, notify: Int) {
-        val delay = Intent(context, itemDelay::class.java).apply {
-            putExtra("type", type)
-            putExtra("id", id)
-        }
-        val skip = Intent(context, itemSkip::class.java).apply {
-            putExtra("type", type)
-            putExtra("id", id)
-        }
+    fun sendNotification(channelId: String, icon: Int, title: String, message: String, typee: Int, idd: Long, notify: Int) {
+        Log.v("sendNotification", "$channelId, $icon, $title, $message, $typee, $idd, $notify")
+        val delay = Intent(context, itemDelay::class.java)
+        delay.putExtra("type", typee)
+        delay.putExtra("idd", idd)
+        delay.putExtra("notif", notify)
+
+        val skip = Intent(context, itemSkip::class.java)
+        skip.putExtra("type", typee)
+        skip.putExtra("id", idd)
+        skip.putExtra("notif", notify)
+
         val go = Intent(context, perfilmain::class.java)
 
-        val pDelay = PendingIntent.getBroadcast(context, 1, delay, PendingIntent.FLAG_IMMUTABLE)
-        val pSkip = PendingIntent.getBroadcast(context, 2, skip, PendingIntent.FLAG_IMMUTABLE)
-        val pGo = PendingIntent.getBroadcast(context, 3, go, PendingIntent.FLAG_IMMUTABLE)
-
-        val montos = Intent(context, indexmandados::class.java)
-        val pMontos = PendingIntent.getBroadcast(context, 4, montos, PendingIntent.FLAG_IMMUTABLE)
-        val eventos = Intent(context, finanzasEventos::class.java)
-        val pEventos = PendingIntent.getBroadcast(context, 4, eventos, PendingIntent.FLAG_IMMUTABLE)
+        val pDelay = PendingIntent.getBroadcast(context, notify, delay, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val pSkip = PendingIntent.getBroadcast(context, notify, skip, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val pGo = PendingIntent.getBroadcast(context, notify, go, PendingIntent.FLAG_IMMUTABLE)
 
         val builder = when (channelId) {
             "General" -> {
@@ -103,7 +102,6 @@ class notificationManager(private val context: Context) {
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setOnlyAlertOnce(true)
                     .setAutoCancel(true)
-                    .setContentIntent(pMontos)
                     .addAction(R.drawable.ic_delay, "Posponer", pDelay)
                     .addAction(R.drawable.ic_skip, "Omitir", pSkip)
             }
@@ -115,7 +113,6 @@ class notificationManager(private val context: Context) {
                     .setOnlyAlertOnce(true)
                     .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setContentIntent(pEventos)
                     .addAction(R.drawable.ic_delay, "Posponer", pDelay)
                     .addAction(R.drawable.ic_skip, "Omitir", pSkip)
             }

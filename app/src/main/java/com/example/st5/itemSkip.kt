@@ -1,5 +1,6 @@
 package com.example.st5
 
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -17,9 +18,16 @@ class itemSkip : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val type = intent?.getIntExtra("type", 0)
         val id = intent?.getLongExtra("id", 0)
-        Log.v("BROADCAST", "$type, $id")
+        val notificationId = intent?.getIntExtra("notif", 0)
+        Log.v("BROADCAST", "$type, $id, $notificationId")
         Toast.makeText(context, "Se omitió", Toast.LENGTH_SHORT).show()
         val scope = CoroutineScope(Dispatchers.Main)
+
+        if (notificationId != null) {
+            val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.cancel(notificationId)
+        }
+
         if (context != null) {
             scope.launch {
                 when (type) {
@@ -133,7 +141,7 @@ class itemSkip : BroadcastReceiver() {
 
             eventosDao.updateEvento(updateEvento)
             val eventos = eventosDao.getAllEventos()
-            Log.i("ALL LABELS", "$eventos")
+            Log.i("ALL EVENTOS", "$eventos")
         }
     }
 }

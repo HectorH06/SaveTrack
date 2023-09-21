@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -71,6 +70,7 @@ class historialmain : Fragment() {
 
         var fechaSeleccionada: String
 
+        /*
         binding.calendarView.setOnClickListener {
             val day = binding.calendarView.dayOfMonth
             val fDay = String.format("%02d", day)
@@ -88,6 +88,8 @@ class historialmain : Fragment() {
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.historial_container, montosF).addToBackStack(null).commit()
         }
+
+         */
 
         binding.ConfigButton.setOnClickListener {
             parentFragmentManager.beginTransaction()

@@ -2,10 +2,27 @@ package com.example.st5
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.widget.RemoteViews
 
 class widgetProvider : AppWidgetProvider() {
+    private var montoIdToShow: Long = -1
+
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+
+        if (intent.action == "ACTUALIZAR_WIDGET") {
+            montoIdToShow = intent.getLongExtra("IDM", -1)
+            if (montoIdToShow != -1L) {
+                val appWidgetManager = AppWidgetManager.getInstance(context)
+                val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, widgetProvider::class.java))
+                onUpdate(context, appWidgetManager, appWidgetIds)
+            }
+        }
+    }
+
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,

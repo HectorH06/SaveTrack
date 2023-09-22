@@ -16,7 +16,8 @@
         android:textColor="?attr/colorOnSecondary"
         android:textColorHint="?attr/colorSecondary" />
 
-    <TextView
+    <Button
+        android:id="@+id/fastConcepto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/venta"

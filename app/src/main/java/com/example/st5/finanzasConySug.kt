@@ -1,5 +1,6 @@
 package com.example.st5
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,18 +8,57 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentFinanzasconsejosysugBinding
 import com.example.st5.models.ConySug
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class finanzasConySug : Fragment(){
-
     private lateinit var binding: FragmentFinanzasconsejosysugBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            var isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+            }
+            Log.i("MODO", isDarkMode.toString())
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                        .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null).commit()
+                }
+            })
+    }
+
+    private suspend fun isDarkModeEnabled(context: Context): Boolean {
+        var komodo: Boolean
+
+        withContext(Dispatchers.IO) {
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+
+            val mode = assetsDao.getTheme()
+            komodo = mode != 0
+        }
+
+        return komodo
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val back = finanzasmain();
@@ -48,83 +88,72 @@ class finanzasConySug : Fragment(){
             val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
-            //Consulta de todos los datos de cada tabla
+            val cs = hashMapOf<String, Array<ConySug>>(
+                "A" to arrayOf(ConySug(), ConySug()),
+                "C" to arrayOf(ConySug(), ConySug()),
+                "E" to arrayOf(ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug()),
+                "G" to arrayOf(ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug()),
+                "I" to arrayOf(ConySug(), ConySug(), ConySug(), ConySug()),
+                "L" to arrayOf(ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug()),
+                "M" to arrayOf(ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug()),
+                "D" to arrayOf(ConySug(), ConySug(), ConySug(), ConySug()),
+                "U" to arrayOf(ConySug(), ConySug(), ConySug(), ConySug(), ConySug())
+            )
 
-            /* CARACTERÍSTICAS
+            // region ASSETS
+            val assetsDarkModeEnabled = assetsDao.getTheme() != 0
+            val assetsNotifEnabled = assetsDao.getNotif() != 0
+            if (assetsDarkModeEnabled) {cs["A"]?.set(0,ConySug(idcon = 0, nombre = "", contenido = "", estado = 0, flag = 0, type = 0, style = 0))}
+            if (assetsNotifEnabled) {cs["A"]?.set(1, ConySug(idcon = 1, nombre = "", contenido = "", estado = 0, flag = 0, type = 0, style = 0))}
 
-            Influencia en el conysug.estado y conysug.type
-            U = único
-            R = repetible
-            M = múltiple
+            // endregion
 
-            Según la gravedad del consejo, será su conysug.style (Puedes, Tienes, Debes)
+            // region CONYSUG
+            val consejosAll = conySugDao.getAllCon()
+            val consejosAllActive = conySugDao.getAllActiveCon()
+            val consejosAllRejected = conySugDao.getAllRejectedCon()
 
-            Los siguientes son las características de cada conysug.flag
+            if (consejosAllActive == consejosAll) {cs["C"]?.set(0, ConySug(idcon = 2, nombre = "", contenido = "", estado = 0, flag = 0, type = 0, style = 0))}
+            if (consejosAllRejected.size >= consejosAll.size/2) {cs["C"]?.set(1, ConySug(idcon = 3, nombre = "", contenido = "", estado = 0, flag = 0, type = 0, style = 0))}
+            // endregion
 
-            1. Assets
-                1.1. Notificaciones [U] {START}
-                1.2. Tema [U] {START}
+            // region EVENTOS
+            val eventosAll = eventosDao.getAllEventos()
+            val eventosAllUnabled = eventosDao.getAllUnabledEventos()
 
-            2. ConySug
-                2.1. Se están rechazando demasiados consejos [U] {MORE}
+            if (eventosAll.size <= 3) {cs["E"]?.set(0, ConySug(idcon = 4, nombre = "", contenido = "", estado = 0, flag = 0, type = 0, style = 0))}
+            if (eventosAll.size >= 30) {cs["E"]?.set(1, ConySug(idcon = 5, nombre = "", contenido = "", estado = 0, flag = 0, type = 0, style = 0))}
+            if (eventosAllUnabled.size >= eventosAll.size/2) {cs["E"]?.set(2, ConySug(idcon = 6, nombre = "", contenido = "", estado = 0, flag = 0, type = 0, style = 0))}
+            if (!assetsNotifEnabled) {cs["E"]?.set(3, ConySug(idcon = 7, nombre = "", contenido = "", estado = 0, flag = 0, type = 0, style = 0))}
+            if (!assetsNotifEnabled) {cs["E"]?.set(4, ConySug(idcon = 8, nombre = "", contenido = "", estado = 0, flag = 0, type = 0, style = 0))}
 
-            3. Eventos
-                3.1. ¿Hay pocos eventos? [U] {MORE}
-                3.2. ¿Hay demasiados eventos? [U] {LESS}
-                3.3. Se están ignorando los eventos programados [U] {START}
-                3.4. Hay una cantidad moderada de eventos pero las notificaciones están apagadas [R] {START} (1.1)
-                3.5. Dos eventos cuyos nombres se parecen en más de un 90% [M] {MODIFY/DESTROY}
-                3.6. No se han agregado eventos en mucho tiempo [R] {CREATE}
-                3.7. Nunca se ha creado un evento [U] {START}
+            // endregion
 
-            4. Grupos
-                4.1. ¿Hay pocos grupos? [U] {MORE}
-                4.2. ¿Hay demasiados grupos? [U] {LESS}
-                4.3. No hay actividad del usuario en cierto grupo [M] {MORE/DESTROY}
-                4.4. No hay actividad de nadie en cierto grupo [M] {MORE/DESTROY}
-                4.5. Dos grupos cuyos nombres se parecen en más de un 90% [M] {MODIFY/DESTROY}
-                4.6. No se han creado grupos en mucho tiempo [R] {CREATE}
-                4.7. Nunca se han creado grupos [U] {START}
+            // region GRUPOS
 
-            5. Ingresos y Gastos
-                5.1. Los ingresos son menos del 5% superiores al egreso (mensual) [R] {LESS}
-                5.2. Los ingresos son inferiores a los egresos (mensual) [R] {LESS}
-                5.3. Los ingresos han bajado con respecto al mes pasado [R] {LESS}
-                5.4. Los egresos han subido con respecto al mes pasado [R] {LESS}
+            // endregion
 
-            6. Etiquetas
-                6.1. No hay etiquetas [R] {CREATE}
-                6.2. Los colores de dos etiquetas se parecen en más de un 80% [M] {MODIFY/DESTROY}
-                6.3. Los nombres de dos etiquetas se parecen en más de un 90% [M] {MODIFY/DESTROY}
-                6.4. Hay pocas etiquetas [R] {CREATE}
-                6.5. Hay demasiadas etiquetas [R] {DESTROY}
-                6.6. No se está usando una etiqueta [M] {DESTROY}
+            // region INGRESOSGASTOS
 
-            7. Montos
-                7.1. No hay montos [R] {START}
-                7.2. No hay ingresos [R] {CREATE}
-                7.3. No hay egresos [R] {CREATE}
-                7.4. Los nombres de dos montos se parecen en más de un 90% [M] {MODIFY/DESTROY}
-                7.5. Este monto se ha pospuesto u omitido demasiado [M] {DESTROY}
-                7.6. Las frecuencias de los montos no coinciden con el perfil [R] {MORE} (9.1)
-                7.7. Más del 80% de los montos tienen la misma frecuencia [U] {MORE/LESS}
-                7.8. Hay pocos montos [U] {MORE}
-                7.9. Hay demasiados montos [R] {LESS}
+            // endregion
 
-            8. Deudas
-                8.1. Más del 30% de los montos son deudas [R] {LESS}
-                8.2. Las deudas se están posponiendo [R] {LESS/STOP}
-                8.3. El costo de la deuda es superior al 50% de los ingresos mensuales [R] {LESS/STOP}
-                8.4. El interés de la deuda hará que su costo sea superior al 50% de los ingresos mensuales [R] {LESS/STOP}
+            // region ETIQUETAS
 
-            9. Usuario
-                9.1. ¿Los roles del usuario coinciden con las frecuencias de sus montos? [U] {MODIFY} (7.6)
-                9.2. ¿Los roles del usuario coinciden con su edad? [U] {MODIFY}
-                9.3. La meta de ahorro es mayor al 100% del diferencial entre ingresos y egresos [R] {LESS} (5.1)
-                9.4. La meta de ahorro es inferior al 10% del diferencial entre ingresos y egresos [R] {MORE} (5.1)
-                9.5. No hay meta de ahorro o es 0 [U] {START}
+            // endregion
 
-             */
+            // region MONTOS
+
+            // endregion
+
+            // region DEUDAS
+
+            // endregion
+
+            // region USUARIO
+
+            // endregion
+
+            //recuerda añadir la comprobación para asegurarse de si existen o no los eventos
         }
     }
 

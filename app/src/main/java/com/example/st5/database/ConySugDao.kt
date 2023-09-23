@@ -28,4 +28,11 @@ interface ConySugDao {
     fun getType(id: Int): Int
     @Query("SELECT style FROM conysug WHERE idcon = :id")
     fun getStyle(id: Int): Int
+
+    @Query("SELECT * FROM conysug")
+    fun getAllCon(): List<ConySug>
+    @Query("SELECT * FROM conysug WHERE estado = 0")
+    fun getAllActiveCon(): List<ConySug>
+    @Query("SELECT * FROM conysug WHERE estado = 2")
+    fun getAllRejectedCon(): List<ConySug>
 }

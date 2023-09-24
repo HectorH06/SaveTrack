@@ -34,16 +34,16 @@ class Alarma : BroadcastReceiver() {
 
     private val currencyData = mutableMapOf<String, MutableList<Float>>()
     private val currencies = arrayOf("USD")
-    private var dolaresList: MutableList<Float> = mutableListOf()
+    private var notifActive = 0
 
     private lateinit var notificationHelper: notificationManager
     private lateinit var decoder: Decoder
     override fun onReceive(context: Context?, intent: Intent?) {
         runBlocking {
             if (context != null) {
-                getDivisas(context)
                 procesarMontos(context)
                 respaldo(context)
+                getDivisas(context)
             }
         }
     }
@@ -54,7 +54,7 @@ class Alarma : BroadcastReceiver() {
         val dif = dolarA - dolarH
         val mindif = 0.05
         val percent = (dif / dolarA) * 100
-        if (dif >= mindif) {
+        if (dif >= mindif && notifActive != 0) {
             notificationHelper.sendNotification(
                 "General",
                 R.drawable.logo1,
@@ -65,7 +65,7 @@ class Alarma : BroadcastReceiver() {
                 0
             )
         }
-        if (dif <=  mindif) {
+        if (dif <=  mindif && notifActive != 0) {
             notificationHelper.sendNotification(
                 "General",
                 R.drawable.logo1,
@@ -87,6 +87,7 @@ class Alarma : BroadcastReceiver() {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             notificationHelper = notificationManager(context)
+            notifActive = assetsDao.getNotif()
             decoder = Decoder(context)
             val fechaActual = LocalDate.now().toString()
             val today: Int = fechaActual.replace("-", "").toInt()
@@ -118,7 +119,7 @@ class Alarma : BroadcastReceiver() {
             Log.i("todayyyy", today.toString())
             Log.i("prevvvvv", prev.toString())
 
-            if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta()) {
+            if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta() && assetsDao.getNotif() != 0) {
                 usuarioDao.updateDiasaho(usuarioDao.checkId(), 0L)
                 notificationHelper.sendNotification(
                     "General",

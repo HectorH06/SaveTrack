@@ -220,7 +220,8 @@ class Login : Fragment() {
 
                                                             val defaultAssets = Assets(
                                                                 theme = 0,
-                                                                lastprocess = 0
+                                                                lastprocess = 0,
+                                                                notificaciones = 1
                                                             )
 
                                                             usuarioDao.clean()

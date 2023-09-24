@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -92,26 +93,21 @@ class historialmain : Fragment() {
 
         var fechaSeleccionada: String
 
-        /*
-        binding.calendarView.setOnClickListener {
-            val day = binding.calendarView.dayOfMonth
+        binding.calendarPick.setOnClickListener {
+            val day = binding.calendarPick.dayOfMonth
             val fDay = String.format("%02d", day)
-            val month = binding.calendarView.month + 1
+            val month = binding.calendarPick.month + 1
             val fMonth = String.format("%02d", month)
-            val year = binding.calendarView.year
+            val year = binding.calendarPick.year
             fechaSeleccionada = "$year$fMonth$fDay"
             val fsi: Int = fechaSeleccionada.replace("-", "").toInt()
-
             Toast.makeText(requireContext(), "$fsi", Toast.LENGTH_SHORT).show()
-
             val montosF = historialMontosList.fechaSearch(fsi)
 
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.historial_container, montosF).addToBackStack(null).commit()
         }
-
-         */
 
         binding.calendarView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}

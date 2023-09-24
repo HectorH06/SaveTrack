@@ -191,9 +191,7 @@ class Recordatorios : BroadcastReceiver() {
             // region ASSETS
             val assetsDarkModeEnabled = assetsDao.getTheme() != 0
             val assetsNotifEnabled = assetsDao.getNotif() != 0
-            if (assetsDarkModeEnabled) {cs["A"]?.set(0,
-                ConySug(idcon = 0, nombre = starter, contenido = "Prueba el modo oscuro", estado = 0, flag = 0, type = 1, style = 0)
-            )}
+            if (assetsDarkModeEnabled) {cs["A"]?.set(0, ConySug(idcon = 0, nombre = starter, contenido = "Prueba el modo oscuro", estado = 0, flag = 0, type = 1, style = 0))}
             if (assetsNotifEnabled) {cs["A"]?.set(1, ConySug(idcon = 1, nombre = starter, contenido = "Es posible desactivar las notificaciones", estado = 0, flag = 0, type = 1, style = 0))}
 
             // endregion
@@ -218,7 +216,7 @@ class Recordatorios : BroadcastReceiver() {
             if (!assetsNotifEnabled) {cs["E"]?.set(3, ConySug(idcon = 203, nombre = "No se te notificará de eventos", contenido = "Tienes las notificaciones desactivadas", estado = 0, flag = 0, type = 7, style = 1))}
             if (today - eventosMaxAddDate >= 1200) {cs["E"]?.set(5, ConySug(idcon = 204, nombre = "No se ha creado un evento en mucho tiempo", contenido = "Prueba a agregar alguno", estado = 1, flag = 2, type = 5, style = 0))}
             if (eventosAll.size <= 2) {cs["E"]?.set(6, ConySug(idcon = 205, nombre = starter, contenido = "Prueba a crear tu primer evento", estado = 0, flag = 0, type = 1, style = 0))}
-            for (i in 0 until eventosAll.size - 1) {
+            for (i in 0 until minOf(maxOf(eventosAll.size - 1, 0), 40)) {
                 if (similarityCalculator(eventosAll[i].nombre, eventosAll[i + 1].nombre) >= 85) {cs["E"]?.set(7, ConySug(idcon = 206 + i.toLong(), nombre = "Dos eventos se llaman similar", contenido = "${eventosAll[i].nombre} y ${eventosAll[i + 1].nombre}", estado = 0, flag = 2, type = 7, style = 1))}
             }
             // endregion
@@ -242,10 +240,10 @@ class Recordatorios : BroadcastReceiver() {
             if (labelsAll.size <= 3) {cs["L"]?.set(1, ConySug(idcon = 501, nombre = "Hay pocas etiquetas", contenido = "Considera crear más", estado = 0, flag = 0, type = 5, style = 1))}
             if (labelsAll.size >= 25) {cs["L"]?.set(2, ConySug(idcon = 502, nombre = "Hay demasiadas etiquetas", contenido = "Considera eliminar algunas", estado = 0, flag = 0, type = 6, style = 1))}
             //if (CURRENT LABEL IS NOT BEING USED) {cs["L"]?.set(3, ConySug(idcon = 503, nombre = "Una etiqueta no se está usando", contenido = labelsAll[i].plabel, estado = 0, flag = 2, type = 6, style = 1))}
-            for (i in 0 until labelsAll.size - 1) {
+            for (i in 0 until minOf(maxOf(labelsAll.size - 1, 0), 40)) {
                 if (similarityCalculator(labelsAll[i].plabel, labelsAll[i + 1].plabel) >= 80) {cs["L"]?.set(4, ConySug(idcon = 504 + i.toLong(), nombre = "Dos etiquetas se llaman similar", contenido = "${labelsAll[i].plabel} y ${labelsAll[i + 1].plabel}", estado = 0, flag = 2, type = 7, style = 1))}
             }
-            for (i in 0 until labelsAll.size - 1) {
+            for (i in 0 until minOf(maxOf(labelsAll.size - 1, 0), 40)) {
                 if (similarityCalculator(labelsAll[i].color.toString(), labelsAll[i + 1].color.toString()) >= 80) {cs["L"]?.set(5, ConySug(idcon = 555 + i.toLong(), nombre = "Dos etiquetas tienen colores similares", contenido = "${labelsAll[i].plabel} y ${labelsAll[i + 1].plabel}", estado = 0, flag = 2, type = 7, style = 1))}
             }
             // endregion
@@ -261,7 +259,7 @@ class Recordatorios : BroadcastReceiver() {
             if (egresosAll.isEmpty()) {cs["M"]?.set(2, ConySug(idcon = 602, nombre = starter, contenido = "Prueba a registrar un egreso", estado = 0, flag = 0, type = 1, style = 0))}
             if (montosAll.size <= 5) {cs["M"]?.set(3, ConySug(idcon = 603, nombre = "Hay pocos montos", contenido = "Considera registrar más", estado = 0, flag = 0, type = 3, style = 1))}
             if (montosAll.size >= 500) {cs["M"]?.set(4, ConySug(idcon = 604, nombre = "Hay demasiados montos", contenido = "Considera reducirlos", estado = 0, flag = 0, type = 2, style = 1))}
-            for (i in 0 until montosAll.size - 1) {
+            for (i in 0 until minOf(maxOf(montosAll.size - 1, 0), 40)) {
                 if (similarityCalculator(montosAll[i].concepto, montosAll[i + 1].concepto) >= 80) {cs["M"]?.set(5, ConySug(idcon = 605 + i.toLong(), nombre = "Dos montos se llaman similar", contenido = "${montosAll[i].concepto} y ${montosAll[i + 1].concepto}", estado = 0, flag = 2, type = 7, style = 1))}
             }
             for (i in montosDelayed.indices) {
@@ -273,10 +271,10 @@ class Recordatorios : BroadcastReceiver() {
             val deudasAll = montoDao.getDeudasList()
 
             if (deudasAll.size >= montosAll.size * .8) {cs["D"]?.set(0, ConySug(idcon = 700, nombre = "Demasiados montos son deudas", contenido = "Prueba a reducirlas", estado = 0, flag = 1, type = 4, style = 3))}
-            for (i in 0 until deudasAll.size - 1) {
+            for (i in 0 until minOf(maxOf(deudasAll.size - 1, 0), 40)) {
                 if (deudasAll[i].delay >= 3) {cs["D"]?.set(1, ConySug(idcon = 701 + i.toLong(), nombre = "Se está posponiendo demasiado una deuda", contenido = deudasAll[i].concepto, estado = 0, flag = 1, type = 6, style = 3))}
             }
-            for (i in 0 until deudasAll.size - 1) {
+            for (i in 0 until minOf(maxOf(deudasAll.size - 1, 0), 40)) {
                 if ((deudasAll[i].valorfinal ?: return@withContext) >= ingresosTotales/2) {cs["D"]?.set(2, ConySug(idcon = 752 + i.toLong(), nombre = "La deuda ${deudasAll[i].concepto} es demasiado costosa", contenido = "Medidas deben ser tomadas", estado = 0, flag = 2, type = 2, style = 3))}
             }
             // endregion
@@ -289,10 +287,9 @@ class Recordatorios : BroadcastReceiver() {
             if (usuarioMeta == 0.0) {cs["U"]?.set(2, ConySug(idcon = 702, nombre = starter, contenido = "Prueba a crear una meta de ahorro", estado = 0, flag = 0, type = 1, style = 0))}
             // endregion
 
-            //recuerda añadir la comprobación para asegurarse de si existen o no los eventos
+            //añadir la comprobación para asegurarse de si existen o no los eventos
             //cada for debe tener un add dentro de sí para evitar sobreescritura
-            //poner minOf en cada for para que no exceda su límite de id
-            //mejorar el similarityCalculator para que no solo vea dos ítems, sino que sea On2
+            //mejorar los for que usan similarityCalculator para que no solo vea dos ítems, sino que sea On2
         }
     }
 }

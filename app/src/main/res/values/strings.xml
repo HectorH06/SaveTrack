@@ -162,6 +162,7 @@
     <string name="updatee">Actualizar Evento</string>
     <string name="addingresoswidget">Añadir widget de ingreso</string>
     <string name="elegir">Elegir</string>
+    <string name="descripcion">Descripción</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

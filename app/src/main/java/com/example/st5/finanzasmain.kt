@@ -87,6 +87,12 @@ class finanzasmain : Fragment() {
                 .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
         }
 
+        binding.FinanzasConsejosySugerencias.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.finanzas_container, finanzasConySug()).addToBackStack(null).commit()
+        }
+
         binding.Economia.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)

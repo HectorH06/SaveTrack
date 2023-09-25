@@ -78,6 +78,9 @@ class finanzasConySug : Fragment(){
             val conySugDao = Stlite.getInstance(requireContext()).getConySugDao()
 
             consejos = conySugDao.getAllActiveCon()
+            val allCon = conySugDao.getAllCon()
+            Log.v("ALLCON", "$allCon")
+            Log.v("ACTIVECON", "$consejos")
         }
         return consejos
     }
@@ -132,10 +135,10 @@ class finanzasConySug : Fragment(){
         override fun onBindViewHolder(holder: ConsejoViewHolder, position: Int) {
             val consejo = consejos[position]
             holder.cardView.setCardBackgroundColor(when (consejo.style) {
-                1 -> R.color.Y1
-                2 -> R.color.O2
-                3 -> R.color.R2
-                else -> R.color.G4
+                1 -> resources.getColor(R.color.Y1)
+                2 -> resources.getColor(R.color.O2)
+                3 -> resources.getColor(R.color.R2)
+                else -> resources.getColor(R.color.G4)
             })
             holder.consejo.text = consejo.nombre
             holder.descripcion.text = consejo.contenido

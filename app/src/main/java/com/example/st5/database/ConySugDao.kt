@@ -5,8 +5,11 @@ import com.example.st5.models.ConySug
 
 @Dao
 interface ConySugDao {
-    @Insert
-    fun insertConoSug(conySug: ConySug)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCon(conySug: ConySug)
+
+    @Update
+    fun updateCon(conySug: ConySug)
 
     @Query("DELETE FROM conysug")
     fun clean()
@@ -31,7 +34,7 @@ interface ConySugDao {
 
     @Query("SELECT * FROM conysug")
     fun getAllCon(): List<ConySug>
-    @Query("SELECT * FROM conysug WHERE estado = 0")
+    @Query("SELECT * FROM conysug WHERE estado = 1")
     fun getAllActiveCon(): List<ConySug>
     @Query("SELECT * FROM conysug WHERE estado = 2")
     fun getAllRejectedCon(): List<ConySug>

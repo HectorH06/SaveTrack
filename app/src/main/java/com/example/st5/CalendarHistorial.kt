@@ -239,7 +239,7 @@ class CalendarHistorial @JvmOverloads constructor(
                     else -> 100
                 }
 
-                (monto.fecha == day || monto.fecha == current || monto.fecha == dow) && monto.adddate <= current && monto.enddate!! >= current
+                (monto.fecha == day || monto.fecha == current) && monto.adddate <= current && monto.enddate!! >= current
             }
 
             if (montosCumplen.isNotEmpty()) {
@@ -275,7 +275,7 @@ class CalendarHistorial @JvmOverloads constructor(
 
                 Log.v("SEARCHING COUNT", "$day, $dow, $current")
 
-                if ((monto.fecha == day || monto.fecha == current || monto.fecha == dow) && monto.adddate <= current && monto.enddate!! >= current) {
+                if ((monto.fecha == day || monto.fecha == current) && monto.adddate <= current && monto.enddate!! >= current) {
                     count++
                 }
 

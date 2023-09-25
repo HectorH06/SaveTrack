@@ -218,6 +218,43 @@ class Login : Fragment() {
                                                                 adddate = adddate
                                                             )
 
+                                                            val starter = "Estrena tu cuenta de SaveTrack"
+                                                            val cs = hashMapOf(
+                                                                "A" to arrayOf(ConySug(), ConySug()),
+                                                                "C" to arrayOf(ConySug(), ConySug()),
+                                                                "E" to arrayOf(ConySug(), ConySug(), ConySug(), ConySug(), ConySug(), ConySug()),
+                                                                "I" to arrayOf(ConySug(), ConySug()),
+                                                                "L" to arrayOf(ConySug(), ConySug(), ConySug()),
+                                                                "M" to arrayOf(ConySug(), ConySug(), ConySug(), ConySug(), ConySug()),
+                                                                "D" to arrayOf(ConySug()),
+                                                                "U" to arrayOf(ConySug(), ConySug(), ConySug())
+                                                            )
+                                                            cs["A"]?.set(0, ConySug(idcon = 0, nombre = starter, contenido = "Prueba el modo oscuro", estado = 1, flag = 0, type = 1, style = 0))
+                                                            cs["A"]?.set(1, ConySug(idcon = 1, nombre = starter, contenido = "Es posible desactivar las notificaciones", estado = 1, flag = 0, type = 1, style = 0))
+                                                            cs["C"]?.set(0, ConySug(idcon = 100, nombre = "Se están ignorando los consejos", contenido = "Dales una oportunidad", estado = 0, flag = 1, type = 3, style = 0))
+                                                            cs["C"]?.set(1, ConySug(idcon = 101, nombre = "Se están rechazando demasiados consejos", contenido = "Dales una oportunidad", estado = 0, flag = 1, type = 1, style = 0))
+                                                            cs["E"]?.set(0, ConySug(idcon = 200, nombre = "Hay pocos eventos", contenido = "Dales una oportunidad", estado = 0, flag = 1, type = 3, style = 0))
+                                                            cs["E"]?.set(1, ConySug(idcon = 201, nombre = "Hay demasiados eventos", contenido = "Podrías tener problemas al visualizarlos", estado = 0, flag = 1, type = 4, style = 1))
+                                                            cs["E"]?.set(2, ConySug(idcon = 202, nombre = "Pocos eventos tienen notificaciones", contenido = "Prueba activarlos para evitar olvidarlos", estado = 0, flag = 1, type = 7, style = 1))
+                                                            cs["E"]?.set(3, ConySug(idcon = 203, nombre = "No se te notificará de eventos", contenido = "Tienes las notificaciones desactivadas", estado = 0, flag = 0, type = 7, style = 1))
+                                                            cs["E"]?.set(4, ConySug(idcon = 204, nombre = "No se ha creado un evento en mucho tiempo", contenido = "Prueba a agregar alguno", estado = 0, flag = 2, type = 5, style = 0))
+                                                            cs["E"]?.set(5, ConySug(idcon = 205, nombre = starter, contenido = "Prueba a crear tu primer evento", estado = 1, flag = 0, type = 1, style = 0))
+                                                            cs["I"]?.set(0, ConySug(idcon = 400, nombre = "Los egresos son similares a los ingresos", contenido = "Hay un margen de menos del 5%", estado = 0, flag = 1, type = 7, style = 2))
+                                                            cs["I"]?.set(1, ConySug(idcon = 401, nombre = "Los egresos son superiores a los ingresos", contenido = "Es importante tomar medidas", estado = 0, flag = 1, type = 7, style = 3))
+                                                            cs["L"]?.set(0, ConySug(idcon = 500, nombre = "No hay etiquetas", contenido = "Es necesario crear al menos una para insertar montos", estado = 0, flag = 1, type = 5, style = 2))
+                                                            cs["L"]?.set(1, ConySug(idcon = 501, nombre = "Hay pocas etiquetas", contenido = "Considera crear más", estado = 0, flag = 0, type = 5, style = 1))
+                                                            cs["L"]?.set(2, ConySug(idcon = 502, nombre = "Hay demasiadas etiquetas", contenido = "Considera eliminar algunas", estado = 0, flag = 0, type = 6, style = 1))
+                                                            cs["M"]?.set(0, ConySug(idcon = 600, nombre = starter, contenido = "Prueba a registrar tu primer monto", estado = 1, flag = 0, type = 1, style = 0))
+                                                            cs["M"]?.set(1, ConySug(idcon = 601, nombre = starter, contenido = "Prueba a registrar un ingreso", estado = 1, flag = 0, type = 1, style = 0))
+                                                            cs["M"]?.set(2, ConySug(idcon = 602, nombre = starter, contenido = "Prueba a registrar un egreso", estado = 1, flag = 0, type = 1, style = 0))
+                                                            cs["M"]?.set(3, ConySug(idcon = 603, nombre = "Hay pocos montos", contenido = "Considera registrar más", estado = 0, flag = 0, type = 3, style = 1))
+                                                            cs["M"]?.set(4, ConySug(idcon = 604, nombre = "Hay demasiados montos", contenido = "Considera reducirlos", estado = 0, flag = 0, type = 2, style = 1))
+                                                            cs["D"]?.set(0, ConySug(idcon = 700, nombre = "Demasiados montos son deudas", contenido = "Prueba a reducirlas", estado = 0, flag = 1, type = 4, style = 3))
+                                                            cs["U"]?.set(0, ConySug(idcon = 800, nombre = "La meta de ahorro supera los ingresos totales", contenido = "Prueba reducirla", estado = 0, flag = 1, type = 4, style = 1))
+                                                            cs["U"]?.set(1, ConySug(idcon = 801, nombre = "La meta de ahorro es menor al 10% de los ingresos totales", contenido = "Prueba ahorrar más incrementándola", estado = 0, flag = 0, type = 3, style = 0))
+                                                            cs["U"]?.set(2, ConySug(idcon = 802, nombre = starter, contenido = "Prueba a crear una meta de ahorro", estado = 1, flag = 0, type = 1, style = 0))
+
+
                                                             val defaultAssets = Assets(
                                                                 theme = 0,
                                                                 lastprocess = 0,
@@ -247,6 +284,11 @@ class Login : Fragment() {
                                                             labelsDao.insertLabel(obsequio)
                                                             eventosDao.insertEvento(navidad)
                                                             eventosDao.insertEvento(anuevo)
+                                                            for ((_, value) in cs) {
+                                                                for (i in value.indices) {
+                                                                    conySugDao.insertCon(value[i])
+                                                                }
+                                                            }
                                                             assetsDao.insertAsset(defaultAssets)
 
                                                             val selected = usuarioDao.getUserData()
@@ -831,7 +873,7 @@ class Login : Fragment() {
                                                                         nuevosConySug.toString()
                                                                     )
 
-                                                                    conySugDao.insertConoSug(nuevosConySug)
+                                                                    conySugDao.insertCon(nuevosConySug)
                                                                 } else {
                                                                     Log.v(
                                                                         "Current consejo $i",

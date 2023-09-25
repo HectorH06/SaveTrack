@@ -40,13 +40,14 @@
         android:id="@+id/BalanceTV"
         android:layout_width="148dp"
         android:layout_height="148dp"
-        android:backgroundTint="?attr/colorSecondaryVariant"
+        android:padding="16dp"
+        android:backgroundTint="?attr/colorSecondary"
         android:background="@drawable/ic_hexagon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textColor="?attr/colorOnPrimary"
+        android:textColor="?attr/colorOnSecondary"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="16dp"
         android:contentDescription="@string/dias_ahorrando" />
 
     <LinearLayout
@@ -185,18 +186,4 @@
         app:layout_constraintBottom_toTopOf="@id/UserDataLayout"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"/>
-
-    <Button
-        android:id="@+id/cerrarsesionperfilmainbtn"
-        android:layout_width="91dp"
-        android:layout_height="75dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="40dp"
-        android:background="?attr/colorOnPrimary"
-        android:text="Cerrar Sesión"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="HardcodedText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

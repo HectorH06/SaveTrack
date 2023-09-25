@@ -163,6 +163,8 @@
     <string name="addingresoswidget">Añadir widget de ingreso</string>
     <string name="elegir">Elegir</string>
     <string name="descripcion">Descripción</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="manual">Manual</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

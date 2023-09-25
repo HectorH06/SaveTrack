@@ -111,13 +111,38 @@
         android:id="@+id/manu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/faq"
+        android:text="@string/manual"
         android:textSize="24sp"
+        android:textAllCaps="false"
+        android:padding="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="64dp"
-        android:background="@color/B2"
+        android:background="@drawable/bluebutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Notificaciones" />
+
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="@string/logout"
+        android:textSize="24sp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/faq" />
+
+    <ImageButton
+        android:id="@+id/cerrarsesion"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:textSize="24sp"
+        android:background="@drawable/redbutton"
+        app:srcCompat="@drawable/ic_logout"
+        app:layout_constraintStart_toStartOf="@id/manu"
+        app:layout_constraintEnd_toEndOf="@id/manu"
+        app:layout_constraintTop_toTopOf="@id/logout"
+        app:layout_constraintBottom_toBottomOf="@id/logout"/>
 
     <TextView
         android:id="@+id/by"

@@ -622,25 +622,28 @@ class perfilmain : Fragment() {
                 var chamba = ""
                 val c = String.format("%06d", lachamba).toCharArray()
                 if (c[0] == '1') {
-                    chamba += "asalariado "
+                    chamba += "asalariado, "
                 }
                 if (c[1] == '2') {
-                    chamba += "vendedor "
+                    chamba += "vendedor, "
                 }
                 if (c[2] == '3') {
-                    chamba += "pensionado "
+                    chamba += "pensionado, "
                 }
                 if (c[3] == '4') {
-                    chamba += "becado "
+                    chamba += "becado, "
                 }
                 if (c[4] == '5') {
-                    chamba += "mantenido "
+                    chamba += "mantenido, "
                 }
                 if (c[5] == '6') {
-                    chamba += "inversionista "
+                    chamba += "inversionista, "
                 }
 
-                chamba = chamba.replaceFirstChar { it.uppercaseChar() }
+                if (chamba.isNotEmpty()) {
+                    chamba = chamba.dropLast(2)
+                    chamba = chamba.replaceFirstChar { it.uppercaseChar() }
+                }
 
                 Log.v("Name", nombre)
                 Log.v("Age", edad.toString())

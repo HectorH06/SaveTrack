@@ -1,6 +1,7 @@
 package com.example.st5
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,13 @@ class containerPlanesDeAhorro : Fragment() {
     ): View {
         binding = ContainerPdaBinding.inflate(inflater, container, false)
         parentFragmentManager.commit {
-            replace<planesdeahorromain>(R.id.pda_container, "planesdeahorromain")
+            val fragToGo = arguments?.getInt(fragTo) ?: 0
+            Log.v("fragToGo", "$fragToGo")
+            when (fragToGo) {
+                0 -> replace<planesdeahorromain>(R.id.pda_container, "planesdeahorromain")
+                1 -> replace<pdaDeudasList>(R.id.pda_container, "pdaDeudasList")
+                else -> replace<planesdeahorromain>(R.id.pda_container, "planesdeahorromain")
+            }
             setReorderingAllowed(true)
             addToBackStack(null)
         }
@@ -43,12 +50,13 @@ class containerPlanesDeAhorro : Fragment() {
     }
     companion object {
         const val ARG_SECTION_NUMBER = "section_number"
-
+        private const val fragTo = "frag_to_go"
         @JvmStatic
-        fun newInstance(sectionNumber: Int): containerPlanesDeAhorro {
+        fun newInstance(sectionNumber: Int, fragToGo: Int): containerPlanesDeAhorro {
             return containerPlanesDeAhorro().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
+                    putInt(fragTo, fragToGo)
                 }
             }
         }

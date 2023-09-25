@@ -1,6 +1,7 @@
 package com.example.st5
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,18 @@ class containerIndex : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = ContainerIndexBinding.inflate(inflater, container, false)
         parentFragmentManager.commit {
-            replace<indexmain>(R.id.index_container, "indexmain")
+            val fragToGo = arguments?.getInt(fragTo) ?: 0
+            Log.v("fragToGo", "$fragToGo")
+            when (fragToGo) {
+                0 -> replace<indexmain>(R.id.index_container, "indexmain")
+                1 -> replace<indexmandados>(R.id.index_container, "indexmandados")
+                2 -> replace<indexPorPagar>(R.id.index_container, "indexPorPagar")
+                3 -> replace<indexmontoupdate>(R.id.index_container, "indexmontoupdate")
+                4 -> replace<indexadd>(R.id.index_container, "indexadd")
+                5 -> replace<indexIngresosList>(R.id.index_container, "indexIngresosList")
+                6 -> replace<indexGastosList>(R.id.index_container, "indexGastosList")
+                else -> replace<indexmain>(R.id.index_container, "indexmain")
+            }
             setReorderingAllowed(true)
             addToBackStack(null)
         }
@@ -33,12 +45,13 @@ class containerIndex : Fragment() {
     }
     companion object {
         const val ARG_SECTION_NUMBER = "section_number"
-
+        private const val fragTo = "frag_to_go"
         @JvmStatic
-        fun newInstance(sectionNumber: Int): containerIndex {
+        fun newInstance(sectionNumber: Int, fragToGo: Int): containerIndex {
             return containerIndex().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
+                    putInt(fragTo, fragToGo)
                 }
             }
         }

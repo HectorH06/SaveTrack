@@ -27,20 +27,20 @@ private val TAB_TITLES_LIGHT = arrayOf(
     R.drawable.ic_financelight
 )
 
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, mode: Boolean) :
+class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, mode: Boolean, fragToGo: Int) :
     FragmentPagerAdapter(fm) {
 
     private val modo = mode
-
+    private val fragToGo = fragToGo
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> containerPerfil.newInstance(position)
-            1 -> containerHistorial.newInstance(position)
-            2 -> containerIndex.newInstance(position)
-            3 -> containerPlanesDeAhorro.newInstance(position)
-            4 -> containerFinanzas.newInstance(position)
+            0 -> containerPerfil.newInstance(position, fragToGo)
+            1 -> containerHistorial.newInstance(position, fragToGo)
+            2 -> containerIndex.newInstance(position, fragToGo)
+            3 -> containerPlanesDeAhorro.newInstance(position, fragToGo)
+            4 -> containerFinanzas.newInstance(position, fragToGo)
 
-            else -> containerIndex.newInstance(position)
+            else -> containerIndex.newInstance(position, 0)
         }
     }
 

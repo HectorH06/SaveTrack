@@ -1,6 +1,7 @@
 package com.example.st5
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,14 @@ class containerPerfil : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = ContainerPerfilBinding.inflate(inflater, container, false)
         parentFragmentManager.commit {
-            replace<perfilmain>(R.id.perfil_container, "perfilmain")
+            val fragToGo = arguments?.getInt(fragTo) ?: 0
+            Log.v("fragToGo", "$fragToGo")
+            when (fragToGo) {
+                0 -> replace<perfilmain>(R.id.perfil_container, "perfilmain")
+                1 -> replace<perfileditar>(R.id.perfil_container, "perfileditar")
+                2 -> replace<Configuracion>(R.id.perfil_container, "Configuracion")
+                else -> replace<perfilmain>(R.id.perfil_container, "perfilmain")
+            }
             setReorderingAllowed(true)
             addToBackStack(null)
         }
@@ -33,12 +41,13 @@ class containerPerfil : Fragment() {
     }
     companion object {
         const val ARG_SECTION_NUMBER = "section_number"
-
+        private const val fragTo = "frag_to_go"
         @JvmStatic
-        fun newInstance(sectionNumber: Int): containerPerfil {
+        fun newInstance(sectionNumber: Int, fragToGo: Int): containerPerfil {
             return containerPerfil().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
+                    putInt(fragTo, fragToGo)
                 }
             }
         }

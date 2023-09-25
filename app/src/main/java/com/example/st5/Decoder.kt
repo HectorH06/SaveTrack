@@ -38,7 +38,16 @@ class Decoder (context: Context) {
         var labelStr: String
         withContext(Dispatchers.IO) {
             val labelsDao = Stlite.getInstance(cntxt).getLabelsDao()
-            labelStr = labelsDao.getPlabel(label)
+            labelStr = when (label) {
+                10001 -> "Salario"
+                10002 -> "Venta"
+                10003 -> "Beca"
+                10004 -> "Pensión"
+                10005 -> "Manutención"
+                10006 -> "Ingreso pasivo"
+                10007 -> "Regalo"
+                else -> labelsDao.getPlabel(label)
+            }
         }
         return labelStr
     }

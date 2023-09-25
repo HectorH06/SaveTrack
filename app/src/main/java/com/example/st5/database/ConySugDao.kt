@@ -37,5 +37,7 @@ interface ConySugDao {
     @Query("SELECT * FROM conysug WHERE estado = 1")
     fun getAllActiveCon(): List<ConySug>
     @Query("SELECT * FROM conysug WHERE estado = 2")
+    fun getAllAcceptedCon(): List<ConySug>
+    @Query("SELECT * FROM conysug WHERE estado = 3")
     fun getAllRejectedCon(): List<ConySug>
 }

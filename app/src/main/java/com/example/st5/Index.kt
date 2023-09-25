@@ -11,7 +11,8 @@ import com.google.android.material.tabs.TabLayout
 class Index : AppCompatActivity() {
 
     lateinit var binding: ActivityIndexBinding
-
+    private var currentView: Int = 2
+    private var currentFrag: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityIndexBinding.inflate(layoutInflater)
@@ -27,12 +28,17 @@ class Index : AppCompatActivity() {
         }
         Log.i("MODO", isDarkMode.toString())
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, isDarkMode)
+        val extraContainer = intent.getIntExtra("currentView", 2)
+        currentView = extraContainer
+        val fragToGo = intent.getIntExtra("fragToGo", 0)
+        currentFrag = fragToGo
+
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, isDarkMode, currentFrag)
         val viewPager: ViewPager = binding.ViewContainer
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
 
-        viewPager.currentItem = 2
+        viewPager.currentItem = currentView
     }
 }

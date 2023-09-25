@@ -16,29 +16,30 @@ import kotlinx.coroutines.withContext
 
 class itemSkip : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        val type = intent?.getIntExtra("type", 0)
-        val id = intent?.getLongExtra("id", 0)
+        val typee = intent?.getIntExtra("type", 0)
+        val idd = intent?.getLongExtra("idd", 0)
         val notificationId = intent?.getIntExtra("notif", 0)
-        Log.v("BROADCAST", "$type, $id, $notificationId")
+        Log.v("BROADCAST Skip", "$typee, $idd, $notificationId")
         Toast.makeText(context, "Se omitió", Toast.LENGTH_SHORT).show()
         val scope = CoroutineScope(Dispatchers.Main)
 
         if (notificationId != null) {
-            val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.cancel(notificationId)
         }
 
         if (context != null) {
             scope.launch {
-                when (type) {
+                when (typee) {
                     1 -> { // Es monto
-                        if (id != null) {
-                            skipM(id.toLong(), context)
+                        if (idd != null) {
+                            skipM(idd.toLong(), context)
                         }
                     }
                     2 -> { // Es evento
-                        if (id != null) {
-                            skipE(id.toLong(), context)
+                        if (idd != null) {
+                            skipE(idd.toLong(), context)
                         }
                     }
                     else -> {}

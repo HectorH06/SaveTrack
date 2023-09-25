@@ -75,7 +75,7 @@ class notificationManager(private val context: Context) {
 
         val skip = Intent(context, itemSkip::class.java)
         skip.putExtra("type", typee)
-        skip.putExtra("id", idd)
+        skip.putExtra("idd", idd)
         skip.putExtra("notif", notify)
 
         val go = Intent(context, perfilmain::class.java)

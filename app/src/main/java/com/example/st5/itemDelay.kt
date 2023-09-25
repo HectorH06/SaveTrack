@@ -19,7 +19,7 @@ class itemDelay : BroadcastReceiver() {
         val typee = intent?.getIntExtra("type", 0)
         val idd = intent?.getLongExtra("idd", 0)
         val notificationId = intent?.getIntExtra("notif", 0)
-        Log.v("BROADCAST", "$typee, $idd, $notificationId")
+        Log.v("BROADCAST Delay", "$typee, $idd, $notificationId")
         Toast.makeText(context, "Se pospuso", Toast.LENGTH_SHORT).show()
         val scope = CoroutineScope(Dispatchers.Main)
 

@@ -155,19 +155,6 @@ class Login : Fragment() {
                                                                 summaryingresos = 0.0,
                                                                 summarygastos = 0.0
                                                             )
-                                                            val nuevoMontoGrupo = MontoGrupo(
-                                                                idmonto = 0,
-                                                                idgrupo = 0,
-                                                                iduser = id,
-                                                            )
-                                                            val nuevoGrupo = Grupos(
-                                                                Id = 0,
-                                                                name = "",
-                                                                description = "",
-                                                                admin = id,
-                                                                nmembers = 1,
-                                                                enlace = ""
-                                                            )
                                                             val alimentos = Labels(
                                                                 plabel = "Alimentos",
                                                                 color = -149484
@@ -273,8 +260,6 @@ class Login : Fragment() {
 
                                                             usuarioDao.insertUsuario(nuevoUsuario)
                                                             ingresosGastosDao.insertIngresosGastos(nuevosIG)
-                                                            montoGrupoDao.insertMontoG(nuevoMontoGrupo)
-                                                            gruposDao.insertGrupo(nuevoGrupo)
                                                             labelsDao.insertLabel(alimentos)
                                                             labelsDao.insertLabel(hogar)
                                                             labelsDao.insertLabel(bienestar)
@@ -313,25 +298,10 @@ class Login : Fragment() {
                                                             jsonObjectIngresosGastos.put("summaryingresos", nuevosIG.summaryingresos)
                                                             jsonObjectIngresosGastos.put("summarygastos", nuevosIG.summarygastos)
 
-                                                            // Tabla Monto
+                                                            // Tablas de varios items
                                                             val jsonObjectMonto = JSONObject()
-
-                                                            // Tabla MontoGrupo
                                                             val jsonObjectMontoGrupo = JSONObject()
-                                                            jsonObjectMontoGrupo.put("idmonto", nuevoMontoGrupo.idmonto)
-                                                            jsonObjectMontoGrupo.put("idgrupo", nuevoMontoGrupo.idgrupo)
-                                                            jsonObjectMontoGrupo.put("iduser", nuevoMontoGrupo.iduser)
-
-                                                            // Tabla Grupos
                                                             val jsonObjectGrupos = JSONObject()
-                                                            jsonObjectGrupos.put("Id", nuevoGrupo.Id)
-                                                            jsonObjectGrupos.put("name", nuevoGrupo.name)
-                                                            jsonObjectGrupos.put("description", nuevoGrupo.description)
-                                                            jsonObjectGrupos.put("admin", nuevoGrupo.admin)
-                                                            jsonObjectGrupos.put("nmembers", nuevoGrupo.nmembers)
-                                                            jsonObjectGrupos.put("enlace", nuevoGrupo.enlace)
-
-                                                            // Tabla Labels
                                                             val jsonObjectLabels = JSONObject()
                                                             val jsonObjectEventos = JSONObject()
                                                             val jsonObjectConySug = JSONObject()
@@ -750,20 +720,75 @@ class Login : Fragment() {
                                                                 }
                                                             }
 
-                                                            val jsonObject4 = JSONObject(URL("http://savetrack.com.mx/backupget4.php?username=$username").readText())
-                                                            val idmontog: Long = jsonObject4.getLong("idmonto")
-                                                            val idg: Long = jsonObject4.getLong("idgrupo")
-                                                            val idusemg: Long = jsonObject4.getLong("iduser")
+                                                            val jsonArray4 = JSONArray(URL("http://savetrack.com.mx/backupget4.php?username=$username").readText())
                                                             val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
+                                                            montoGrupoDao.clean()
+                                                            Log.v("jsonArray4", jsonArray4.toString())
+                                                            for (i in 0 until jsonArray4.length()) {
+                                                                val jsonObject4 = jsonArray4.getJSONObject(i)
+                                                                if (jsonObject4.getLong("idmonto") != null) {
+                                                                    val idmontog: Long = jsonObject4.getLong("idmonto")
+                                                                    val idg: Long = jsonObject4.getLong("idgrupo")
+                                                                    val idusemg: Long = jsonObject4.getLong("iduser")
 
-                                                            val jsonObject5 = JSONObject(URL("http://savetrack.com.mx/backupget5.php?username=$username").readText())
-                                                            val idgru: Long = jsonObject5.getLong("Id")
-                                                            val nameg: String = jsonObject5.getString("name")
-                                                            val description: String = jsonObject5.optString("description")
-                                                            val admin: Long = jsonObject5.getLong("admin")
-                                                            val nmembers: Long = jsonObject5.optLong("nmembers")
-                                                            val enlace: String = jsonObject5.getString("enlace")
+                                                                    val nuevosMG = MontoGrupo(
+                                                                        idmonto = idmontog,
+                                                                        idgrupo = idg,
+                                                                        iduser = idusemg
+                                                                    )
+                                                                    Log.v(
+                                                                        "Current montoGrupo $i",
+                                                                        nuevosMG.toString()
+                                                                    )
+
+                                                                    montoGrupoDao.insertMontoG(nuevosMG)
+                                                                } else {
+                                                                    Log.v(
+                                                                        "Current montoGrupo $i",
+                                                                        "VACÍO"
+                                                                    )
+                                                                }
+                                                            }
+
+                                                            val jsonArray5 = JSONArray(URL("http://savetrack.com.mx/backupget5.php?username=$username").readText())
                                                             val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+                                                            gruposDao.clean()
+                                                            Log.v("jsonArray6", jsonArray5.toString())
+                                                            for (i in 0 until jsonArray5.length()) {
+                                                                val jsonObject5 = jsonArray5.getJSONObject(i)
+                                                                if (jsonObject5.getLong("Id") != null) {
+                                                                    val idgru: Long = jsonObject5.getLong("Id")
+                                                                    val nameg: String = jsonObject5.getString("name")
+                                                                    val description: String = jsonObject5.optString("description")
+                                                                    val type: Int = jsonObject5.getInt("type")
+                                                                    val admin: Long = jsonObject5.getLong("admin")
+                                                                    val idori: Long = jsonObject5.getLong("idori")
+                                                                    val color: Int = jsonObject5.optInt("color")
+                                                                    val enlace: String = jsonObject5.getString("enlace")
+
+                                                                    val nuevosGrupos = Grupos(
+                                                                        Id = idgru,
+                                                                        nameg = nameg,
+                                                                        description = description,
+                                                                        type = type,
+                                                                        admin = admin,
+                                                                        idori = idori,
+                                                                        color = color,
+                                                                        enlace = enlace
+                                                                    )
+                                                                    Log.v(
+                                                                        "Current grupo $i",
+                                                                        nuevosGrupos.toString()
+                                                                    )
+
+                                                                    gruposDao.insertGrupo(nuevosGrupos)
+                                                                } else {
+                                                                    Log.v(
+                                                                        "Current grupo $i",
+                                                                        "VACÍO"
+                                                                    )
+                                                                }
+                                                            }
 
                                                             val jsonArray6 = JSONArray(URL("http://savetrack.com.mx/backupget6.php?username=$username").readText())
                                                             val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
@@ -789,7 +814,7 @@ class Login : Fragment() {
                                                                         estado = estado
                                                                     )
                                                                     Log.v(
-                                                                        "Current monto $i",
+                                                                        "Current label $i",
                                                                         nuevasLabels.toString()
                                                                     )
 
@@ -798,7 +823,7 @@ class Login : Fragment() {
                                                                     )
                                                                 } else {
                                                                     Log.v(
-                                                                        "Current monto $i",
+                                                                        "Current label $i",
                                                                         "VACÍO"
                                                                     )
                                                                 }
@@ -830,7 +855,7 @@ class Login : Fragment() {
                                                                         adddate = adddate
                                                                     )
                                                                     Log.v(
-                                                                        "Current monto $i",
+                                                                        "Current evento $i",
                                                                         nuevosEventos.toString()
                                                                     )
 
@@ -869,7 +894,7 @@ class Login : Fragment() {
                                                                         style = style
                                                                     )
                                                                     Log.v(
-                                                                        "Current monto $i",
+                                                                        "Current consejo $i",
                                                                         nuevosConySug.toString()
                                                                     )
 
@@ -894,25 +919,10 @@ class Login : Fragment() {
                                                                 balance = balance,
                                                                 meta = meta
                                                             )
-
                                                             val nuevosIG = IngresosGastos(
                                                                 iduser = idus,
                                                                 summaryingresos = summaryingresos,
                                                                 summarygastos = summarygastos
-                                                            )
-
-                                                            val nuevoMontoGrupo = MontoGrupo(
-                                                                idmonto = idmontog,
-                                                                idgrupo = idg,
-                                                                iduser = idusemg,
-                                                            )
-                                                            val nuevoGrupo = Grupos(
-                                                                Id = idgru,
-                                                                name = nameg,
-                                                                description = description,
-                                                                admin = admin,
-                                                                nmembers = nmembers,
-                                                                enlace = enlace
                                                             )
                                                             val defaultAssets = Assets(
                                                                 theme = tema,
@@ -921,14 +931,14 @@ class Login : Fragment() {
 
                                                             usuarioDao.clean()
                                                             ingresosGastosDao.clean()
-                                                            montoGrupoDao.clean()
-                                                            gruposDao.clean()
+                                                            //montoGrupoDao.clean()
+                                                            //gruposDao.clean()
                                                             assetsDao.clean()
 
                                                             usuarioDao.insertUsuario(nuevoUsuario)
                                                             ingresosGastosDao.insertIngresosGastos(nuevosIG)
-                                                            montoGrupoDao.insertMontoG(nuevoMontoGrupo)
-                                                            gruposDao.insertGrupo(nuevoGrupo)
+                                                            //montoGrupoDao.insertMontoG(nuevoMontoGrupo)
+                                                            //gruposDao.insertGrupo(nuevoGrupo)
                                                             assetsDao.insertAsset(defaultAssets)
 
                                                             val selected = usuarioDao.getUserData()

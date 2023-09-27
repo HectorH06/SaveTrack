@@ -28,6 +28,8 @@ import java.util.*
 
 class Alarma : BroadcastReceiver() {
     private val jsonArrayMonto = JSONArray()
+    private val jsonArrayMontoGrupo = JSONArray()
+    private val jsonArrayGrupos = JSONArray()
     private val jsonArrayLabels = JSONArray()
     private val jsonArrayEventos = JSONArray()
     private val jsonArrayConySug = JSONArray()
@@ -237,11 +239,11 @@ class Alarma : BroadcastReceiver() {
             val conySugDao = Stlite.getInstance(context).getConySugDao()
 
             val perocuantosmontos = montoDao.getMaxMonto()
+            val perocuantosmontosg = montoGrupoDao.getMaxMontoGrupo()
+            val perocuantosgrupos = gruposDao.getMaxGrupo()
             val perocuantaslabels = labelsDao.getMaxLabel()
             val perocuantoseventos = eventosDao.getMaxEvento()
             val perocuantosconsejos = conySugDao.getMaxConsejo()
-            Log.v("CUANTOS MONTOS", perocuantosmontos.toString())
-            Log.v("CUANTOS MONTOS", perocuantosmontos.toString())
 
             val iduser = usuarioDao.checkId().toLong()
             val username = usuarioDao.checkName()
@@ -270,21 +272,11 @@ class Alarma : BroadcastReceiver() {
             val viejosIG = IngresosGastos(
                 iduser = iduser, summaryingresos = summaryingresos, summarygastos = summarygastos
             )
-
-            val viejoMontoGrupo = MontoGrupo(
-                idmonto = 0,
-                idgrupo = 0,
-                iduser = iduser,
-            )
-            val viejoGrupo = Grupos(
-                Id = 0, name = "", description = "", admin = iduser, nmembers = 1, enlace = ""
-            )
             val viejosAssets = Assets(
                 idtheme = 0,
                 theme = tema,
                 lastprocess = lastprocess,
             )
-
 
             val selectedbefore = usuarioDao.getUserData()
             Log.v("PRE SELECTED USERS", selectedbefore.toString())
@@ -365,19 +357,62 @@ class Alarma : BroadcastReceiver() {
             }
 
             // Tabla MontoGrupo
-            val jsonObjectMontoGrupo = JSONObject()
-            jsonObjectMontoGrupo.put("idmonto", viejoMontoGrupo.idmonto)
-            jsonObjectMontoGrupo.put("idgrupo", viejoMontoGrupo.idgrupo)
-            jsonObjectMontoGrupo.put("iduser", viejoMontoGrupo.iduser)
+            for (idmonto in 0..perocuantosmontosg) {
+                if (montoGrupoDao.getIdMonto(idmonto) != null && montoGrupoDao.getIdGrupo(idmonto) != null){
+                    Log.v("Current idmonto", idmonto.toString())
+                    val viejoMontoGrupo = MontoGrupo(
+                        idmonto = montoGrupoDao.getIdMonto(idmonto),
+                        idgrupo = montoGrupoDao.getIdGrupo(idmonto),
+                        iduser = montoGrupoDao.getIdUser(idmonto),
+                    )
+                    Log.v("Current label $idmonto", viejoMontoGrupo.toString())
+                    val jsonObjectMontoGrupo = JSONObject()
+                    jsonObjectMontoGrupo.put("idmonto", viejoMontoGrupo.idmonto)
+                    jsonObjectMontoGrupo.put("idgrupo", viejoMontoGrupo.idgrupo)
+                    jsonObjectMontoGrupo.put("iduser", viejoMontoGrupo.iduser)
+
+                    jsonArrayMontoGrupo.put(jsonObjectMontoGrupo)
+
+                    Log.v("Current object", jsonObjectMontoGrupo.toString())
+                    Log.v("Current array", jsonArrayMontoGrupo.toString())
+                } else {
+                    Log.v("Current montogrupo $idmonto", "VACÍO")
+                }
+            }
 
             // Tabla Grupos
-            val jsonObjectGrupos = JSONObject()
-            jsonObjectGrupos.put("Id", viejoGrupo.Id)
-            jsonObjectGrupos.put("name", viejoGrupo.name)
-            jsonObjectGrupos.put("description", viejoGrupo.description)
-            jsonObjectGrupos.put("admin", viejoGrupo.admin)
-            jsonObjectGrupos.put("nmembers", viejoGrupo.nmembers)
-            jsonObjectGrupos.put("enlace", viejoGrupo.enlace)
+            for (Id in 0..perocuantosgrupos) {
+                if (gruposDao.getIdGrupo(Id) != null && gruposDao.getNameG(Id) != null){
+                    Log.v("Current idlabel", Id.toString())
+                    val viejoGrupo = Grupos(
+                        Id = gruposDao.getIdGrupo(Id),
+                        nameg = gruposDao.getNameG(Id),
+                        description = gruposDao.getDescription(Id),
+                        type = gruposDao.getType(Id),
+                        admin = gruposDao.getAdmin(Id),
+                        idori = gruposDao.getIdori(Id),
+                        color = gruposDao.getColor(Id),
+                        enlace = gruposDao.getEnlace(Id)
+                    )
+                    Log.v("Current label $Id", viejoGrupo.toString())
+                    val jsonObjectGrupos = JSONObject()
+                    jsonObjectGrupos.put("Id", viejoGrupo.Id)
+                    jsonObjectGrupos.put("name", viejoGrupo.nameg)
+                    jsonObjectGrupos.put("description", viejoGrupo.description)
+                    jsonObjectGrupos.put("type", viejoGrupo.type)
+                    jsonObjectGrupos.put("admin", viejoGrupo.admin)
+                    jsonObjectGrupos.put("idori", viejoGrupo.idori)
+                    jsonObjectGrupos.put("color", viejoGrupo.color)
+                    jsonObjectGrupos.put("enlace", viejoGrupo.enlace)
+
+                    jsonArrayGrupos.put(jsonObjectGrupos)
+
+                    Log.v("Current object", jsonObjectGrupos.toString())
+                    Log.v("Current array", jsonArrayGrupos.toString())
+                } else {
+                    Log.v("Current grupo $Id", "VACÍO")
+                }
+            }
 
             // Tabla Labels
             for (idlabel in 1..perocuantaslabels) {
@@ -537,7 +572,7 @@ class Alarma : BroadcastReceiver() {
             queue.add(upload3Req)
 
             val upload4url =
-                "http://savetrack.com.mx/backupput4.php?username=$username&backup=$jsonObjectMontoGrupo"
+                "http://savetrack.com.mx/backupput4.php?username=$username&backup=$jsonArrayMontoGrupo"
             val upload4Req: StringRequest =
                 object : StringRequest(Method.PUT, upload4url, Response.Listener { response ->
                     Log.d(
@@ -560,7 +595,7 @@ class Alarma : BroadcastReceiver() {
             queue.add(upload4Req)
 
             val upload5url =
-                "http://savetrack.com.mx/backupput5.php?username=$username&backup=$jsonObjectGrupos"
+                "http://savetrack.com.mx/backupput5.php?username=$username&backup=$jsonArrayGrupos"
             val upload5Req: StringRequest =
                 object : StringRequest(Method.PUT, upload5url, Response.Listener { response ->
                     Log.d(

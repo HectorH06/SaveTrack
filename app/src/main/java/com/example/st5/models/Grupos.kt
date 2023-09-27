@@ -13,19 +13,25 @@ data class Grupos(
     var Id: Long,
 
     @ColumnInfo(name = "nameg")
-    var name: String,
+    var nameg: String,
 
     @ColumnInfo(name = "description")
     var description: String,
 
+    @ColumnInfo(name = "type")
+    var type: Int,
+
     @ColumnInfo(name = "admin")
     var admin: Long,
 
-    @ColumnInfo(name = "nmembers")
-    var nmembers: Long,
+    @ColumnInfo(name = "idori")
+    var idori: Long,
+
+    @ColumnInfo(name = "color")
+    var color: Int,
 
     @ColumnInfo(name = "enlace")
     var enlace: String,
 ) : Parcelable {
-    constructor() : this(0L, "", "", 0L, 0L, "")
+    constructor() : this(0L, "", "", 0, 0L, 0L, 0, "")
 }

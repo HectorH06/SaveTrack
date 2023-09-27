@@ -18,4 +18,14 @@ interface MontoGrupoDao {
 
     @Delete
     fun deleteMontoG(montoGrupo: MontoGrupo)
+
+    @Query("SELECT MAX(idmonto) FROM montogrupo")
+    fun getMaxMontoGrupo(): Int
+
+    @Query("SELECT idmonto FROM montogrupo WHERE idmonto = :id")
+    fun getIdMonto(id: Int): Long
+    @Query("SELECT idgrupo FROM montogrupo WHERE idmonto = :id")
+    fun getIdGrupo(id: Int): Long
+    @Query("SELECT iduser FROM montogrupo WHERE idmonto = :id")
+    fun getIdUser(id: Int): Long
 }

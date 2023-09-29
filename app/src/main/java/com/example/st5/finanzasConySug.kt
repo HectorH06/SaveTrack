@@ -93,7 +93,7 @@ class finanzasConySug : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val back = finanzasmain();
+        val back = finanzasmain()
 
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()

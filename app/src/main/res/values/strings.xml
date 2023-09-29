@@ -165,6 +165,8 @@
     <string name="descripcion">Descripción</string>
     <string name="logout">Cerrar Sesión</string>
     <string name="manual">Manual</string>
+    <string name="nada" />
+    <string name="Grupo">Grupo</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

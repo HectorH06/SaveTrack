@@ -136,7 +136,7 @@
         android:translationZ="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/ic_chartexample"
+        android:background="@drawable/ic_charts"
         android:contentDescription="@string/economia" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

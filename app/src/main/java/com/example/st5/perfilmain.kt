@@ -1,31 +1,40 @@
 package com.example.st5
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentPerfilmainBinding
+import com.example.st5.models.Grupos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class perfilmain : Fragment() {
     private lateinit var binding: FragmentPerfilmainBinding
+
+    private var isDarkMode = false
+    private lateinit var grupos: List<Grupos>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
+            isDarkMode = isDarkModeEnabled(requireContext())
 
             if (isDarkMode) {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
@@ -62,9 +71,21 @@ class perfilmain : Fragment() {
         binding = FragmentPerfilmainBinding.inflate(inflater, container, false)
         return binding.root
     }
+    private suspend fun gruposGet(): List<Grupos> {
+        withContext(Dispatchers.IO) {
+            val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+            grupos = gruposDao.getAllGrupos()
+            Log.i("ALL GRUPOS", grupos.toString())
+        }
+        return grupos
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            grupos = gruposGet()
+            if (grupos.isNotEmpty()) {binding.displayGrupos.adapter = GruposDisplayAdapter(grupos)}
+        }
         suspend fun bajarfoto(link: String) {
             withContext(Dispatchers.IO) {
                 binding.ProfilePicture.load(link) {
@@ -94,6 +115,12 @@ class perfilmain : Fragment() {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.perfil_container, Configuracion()).addToBackStack(null).commit()
+        }
+
+        binding.BalanceTV.setOnClickListener {
+            val intent = Intent(activity, GruposActivity::class.java)
+            intent.putExtra("isDarkMode", isDarkMode)
+            startActivity(intent)
         }
 
         suspend fun mostrarDatos() {
@@ -174,6 +201,44 @@ class perfilmain : Fragment() {
         lifecycleScope.launch {
             mostrarDatos()
         }
+    }
 
+    private inner class GruposDisplayAdapter (private val grupos: List<Grupos>) :
+        RecyclerView.Adapter<GruposDisplayAdapter.GrupoViewHolder>() {
+        inner class GrupoViewHolder(
+            itemView: View,
+            val nombreTextView: TextView,
+            val tipoImage: ImageView
+        ) : RecyclerView.ViewHolder(itemView)
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GrupoViewHolder {
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_displaygrupos, parent, false)
+            val nombreTextView = itemView.findViewById<TextView>(R.id.GNombre)
+            val tipoImage = itemView.findViewById<ImageView>(R.id.GTipo)
+            return GrupoViewHolder(
+                itemView,
+                nombreTextView,
+                tipoImage
+            )
+        }
+
+        @SuppressLint("SetTextI18n")
+        override fun onBindViewHolder(holder: GrupoViewHolder, position: Int) {
+            val grupo = grupos[position]
+            holder.nombreTextView.text = grupo.nameg
+            holder.tipoImage.setBackgroundResource(when (grupo.type) {
+                0 -> R.drawable.ic_pin
+                1 -> R.drawable.ic_temporal
+                else -> R.drawable.ic_delete
+            })
+            if (position == 3) {
+                holder.nombreTextView.text = "TODOS LOS GRUPOS"
+                holder.tipoImage.setBackgroundResource(R.drawable.ic_list)
+            }
+        }
+
+        override fun getItemCount(): Int {
+            return 4
+        }
     }
 }

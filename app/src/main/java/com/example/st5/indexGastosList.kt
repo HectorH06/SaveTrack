@@ -21,7 +21,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class indexGastosList : Fragment() {
     private lateinit var binding: FragmentIndexgastoslistBinding
 

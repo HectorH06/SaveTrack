@@ -33,7 +33,7 @@ class Index : AppCompatActivity() {
         val fragToGo = intent.getIntExtra("fragToGo", 0)
         currentFrag = fragToGo
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, isDarkMode, currentFrag)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, isDarkMode, currentView, currentFrag)
         val viewPager: ViewPager = binding.ViewContainer
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.tabs

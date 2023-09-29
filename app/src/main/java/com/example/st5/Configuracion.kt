@@ -70,6 +70,7 @@ class Configuracion : Fragment() {
                 override fun handleOnBackPressed() {
                     val intent = Intent(activity, Index::class.java)
                     intent.putExtra("isDarkMode", !isDarkMode)
+                    intent.putExtra("currentView", 0)
                     startActivity(intent)
                 }
             })
@@ -125,6 +126,7 @@ class Configuracion : Fragment() {
         binding.goback.setOnClickListener {
             val intent = Intent(activity, Index::class.java)
             intent.putExtra("isDarkMode", !isDarkMode)
+            intent.putExtra("currentView", 0)
             startActivity(intent)
         }
 

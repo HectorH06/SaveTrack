@@ -27,12 +27,14 @@ private val TAB_TITLES_LIGHT = arrayOf(
     R.drawable.ic_financelight
 )
 
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, mode: Boolean, fragToGo: Int) :
+class SectionsPagerAdapter(private val context: Context, fm: FragmentManager, mode: Boolean,
+                           private val containerToGo: Int, private var fragToGo: Int
+) :
     FragmentPagerAdapter(fm) {
 
     private val modo = mode
-    private val fragToGo = fragToGo
     override fun getItem(position: Int): Fragment {
+        if (containerToGo != position) {fragToGo = 0}
         return when (position) {
             0 -> containerPerfil.newInstance(position, fragToGo)
             1 -> containerHistorial.newInstance(position, fragToGo)

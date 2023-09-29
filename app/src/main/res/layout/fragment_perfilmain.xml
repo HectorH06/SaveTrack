@@ -59,7 +59,7 @@
         android:layout_marginEnd="160dp"
         android:layout_marginBottom="41dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/grupos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ProfilePicture"
@@ -135,43 +135,25 @@
         app:layout_constraintStart_toEndOf="@+id/UserDataLayout"
         app:tint="?attr/colorOnPrimary" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="150dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
+    <TableLayout
+        android:id="@+id/grupos"
+        android:layout_width="180dp"
+        android:layout_height="240dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:stretchColumns="0,1,2">
 
-        <Button
-            android:id="@+id/Group1Button"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/displayGrupos"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:textColor="?attr/colorOnPrimary"
-            android:textColorHint="?attr/colorSecondary"
-            android:background="?attr/colorOnSecondary"
-            android:text="Group 1" />
-
-        <Button
-            android:id="@+id/Group2Button"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:textColor="?attr/colorOnPrimary"
-            android:textColorHint="?attr/colorSecondary"
-            android:background="?attr/colorOnSecondary"
-            android:text="Group 2" />
-
-        <Button
-            android:id="@+id/Group3Button"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:textColor="?attr/colorOnPrimary"
-            android:textColorHint="?attr/colorSecondary"
-            android:background="?attr/colorOnSecondary"
-            android:text="Group 3" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="@+id/grupos"
+            app:layout_constraintTop_toBottomOf="@+id/grupos" />
+    </TableLayout>
 
     <Button
         android:id="@+id/DaysSavingButton"

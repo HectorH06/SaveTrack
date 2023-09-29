@@ -43,6 +43,12 @@
             android:label="index"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".GruposActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="grupos"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
         <receiver android:enabled="true" android:name=".Alarma"
             android:exported="true">
         </receiver>

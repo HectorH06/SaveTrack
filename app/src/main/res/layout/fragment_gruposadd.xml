@@ -9,7 +9,7 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/finanzas_background"
+        android:theme="@style/perfil_background"
         android:contentDescription="@string/wallpaper" />
 
     <ScrollView
@@ -51,7 +51,7 @@
                 android:id="@+id/bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/adde"
+                android:text="@string/addg"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="36sp"
                 android:layout_marginStart="16dp"
@@ -60,7 +60,7 @@
                 app:layout_constraintStart_toEndOf="@id/goback"/>
 
             <EditText
-                android:id="@+id/ConceptoField"
+                android:id="@+id/NombreField"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginStart="40dp"
@@ -78,7 +78,7 @@
                 android:textSize="24sp"
                 android:textColor="?attr/colorOnPrimary"
                 android:textColorHint="?attr/colorSecondary"
-                app:layout_constraintBottom_toTopOf="@id/LabelField"
+                app:layout_constraintBottom_toTopOf="@id/ColorField"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ConfigButton" />
@@ -89,8 +89,8 @@
                 android:layout_height="wrap_content"
                 android:translationZ="100dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@id/ConceptoField"
-                app:layout_constraintTop_toBottomOf="@+id/ConceptoField">
+                app:layout_constraintEnd_toEndOf="@id/NombreField"
+                app:layout_constraintTop_toBottomOf="@id/NombreField">
 
                 <com.polyak.iconswitch.IconSwitch
                     android:id="@+id/updownSwitch"
@@ -98,8 +98,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center_vertical"
                     android:trackTint="@color/B2"
-                    app:isw_icon_left="@drawable/ic_activenotif"
-                    app:isw_icon_right="@drawable/ic_offnotif"
+                    app:isw_icon_left="@drawable/ic_pin"
+                    app:isw_icon_right="@drawable/ic_temporal"
                     app:isw_inactive_tint_icon_left="@color/B0"
                     app:isw_active_tint_icon_left="@color/N0"
                     app:isw_active_tint_icon_right="@color/B2"
@@ -108,99 +108,53 @@
                     app:isw_thumb_color_right="@color/N0" />
             </RelativeLayout>
 
-            <Spinner
-                android:alpha="0"
-                android:id="@+id/LabelField"
+            <Button
+                android:id="@+id/ColorField"
                 android:layout_width="match_parent"
+                android:layout_height="60dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="0dp"
-                android:elevation="15dp"
-                android:paddingStart="6dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="6dp"
-                android:textSize="24sp"
-                android:textColor="?attr/colorOnPrimary"
-                android:textColorHint="?attr/colorSecondary"
-                app:layout_constraintBottom_toTopOf="@+id/FrecuenciaField"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ConceptoField" />
-
-            <TextView
-                android:id="@+id/LabelText"
-                android:layout_width="match_parent"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="0dp"
-                android:hint="@string/seleccionar"
+                android:textAlignment="textStart"
+                android:autofillHints=""
                 android:background="@drawable/p1midcell"
                 android:elevation="15dp"
+                android:hint="@string/color"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textSize="24sp"
+                android:textColorHint="?attr/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/NombreField" />
+
+            <EditText
+                android:id="@+id/DescripcionField"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:autofillHints=""
+                android:background="@drawable/p1bottomcell"
+                android:elevation="15dp"
+                android:hint="@string/descripciong"
+                android:inputType="text"
                 android:paddingStart="6dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="6dp"
-                android:textSize="24sp"
-                android:translationZ="-10dp"
+                android:textAlignment="textStart"
+                android:textSize="14sp"
                 android:textColor="?attr/colorOnPrimary"
                 android:textColorHint="?attr/colorSecondary"
-                app:layout_constraintBottom_toTopOf="@+id/FrecuenciaField"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ConceptoField" />
-
-                <Spinner
-                    android:id="@+id/FrecuenciaField"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:autofillHints=""
-                    android:background="@drawable/p1midcell"
-                    android:elevation="15dp"
-                    android:paddingStart="6dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="6dp"
-                    android:textSize="24sp"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginEnd="40dp"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textColorHint="?attr/colorSecondary"
-                    app:layout_constraintBottom_toTopOf="@+id/FechaField"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/LabelField" />
-
-                    <DatePicker
-                        android:id="@+id/FechaField"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginEnd="40dp"
-                        android:background="@drawable/p1bottomcell"
-                        android:calendarViewShown="false"
-                        android:clickable="true"
-                        android:datePickerMode="spinner"
-                        android:elevation="15dp"
-                        android:focusable="true"
-                        android:hint="@string/Fecha"
-                        android:inputType="text"
-                        android:textAlignment="center"
-                        android:textSize="20sp"
-                        android:theme="@style/calendario_add"
-                        android:textColor="?attr/colorOnPrimary"
-                        android:textColorHint="?attr/colorSecondary"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/FrecuenciaField"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/ColorField" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchor="@+id/scrollView2"
+        app:layout_anchor="@+id/background"
         app:layout_anchorGravity="center">
 
         <ImageButton

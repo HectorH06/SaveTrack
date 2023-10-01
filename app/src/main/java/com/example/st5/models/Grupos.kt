@@ -10,13 +10,13 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Grupos(
     @PrimaryKey(autoGenerate = true)
-    var Id: Long,
+    var Id: Long = 0,
 
     @ColumnInfo(name = "nameg")
     var nameg: String,
 
     @ColumnInfo(name = "description")
-    var description: String,
+    var description: String = "",
 
     @ColumnInfo(name = "type")
     var type: Int,

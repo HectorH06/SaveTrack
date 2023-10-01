@@ -93,6 +93,12 @@ class gruposList : Fragment(){
             intent.putExtra("currentView", 0)
             startActivity(intent)
         }
+
+        binding.AgregarGrupoButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.GruposContainer, gruposAdd()).addToBackStack(null).commit()
+        }
     }
 
     private inner class GrupoAdapter(private val grupos: List<Grupos>) :

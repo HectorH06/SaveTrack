@@ -45,6 +45,6 @@
         android:id="@+id/viewGrupo"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:background="@drawable/ic_edit"
+        android:background="@drawable/ic_watch"
         android:backgroundTint="?attr/colorOnPrimary" />
 </TableRow>

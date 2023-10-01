@@ -134,6 +134,8 @@ class gruposAdd : Fragment() {
                     .setTitle("¿Seguro que quieres guardar cambios?")
                     .setPositiveButton("Guardar") { dialog, _ ->
                         Log.v("Nombre", nombre)
+                        Log.v("Descripcion", descrip)
+                        Log.v("Tipo", type.toString())
                         Log.v("Color", color.toString())
 
                         lifecycleScope.launch {
@@ -202,7 +204,7 @@ class gruposAdd : Fragment() {
 
             gruposDao.insertGrupo(nuevoGrupo)
             val grupos = gruposDao.getAllGrupos()
-            Log.i("ALL LABELS", grupos.toString())
+            Log.i("ALL GRUPOS", grupos.toString())
 
         }
     }

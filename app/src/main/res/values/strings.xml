@@ -169,6 +169,8 @@
     <string name="Grupo">Grupo</string>
     <string name="addg">Crear Grupo</string>
     <string name="descripciong">Descripción de no más de 100 caracteres</string>
+    <string name="admin">Admin</string>
+    <string name="compartir">Compartir</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

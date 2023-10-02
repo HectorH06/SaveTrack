@@ -29,7 +29,7 @@ class gruposList : Fragment(){
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            var isDarkMode = isDarkModeEnabled(requireContext())
+            val isDarkMode = isDarkModeEnabled(requireContext())
 
             if (isDarkMode) {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)

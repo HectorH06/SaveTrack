@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.Light">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/index_background"
+        android:contentDescription="@string/wallpaper" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/ConfigButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/transparent"
+                android:contentDescription="@string/configuracion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_settings" />
+
+            <ImageButton
+                android:id="@+id/goback"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/transparent"
+                android:contentDescription="@string/goback"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.218"
+                app:srcCompat="@drawable/ic_back"
+                app:tint="?attr/colorOnPrimary" />
+
+            <TextView
+                android:id="@+id/bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addm"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="36sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/goback"/>
+
+            <EditText
+                android:id="@+id/ConceptoField"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:autofillHints=""
+                android:background="@drawable/p1topcell"
+                android:elevation="15dp"
+                android:hint="@string/Concepto"
+                android:inputType="text"
+                android:paddingStart="6dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="6dp"
+                android:textAlignment="textStart"
+                android:textSize="24sp"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                app:layout_constraintBottom_toTopOf="@id/ValorField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.468"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ConfigButton"
+                app:layout_constraintVertical_bias="0.625" />
+
+            <EditText
+                android:id="@+id/ValorField"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="40dp"
+                android:autofillHints=""
+                android:background="@drawable/p1midcell"
+                android:elevation="15dp"
+                android:hint="@string/Valor"
+                android:inputType="numberDecimal"
+                android:paddingStart="6dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="6dp"
+                android:textSize="24sp"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                app:layout_constraintBottom_toTopOf="@+id/LabelField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.468"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ConceptoField"
+                app:layout_constraintVertical_bias="0.679" />
+
+            <RelativeLayout
+                android:id="@+id/switchpordelante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:translationZ="100dp"
+                app:layout_constraintBottom_toTopOf="@+id/LabelField"
+                app:layout_constraintEnd_toEndOf="@id/ValorField"
+                app:layout_constraintTop_toBottomOf="@+id/ConceptoField">
+
+                <com.polyak.iconswitch.IconSwitch
+                    android:id="@+id/updownSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:trackTint="@color/X2"
+                    app:isw_icon_left="@drawable/ic_add"
+                    app:isw_icon_right="@drawable/ic_remove"
+                    app:isw_inactive_tint_icon_left="@color/G5"
+                    app:isw_inactive_tint_icon_right="@color/R4"
+                    app:isw_thumb_color_left="@color/G2"
+                    app:isw_thumb_color_right="@color/R0" />
+            </RelativeLayout>
+
+            <Spinner
+                android:alpha="0"
+                android:id="@+id/LabelField"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="0dp"
+                android:elevation="15dp"
+                android:paddingStart="6dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="6dp"
+                android:textSize="24sp"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                app:layout_constraintBottom_toTopOf="@+id/invisibleContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ValorField" />
+
+            <TextView
+                android:id="@+id/LabelText"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="0dp"
+                android:hint="@string/seleccionar"
+                android:background="@drawable/p1bottomcell"
+                android:elevation="15dp"
+                android:paddingStart="6dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="6dp"
+                android:textSize="24sp"
+                android:translationZ="-10dp"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                app:layout_constraintBottom_toTopOf="@+id/invisibleContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ValorField" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/checkpordelante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:translationZ="100dp"
+                app:layout_constraintEnd_toEndOf="@id/LabelField"
+                app:layout_constraintTop_toBottomOf="@+id/ValorField">
+
+                <CheckBox
+                    android:id="@+id/yocreoquesi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/b1noncell"
+                    android:buttonTint="?attr/colorOnPrimary"
+                    android:elevation="15dp"
+                    android:hint="@string/esdeuda"
+                    android:paddingStart="6dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="6dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorOnPrimary"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TableLayout
+                android:id="@+id/invisibleContainer"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="100dp"
+                android:animateLayoutChanges="true"
+                android:clipChildren="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.468"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/LabelField"
+                app:layout_constraintVertical_bias="0.788">
+
+                <Spinner
+                    android:id="@+id/FrecuenciaField"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:alpha="0"
+                    android:autofillHints=""
+                    android:background="@drawable/p1bottomcell"
+                    android:elevation="15dp"
+                    android:paddingStart="6dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="6dp"
+                    android:textSize="24sp"
+                    android:translationY="-50dp"
+                    android:translationZ="-100dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorSecondary"
+                    app:layout_constraintBottom_toTopOf="@+id/datedate"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.468"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/LabelField"
+                    app:layout_constraintVertical_bias="0.788" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/datedate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/InteresField"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/FrecuenciaField">
+
+                    <DatePicker
+                        android:id="@+id/FechaField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:alpha="1"
+                        android:background="@drawable/p1bottomcell"
+                        android:calendarViewShown="false"
+                        android:clickable="true"
+                        android:datePickerMode="spinner"
+                        android:elevation="15dp"
+                        android:focusable="true"
+                        android:hint="@string/Fecha"
+                        android:inputType="text"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        android:theme="@style/calendario_add"
+                        android:translationY="-50dp"
+                        android:translationZ="-150dp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorSecondary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ca.antonious.materialdaypicker.MaterialDayPicker
+                        android:id="@+id/WeekField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:alpha="1"
+                        android:calendarViewShown="false"
+                        android:clickable="true"
+                        android:elevation="15dp"
+                        android:focusable="true"
+                        android:translationZ="-150dp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorSecondary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <EditText
+                    android:id="@+id/InteresField"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="0dp"
+                    android:alpha="1"
+                    android:autofillHints=""
+                    android:background="@drawable/p1midcell"
+                    android:elevation="15dp"
+                    android:hint="@string/Interes"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="6dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="6dp"
+                    android:textSize="24sp"
+                    android:translationY="-50dp"
+                    android:translationZ="-200dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorSecondary"
+                    app:layout_constraintBottom_toTopOf="@id/InteresSeekbar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.468"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/datedate"
+                    app:layout_constraintVertical_bias="0.734" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/interesPordelante"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:translationZ="100dp"
+                    app:layout_constraintEnd_toEndOf="@id/InteresField"
+                    app:layout_constraintTop_toTopOf="@+id/InteresField">
+
+                    <CheckBox
+                        android:id="@+id/interesCompuesto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/b1noncell"
+                        android:buttonTint="?attr/colorOnPrimary"
+                        android:elevation="15dp"
+                        android:alpha="1"
+                        android:hint="@string/escompuesto"
+                        android:paddingStart="6dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="6dp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorOnPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <SeekBar
+                    android:id="@+id/InteresSeekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="0dp"
+                    android:alpha="1"
+                    android:autofillHints=""
+                    android:background="@drawable/p1midcell"
+                    android:elevation="15dp"
+                    android:hint="@string/Fecha"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="6dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="6dp"
+                    android:progressTint="?attr/colorPrimaryVariant"
+                    android:textSize="24sp"
+                    android:thumbTint="?attr/colorPrimary"
+                    android:translationY="-50dp"
+                    android:translationZ="-250dp"
+                    app:layout_constraintBottom_toTopOf="@id/FechaFinalField"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.468"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/InteresField"
+                    app:layout_constraintVertical_bias="0.734" />
+
+                <DatePicker
+                    android:id="@+id/FechaFinalField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:alpha="1"
+                    android:background="@drawable/p1bottomcell"
+                    android:calendarViewShown="false"
+                    android:clickable="true"
+                    android:datePickerMode="spinner"
+                    android:elevation="15dp"
+                    android:focusable="true"
+                    android:hint="@string/Fecha"
+                    android:inputType="text"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:theme="@style/calendario_add"
+                    android:translationY="-50dp"
+                    android:translationZ="-150dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorSecondary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/InteresSeekbar"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </TableLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/scrollView2"
+        app:layout_anchorGravity="center">
+
+        <ImageButton
+            android:id="@+id/Confirm"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/confshape"
+            android:contentDescription="@string/confirmar"
+            app:layout_constraintBottom_toTopOf="@id/Cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_confirm" />
+
+        <ImageButton
+            android:id="@+id/Cancel"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/cancshape"
+            android:contentDescription="@string/Cancelar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_cancel" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

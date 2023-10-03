@@ -12,6 +12,9 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentGruposaddBinding
 import com.example.st5.models.Grupos
@@ -19,7 +22,9 @@ import com.polyak.iconswitch.IconSwitch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import yuku.ambilwarna.AmbilWarnaDialog
+import java.nio.charset.Charset
 import java.util.*
 
 
@@ -60,7 +65,7 @@ class gruposAdd : Fragment() {
     private suspend fun isDarkModeEnabled(context: Context): Boolean {
         var komodo: Boolean
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             val mode = assetsDao.getTheme()
@@ -201,8 +206,46 @@ class gruposAdd : Fragment() {
                 color = color,
                 enlace = ""
             )
-
             gruposDao.insertGrupo(nuevoGrupo)
+
+            val gId = gruposDao.getMaxGrupo().toLong()
+            val grupoUp = Grupos(
+                Id = gId,
+                nameg = nombre,
+                description = descripcion,
+                type = type,
+                admin = iduser.toLong(),
+                idori = gId,
+                color = color,
+                enlace = ""
+            )
+            gruposDao.updateGrupo(grupoUp)
+
+            val queue = Volley.newRequestQueue(requireContext())
+            var url = "http://savetrack.com.mx/grupoPost.php?"
+            val miembros = JSONArray()
+            miembros.put(iduser)
+            val requestBody = "localid=${grupoUp.Id}&admin=$iduser&miembros=$miembros&nameg=${grupoUp.nameg}&type=${grupoUp.type}&desc=${grupoUp.description}&color=${grupoUp.color}"
+            url += requestBody
+            val stringReq: StringRequest =
+                object : StringRequest(
+                    Method.POST, url,
+                    Response.Listener { response ->
+                        val strResp2 = response.toString()
+                        Log.d("API", strResp2)
+
+                    },
+                    Response.ErrorListener { error ->
+                        Log.d("API", "error => $error")
+                    }
+                ) {
+                    override fun getBody(): ByteArray {
+                        return requestBody.toByteArray(Charset.defaultCharset())
+                    }
+                }
+            Log.e("stringReq", stringReq.toString())
+            queue.add(stringReq)
+
             val grupos = gruposDao.getAllGrupos()
             Log.i("ALL GRUPOS", grupos.toString())
 

@@ -131,8 +131,8 @@ class gruposList : Fragment(){
             val grupo = grupos[position]
             holder.grupo.text = grupo.nameg
             holder.tipo.text = when (grupo.type) {
-                1 -> "Fijo"
-                2 -> "Temporal"
+                0 -> "Fijo"
+                1 -> "Temporal"
                 else -> "Eliminado"
             }
             holder.color.setBackgroundColor(grupo.color)

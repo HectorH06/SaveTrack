@@ -231,14 +231,23 @@ class perfilmain : Fragment() {
                 1 -> R.drawable.ic_temporal
                 else -> R.drawable.ic_delete
             })
-            if (position == 3) {
-                holder.nombreTextView.text = "TODOS LOS GRUPOS"
-                holder.tipoImage.setBackgroundResource(R.drawable.ic_list)
+            when (position){
+                0 -> holder.itemView.setBackgroundResource(R.drawable.p1topcell)
+                minOf(grupos.size, 3) -> holder.itemView.setBackgroundResource(R.drawable.p1topcell)
+                3 -> {
+                    holder.nombreTextView.text = "TODOS LOS GRUPOS"
+                    holder.tipoImage.setBackgroundResource(R.drawable.ic_list)
+                    holder.itemView.setOnClickListener {
+                        val intent = Intent(activity, GruposActivity::class.java)
+                        intent.putExtra("isDarkMode", isDarkMode)
+                        startActivity(intent)
+                    }
+                }
             }
         }
 
         override fun getItemCount(): Int {
-            return 4
+            return minOf(grupos.size, 4)
         }
     }
 }

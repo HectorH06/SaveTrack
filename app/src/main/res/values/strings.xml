@@ -171,6 +171,9 @@
     <string name="descripciong">Descripción de no más de 100 caracteres</string>
     <string name="admin">Admin</string>
     <string name="compartir">Compartir</string>
+    <string name="montos">Montos</string>
+    <string name="dinero">$</string>
+    <string name="createdat">Created At</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

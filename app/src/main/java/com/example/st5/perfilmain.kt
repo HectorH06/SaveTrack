@@ -244,6 +244,7 @@ class perfilmain : Fragment() {
                     }
                 }
             }
+            holder.itemView.setBackgroundColor(grupo.color)
         }
 
         override fun getItemCount(): Int {

@@ -1,0 +1,60 @@
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cabezaingresos"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/p1midcell"
+    android:orientation="horizontal"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/UNombre"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:hint="@string/Concepto"
+        android:paddingStart="7dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/admin"
+        android:layout_marginStart="8dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:background="@drawable/ic_admin"
+        android:backgroundTint="?attr/colorOnPrimary" />
+
+    <TextView
+        android:id="@+id/UMontos"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:hint="@string/Valor"
+        android:textAlignment="textStart"
+        android:paddingStart="15dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/UCantidad"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/ic_circle"
+        android:minHeight="35dp"
+        android:textSize="18sp"
+        android:contentDescription="@string/color" />
+
+    <Button
+        android:id="@+id/viewGrupo"
+        android:layout_marginStart="32dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:background="@drawable/ic_watch"
+        android:backgroundTint="?attr/colorOnPrimary" />
+</TableRow>

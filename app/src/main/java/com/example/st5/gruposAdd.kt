@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentGruposaddBinding
 import com.example.st5.models.Grupos
+import com.example.st5.models.Labels
 import com.polyak.iconswitch.IconSwitch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -194,9 +195,9 @@ class gruposAdd : Fragment() {
         withContext(Dispatchers.IO) {
             val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
 
             val iduser = usuarioDao.checkId()
-
             val nuevoGrupo = Grupos(
                 nameg = nombre,
                 description = descripcion,
@@ -220,6 +221,13 @@ class gruposAdd : Fragment() {
                 enlace = ""
             )
             gruposDao.updateGrupo(grupoUp)
+
+            val nuevaLabel = Labels(
+                idlabel = 8000 + gId,
+                plabel = nombre,
+                color = color
+            )
+            labelsDao.insertLabel(nuevaLabel)
 
             val queue = Volley.newRequestQueue(requireContext())
             var url = "http://savetrack.com.mx/grupoPost.php?"
@@ -247,7 +255,9 @@ class gruposAdd : Fragment() {
             queue.add(stringReq)
 
             val grupos = gruposDao.getAllGrupos()
+            val labels = labelsDao.getAllLabels()
             Log.i("ALL GRUPOS", grupos.toString())
+            Log.i("ALL LABELS", labels.toString())
 
         }
     }

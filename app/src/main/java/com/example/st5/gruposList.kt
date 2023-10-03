@@ -136,9 +136,11 @@ class gruposList : Fragment(){
                 else -> "Eliminado"
             }
             holder.color.setBackgroundColor(grupo.color)
-
             holder.verGrupo.setOnClickListener {
-
+                val verGrupo = grupoView.sendGrupo(grupo.Id)
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.GruposContainer, verGrupo).addToBackStack(null).commit()
             }
         }
 

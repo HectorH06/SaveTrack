@@ -27,6 +27,20 @@ class grupoEdit : Fragment() {
 
     private lateinit var binding: FragmentEditgrupoBinding
 
+    companion object {
+        private const val idv = "idg"
+        fun sendGrupo(
+            idg: Long
+        ): grupoEdit {
+            val fragment = grupoEdit()
+            val args = Bundle()
+            args.putLong(idv, idg)
+            Log.i("idv", idv)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

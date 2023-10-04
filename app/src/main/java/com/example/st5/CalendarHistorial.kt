@@ -119,7 +119,7 @@ class CalendarHistorial @JvmOverloads constructor(
                         if (dayOfMonth in 1..calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
                             tv.text = dayOfMonth.toString()
                             val fDay = String.format("%02d", dayOfMonth)
-                            val cMonth = (sectionNumber + 2) % 12
+                            val cMonth = (sectionNumber + 1) % 12
                             val fMonth = String.format("%02d", cMonth)
                             val current = "$year$fMonth$fDay".toInt()
                             Log.v("CURRENT RECYCLER", "$current")
@@ -177,12 +177,12 @@ class CalendarHistorial @JvmOverloads constructor(
             val max = labelsDao.getMaxLabel()
 
             for (i in 1..max) {
-                if (labelsDao.getPlabel(i) != ""){
+                if (labelsDao.getPlabel(i) != "" && labelsDao.getPlabel(i) != null){
                     mutableIds.add(labelsDao.getIdLabel(i))
                     mutableEtiquetas.add(labelsDao.getPlabel(i))
                     mutableColores.add(labelsDao.getColor(i))
 
-                    Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
+                    Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $i, $max")
                 }
             }
             Log.v("idl", "$mutableIds")
@@ -246,7 +246,9 @@ class CalendarHistorial @JvmOverloads constructor(
                 val monto = montosCumplen.getOrNull(position)
                 if (monto != null && monto.etiqueta < 10000) {
                     holder.montoTextView.text = monto.concepto
-                    holder.cardView.setCardBackgroundColor(mutableColores[monto.etiqueta - 1])
+                    val indiceColor = (monto.etiqueta - 1) % mutableColores.size
+
+                    holder.cardView.setCardBackgroundColor(mutableColores[indiceColor])
                 }
             }
         }

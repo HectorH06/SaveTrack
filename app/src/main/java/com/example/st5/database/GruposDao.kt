@@ -42,4 +42,7 @@ interface GruposDao {
 
     @Query("SELECT * FROM grupos WHERE type != 2")
     fun getAllGrupos(): List<Grupos>
+
+    @Query("SELECT * FROM grupos WHERE Id = :idg")
+    fun getG(idg: Long): Grupos
 }

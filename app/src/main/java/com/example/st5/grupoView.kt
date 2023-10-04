@@ -94,11 +94,57 @@ class grupoView : Fragment() {
     ): View {
         binding = FragmentViewgrupoBinding.inflate(inflater, container, false)
         colorPicker()
+        lifecycleScope.launch {
+            getGrupo()
+            try {
+                val jsonObjectG = withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=$idori&admin=$admin").readText()) }
+                val miembrosJSON = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=$idori&admin=$admin").readText()) }
+                val miembrosG = Array(miembrosJSON.length()) { miembrosJSON.getInt(it) }
+                //val idgglobal: Long = jsonObjectG.getLong("idgrupoglobal")
+                //val idglocal: String = jsonObjectG.getString("idgrupolocal")
+                //val idadmin: Long = jsonObjectG.optLong("idadmin")
+
+                val nombre: String = jsonObjectG.optString("nombre")
+                val tipo: Int = jsonObjectG.optInt("tipo")
+                val desc: String = jsonObjectG.optString("descripcion")
+                val color: Int = jsonObjectG.optInt("color")
+                val created: String = jsonObjectG.optString("created")
+                val createdString = "Creado el $created"
+                val adminName = withContext(Dispatchers.IO) { URL("http://savetrack.com.mx/usernameget.php?id=$admin").readText() }
+
+                if (!miembrosG.contains(iduser.toInt())) {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.GruposContainer, gruposList()).addToBackStack(null).commit()
+                    Toast.makeText(
+                        requireContext(),
+                        "Ya no formas parte del grupo",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    deleteGrupo()
+                } else {
+                    binding.bar.text = nombre
+                    binding.NombreField.text = nombre
+                    binding.ColorField.setBackgroundColor(color)
+                    binding.DescripcionField.text = desc
+                    binding.TypeField.text = when (tipo) {
+                        0 -> "Fijo"
+                        1 -> "Temporal"
+                        else -> "Eliminado"
+                    }
+                    binding.AdminField.text = adminName
+                    binding.CreatedField.text = createdString
+                }
+            } catch (e: Exception) {
+                Log.e("NetworkError", "Error during network call", e)
+            }
+        }
         return binding.root
     }
 
     private fun colorPicker() {
-        binding.ColorField.setBackgroundColor(color) //ponerle su companion object
+        binding.ColorField.setBackgroundColor(color)
     }
 
     private suspend fun getGrupo () {
@@ -169,44 +215,6 @@ class grupoView : Fragment() {
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.GruposContainer, back).addToBackStack(null).commit()
 
-        }
-
-        lifecycleScope.launch {
-            getGrupo()
-            val jsonObjectG = JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=$idori&admin=$admin").readText())
-            val miembrosJSON = JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=$idori&admin=$admin").readText())
-            val miembrosG = Array(miembrosJSON.length()) {miembrosJSON.getInt(it)}
-
-            val idgglobal: Long = jsonObjectG.getLong("idgrupoglobal")
-            val idglocal: String = jsonObjectG.getString("idgrupolocal")
-            val idadmin: Long = jsonObjectG.optLong("idadmin")
-
-            val nombre: String = jsonObjectG.optString("nombre")
-            val tipo: Int = jsonObjectG.optInt("tipo")
-            val desc: String = jsonObjectG.optString("descripcion")
-            val color: Int = jsonObjectG.optInt("color")
-            val created: String = jsonObjectG.optString("created")
-            val createdString = "Creado el $created"
-
-            if (!miembrosG.contains(iduser.toInt())) {
-                parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                    .replace(R.id.GruposContainer, gruposList()).addToBackStack(null).commit()
-                Toast.makeText(requireContext(), "Ya no formas parte del grupo", Toast.LENGTH_SHORT).show()
-
-                deleteGrupo()
-
-                binding.NombreField.text = nombre
-                binding.ColorField.setBackgroundColor(color)
-                binding.DescripcionField.text = desc
-                binding.TypeField.text = when (tipo) {
-                    0 -> "Fijo"
-                    1 -> "Temporal"
-                    else -> "Eliminado"
-                }
-                binding.AdminField.text = URL("http://savetrack.com.mx/usernameget.php?id=$admin").readText()
-                binding.CreatedField.text = createdString
-            }
         }
     }
 }

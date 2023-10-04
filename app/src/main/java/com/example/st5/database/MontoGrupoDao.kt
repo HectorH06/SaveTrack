@@ -28,4 +28,10 @@ interface MontoGrupoDao {
     fun getIdGrupo(id: Int): Long
     @Query("SELECT iduser FROM montogrupo WHERE idmonto = :id")
     fun getIdUser(id: Int): Long
+
+    @Query("SELECT * FROM montogrupo WHERE idgrupo = :idg")
+    fun getAllMontosdeGrupo(idg: Int): List<MontoGrupo>
+
+    @Query("SELECT * FROM montogrupo")
+    fun getAllMG(): List<MontoGrupo>
 }

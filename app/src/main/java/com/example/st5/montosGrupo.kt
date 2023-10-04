@@ -10,31 +10,38 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.st5.database.Stlite
-import com.example.st5.databinding.FragmentIndexgastoslistBinding
+import com.example.st5.databinding.FragmentMontosgrupoBinding
+import com.example.st5.models.Grupos
+import com.example.st5.models.Labels
 import com.example.st5.models.Monto
+import com.example.st5.models.MontoGrupo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import java.net.URL
 
 class montosGrupo : Fragment() {
-    private lateinit var binding: FragmentIndexgastoslistBinding
+    private lateinit var binding: FragmentMontosgrupoBinding
 
-    private lateinit var gastos: List<Monto>
+    private var montos: MutableList<Monto> = mutableListOf()
+    private lateinit var montosGrupo: List<MontoGrupo>
+    private lateinit var group: Grupos
+    private var iduser: Long = 0L
 
     companion object {
-        private const val etiqueta = "etiquetar"
-        fun grupoSearch(etiquet: Int): indexGastosList {
-            val fragment = indexGastosList()
+        private const val grupo = "grupor"
+        fun grupoSearch(grup: Long): montosGrupo {
+            val fragment = montosGrupo()
             val args = Bundle()
-            Log.i("etiquet", etiquet.toString())
-            if (etiquet != null) {
-                args.putInt(etiqueta, etiquet)
-            }
+            Log.i("grup", grup.toString())
+            args.putLong(grupo, grup)
             fragment.arguments = args
             return fragment
         }
@@ -47,9 +54,9 @@ class montosGrupo : Fragment() {
             val isDarkMode = isDarkModeEnabled(requireContext())
 
             if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
             } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
             }
 
             Log.i("MODO", isDarkMode.toString())
@@ -59,10 +66,10 @@ class montosGrupo : Fragment() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    val prev = indexmain()
+                    val prev = gruposList()
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.index_container, prev)
+                        .replace(R.id.GruposContainer, prev)
                         .addToBackStack(null).commit()
                 }
             })
@@ -86,68 +93,183 @@ class montosGrupo : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentIndexgastoslistBinding.inflate(inflater, container, false)
+        binding = FragmentMontosgrupoBinding.inflate(inflater, container, false)
         val decoder = Decoder(requireContext())
         lifecycleScope.launch {
-            gastos = montosget()
-            binding.displayGastos.adapter = MontoAdapter(gastos)
-            binding.totalG.text = "$" + decoder.format(totalGastos()).toString()
+            montos = montosget()
+            try {
+                val miembrosJSON = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=${group.idori}&admin=${group.admin}").readText()) }
+                val miembrosG = Array(miembrosJSON.length()) { miembrosJSON.getInt(it) }
+
+                if (!miembrosG.contains(iduser.toInt())) {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.GruposContainer, gruposList()).addToBackStack(null).commit()
+                    Toast.makeText(
+                        requireContext(),
+                        "Ya no formas parte del grupo",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    deleteGrupo()
+                } else {
+                    binding.bar.text = group.nameg
+
+                    Log.v("idori", group.idori.toString())
+                    Log.v("admin", group.admin.toString())
+                    val jsonArr = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/montosgrupoMultiget?localid=${group.idori}&admin=${group.admin}").readText()) }
+                    Log.v("jsonArr", jsonArr.toString())
+                    for (i in 0 until jsonArr.length()) {
+                        val jsonObj = jsonArr.getJSONObject(i)
+                        if (jsonObj.getLong("idmglocal") != null) {
+                            val idmonto: Long = jsonObj.getLong("idmglocal")
+                            val iduse: Long = jsonObj.getLong("idusuario")
+                            val concepto: String = jsonObj.optString("concepto")
+                            val valor: Double = jsonObj.optDouble("valor")
+                            val valorfinal: Double = jsonObj.optDouble("valorfinal")
+                            val fecha: Int = jsonObj.optInt("fecha")
+                            val frecuencia: Int = jsonObj.optInt("frecuencia")
+                            val etiqueta: Int = jsonObj.optInt("etiqueta")
+                            val interes: Double = jsonObj.optDouble("interes")
+                            val tipointeres: Int = jsonObj.optInt("tipointeres")
+                            val veces: Long = jsonObj.optLong("veces")
+                            val estado: Int = jsonObj.optInt("estado")
+                            val adddate: Int = jsonObj.optInt("adddate")
+                            val enddate: Int = jsonObj.optInt("enddate")
+                            val cooldown: Int = jsonObj.optInt("cooldown")
+                            val delay: Int = jsonObj.optInt("delay")
+                            val sequence: String = jsonObj.optString("sequence")
+
+                            val nuevoMonto = Monto(
+                                idmonto = idmonto,
+                                iduser = iduse,
+                                concepto = concepto,
+                                valor = valor,
+                                valorfinal = valorfinal,
+                                fecha = fecha,
+                                frecuencia = frecuencia,
+                                etiqueta = 8000 + group.Id.toInt(),
+                                interes = interes,
+                                tipointeres = tipointeres,
+                                veces = veces,
+                                estado = estado,
+                                adddate = adddate,
+                                enddate = enddate,
+                                cooldown = cooldown,
+                                delay = delay,
+                                sequence = sequence
+                            )
+                            Log.v("Current monto $i", nuevoMonto.toString())
+
+                            montos.add(nuevoMonto)
+                        } else {
+                            Log.v("Current monto $i", "VACÍO")
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("NetworkError", "Error during network call", e)
+            }
+            binding.displayGastos.adapter = MontoAdapter(montos)
+            binding.totalG.text = "$" + decoder.format(0.0).toString()
         }
         return binding.root
     }
 
-    private suspend fun totalGastos(): Double {
-        var totalG: Double
-
+    private suspend fun deleteGrupo () {
         withContext(Dispatchers.IO) {
-            val igDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+            val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
 
-            totalG = igDao.checkSummaryG()
+            val idg = arguments?.getLong(grupo)
+            if (idg != null) {
+                val muertoGrupo = Grupos(
+                    Id = idg,
+                    nameg = gruposDao.getNameG(idg.toInt()),
+                    description = gruposDao.getDescription(idg.toInt()),
+                    type = 2,
+                    admin = gruposDao.getAdmin(idg.toInt()),
+                    idori = gruposDao.getIdori(idg.toInt()),
+                    color = gruposDao.getColor(idg.toInt()),
+                    enlace = gruposDao.getEnlace(idg.toInt())
+                )
+                gruposDao.updateGrupo(muertoGrupo)
+
+                val plabel = labelsDao.getPlabel(8000 + idg.toInt())
+                val color = labelsDao.getColor(8000 + idg.toInt())
+                val muertaLabel = Labels(
+                    idlabel = 8000 + idg,
+                    plabel = plabel,
+                    color = color,
+                    estado = 1
+                )
+
+                labelsDao.updateLabel(muertaLabel)
+                val labelss = labelsDao.getAllLabels()
+                Log.i("ALL LABELS", labelss.toString())
+
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
+                    .commit()
+            }
         }
-
-        return totalG
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val label: Int? = arguments?.getInt(etiqueta)
-        Log.i("etiqueta", label.toString())
+        val idgrupo: Long? = arguments?.getLong(grupo)
+        Log.i("etiqueta", idgrupo.toString())
 
-        val back = indexmain()
-        val addWithSwitchOff = indexadd.newInstance(false)
+        val back = gruposList()
 
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.index_container, back).addToBackStack(null).commit()
+                .replace(R.id.GruposContainer, back).addToBackStack(null).commit()
         }
+
         binding.ConfigButton.setOnClickListener {
+            var viewOrEdit: Fragment = grupoEdit()
+             if (idgrupo != null) {
+                viewOrEdit = if (group.admin == iduser) {
+                    grupoEdit.sendGrupo(idgrupo)
+                } else {
+                    grupoView.sendGrupo(idgrupo)
+                }
+            }
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.index_container, Configuracion()).addToBackStack(null).commit()
+                .replace(R.id.GruposContainer, viewOrEdit).addToBackStack(null).commit()
         }
 
         binding.AgregarGastoButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.index_container, addWithSwitchOff).addToBackStack(null).commit()
+            if (idgrupo != null) {
+                val add = grupoMontoAdd.sendGrupo(idgrupo)
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                    .replace(R.id.GruposContainer, add).addToBackStack(null).commit()
+            }
         }
     }
 
-    private suspend fun montosget(): List<Monto> {
+    private suspend fun montosget(): MutableList<Monto> {
         withContext(Dispatchers.IO) {
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            val label: Int? = arguments?.getInt(etiqueta)
+            val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
+            val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
-            gastos = if (label != null) {
-                montoDao.getGastos(label)
-            } else {
-                montoDao.getGastos()
-            }
-            Log.i("ALL MONTOS", gastos.toString())
+            val idgrupo: Long? = arguments?.getLong(grupo)
+            Log.v("idg", "$idgrupo")
+            iduser = usuarioDao.checkId().toLong()
+
+            group = idgrupo?.let { gruposDao.getG(it) }!!
+            Log.v("group", "$group")
+            montosGrupo = montoGrupoDao.getAllMontosdeGrupo(idgrupo.toInt())
+
+            Log.i("ALL MONTOS", montos.toString())
         }
-        return gastos
+        return montos
     }
 
     private suspend fun montoPapelera(
@@ -306,6 +428,7 @@ class montosGrupo : Fragment() {
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
+            val idgrupo: Long? = arguments?.getLong(grupo)
             var tempstat = 5
             val decoder = Decoder(requireContext())
             holder.conceptoTextView.text = monto.concepto
@@ -346,11 +469,19 @@ class montosGrupo : Fragment() {
                     )
                 }
             }
-            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+            val upup = idgrupo?.let {
+                if (false) {
+                    grupoEdit.sendGrupo(it)
+                } else {
+                    grupoView.sendGrupo(it)
+                }
+            }
             holder.updateM.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.index_container, upup).addToBackStack(null).commit()
+                if (upup != null) {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                        .replace(R.id.GruposContainer, upup).addToBackStack(null).commit()
+                }
             }
             holder.deleteM.setOnClickListener {
                 if (monto.estado == 3 || monto.estado == 4 || monto.estado == 8 || monto.estado == 9 || tempstat == 8) {
@@ -390,10 +521,13 @@ class montosGrupo : Fragment() {
                                 )
                             }
                             dialog.dismiss()
-                            parentFragmentManager.beginTransaction()
-                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                                .replace(R.id.index_container, indexmain()).addToBackStack(null)
-                                .commit()
+                            val verGrupo = idgrupo?.let { it1 -> grupoSearch(it1) }
+                            if (verGrupo != null) {
+                                parentFragmentManager.beginTransaction()
+                                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                    .replace(R.id.GruposContainer, verGrupo).addToBackStack(null)
+                                    .commit()
+                            }
                         }
                         .setNegativeButton("Cancelar") { dialog, _ ->
                             dialog.dismiss()
@@ -403,7 +537,7 @@ class montosGrupo : Fragment() {
                     confirmDialog.show()
                 }
             }
-            if (position == gastos.size - 1){
+            if (position == montos.size - 1){
                 holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)
             }
         }

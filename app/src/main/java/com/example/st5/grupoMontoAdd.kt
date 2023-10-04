@@ -18,13 +18,18 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import ca.antonious.materialdaypicker.SingleSelectionMode
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentMontogrupoaddBinding
 import com.example.st5.models.Monto
+import com.example.st5.models.MontoGrupo
 import com.polyak.iconswitch.IconSwitch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.nio.charset.Charset
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -33,27 +38,27 @@ import java.util.*
 class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding: FragmentMontogrupoaddBinding
 
-    private var label: Int = 0
     private var frecuencia: Int = 0
+    private var label: Int = 8000
     private var fecha: Int = 0
     private var estado: Int = 0
     private var interes: Double = 0.0
     private var tipointeres: Int = 0
     private var selectedDay = 39
     private var enddate = 30001231
-    private var selectedLabel: String? = "Seleccionar"
     private var selectedfr: String? = "Seleccionar"
 
     private var mutableEtiquetas: MutableList<String> = mutableListOf()
-    private var mutableIds: MutableList<Long> = mutableListOf()
-    private var mutableColores: MutableList<Int> = mutableListOf()
 
     companion object {
-        private const val switchval = "switchValue"
-        fun newInstance(switchValue: Boolean): grupoMontoAdd {
+        private const val idv = "idg"
+        fun sendGrupo(
+            idg: Long
+        ): grupoMontoAdd {
             val fragment = grupoMontoAdd()
             val args = Bundle()
-            args.putBoolean(switchval, switchValue)
+            args.putLong(idv, idg)
+            Log.i("idv", idv)
             fragment.arguments = args
             return fragment
         }
@@ -114,10 +119,9 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
 
         val back = gruposList()
 
-        val switchValue = arguments?.getBoolean(switchval) ?: false
+        val switchValue = false
         lifecycleScope.launch {
             masmenos(switchValue)
-            getLabels()
         }
 
         val adapterF = ArrayAdapter.createFromResource(
@@ -153,20 +157,16 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
             when (binding.updownSwitch.checked) {
                 IconSwitch.Checked.LEFT -> {
                     binding.ValorField.hint = "Ingreso"
-                    binding.LabelField.adapter = adapterI
                     binding.yocreoquesi.text = "Préstamo"
                 }
                 IconSwitch.Checked.RIGHT -> {
                     binding.ValorField.hint = "Gasto"
-                    binding.LabelField.adapter = adapterG
                     binding.yocreoquesi.text = "Deuda"
                 }
                 else -> {}
             }
             hideAll()
         }
-
-        binding.LabelField.onItemSelectedListener = this
 
         binding.FrecuenciaField.onItemSelectedListener = this
 
@@ -203,12 +203,10 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
 
         binding.yocreoquesi.setOnClickListener {
             if (binding.yocreoquesi.isChecked) {
-                displayFrecField() //Justificar la deuda y condiciones con intereses
                 displayInteresField()
                 displayFechaFinalField()
                 displayIC()
             } else {
-                hideFrecField()
                 hideInteresField()
                 hideFechaFinalField()
                 hideIC()
@@ -243,11 +241,13 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.Confirm.setOnClickListener {
             val concepto = binding.ConceptoField.text.toString()
             val valorstr = binding.ValorField.text.toString()
+            val idgrupo: Long? = arguments?.getLong(idv)
+            if (idgrupo != null) {label += idgrupo.toInt()}
             var veces = 0L
 
             var interes = 0.0
 
-            if (label != 0 && concepto != "" && valorstr != "" && valorstr != "." && selectedDay != 39) {
+            if (concepto != "" && valorstr != "" && valorstr != "." && selectedDay != 39) {
                 val confirmDialog = AlertDialog.Builder(requireContext())
                     .setTitle("¿Seguro que quieres guardar cambios?")
                     .setPositiveButton("Guardar") { dialog, _ ->
@@ -383,11 +383,7 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
 
                 confirmDialog.show()
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    "No pueden haber campos vacíos",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), "No pueden haber campos vacíos", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -412,31 +408,6 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
         hideAll()
     }
 
-    private suspend fun getLabels() {
-        withContext(Dispatchers.IO) {
-            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
-
-            val max = labelsDao.getMaxLabel()
-
-            mutableIds.add(0)
-            mutableEtiquetas.add("Seleccionar")
-            mutableColores.add(222222)
-            for (i in 1..max) {
-
-                if (labelsDao.getPlabel(i) != null){
-                    mutableIds.add(labelsDao.getIdLabel(i))
-                    mutableEtiquetas.add(labelsDao.getPlabel(i))
-                    mutableColores.add(labelsDao.getColor(i))
-
-                    Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
-                }
-            }
-            Log.v("idl", "$mutableIds")
-            Log.v("plabel", "$mutableEtiquetas")
-            Log.v("color", "$mutableColores")
-        }
-    }
-
     private fun masmenos(switchValue: Boolean) {
         Log.v("masomenos", switchValue.toString())
 
@@ -456,15 +427,10 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
         )
         adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        val select = "Seleccionar"
         if (switchValue) {
             binding.ValorField.hint = "$0.00"
-            binding.LabelField.adapter = adapterI
-            binding.LabelText.text = select
         } else {
             binding.ValorField.hint = "$0.00"
-            binding.LabelField.adapter = adapterG
-            binding.LabelText.text = select
             binding.updownSwitch.checked = IconSwitch.Checked.RIGHT
         }
     }
@@ -485,6 +451,8 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val montoGrupoDao = Stlite.getInstance(requireContext()).getMontoGrupoDao()
+            val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
 
             val iduser = usuarioDao.checkId().toLong()
 
@@ -504,40 +472,50 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
                 enddate = enddate,
                 cooldown = 0
             )
-
             montoDao.insertMonto(nuevoMonto)
+
+            val mgId = montoDao.getMaxMonto().toLong()
+            val sequence = montoDao.getSequence(mgId.toInt())
+            val idgrupo: Long? = arguments?.getLong(idv)
+            val admin = idgrupo?.let { gruposDao.getAdmin(it.toInt()) }
+
+            val nuevoMontoGrupo = idgrupo?.let {
+                MontoGrupo(
+                    idmonto = mgId,
+                    idgrupo = it,
+                    iduser = iduser
+                )
+            }
+            if (nuevoMontoGrupo != null) {
+                montoGrupoDao.insertMontoG(nuevoMontoGrupo)
+                Log.v("ALL MONTOGRUPO", montoGrupoDao.getAllMG().toString())
+            }
+
+            val queue = Volley.newRequestQueue(requireContext())
+            val uploadurl = "http://savetrack.com.mx/montogrupoAdd.php?idadmin=$admin&idusuario=$iduser&idmglocal=$mgId&idgrupo=$idgrupo&concepto=$concepto&valor=$valor&valorfinal=$valorfinal&fecha=$fecha&frecuencia=$frecuencia&etiqueta=$etiqueta&interes=$interes&tipointeres=$tipointeres&veces=$veces&estado=$estado&adddate=$adddate&enddate=$enddate&cooldown=0&delay=0&sequence=$sequence"
+            val uploadReq: StringRequest =
+                object : StringRequest(Method.POST,
+                    uploadurl,
+                    Response.Listener { response ->
+                        Log.d("response", response)
+                    },
+                    Response.ErrorListener { error ->
+                        Log.e("API error", "error => $error")
+                    }) {
+                    override fun getBody(): ByteArray {
+                        return uploadurl.toByteArray(
+                            Charset.defaultCharset()
+                        )
+                    }
+                }
+            Log.d(
+                "uploadReq", uploadReq.toString()
+            )
+            queue.add(uploadReq)
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
 
         }
-    }
-
-    private fun displayFrecField() {
-        binding.FrecuenciaField.animate()
-            .alpha(1f)
-            .translationY(0f)
-            .translationZ(0f)
-            .setDuration(300)
-            .setStartDelay(200)
-            .setListener(null)
-            .start()
-        binding.LabelText.setBackgroundResource(R.drawable.p1midcell)
-        Log.v("LABEL", label.toString())
-    }
-
-    private fun hideFrecField() {
-        hideFechaField()
-        selectedfr = "Seleccionar"
-        binding.FrecuenciaField.animate()
-            .alpha(0f)
-            .translationY(-50f)
-            .translationZ(-100f)
-            .setDuration(200)
-            .setStartDelay(0)
-            .setListener(null)
-            .start()
-        binding.LabelText.setBackgroundResource(R.drawable.p1bottomcell)
-        Log.v("LABEL", label.toString())
     }
 
     private fun displayFechaField() {
@@ -688,7 +666,6 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
     }
     private fun hideAll() {
         hideWeekField()
-        hideFrecField()
         hideFechaField()
         hideInteresField()
         hideFechaFinalField()
@@ -701,66 +678,7 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        selectedLabel = binding.LabelField.selectedItem?.toString()
         selectedfr = binding.FrecuenciaField.selectedItem?.toString()
-
-        binding.LabelText.text = selectedLabel
-        // region LABELS
-        if (selectedLabel != null) {
-            Log.v("ETIQUETA", selectedLabel.toString())
-        }
-        when (selectedLabel) {
-            "Salario" -> {
-                label = 10001
-                displayFrecField()
-                hideInteresField()
-            }
-            "Venta" -> {
-                label = 10002
-                hideFrecField()
-                hideInteresField()
-            }
-            "Beca" -> {
-                label = 10003
-                displayFrecField()
-                hideInteresField()
-            }
-            "Pensión" -> {
-                label = 10004
-                displayFrecField()
-                hideInteresField()
-            }
-            "Manutención" -> {
-                label = 10005
-                displayFrecField()
-                hideInteresField()
-            }
-            "Ingreso pasivo" -> {
-                label = 10006
-                hideFrecField()
-                hideInteresField()
-            }
-            "Regalo" -> {
-                label = 10007
-                frecuencia = 0
-                hideFrecField()
-                hideInteresField()
-            }
-
-            "Seleccionar" -> {
-                label = 0
-            }
-            else -> {
-                for (i in 0 until mutableEtiquetas.size) {
-                    if (selectedLabel == mutableEtiquetas[i]) {
-                        label = mutableIds[i].toInt()
-                    }
-                }
-                displayFrecField()
-                displayFechaField()
-            }
-        }
-        // endregion
 
         // region FRECUENCIAS
         if (selectedfr != null) {
@@ -850,7 +768,6 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
-        label = 0
         frecuencia = 0
     }
 }

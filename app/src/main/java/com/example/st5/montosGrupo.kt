@@ -251,6 +251,15 @@ class montosGrupo : Fragment() {
                     .replace(R.id.GruposContainer, add).addToBackStack(null).commit()
             }
         }
+
+        binding.MembersButton.setOnClickListener {
+            if (idgrupo != null) {
+                val members = grupoMembersList.sendGrupo(idgrupo)
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                    .replace(R.id.GruposContainer, members).addToBackStack(null).commit()
+            }
+        }
     }
 
     private suspend fun montosget(): MutableList<Monto> {

@@ -175,6 +175,7 @@
     <string name="dinero">$</string>
     <string name="createdat">Created At</string>
     <string name="viewg">Ver Grupo</string>
+    <string name="aporte">Aporte</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

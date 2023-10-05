@@ -41,7 +41,7 @@
                         android:id="@+id/HNombre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/Grupo"
+                        android:hint="@string/Nombre"
                         android:maxWidth="100dp"
                         android:paddingStart="7dp"
                         android:textColor="?attr/colorOnPrimary"
@@ -50,10 +50,21 @@
                         tools:ignore="RtlSymmetry" />
 
                     <TextView
+                        android:id="@+id/HAdmin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/nada"
+                        android:paddingEnd="7dp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorOnPrimary"
+                        android:textSize="12sp"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
                         android:id="@+id/HTipo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/Tipo"
+                        android:hint="@string/montos"
                         android:textAlignment="center"
                         android:textColor="?attr/colorOnPrimary"
                         android:textColorHint="?attr/colorOnPrimary"
@@ -63,7 +74,7 @@
                         android:id="@+id/HColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/color"
+                        android:hint="@string/aporte"
                         android:textAlignment="center"
                         android:textColor="?attr/colorOnPrimary"
                         android:textColorHint="?attr/colorOnPrimary"
@@ -71,9 +82,9 @@
 
                     <TextView
                         android:id="@+id/HActions"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/vermas"
+                        android:hint="@string/nada"
                         android:paddingEnd="7dp"
                         android:textAlignment="textEnd"
                         android:textColor="?attr/colorOnPrimary"
@@ -83,7 +94,7 @@
                 </TableRow>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/displayGrupos"
+                    android:id="@+id/displayMiembros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -94,14 +105,14 @@
                     <LinearLayout
                         android:layout_marginTop="16dp">
                         <ImageButton
-                            android:id="@+id/AgregarGrupoButton"
+                            android:id="@+id/ShareButton"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="16dp"
-                            android:background="@drawable/confshape"
-                            app:srcCompat="@drawable/ic_add"
+                            android:background="@drawable/skipshape"
+                            app:srcCompat="@drawable/ic_share"
                             android:contentDescription="@string/nuevo_gasto"/>
                     </LinearLayout>
                 </TableRow>
@@ -131,11 +142,13 @@
             android:layout_height="wrap_content"
             android:text="@string/Grupos"
             android:textColor="?attr/colorOnPrimary"
-            android:textSize="36sp"
+            android:textSize="24sp"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/goback"/>
+            app:layout_constraintStart_toEndOf="@id/goback"
+            app:layout_constraintEnd_toStartOf="@id/ConfigButton"/>
 
         <ImageButton
             android:id="@+id/goback"

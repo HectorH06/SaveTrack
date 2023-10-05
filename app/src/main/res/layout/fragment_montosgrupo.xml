@@ -107,6 +107,17 @@
                             app:srcCompat="@drawable/ic_remove"
                             android:contentDescription="@string/nuevo_gasto"/>
 
+                        <ImageButton
+                            android:id="@+id/MembersButton"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="16dp"
+                            android:background="@drawable/blueshape"
+                            app:srcCompat="@drawable/ic_members"
+                            android:contentDescription="@string/nuevo_gasto"/>
+
                     </LinearLayout>
                 </TableRow>
             </TableLayout>

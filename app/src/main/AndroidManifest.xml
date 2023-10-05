@@ -49,6 +49,17 @@
             android:label="grupos"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".getGrupo"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="savetrack.com.mx"
+                    android:pathPrefix="/joingroup.php" />
+            </intent-filter>
+        </activity>
         <receiver android:enabled="true" android:name=".Alarma"
             android:exported="true">
         </receiver>

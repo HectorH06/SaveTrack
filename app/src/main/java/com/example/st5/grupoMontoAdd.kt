@@ -145,7 +145,6 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
         adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         binding.FrecuenciaField.adapter = adapterF
-        binding.FrecuenciaField.alpha = 0f
 
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()

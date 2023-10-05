@@ -176,6 +176,8 @@
     <string name="createdat">Created At</string>
     <string name="viewg">Ver Grupo</string>
     <string name="aporte">Aporte</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="editg">Editar Grupo</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

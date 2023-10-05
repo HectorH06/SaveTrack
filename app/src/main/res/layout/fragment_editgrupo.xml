@@ -51,7 +51,7 @@
                 android:id="@+id/bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/addg"
+                android:text="@string/editg"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="36sp"
                 android:layout_marginStart="16dp"
@@ -209,5 +209,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_cancel" />
+
+        <ImageButton
+            android:id="@+id/DeleteGrupo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/blackshape"
+            android:contentDescription="@string/eliminar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_delete"
+            app:tint="@color/R0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

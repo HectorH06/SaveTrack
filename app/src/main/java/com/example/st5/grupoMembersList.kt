@@ -1,7 +1,10 @@
 package com.example.st5
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +18,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentGruposmiembroslistBinding
 import com.example.st5.models.*
@@ -23,6 +29,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import java.net.URL
+import java.nio.charset.Charset
 
 class grupoMembersList : Fragment() {
     private lateinit var binding: FragmentGruposmiembroslistBinding
@@ -228,7 +235,27 @@ class grupoMembersList : Fragment() {
         }
 
         binding.ShareButton.setOnClickListener {
-            // TODO invitaciones
+            val linkToShare = "http://savetrack.com.mx/joingroup.php?zxcd125s5d765e7wqa87sdftgh=${group.idori}&mnhjkmnbg1yhb3vdrtgvc98swe=${group.admin}"
+
+            val whatsappIntent = Intent(Intent.ACTION_SEND)
+            whatsappIntent.type = "text/plain"
+            whatsappIntent.setPackage("com.whatsapp")
+            whatsappIntent.putExtra(Intent.EXTRA_TEXT, "¡Únete a mi grupo de SaveTrack: $linkToShare!")
+
+            val gmailIntent = Intent(Intent.ACTION_SEND)
+            gmailIntent.type = "text/plain"
+            gmailIntent.setPackage("com.google.android.gm")
+            gmailIntent.putExtra(Intent.EXTRA_SUBJECT, "¡Únete a mi grupo de SaveTrack!")
+            gmailIntent.putExtra(Intent.EXTRA_TEXT, "¡Haz click en el enlace para unirte: $linkToShare!")
+
+            val chooserIntent = Intent.createChooser(gmailIntent, "Compartir a través de:")
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(whatsappIntent))
+
+            try {
+                startActivity(chooserIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(requireContext(), "No se encontraron aplicaciones para compartir", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -269,14 +296,69 @@ class grupoMembersList : Fragment() {
             if (group.admin == miembro.iduser){
                 holder.adminIcon.alpha = 1f
             }
+            // TODO: hacer que se hagan las sumatorias respectivas de los montos y su cantidad para cada miembro
             //holder.montosTextView.text = montosDeMiembro.size.toString()
             //holder.aporteTextView.text = montosDeMiembro.sum().toString()
-            if (iduser == group.admin) {
+            if (iduser == group.admin && iduser != miembro.iduser) {
                 holder.kickButton.alpha = 1f
                 holder.kickButton.translationZ = 400f
+                holder.kickButton.setOnClickListener {
+                    val builder = AlertDialog.Builder(context)
+                    builder.setTitle("Confirmación")
+                    builder.setMessage("¿Estás seguro de que deseas expulsar a ${miembro.nombre}?")
+                    builder.setPositiveButton("Sí") { dialog, _ ->
+                        lifecycleScope.launch {
+                            kickMiembro(group.idori, group.admin, miembro.iduser)
+                        }
+                        dialog.dismiss()
+                    }
+                    builder.setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    builder.show()
+                }
+
             }
         }
 
+        suspend fun kickMiembro(idori: Long, admin: Long, iduser: Long) {
+            val queue = Volley.newRequestQueue(requireContext())
+            var url = "http://savetrack.com.mx/gruposMiembrosPut.php?"
+
+            val miembrosJSON = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=$idori&admin=$admin").readText()) }
+            val miembrosG = Array(miembrosJSON.length()) { miembrosJSON.getInt(it) }
+            val nuevosMiembros: MutableList<Int> = mutableListOf()
+            for (element in miembrosG) {
+                if (element != iduser.toInt()) {
+                    nuevosMiembros.add(element)
+                }
+            }
+            val uniqueMiembros = nuevosMiembros.toSet().toList()
+            val jsonMiembros = JSONArray(uniqueMiembros)
+
+            Log.v("JSONMIEMBROS", "$jsonMiembros")
+            Log.v("MUTABLELISTMIEMBROS", "$nuevosMiembros")
+            val requestBody = "localid=$idori&admin=$admin&miembros=$jsonMiembros"
+            url += requestBody
+            val stringReq: StringRequest =
+                object : StringRequest(
+                    Method.PUT, url,
+                    Response.Listener { response ->
+                        val strResp2 = response.toString()
+                        Log.d("API", strResp2)
+
+                    },
+                    Response.ErrorListener { error ->
+                        Log.d("API", "error => $error")
+                    }
+                ) {
+                    override fun getBody(): ByteArray {
+                        return requestBody.toByteArray(Charset.defaultCharset())
+                    }
+                }
+            Log.e("stringReq", stringReq.toString())
+            queue.add(stringReq)
+        }
 
         override fun getItemCount(): Int {
             Log.v("size de montossss", miembros.size.toString())

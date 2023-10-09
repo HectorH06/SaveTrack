@@ -214,7 +214,6 @@ class grupoView : Fragment() {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.GruposContainer, back).addToBackStack(null).commit()
-
         }
     }
 }

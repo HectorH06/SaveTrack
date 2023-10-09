@@ -15,15 +15,22 @@ import androidx.lifecycle.lifecycleScope
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentEditgrupoBinding
 import com.example.st5.models.Grupos
+import com.example.st5.models.Labels
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
 import yuku.ambilwarna.AmbilWarnaDialog
+import java.net.URL
 import java.util.*
 
 
 class grupoEdit : Fragment() {
     private var color: Int = 0xffffff
+    private var idori: Long = 0
+    private var admin: Long = 0
+    private var iduser: Long = 0
 
     private lateinit var binding: FragmentEditgrupoBinding
 
@@ -88,7 +95,110 @@ class grupoEdit : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentEditgrupoBinding.inflate(inflater, container, false)
+        colorPicker()
+        lifecycleScope.launch {
+            getGrupo()
+            try {
+                val jsonObjectG = withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=$idori&admin=$admin").readText()) }
+                val miembrosJSON = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=$idori&admin=$admin").readText()) }
+                val miembrosG = Array(miembrosJSON.length()) { miembrosJSON.getInt(it) }
+                //val idgglobal: Long = jsonObjectG.getLong("idgrupoglobal")
+                //val idglocal: String = jsonObjectG.getString("idgrupolocal")
+                //val idadmin: Long = jsonObjectG.optLong("idadmin")
+
+                val nombre: String = jsonObjectG.optString("nombre")
+                val tipo: Int = jsonObjectG.optInt("tipo")
+                val desc: String = jsonObjectG.optString("descripcion")
+                val color: Int = jsonObjectG.optInt("color")
+                val created: String = jsonObjectG.optString("created")
+                val createdString = "Creado el $created"
+                val adminName = withContext(Dispatchers.IO) { URL("http://savetrack.com.mx/usernameget.php?id=$admin").readText() }
+
+                if (!miembrosG.contains(iduser.toInt())) {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.GruposContainer, gruposList()).addToBackStack(null).commit()
+                    Toast.makeText(
+                        requireContext(),
+                        "Ya no formas parte del grupo",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    deleteGrupo()
+                } else {
+                    binding.bar.text = nombre
+                    binding.NombreField.setText(nombre)
+                    binding.ColorField.setBackgroundColor(color)
+                    binding.DescripcionField.setText(desc)
+                    binding.TypeField.text = when (tipo) {
+                        0 -> "Fijo"
+                        1 -> "Temporal"
+                        else -> "Eliminado"
+                    }
+                    binding.AdminField.text = adminName
+                    binding.CreatedField.text = createdString
+                }
+            } catch (e: Exception) {
+                Log.e("NetworkError", "Error during network call", e)
+            }
+        }
         return binding.root
+    }
+
+    private fun colorPicker() {
+        binding.ColorField.setBackgroundColor(color)
+    }
+
+    private suspend fun getGrupo () {
+        withContext(Dispatchers.IO) {
+            val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+
+            val idg = arguments?.getLong(idv)
+            if (idg != null) {
+                idori = gruposDao.getIdori(idg.toInt())
+                admin = gruposDao.getAdmin(idg.toInt())
+                iduser = usuarioDao.checkId().toLong()
+            }
+        }
+    }
+
+    private suspend fun deleteGrupo () {
+        withContext(Dispatchers.IO) {
+            val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
+
+            val idg = arguments?.getLong(idv)
+            if (idg != null) {
+                val muertoGrupo = Grupos(
+                    Id = idg,
+                    nameg = gruposDao.getNameG(idg.toInt()),
+                    description = gruposDao.getDescription(idg.toInt()),
+                    type = 2,
+                    admin = gruposDao.getAdmin(idg.toInt()),
+                    idori = gruposDao.getIdori(idg.toInt()),
+                    color = gruposDao.getColor(idg.toInt()),
+                    enlace = gruposDao.getEnlace(idg.toInt())
+                )
+                gruposDao.updateGrupo(muertoGrupo)
+
+                val plabel = labelsDao.getPlabel(8000 + idg.toInt())
+                val muertaLabel = Labels(
+                    idlabel = 8000 + idg,
+                    plabel = plabel,
+                    color = color,
+                    estado = 1
+                )
+
+                labelsDao.updateLabel(muertaLabel)
+                val labelss = labelsDao.getAllLabels()
+                Log.i("ALL LABELS", labelss.toString())
+
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
+                    .commit()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

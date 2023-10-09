@@ -17,10 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentMontosgrupoBinding
-import com.example.st5.models.Grupos
-import com.example.st5.models.Labels
-import com.example.st5.models.Monto
-import com.example.st5.models.MontoGrupo
+import com.example.st5.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,6 +28,7 @@ class montosGrupo : Fragment() {
     private lateinit var binding: FragmentMontosgrupoBinding
 
     private var montos: MutableList<Monto> = mutableListOf()
+    private var miembros: MutableList<Usuario> = mutableListOf()
     private lateinit var montosGrupo: List<MontoGrupo>
     private lateinit var group: Grupos
     private var iduser: Long = 0L
@@ -166,6 +164,25 @@ class montosGrupo : Fragment() {
                             Log.v("Current monto $i", "VACÍO")
                         }
                     }
+
+                    for (id in miembrosG) {
+                        val nombre = withContext(Dispatchers.IO) { URL("http://savetrack.com.mx/usernameget.php?id=$id").readText().trim() }
+                        Log.v("Memberrr", nombre)
+                        val nuevoMiembro = Usuario(
+                            iduser = id.toLong(),
+                            nombre = nombre,
+                            edad = 0,
+                            chamba = 0,
+                            foto = "",
+                            diasaho = 0,
+                            balance = 0.0,
+                            meta = 0.0,
+                        )
+                        miembros.add(nuevoMiembro)
+                    }
+
+                    Log.v("idori", group.idori.toString())
+                    Log.v("admin", group.admin.toString())
                 }
             } catch (e: Exception) {
                 Log.e("NetworkError", "Error during network call", e)
@@ -411,10 +428,8 @@ class montosGrupo : Fragment() {
             val deleteM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
-            val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_tabla, parent, false)
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_montogrupo, parent, false)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.IConcepto)
             val valorTextView = itemView.findViewById<TextView>(R.id.IValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.IFecha)
@@ -437,15 +452,15 @@ class montosGrupo : Fragment() {
 
         override fun onBindViewHolder(holder: MontoViewHolder, position: Int) {
             val monto = montos[position]
+            val searchId = monto.iduser
+            val miembro = miembros.find { it.iduser == searchId }
             val idgrupo: Long? = arguments?.getLong(grupo)
             var tempstat = 5
             val decoder = Decoder(requireContext())
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = decoder.format(monto.valor).toString()
             holder.fechaTextView.text = monto.fecha?.let { decoder.date(it) }
-            lifecycleScope.launch {
-                holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
-            }
+            if (miembro != null) { holder.etiquetaTextView.text = miembro.nombre }
             if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6){
                 holder.favM.setBackgroundResource(R.drawable.ic_notstar)
                 tempstat = 5

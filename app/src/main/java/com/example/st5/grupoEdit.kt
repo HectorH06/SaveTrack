@@ -18,6 +18,9 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentEditgrupoBinding
 import com.example.st5.models.Grupos
@@ -34,6 +37,7 @@ import org.json.JSONObject
 import yuku.ambilwarna.AmbilWarnaDialog
 import java.io.ByteArrayOutputStream
 import java.net.URL
+import java.nio.charset.Charset
 import java.util.*
 
 
@@ -42,6 +46,7 @@ class grupoEdit : Fragment() {
     private var idori: Long = 0
     private var admin: Long = 0
     private var iduser: Long = 0
+    private var ngrupo: String = ""
 
     private lateinit var binding: FragmentEditgrupoBinding
 
@@ -170,6 +175,7 @@ class grupoEdit : Fragment() {
                 idori = gruposDao.getIdori(idg.toInt())
                 admin = gruposDao.getAdmin(idg.toInt())
                 iduser = usuarioDao.checkId().toLong()
+                ngrupo = gruposDao.getNameG(idg.toInt())
             }
         }
     }
@@ -206,7 +212,7 @@ class grupoEdit : Fragment() {
                 Log.i("ALL LABELS", labelss.toString())
 
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
+                    .replace(R.id.GruposContainer, gruposList()).addToBackStack(null)
                     .commit()
             }
         }
@@ -332,7 +338,23 @@ class grupoEdit : Fragment() {
         }
 
         binding.DeleteGrupo.setOnClickListener {
-
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Confirmación")
+            builder.setMessage("¿Estás seguro de que deseas salir del grupo $ngrupo?")
+            builder.setPositiveButton("Sí") { dialog, _ ->
+                lifecycleScope.launch {
+                    killGrupo(idori, admin, iduser)
+                    deleteGrupo()
+                }
+                dialog.dismiss()
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.GruposContainer, back).addToBackStack(null).commit()
+            }
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.show()
         }
     }
 
@@ -365,6 +387,34 @@ class grupoEdit : Fragment() {
             Log.i("ALL GRUPOS", grupos.toString())
 
         }
+    }
+
+    private fun killGrupo(idori: Long, admin: Long, iduser: Long) {
+        val queue = Volley.newRequestQueue(requireContext())
+        var url = "http://savetrack.com.mx/grupoDelete.php?"
+        val jsonMiembros = JSONArray()
+
+        Log.v("JSONMIEMBROS", "$jsonMiembros")
+        val requestBody = "localid=$idori&admin=$admin&miembros=$jsonMiembros"
+        url += requestBody
+        val stringReq: StringRequest =
+            object : StringRequest(
+                Method.PUT, url,
+                Response.Listener { response ->
+                    val strResp2 = response.toString()
+                    Log.d("API", strResp2)
+
+                },
+                Response.ErrorListener { error ->
+                    Log.d("API", "error => $error")
+                }
+            ) {
+                override fun getBody(): ByteArray {
+                    return requestBody.toByteArray(Charset.defaultCharset())
+                }
+            }
+        Log.e("stringReq", stringReq.toString())
+        queue.add(stringReq)
     }
 
     private fun generateQRCode(text: String): Bitmap {

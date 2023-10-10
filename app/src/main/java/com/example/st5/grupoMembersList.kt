@@ -209,7 +209,7 @@ class grupoMembersList : Fragment() {
                 Log.i("ALL LABELS", labelss.toString())
 
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
+                    .replace(R.id.GruposContainer, gruposList()).addToBackStack(null)
                     .commit()
             }
         }

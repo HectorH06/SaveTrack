@@ -40,6 +40,9 @@ android {
         viewBinding true
         dataBinding true
     }
+    packagingOptions {
+        exclude 'license/*'
+    }
 }
 
 dependencies {
@@ -87,4 +90,5 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'ca.antonious:materialdaypicker:0.7.3'
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
+    implementation 'com.github.kenglxn.QRGen:javase:3.0.1'
 }

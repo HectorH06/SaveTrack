@@ -5,7 +5,10 @@ import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,10 +27,15 @@ import com.android.volley.toolbox.Volley
 import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentGruposmiembroslistBinding
 import com.example.st5.models.*
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
+import java.io.ByteArrayOutputStream
 import java.net.URL
 import java.nio.charset.Charset
 
@@ -237,16 +245,20 @@ class grupoMembersList : Fragment() {
         binding.ShareButton.setOnClickListener {
             val linkToShare = "http://savetrack.com.mx/joingroup.php?zxcd125s5d765e7wqa87sdftgh=${group.idori}&mnhjkmnbg1yhb3vdrtgvc98swe=${group.admin}"
 
+            val bitmap: Bitmap = generateQRCode(linkToShare)
+
             val whatsappIntent = Intent(Intent.ACTION_SEND)
-            whatsappIntent.type = "text/plain"
+            whatsappIntent.type = "image/jpeg"
             whatsappIntent.setPackage("com.whatsapp")
             whatsappIntent.putExtra(Intent.EXTRA_TEXT, "¡Únete a mi grupo de SaveTrack: $linkToShare!")
+            whatsappIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(requireContext(), bitmap))
 
             val gmailIntent = Intent(Intent.ACTION_SEND)
-            gmailIntent.type = "text/plain"
+            gmailIntent.type = "image/jpeg"
             gmailIntent.setPackage("com.google.android.gm")
             gmailIntent.putExtra(Intent.EXTRA_SUBJECT, "¡Únete a mi grupo de SaveTrack!")
             gmailIntent.putExtra(Intent.EXTRA_TEXT, "¡Haz click en el enlace para unirte: $linkToShare!")
+            gmailIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(requireContext(), bitmap))
 
             val chooserIntent = Intent.createChooser(gmailIntent, "Compartir a través de:")
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(whatsappIntent))
@@ -254,9 +266,38 @@ class grupoMembersList : Fragment() {
             try {
                 startActivity(chooserIntent)
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText(requireContext(), "No se encontraron aplicaciones para compartir", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "No se encontraron aplicaciones para compartir",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
+    }
+
+    private fun generateQRCode(text: String): Bitmap {
+        val multiFormatWriter = MultiFormatWriter()
+        try {
+            val bitMatrix: BitMatrix =
+                multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 500, 500)
+            return Bitmap.createBitmap(bitMatrix.width, bitMatrix.height, Bitmap.Config.RGB_565).apply {
+                for (x in 0 until bitMatrix.width) {
+                    for (y in 0 until bitMatrix.height) {
+                        setPixel(x, y, if (bitMatrix[x, y]) group.color else resources.getColor(R.color.X4))
+                    }
+                }
+            }
+        } catch (e: WriterException) {
+            e.printStackTrace()
+            throw RuntimeException("Error al generar el código QR", e)
+        }
+    }
+
+    private fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        return Uri.parse(path)
     }
 
     private inner class MiembroAdapter (private val miembros: List<Usuario>):
@@ -317,7 +358,6 @@ class grupoMembersList : Fragment() {
                     }
                     builder.show()
                 }
-
             }
         }
 

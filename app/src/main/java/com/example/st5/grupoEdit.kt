@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -119,7 +120,7 @@ class grupoEdit : Fragment() {
                 val nombre: String = jsonObjectG.optString("nombre")
                 val tipo: Int = jsonObjectG.optInt("tipo")
                 val desc: String = jsonObjectG.optString("descripcion")
-                val color: Int = jsonObjectG.optInt("color")
+                color = jsonObjectG.optInt("color")
                 val created: String = jsonObjectG.optString("created")
                 val createdString = "Creado el $created"
                 val adminName = withContext(Dispatchers.IO) { URL("http://savetrack.com.mx/usernameget.php?id=$admin").readText() }
@@ -329,6 +330,10 @@ class grupoEdit : Fragment() {
                 ).show()
             }
         }
+
+        binding.DeleteGrupo.setOnClickListener {
+
+        }
     }
 
     private suspend fun grupoEdit(
@@ -370,7 +375,7 @@ class grupoEdit : Fragment() {
             return Bitmap.createBitmap(bitMatrix.width, bitMatrix.height, Bitmap.Config.RGB_565).apply {
                 for (x in 0 until bitMatrix.width) {
                     for (y in 0 until bitMatrix.height) {
-                        setPixel(x, y, if (bitMatrix[x, y]) color else resources.getColor(R.color.X4))
+                        setPixel(x, y, if (bitMatrix[x, y]) color else antiColor(color))
                     }
                 }
             }
@@ -383,7 +388,23 @@ class grupoEdit : Fragment() {
     private fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "steqr", null)
         return Uri.parse(path)
+    }
+
+    private fun antiColor(colorDado: Int): Int {
+        val luminancia = (0.299 * Color.red(colorDado) + 0.587 * Color.green(colorDado) + 0.114 * Color.blue(colorDado)) / 255.0
+
+        val luminanciaFondo = if (luminancia > 0.5) {
+            luminancia - 0.5
+        } else {
+            luminancia + 0.5
+        }
+
+        val r = (luminanciaFondo * 255).toInt().coerceIn(0, 255)
+        val g = (luminanciaFondo * 255).toInt().coerceIn(0, 255)
+        val b = (luminanciaFondo * 255).toInt().coerceIn(0, 255)
+
+        return Color.rgb(r, g, b)
     }
 }

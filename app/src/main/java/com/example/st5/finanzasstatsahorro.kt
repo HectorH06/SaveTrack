@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
@@ -576,17 +577,18 @@ class finanzasstatsahorro : Fragment() {
             val moneda: TextView,
             val valor: TextView,
             val porcentaje: TextView,
+            val inversion: ImageButton,
             val chart: LineChart,
             val table: RecyclerView
         ) : RecyclerView.ViewHolder(itemView)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_chart, parent, false)
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_chart, parent, false)
             val moneda = itemView.findViewById<TextView>(R.id.moneda)
             val valor = itemView.findViewById<TextView>(R.id.valor)
             val porcentaje = itemView.findViewById<TextView>(R.id.porcentaje)
+            val inversion = itemView.findViewById<ImageButton>(R.id.graficaperso)
             val chart = itemView.findViewById<LineChart>(R.id.thechart)
             val table = itemView.findViewById<RecyclerView>(R.id.displayStats)
             return ViewHolder(
@@ -594,6 +596,7 @@ class finanzasstatsahorro : Fragment() {
                 moneda,
                 valor,
                 porcentaje,
+                inversion,
                 chart,
                 table
             )
@@ -635,6 +638,11 @@ class finanzasstatsahorro : Fragment() {
                     valor = "Compra: $dollarC"
                     porcentaje = "Venta: $dollarV"
 
+                    holder.inversion.setOnClickListener {
+                        parentFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                            .replace(R.id.finanzas_container, finanzasinversion()).addToBackStack(null).commit()
+                    }
                     setData(count, chart, position)
                 }
                 2 -> {

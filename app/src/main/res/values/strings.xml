@@ -178,6 +178,8 @@
     <string name="aporte">Aporte</string>
     <string name="eliminar">Eliminar</string>
     <string name="editg">Editar Grupo</string>
+    <string name="graficapersonalizada">Gráfica Personalizada</string>
+    <string name="porcentaje">Pctg</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

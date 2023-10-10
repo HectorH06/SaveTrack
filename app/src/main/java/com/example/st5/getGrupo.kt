@@ -38,7 +38,7 @@ class getGrupo : AppCompatActivity() {
                     val miembrosJSON = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=$localid&admin=$admin").readText()) }
                     val miembrosG = Array(miembrosJSON.length()) { miembrosJSON.getInt(it) }
 
-                    if (grupoJson.getLong("idgrupoglobal") != null) {
+                    if (grupoJson.getLong("idgrupoglobal") != null && grupoJson.getInt("tipo") != 2) {
                         val idori: Long = grupoJson.getLong("idgrupolocal")
                         val idadmin: Long = grupoJson.getLong("idadmin")
                         val nombre: String = grupoJson.optString("nombre")
@@ -48,7 +48,7 @@ class getGrupo : AppCompatActivity() {
 
                         grupoAdd(nombre, desc, tipo, color, idadmin, idori, miembrosG)
                     } else {
-                        Log.v("Current monto", "VACÍO")
+                        Log.v("Current grupo", "VACÍO")
                     }
                 } catch (e: Exception) {
                     Log.e("NetworkError", "Error during network call", e)

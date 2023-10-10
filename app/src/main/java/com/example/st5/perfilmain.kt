@@ -1,6 +1,8 @@
 package com.example.st5
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.icu.text.DecimalFormat
@@ -24,6 +26,9 @@ import com.example.st5.models.Grupos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.net.URL
+import java.util.*
 
 class perfilmain : Fragment() {
     private lateinit var binding: FragmentPerfilmainBinding
@@ -32,7 +37,7 @@ class perfilmain : Fragment() {
     private lateinit var grupos: List<Grupos>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setupAlarm()
         lifecycleScope.launch {
             isDarkMode = isDarkModeEnabled(requireContext())
 
@@ -43,6 +48,7 @@ class perfilmain : Fragment() {
             }
 
             Log.i("MODO", isDarkMode.toString())
+            procesarGrupos(requireContext())
         }
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
@@ -225,18 +231,24 @@ class perfilmain : Fragment() {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: GrupoViewHolder, position: Int) {
             val grupo = grupos[position]
+            holder.itemView.setOnClickListener {
+                val intent = Intent(activity, GruposActivity::class.java)
+                intent.putExtra("isDarkMode", isDarkMode)
+                startActivity(intent)
+            }
             holder.nombreTextView.text = grupo.nameg
             holder.tipoImage.setBackgroundResource(when (grupo.type) {
                 0 -> R.drawable.ic_pin
                 1 -> R.drawable.ic_temporal
                 else -> R.drawable.ic_delete
             })
+            holder.itemView.setBackgroundColor(grupo.color)
             when (position){
-                0 -> holder.itemView.setBackgroundResource(R.drawable.p1topcell)
-                minOf(grupos.size, 3) -> holder.itemView.setBackgroundResource(R.drawable.p1topcell)
                 3 -> {
-                    holder.nombreTextView.text = "TODOS LOS GRUPOS"
+                    holder.nombreTextView.text = "Todos los grupos"
                     holder.tipoImage.setBackgroundResource(R.drawable.ic_list)
+                    holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)
+                    holder.tipoImage.setBackgroundResource(R.drawable.ic_grupos)
                     holder.itemView.setOnClickListener {
                         val intent = Intent(activity, GruposActivity::class.java)
                         intent.putExtra("isDarkMode", isDarkMode)
@@ -244,11 +256,84 @@ class perfilmain : Fragment() {
                     }
                 }
             }
-            holder.itemView.setBackgroundColor(grupo.color)
         }
 
         override fun getItemCount(): Int {
             return minOf(grupos.size, 4)
+        }
+    }
+
+    private fun setupAlarm() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.set(Calendar.HOUR_OF_DAY, 3)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+
+        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val alarma = Intent(requireContext(), AlarmaGrupos::class.java)
+        val pendingAlarmaG = PendingIntent.getBroadcast(requireContext(), 0, alarma,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingAlarmaG
+        )
+    }
+
+    private suspend fun procesarGrupos(context: Context) {
+        withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                val gruposDao = Stlite.getInstance(context).getGruposDao()
+                val grupos = gruposDao.getAllGrupos()
+
+                for ((Id, nameg, description, type, admin, idori, color, enlace) in grupos) {
+                    if (Id != null && nameg != null) {
+                        val viejoGrupo = Grupos(
+                            Id = Id,
+                            nameg = nameg,
+                            description = description,
+                            type = type,
+                            admin = admin,
+                            idori = idori,
+                            color = color,
+                            enlace = enlace
+                        )
+
+                        val grupoJson = withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=${viejoGrupo.idori}&admin=${viejoGrupo.admin}").readText()) }
+
+                        if (grupoJson.getLong("idgrupoglobal") != null && grupoJson.getInt("tipo") != 2) {
+                            val idoriA: Long = grupoJson.getLong("idgrupolocal")
+                            val adminA: Long = grupoJson.getLong("idadmin")
+                            val namegA: String = grupoJson.optString("nombre")
+                            val descA: String = grupoJson.optString("descripcion")
+                            val tipoA: Int = grupoJson.optInt("tipo")
+                            val colorA: Int = grupoJson.optInt("color")
+
+                            val grupoActualizado = Grupos(
+                                Id = Id,
+                                nameg = namegA,
+                                description = descA,
+                                type = tipoA,
+                                admin = adminA,
+                                idori = idoriA,
+                                color = colorA,
+                                enlace = enlace
+                            )
+
+                            gruposDao.updateGrupo(grupoActualizado)
+                        } else {
+                            Log.v("Current grupo", "VACÍO")
+                        }
+                        val grupos = gruposDao.getAllGrupos()
+                        Log.i("ALL GRUPOS ALARMA", grupos.toString())
+                    }
+                }
+            }
         }
     }
 }

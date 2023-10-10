@@ -265,7 +265,7 @@ class grupoEdit : Fragment() {
                         Log.v("Color", color.toString())
 
                         lifecycleScope.launch {
-                            grupoEdit(nombre, descrip, color)
+                            grupoEdit(nombre, descrip)
                         }
                         dialog.dismiss()
                         parentFragmentManager.beginTransaction()
@@ -361,31 +361,80 @@ class grupoEdit : Fragment() {
     private suspend fun grupoEdit(
         nombre: String,
         descripcion: String,
-        color: Int
     ) {
         withContext(Dispatchers.IO) {
             val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
-            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
 
-            val iduser = usuarioDao.checkId()
+            val id = arguments?.getLong(idv)
 
-            val id = gruposDao.getIdGrupo(iduser)
-            //companion object de Id
-            val viejoGrupo = Grupos(
-                Id = id,
-                nameg = nombre,
-                description = descripcion,
-                type = gruposDao.getType(id.toInt()),
-                admin = iduser.toLong(),
-                idori = 0,
-                color = color,
-                enlace = ""
-            )
+            if (id != null) {
+                val viejoGrupo = Grupos(
+                    Id = id,
+                    nameg = nombre,
+                    description = descripcion,
+                    type = gruposDao.getType(id.toInt()),
+                    admin = admin,
+                    idori = 0,
+                    color = color,
+                    enlace = ""
+                )
 
-            gruposDao.updateGrupo(viejoGrupo)
-            val grupos = gruposDao.getAllGrupos()
-            Log.i("ALL GRUPOS", grupos.toString())
+                val queue = Volley.newRequestQueue(requireContext())
+                val grupoJson = withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=${viejoGrupo.Id}&admin=$admin").readText()) }
 
+                if (grupoJson.getLong("idgrupoglobal") != null) {
+                    val idori: Long = grupoJson.getLong("idgrupolocal")
+                    val idadmin: Long = grupoJson.getLong("idadmin")
+                    val tipo: Int = grupoJson.optInt("tipo")
+
+                    var url = "http://savetrack.com.mx/grupoUpdate.php?"
+
+                    val nombre = binding.NombreField.text
+                    val desc = binding.DescripcionField.text
+                    val dialog = AmbilWarnaDialog(
+                        requireContext(),
+                        color,
+                        false,
+                        object : AmbilWarnaDialog.OnAmbilWarnaListener {
+                            override fun onOk(dialog: AmbilWarnaDialog, colorin: Int) {
+                                color = colorin
+                                binding.ColorField.setBackgroundColor(color)
+                            }
+
+                            override fun onCancel(dialog: AmbilWarnaDialog) {
+                                Toast.makeText(requireContext(), "cancel", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    )
+                    dialog.show()
+                    val requestBody = "localid=$idori&admin=$idadmin&nameg=$nombre&type=$tipo&desc=$desc&color=$color"
+                    url += requestBody
+                    val stringReq: StringRequest =
+                        object : StringRequest(
+                            Method.PUT, url,
+                            Response.Listener { response ->
+                                val strResp2 = response.toString()
+                                Log.d("API", strResp2)
+
+                            },
+                            Response.ErrorListener { error ->
+                                Log.d("API", "error => $error")
+                            }
+                        ) {
+                            override fun getBody(): ByteArray {
+                                return requestBody.toByteArray(Charset.defaultCharset())
+                            }
+                        }
+                    Log.e("stringReq", stringReq.toString())
+                    queue.add(stringReq)
+                } else {
+                    Log.v("Current monto", "VACÍO")
+                }
+
+                gruposDao.updateGrupo(viejoGrupo)
+                val grupos = gruposDao.getAllGrupos()
+                Log.i("ALL GRUPOS", grupos.toString())
+            }
         }
     }
 

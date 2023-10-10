@@ -476,6 +476,10 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
             val mgId = montoDao.getMaxMonto().toLong()
             val sequence = montoDao.getSequence(mgId.toInt())
             val idgrupo: Long? = arguments?.getLong(idv)
+            var idori = 0L
+            if (idgrupo != null) {
+                idori = gruposDao.getIdori(idgrupo.toInt())
+            }
             val admin = idgrupo?.let { gruposDao.getAdmin(it.toInt()) }
 
             val nuevoMontoGrupo = idgrupo?.let {
@@ -491,7 +495,7 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
             }
 
             val queue = Volley.newRequestQueue(requireContext())
-            val uploadurl = "http://savetrack.com.mx/montogrupoAdd.php?idadmin=$admin&idusuario=$iduser&idmglocal=$mgId&idgrupo=$idgrupo&concepto=$concepto&valor=$valor&valorfinal=$valorfinal&fecha=$fecha&frecuencia=$frecuencia&etiqueta=$etiqueta&interes=$interes&tipointeres=$tipointeres&veces=$veces&estado=$estado&adddate=$adddate&enddate=$enddate&cooldown=0&delay=0&sequence=$sequence"
+            val uploadurl = "http://savetrack.com.mx/montogrupoAdd.php?idadmin=$admin&idusuario=$iduser&idmglocal=$mgId&idgrupo=$idori&concepto=$concepto&valor=$valor&valorfinal=$valorfinal&fecha=$fecha&frecuencia=$frecuencia&etiqueta=$etiqueta&interes=$interes&tipointeres=$tipointeres&veces=$veces&estado=$estado&adddate=$adddate&enddate=$enddate&cooldown=0&delay=0&sequence=$sequence"
             val uploadReq: StringRequest =
                 object : StringRequest(Method.POST,
                     uploadurl,

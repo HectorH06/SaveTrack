@@ -374,13 +374,13 @@ class grupoEdit : Fragment() {
                     description = descripcion,
                     type = gruposDao.getType(id.toInt()),
                     admin = admin,
-                    idori = 0,
+                    idori = gruposDao.getIdori(id.toInt()),
                     color = color,
                     enlace = ""
                 )
 
                 val queue = Volley.newRequestQueue(requireContext())
-                val grupoJson = withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=${viejoGrupo.Id}&admin=$admin").readText()) }
+                val grupoJson = withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=${viejoGrupo.idori}&admin=$admin").readText()) }
 
                 if (grupoJson.getLong("idgrupoglobal") != null) {
                     val idori: Long = grupoJson.getLong("idgrupolocal")

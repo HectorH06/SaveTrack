@@ -329,8 +329,8 @@ class perfilmain : Fragment() {
                         } else {
                             Log.v("Current grupo", "VACÍO")
                         }
-                        val grupos = gruposDao.getAllGrupos()
-                        Log.i("ALL GRUPOS ALARMA", grupos.toString())
+                        val grup = gruposDao.getAllGrupos()
+                        Log.i("ALL GRUPOS ALARMA", grup.toString())
                     }
                 }
             }

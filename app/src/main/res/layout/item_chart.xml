@@ -37,20 +37,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/moneda" />
 
-        <ImageButton
-            android:id="@+id/graficaperso"
-            android:alpha="0"
-            android:translationZ="-400dp"
-            android:layout_marginStart="32dp"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/blackshape"
-            app:srccompat="@drawable/ic_charts"
-            app:tint="@color/X4"
-            android:contentDescription="@string/graficapersonalizada" />
-
         <TextView
             android:id="@+id/porcentaje"
             android:layout_width="0dp"
@@ -63,6 +49,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/valor" />
+
+
 
         <TableLayout
             android:id="@+id/cabeza"

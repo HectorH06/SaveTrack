@@ -179,7 +179,10 @@
     <string name="eliminar">Eliminar</string>
     <string name="editg">Editar Grupo</string>
     <string name="graficapersonalizada">Gráfica Personalizada</string>
-    <string name="porcentaje">Pctg</string>
+    <string name="porcentaje">%</string>
+    <string name="Valor2">Valor 2</string>
+    <string name="calcular">Calcular</string>
+    <string name="graficar">Graficar</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

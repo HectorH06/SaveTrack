@@ -56,18 +56,6 @@ class finanzasstatsahorro : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -102,10 +90,21 @@ class finanzasstatsahorro : Fragment() {
     ): View {
         binding = FragmentFinanzasstatsahorroBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
             getDivisas()
             getDollar()
             getAhorros()
             delay(3000)
+            binding.perame.alpha = 0f
             Log.v("AHORROXDIA", ahorrosMap.toString())
             Log.v("DIVISAS", currencyData.toString())
             binding.displaycharts.adapter = ChartAdapter()
@@ -577,6 +576,7 @@ class finanzasstatsahorro : Fragment() {
             val moneda: TextView,
             val valor: TextView,
             val porcentaje: TextView,
+            val graficar: TextView,
             val inversion: ImageButton,
             val chart: LineChart,
             val table: RecyclerView
@@ -588,6 +588,7 @@ class finanzasstatsahorro : Fragment() {
             val moneda = itemView.findViewById<TextView>(R.id.moneda)
             val valor = itemView.findViewById<TextView>(R.id.valor)
             val porcentaje = itemView.findViewById<TextView>(R.id.porcentaje)
+            val graficar = itemView.findViewById<TextView>(R.id.graficarTV)
             val inversion = itemView.findViewById<ImageButton>(R.id.graficaperso)
             val chart = itemView.findViewById<LineChart>(R.id.thechart)
             val table = itemView.findViewById<RecyclerView>(R.id.displayStats)
@@ -596,6 +597,7 @@ class finanzasstatsahorro : Fragment() {
                 moneda,
                 valor,
                 porcentaje,
+                graficar,
                 inversion,
                 chart,
                 table
@@ -638,10 +640,14 @@ class finanzasstatsahorro : Fragment() {
                     valor = "Compra: $dollarC"
                     porcentaje = "Venta: $dollarV"
 
+                    holder.inversion.alpha = 1f
+                    holder.inversion.translationZ = 500f
+                    holder.graficar.alpha = 1f
+                    holder.graficar.translationZ = 500f
                     holder.inversion.setOnClickListener {
                         parentFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.finanzas_container, finanzasinversion()).addToBackStack(null).commit()
+                            .replace(R.id.finanzas_container, finanzasPerso()).addToBackStack(null).commit()
                     }
                     setData(count, chart, position)
                 }

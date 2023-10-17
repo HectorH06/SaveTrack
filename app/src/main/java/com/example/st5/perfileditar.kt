@@ -47,18 +47,6 @@ class perfileditar : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -90,6 +78,17 @@ class perfileditar : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPerfileditarBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
         return binding.root
     }
 

@@ -43,18 +43,6 @@ class indexGastosList : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -89,6 +77,16 @@ class indexGastosList : Fragment() {
         binding = FragmentIndexgastoslistBinding.inflate(inflater, container, false)
         val decoder = Decoder(requireContext())
         lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
             gastos = montosget()
             binding.displayGastos.adapter = MontoAdapter(gastos)
             binding.totalG.text = "$" + decoder.format(totalGastos()).toString()

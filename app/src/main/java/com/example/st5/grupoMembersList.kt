@@ -64,18 +64,6 @@ class grupoMembersList : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -129,6 +117,16 @@ class grupoMembersList : Fragment() {
         binding = FragmentGruposmiembroslistBinding.inflate(inflater, container, false)
         val decoder = Decoder(requireContext())
         lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
             montos = montosget()
             try {
                 val miembrosJSON = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=${group.idori}&admin=${group.admin}").readText()) }

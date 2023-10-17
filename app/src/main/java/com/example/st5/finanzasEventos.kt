@@ -26,36 +26,6 @@ class finanzasEventos : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-
-            val hoy = LocalDate.now()
-            val day = hoy.dayOfMonth
-            val fDay = String.format("%02d", day)
-            val month = hoy.monthValue - 1
-            val fMonth = String.format("%02d", month)
-            val year = hoy.year
-            val fecha = "$year$fMonth$fDay"
-            val today: Int = fecha.replace("-", "").toInt()
-            Log.v("today", "$today")
-
-            val startYear = 1998
-
-            val monthsPagerAdapter = MonthsPagerAdapter(requireContext(), isDarkMode, day)
-            val viewPager: ViewPager = binding.calendarView
-            viewPager.adapter = monthsPagerAdapter
-
-            viewPager.currentItem = month + (year - startYear) * 12 // 299 porque es 300 (mitad del viewpager configurado a +-25 años) - 1 (porque monthvalue va del 1 al 12)
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -86,6 +56,36 @@ class finanzasEventos : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFinanzaseventosBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
+            val hoy = LocalDate.now()
+            val day = hoy.dayOfMonth
+            val fDay = String.format("%02d", day)
+            val month = hoy.monthValue - 1
+            val fMonth = String.format("%02d", month)
+            val year = hoy.year
+            val fecha = "$year$fMonth$fDay"
+            val today: Int = fecha.replace("-", "").toInt()
+            Log.v("today", "$today")
+
+            val startYear = 1998
+
+            val monthsPagerAdapter = MonthsPagerAdapter(requireContext(), isDarkMode, day)
+            val viewPager: ViewPager = binding.calendarView
+            viewPager.adapter = monthsPagerAdapter
+
+            viewPager.currentItem = month + (year - startYear) * 12 // 299 porque es 300 (mitad del viewpager configurado a +-25 años) - 1 (porque monthvalue va del 1 al 12)
+        }
+
         val hoy = LocalDate.now()
         val month = hoy.monthValue - 1
         val year = hoy.year

@@ -19,6 +19,7 @@ import com.example.st5.database.Stlite
 import com.example.st5.databinding.FragmentMontosgrupoBinding
 import com.example.st5.models.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -47,18 +48,6 @@ class montosGrupo : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
 
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
@@ -94,23 +83,23 @@ class montosGrupo : Fragment() {
         binding = FragmentMontosgrupoBinding.inflate(inflater, container, false)
         val decoder = Decoder(requireContext())
         lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
             montos = montosget()
             try {
                 val miembrosJSON = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=${group.idori}&admin=${group.admin}").readText()) }
                 val miembrosG = Array(miembrosJSON.length()) { miembrosJSON.getInt(it) }
 
-                if (!miembrosG.contains(iduser.toInt())) {
-                    parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                        .replace(R.id.GruposContainer, gruposList()).addToBackStack(null).commit()
-                    Toast.makeText(
-                        requireContext(),
-                        "Ya no formas parte del grupo",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    deleteGrupo()
-                } else {
+                delay(500)
+                if (miembrosG.contains(iduser.toInt())) {
                     binding.bar.text = group.nameg
 
                     Log.v("idori", group.idori.toString())
@@ -183,6 +172,17 @@ class montosGrupo : Fragment() {
 
                     Log.v("idori", group.idori.toString())
                     Log.v("admin", group.admin.toString())
+                } else {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.GruposContainer, gruposList()).addToBackStack(null).commit()
+                    Toast.makeText(
+                        requireContext(),
+                        "Ya no formas parte del grupo",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    deleteGrupo()
                 }
             } catch (e: Exception) {
                 Log.e("NetworkError", "Error during network call", e)
@@ -423,7 +423,7 @@ class montosGrupo : Fragment() {
             val valorTextView: TextView,
             val fechaTextView: TextView,
             val etiquetaTextView: TextView,
-            val favM: Button,
+            val payMG: Button,
             val updateM: Button,
             val deleteM: Button
         ) : RecyclerView.ViewHolder(itemView)
@@ -434,7 +434,7 @@ class montosGrupo : Fragment() {
             val valorTextView = itemView.findViewById<TextView>(R.id.IValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.IFecha)
             val etiquetaTextView = itemView.findViewById<TextView>(R.id.IEtiqueta)
-            val favM = itemView.findViewById<Button>(R.id.favMonto)
+            val payMG = itemView.findViewById<Button>(R.id.payButton)
             val updateM = itemView.findViewById<Button>(R.id.editMonto)
             val deleteM = itemView.findViewById<Button>(R.id.deleteMonto)
             return MontoViewHolder(
@@ -443,7 +443,7 @@ class montosGrupo : Fragment() {
                 valorTextView,
                 fechaTextView,
                 etiquetaTextView,
-                favM,
+                payMG,
                 updateM,
                 deleteM
             )
@@ -461,40 +461,8 @@ class montosGrupo : Fragment() {
             holder.valorTextView.text = decoder.format(monto.valor).toString()
             holder.fechaTextView.text = monto.fecha?.let { decoder.date(it) }
             if (miembro != null) { holder.etiquetaTextView.text = miembro.nombre }
-            if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6){
-                holder.favM.setBackgroundResource(R.drawable.ic_notstar)
-                tempstat = 5
-            }
-            if (monto.estado == 3 || monto.estado == 4 || monto.estado == 8 || monto.estado == 9){
-                holder.favM.setBackgroundResource(R.drawable.ic_star)
-                tempstat = 8
-            }
-            holder.favM.setOnClickListener {
-                if (tempstat == 5){
-                    holder.favM.setBackgroundResource(R.drawable.ic_star)
-                    tempstat = 8
-                }
-                if (tempstat == 8){
-                    holder.favM.setBackgroundResource(R.drawable.ic_notstar)
-                    tempstat = 5
-                }
-                lifecycleScope.launch {
-                    montoFavorito(
-                        monto.idmonto,
-                        monto.concepto,
-                        monto.valor,
-                        monto.fecha,
-                        monto.frecuencia,
-                        monto.etiqueta,
-                        monto.interes,
-                        monto.veces,
-                        monto.estado,
-                        monto.adddate
-                    )
-                }
-            }
             val upup = idgrupo?.let {
-                if (false) {
+                if (iduser == group.admin) {
                     grupoEdit.sendGrupo(it)
                 } else {
                     grupoView.sendGrupo(it)

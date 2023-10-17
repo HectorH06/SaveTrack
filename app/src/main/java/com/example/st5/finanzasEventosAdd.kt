@@ -42,18 +42,6 @@ class finanzasEventosAdd : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -83,6 +71,17 @@ class finanzasEventosAdd : Fragment(), AdapterView.OnItemSelectedListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFinanzaseventosaddBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
         return binding.root
 
     }

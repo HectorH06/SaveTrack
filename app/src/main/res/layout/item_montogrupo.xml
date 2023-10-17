@@ -19,7 +19,6 @@
         android:textColorHint="?attr/colorSecondary"
         android:textSize="14sp" />
 
-
     <TextView
         android:id="@+id/IValor"
         android:layout_width="50dp"
@@ -56,10 +55,10 @@
         android:textSize="14sp" />
 
     <Button
-        android:id="@+id/favMonto"
+        android:id="@+id/payButton"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:background="@drawable/ic_notstar"
+        android:background="@drawable/ic_confirm"
         android:backgroundTint="?attr/colorOnPrimary" />
 
     <Button

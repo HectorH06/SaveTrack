@@ -27,6 +27,32 @@ class historialmain : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                }
+            })
+    }
+
+    private suspend fun isDarkModeEnabled(context: Context): Boolean {
+        var komodo: Boolean
+
+        withContext(Dispatchers.IO) {
+            val assetsDao = Stlite.getInstance(context).getAssetsDao()
+
+            val mode = assetsDao.getTheme()
+            komodo = mode != 0
+        }
+
+        return komodo
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentHistorialmainBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
             isDarkMode = isDarkModeEnabled(requireContext())
 
@@ -56,33 +82,6 @@ class historialmain : Fragment() {
 
             viewPager.currentItem = month + (year - startYear) * 12
         }
-
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                }
-            })
-    }
-
-    private suspend fun isDarkModeEnabled(context: Context): Boolean {
-        var komodo: Boolean
-
-        withContext(Dispatchers.IO) {
-            val assetsDao = Stlite.getInstance(context).getAssetsDao()
-
-            val mode = assetsDao.getTheme()
-            komodo = mode != 0
-        }
-
-        return komodo
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentHistorialmainBinding.inflate(inflater, container, false)
         return binding.root
 
     }

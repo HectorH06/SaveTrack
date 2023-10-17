@@ -67,18 +67,6 @@ class grupoEdit : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -113,6 +101,16 @@ class grupoEdit : Fragment() {
         binding = FragmentEditgrupoBinding.inflate(inflater, container, false)
         colorPicker()
         lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
             getGrupo()
             try {
                 val jsonObjectG = withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=$idori&admin=$admin").readText()) }

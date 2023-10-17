@@ -25,6 +25,8 @@ import kotlinx.coroutines.withContext
 class gruposList : Fragment(){
     private lateinit var binding: FragmentGruposlistBinding
     private lateinit var grupos: List<Grupos>
+    private var isDarkMode = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,6 +35,7 @@ class gruposList : Fragment(){
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     val intent = Intent(activity, Index::class.java)
+                    intent.putExtra("isDarkMode", !isDarkMode)
                     intent.putExtra("currentView", 0)
                     startActivity(intent)
                 }
@@ -58,7 +61,7 @@ class gruposList : Fragment(){
     ): View {
         binding = FragmentGruposlistBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
+            isDarkMode = isDarkModeEnabled(requireContext())
 
             if (isDarkMode) {
                 binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
@@ -88,6 +91,7 @@ class gruposList : Fragment(){
 
         binding.goback.setOnClickListener {
             val intent = Intent(activity, Index::class.java)
+            intent.putExtra("isDarkMode", !isDarkMode)
             intent.putExtra("currentView", 0)
             startActivity(intent)
         }

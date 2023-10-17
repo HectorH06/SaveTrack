@@ -35,17 +35,6 @@ class planesdeahorromain : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_planes_de_ahorro2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_planes_de_ahorro)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -73,6 +62,16 @@ class planesdeahorromain : Fragment() {
     ): View {
         binding = FragmentPlanesdeahorromainBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_planes_de_ahorro2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_planes_de_ahorro)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
             pda = montosget()
             binding.displayPda.adapter = MontoAdapter(pda)
         }

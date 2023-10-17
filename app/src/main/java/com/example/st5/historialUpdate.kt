@@ -49,18 +49,6 @@ class historialUpdate : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_historial2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_historial)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -92,6 +80,17 @@ class historialUpdate : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHistorialeditlabelBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_historial2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_historial)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
         return binding.root
     }
 

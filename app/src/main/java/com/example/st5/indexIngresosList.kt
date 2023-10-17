@@ -66,18 +66,6 @@ class indexIngresosList : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -112,6 +100,16 @@ class indexIngresosList : Fragment() {
         binding = FragmentIndexingresolistBinding.inflate(inflater, container, false)
         val decoder = Decoder(requireContext())
         lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
             ingresos = montosget()
             fastable = fastget()
             binding.displayIngresos.adapter = MontoAdapter(ingresos)

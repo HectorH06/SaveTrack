@@ -43,27 +43,6 @@ class Configuracion : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            isDarkMode = isDarkModeEnabled(requireContext())
-            notifActive = areNotifEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
-                binding.claroscuro.checked = IconSwitch.Checked.RIGHT
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
-                binding.claroscuro.checked = IconSwitch.Checked.LEFT
-                isDarkMode = true
-            }
-            if (notifActive) {
-                binding.notificame.checked = IconSwitch.Checked.LEFT
-            } else {
-                binding.notificame.checked = IconSwitch.Checked.RIGHT
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -99,7 +78,6 @@ class Configuracion : Fragment() {
     private suspend fun updateTheme(context: Context, komodo: Long){
         withContext(Dispatchers.IO){
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
-
             assetsDao.updateTheme(komodo)
         }
     }
@@ -107,7 +85,6 @@ class Configuracion : Fragment() {
     private suspend fun updateNotif(context: Context, modo: Long){
         withContext(Dispatchers.IO){
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
-
             assetsDao.updateNotif(modo)
         }
     }
@@ -117,6 +94,26 @@ class Configuracion : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentConfiguracionBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            isDarkMode = isDarkModeEnabled(requireContext())
+            notifActive = areNotifEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
+                binding.claroscuro.checked = IconSwitch.Checked.RIGHT
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+                binding.claroscuro.checked = IconSwitch.Checked.LEFT
+                isDarkMode = true
+            }
+            if (notifActive) {
+                binding.notificame.checked = IconSwitch.Checked.LEFT
+            } else {
+                binding.notificame.checked = IconSwitch.Checked.RIGHT
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
         return binding.root
     }
 
@@ -134,6 +131,13 @@ class Configuracion : Fragment() {
             when (binding.claroscuro.checked) {
                 IconSwitch.Checked.LEFT -> {
                     binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+                    binding.bar.setTextColor(resources.getColor(R.color.X0))
+                    binding.Modo.setTextColor(resources.getColor(R.color.X0))
+                    binding.Notificaciones.setTextColor(resources.getColor(R.color.X0))
+                    binding.faq.setTextColor(resources.getColor(R.color.X0))
+                    binding.logout.setTextColor(resources.getColor(R.color.X0))
+                    binding.by.setTextColor(resources.getColor(R.color.X0))
+                    binding.email.setTextColor(resources.getColor(R.color.X0))
                     lifecycleScope.launch{
                         updateTheme(requireContext(), 0)
                     }
@@ -141,6 +145,13 @@ class Configuracion : Fragment() {
                 }
                 IconSwitch.Checked.RIGHT -> {
                     binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
+                    binding.bar.setTextColor(resources.getColor(R.color.X4))
+                    binding.Modo.setTextColor(resources.getColor(R.color.X4))
+                    binding.Notificaciones.setTextColor(resources.getColor(R.color.X4))
+                    binding.faq.setTextColor(resources.getColor(R.color.X4))
+                    binding.logout.setTextColor(resources.getColor(R.color.X4))
+                    binding.by.setTextColor(resources.getColor(R.color.X4))
+                    binding.email.setTextColor(resources.getColor(R.color.X4))
                     lifecycleScope.launch{
                         updateTheme(requireContext(), 1)
                     }

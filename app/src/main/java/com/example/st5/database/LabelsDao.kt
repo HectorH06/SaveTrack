@@ -24,6 +24,8 @@ interface LabelsDao {
 
     @Query("SELECT idlabel FROM labels")
     fun getIds(): MutableList<Long>
+    @Query("SELECT idlabel FROM labels WHERE idlabel < 8000")
+    fun getIdsButGroups(): MutableList<Long>
     @Query("SELECT plabel FROM labels")
     fun getPlabels(): MutableList<String>
     @Query("SELECT color FROM labels")

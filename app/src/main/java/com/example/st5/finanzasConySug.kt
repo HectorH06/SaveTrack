@@ -32,17 +32,6 @@ class finanzasConySug : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            var isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
-            }
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -73,6 +62,15 @@ class finanzasConySug : Fragment(){
     ): View {
         binding = FragmentFinanzasconsejosysugBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
+            var isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_finanzas)
+            }
+            Log.i("MODO", isDarkMode.toString())
+
             consejos = getConsejos()
             binding.displayCS.adapter = ConsejoAdapter(consejos)
         }

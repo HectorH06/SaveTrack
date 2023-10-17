@@ -38,18 +38,7 @@ class perfilmain : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupAlarm()
-        lifecycleScope.launch {
-            isDarkMode = isDarkModeEnabled(requireContext())
 
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-            procesarGrupos(requireContext())
-        }
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -75,6 +64,18 @@ class perfilmain : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentPerfilmainBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_perfil)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+            procesarGrupos(requireContext())
+        }
         return binding.root
     }
     private suspend fun gruposGet(): List<Grupos> {

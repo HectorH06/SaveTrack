@@ -98,18 +98,6 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -141,6 +129,17 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentIndexmontoupdateBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
         return binding.root
     }
 

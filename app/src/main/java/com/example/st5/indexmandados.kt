@@ -31,18 +31,6 @@ class indexmandados : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -76,6 +64,16 @@ class indexmandados : Fragment() {
     ): View {
         binding = FragmentIndexmandadosBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
             fastable = fastget()
             binding.checkList.adapter = MontoAdapter(fastable)
             binding.totalG.text = totalGastos()

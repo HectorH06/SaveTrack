@@ -22,7 +22,7 @@
             android:layout_marginEnd="@dimen/layout_margin_default"
             android:hint="@string/consejos"
             android:textSize="18sp"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="@color/X0"
             android:textColorHint="?attr/colorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
             android:layout_marginEnd="@dimen/layout_margin_default"
             android:hint="@string/descripcion"
             android:textSize="12sp"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="@color/X0"
             android:textColorHint="?attr/colorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,7 @@
             android:layout_height="32dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/ic_go"
-            android:backgroundTint="?attr/colorOnPrimary"
+            android:backgroundTint="@color/X0"
             app:layout_constraintBottom_toTopOf="@id/ignorar"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -58,7 +58,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/ic_cancel"
-            android:backgroundTint="?attr/colorOnPrimary"
+            android:backgroundTint="@color/X0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

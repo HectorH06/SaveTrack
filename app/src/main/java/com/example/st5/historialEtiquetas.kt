@@ -32,18 +32,6 @@ class historialEtiquetas : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_historial2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_historial)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -77,6 +65,16 @@ class historialEtiquetas : Fragment() {
     ): View {
         binding = FragmentHistorialetiquetasBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_historial2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_historial)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+
             labelsp = labelsget()
             binding.displayLabels.adapter = LabelsAdapter(labelsp)
         }

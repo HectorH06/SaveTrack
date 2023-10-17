@@ -70,17 +70,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         super.onCreate(savedInstanceState)
         setupAlarm()
         notificationHelper = notificationManager(requireContext())
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-            notifActive = areNotifEnabled(requireContext())
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
-            }
 
-            Log.i("MODO", isDarkMode.toString())
-        }
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -115,6 +105,17 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentIndexmainBinding.inflate(inflater, container, false)
+        lifecycleScope.launch {
+            val isDarkMode = isDarkModeEnabled(requireContext())
+            notifActive = areNotifEnabled(requireContext())
+            if (isDarkMode) {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
+            } else {
+                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
+            }
+
+            Log.i("MODO", isDarkMode.toString())
+        }
         binding.SultanOfSwing.checked = IconSwitch.Checked.RIGHT
         binding.displayCheck.animate()
             .alpha(0f)
@@ -169,15 +170,24 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         withContext(Dispatchers.IO) {
             val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
 
-            val max = labelsDao.getMaxLabel()
+            val ids = labelsDao.getIdsButGroups()
+            val max = ids.maxOrNull() ?: 0
+            val trueMax = labelsDao.getMaxLabel()
 
-            for (i in 1..max) {
+            for (i in 1..max.toInt()) {
                 if (labelsDao.getPlabel(i) != ""){
                     mutableIds.add(labelsDao.getIdLabel(i))
                     mutableEtiquetas.add(labelsDao.getPlabel(i))
                     mutableColores.add(labelsDao.getColor(i))
-
-                    Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $max")
+                }
+            }
+            if (trueMax > 8000) {
+                for (i in 8001..trueMax) {
+                    if (labelsDao.getPlabel(i) != ""){
+                        mutableIds.add(labelsDao.getIdLabel(i))
+                        mutableEtiquetas.add(labelsDao.getPlabel(i))
+                        mutableColores.add(labelsDao.getColor(i))
+                    }
                 }
             }
             Log.v("idl", "$mutableIds")

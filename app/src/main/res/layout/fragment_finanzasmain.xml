@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/background"
@@ -15,7 +20,7 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <ImageButton
-        android:id="@+id/ConfigButton"
+        android:id="@+id/Options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -23,22 +28,24 @@
         android:backgroundTint="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_settings"
-        android:contentDescription="@string/configuracion"/>
+        app:srcCompat="@drawable/ic_list"
+        android:contentDescription="@string/opciones"/>
 
     <TextView
         android:id="@+id/prodhint"
-        android:layout_width="162dp"
-        android:layout_height="56dp"
-        android:textSize="22sp"
+        android:layout_width="0dp"
+        android:maxWidth="164dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
         android:textColor="?attr/colorOnPrimary"
-        app:layout_constraintBottom_toTopOf="@id/FinanzasItemImage"
-        app:layout_constraintStart_toStartOf="@id/FinanzasItemImage" />
+        app:layout_constraintStart_toStartOf="@id/FinanzasItemImage"
+        app:layout_constraintEnd_toEndOf="@id/FinanzasItemImage"
+        app:layout_constraintBottom_toTopOf="@id/FinanzasItemImage"/>
     <TextView
         android:id="@+id/afinity"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:layout_marginTop="16dp"
         android:layout_marginStart="4dp"
         android:textColor="?attr/colorOnPrimary"
@@ -48,7 +55,7 @@
         android:id="@+id/saving"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:layout_marginStart="4dp"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/afinity"
@@ -56,29 +63,32 @@
 
     <ImageView
         android:id="@+id/FinanzasItemImage"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_marginBottom="128dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/p1table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/layout_margin_default"
+        android:layout_marginEnd="@dimen/layout_margin_default"
+        android:layout_marginTop="@dimen/layout_margin_default"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@string/vermas" />
-
+        app:layout_constraintEnd_toEndOf="@id/NoVerMERCALIBRE"
+        app:layout_constraintEnd_toStartOf="@id/FinanzasCalendar"
+        app:layout_constraintTop_toBottomOf="@id/FinanzasConsejosySugerencias"
+        android:contentDescription="@string/vermas"
+        app:layout_constraintWidth_percent="0.40"
+        app:layout_constraintHeight_percent="0.25"/>
     <ImageButton
         android:id="@+id/VerMasMERCALIBRE"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/confshape"
         app:layout_constraintTop_toBottomOf="@id/FinanzasItemImage"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/FinanzasItemImage"
         android:padding="16dp"
         app:srcCompat="@drawable/ic_add"
         app:tint="@color/G1"
         android:contentDescription="@string/vermas" />
-
     <ImageButton
         android:id="@+id/VerMenosMERCALIBRE"
         android:layout_width="48dp"
@@ -91,7 +101,6 @@
         app:srcCompat="@drawable/ic_remove"
         app:tint="@color/O1"
         android:contentDescription="@string/vermenos" />
-
     <ImageButton
         android:id="@+id/NoVerMERCALIBRE"
         android:layout_width="48dp"
@@ -107,36 +116,74 @@
 
     <TextView
         android:id="@+id/FinanzasConsejosySugerencias"
-        android:layout_width="128dp"
+        android:layout_width="160dp"
         android:layout_height="160dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="96dp"
-        android:hint="@string/consejos_y_sugerencias"
-        android:background="@drawable/consejosysugerenciasbackground"
-        android:textSize="24sp"
+        android:layout_margin="@dimen/layout_margin_default"
+        android:text="@string/consejos_y_sugerencias"
+        android:background="@drawable/ic_circle"
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="18sp"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/Options"
+        app:layout_constraintEnd_toStartOf="@id/Economia"
+        app:layout_constraintBottom_toTopOf="@id/FinanzasItemImage"
+        app:layout_constraintWidth_percent="0.40"
+        app:layout_constraintHeight_percent="0.25" />
 
-    <DatePicker
+    <TextView
         android:id="@+id/FinanzasCalendar"
-        android:layout_width="64dp"
-        android:layout_height="256dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="64dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/layout_margin_default"
+        android:text="@string/eventos"
+        android:background="@drawable/ic_calendar"
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="20sp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/FinanzasItemImage"
+        app:layout_constraintTop_toBottomOf="@id/Economia"
+        app:layout_constraintWidth_percent="0.30"
+        app:layout_constraintHeight_percent="0.15" />
 
     <ImageView
         android:id="@+id/Economia"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/layout_margin_default"
         android:translationZ="100dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Options"
+        app:layout_constraintBottom_toTopOf="@id/FinanzasCalendar"
+        app:layout_constraintStart_toEndOf="@id/FinanzasConsejosySugerencias"
         android:background="@drawable/ic_charts"
-        android:contentDescription="@string/economia" />
+        android:contentDescription="@string/economia"
+        app:layout_constraintWidth_percent="0.45"
+        app:layout_constraintHeight_percent="0.25" />
+    <TextView
+        android:id="@+id/EconomiaTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-18dp"
+        android:text="@string/economia"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="20sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/Economia"
+        app:layout_constraintStart_toStartOf="@id/Economia"
+        app:layout_constraintEnd_toEndOf="@id/Economia"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/barrita"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/header_finanzas"
+        app:menu="@menu/menu_finanzas" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

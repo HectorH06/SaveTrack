@@ -35,7 +35,7 @@ class gruposList : Fragment(){
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     val intent = Intent(activity, Index::class.java)
-                    intent.putExtra("isDarkMode", !isDarkMode)
+                    intent.putExtra("isDarkMode", isDarkMode)
                     intent.putExtra("currentView", 0)
                     startActivity(intent)
                 }
@@ -91,7 +91,7 @@ class gruposList : Fragment(){
 
         binding.goback.setOnClickListener {
             val intent = Intent(activity, Index::class.java)
-            intent.putExtra("isDarkMode", !isDarkMode)
+            intent.putExtra("isDarkMode", isDarkMode)
             intent.putExtra("currentView", 0)
             startActivity(intent)
         }

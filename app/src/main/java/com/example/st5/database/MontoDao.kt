@@ -334,16 +334,16 @@ interface MontoDao {
     // endregion
 
     // region GETFAST GASTOS/INGRESOS
-    @Query("SELECT * FROM monto WHERE etiqueta > 10000 AND (etiqueta = 10010 OR etiqueta = 10013)")
+    @Query("SELECT * FROM monto WHERE etiqueta > 10000 AND (etiqueta = 10002 OR etiqueta = 10005)")
     fun getIFast(): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (etiqueta = 10010 OR etiqueta = 10013)")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (etiqueta = 10002 OR etiqueta = 10005)")
     fun getGFast(): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE etiqueta > 10000 AND etiqueta = :e AND (etiqueta = 10010 OR etiqueta = 10013)")
+    @Query("SELECT * FROM monto WHERE etiqueta > 10000 AND etiqueta = :e AND (etiqueta = 10002 OR etiqueta = 10005)")
     fun getIFast(e: Int): List<Monto>
 
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND etiqueta = :e AND (etiqueta = 10010 OR etiqueta = 10013)")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND etiqueta = :e AND (etiqueta = 10002 OR etiqueta = 10005)")
     fun getGFast(e: Int): List<Monto>
 
     //endregion
@@ -389,4 +389,6 @@ interface MontoDao {
     fun getDelayed(din: Int): List<Monto>
     @Query("SELECT * FROM monto WHERE estado != 10")
     fun getAllMontos(): List<Monto>
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND estado != 10")
+    fun getAllGastos(): List<Monto>
 }

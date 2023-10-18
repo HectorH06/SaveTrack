@@ -91,73 +91,85 @@ class planesdeahorromain : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.config.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.pda_container, Configuracion()).addToBackStack(null).commit()
+        binding.Options.setOnClickListener {
+            binding.drawerLayout.openDrawer(binding.barrita)
         }
 
-        suspend fun mostrarDatos() {
-            withContext(Dispatchers.IO) {
-                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
-                val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
-
-                val diasaho = usuarioDao.checkDiasaho()
-                val totalIngresos = ingresosGastosDao.checkSummaryI()
-                val totalGastos = ingresosGastosDao.checkSummaryG()
-                val totalisimo = totalIngresos - totalGastos
-                val decimalFormat = DecimalFormat("#.##")
-                val balance = "${decimalFormat.format(totalisimo)}$"
-                usuarioDao.updateBalance(usuarioDao.checkId(), totalisimo)
-
-                val durl = "http://savetrack.com.mx/dlrval.php"
-                val queue: RequestQueue = Volley.newRequestQueue(requireContext())
-                val checkDollar = StringRequest(
-                    Request.Method.GET, durl,
-                    { response ->
-                        dollarValue = response.toString()
-                        Log.d("DÓLAR HOY", dollarValue)
-                        binding.PACurrencyButton.text = buildString {
-                            append("Dolar HOY: ")
-                            append("$$dollarValue")
-                        }
-                    },
-                    { error ->
-                        Toast.makeText(
-                            requireContext(), "No se ha podido conectar al valor del dólar hoy", Toast.LENGTH_SHORT
-                        ).show()
-                        binding.PACurrencyButton.text = buildString {
-                            append("Sin conexión")
-                        }
-                        Log.d("error => $error", "SIE API ERROR")
-                    }
-                )
-                queue.add(checkDollar)
-
-                Log.v("Diasaho", diasaho.toString())
-                Log.v("Balance", balance)
-
-                binding.PADiasAhorrandoButton.text = buildString {
-                    append("¡")
-                    append(diasaho.toString())
-                    append(" días ahorrando!")
-                }
-                binding.PASaldoActual.text = buildString {
-                    append("Balance: ")
-                    append(balance)
-                }
-                binding.PASaldoActual.setOnClickListener {
+        binding.barrita.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.deudas -> {
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                         .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null).commit()
+
+                    true
                 }
+
+                else -> false
             }
         }
+
         lifecycleScope.launch {
             mostrarDatos()
         }
     }
 
+    private suspend fun mostrarDatos() {
+        withContext(Dispatchers.IO) {
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+
+            val diasaho = usuarioDao.checkDiasaho()
+            val totalIngresos = ingresosGastosDao.checkSummaryI()
+            val totalGastos = ingresosGastosDao.checkSummaryG()
+            val totalisimo = totalIngresos - totalGastos
+            val decimalFormat = DecimalFormat("#.##")
+            val balance = "${decimalFormat.format(totalisimo)}$"
+            usuarioDao.updateBalance(usuarioDao.checkId(), totalisimo)
+
+            val durl = "http://savetrack.com.mx/dlrval.php"
+            val queue: RequestQueue = Volley.newRequestQueue(requireContext())
+            val checkDollar = StringRequest(
+                Request.Method.GET, durl,
+                { response ->
+                    dollarValue = response.toString()
+                    Log.d("DÓLAR HOY", dollarValue)
+                    binding.PACurrencyButton.text = buildString {
+                        append("Dolar HOY: ")
+                        append("$$dollarValue")
+                    }
+                },
+                { error ->
+                    Toast.makeText(
+                        requireContext(), "No se ha podido conectar al valor del dólar hoy", Toast.LENGTH_SHORT
+                    ).show()
+                    binding.PACurrencyButton.text = buildString {
+                        append("Sin conexión")
+                    }
+                    Log.d("error => $error", "SIE API ERROR")
+                }
+            )
+            queue.add(checkDollar)
+
+            Log.v("Diasaho", diasaho.toString())
+            Log.v("Balance", balance)
+
+            binding.PADiasAhorrandoButton.text = buildString {
+                append("¡")
+                append(diasaho.toString())
+                append(" días ahorrando!")
+            }
+            binding.PASaldoActual.text = buildString {
+                append("Balance: ")
+                append(balance)
+            }
+            binding.PASaldoActual.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                    .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null).commit()
+            }
+        }
+    }
     private suspend fun montoFavorito(
         idmonto: Long,
         concepto: String,

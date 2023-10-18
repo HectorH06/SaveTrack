@@ -134,31 +134,36 @@ class historialmain : Fragment() {
             }
         })
 
-        binding.ConfigButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.historial_container, Configuracion()).addToBackStack(null).commit()
+        binding.Options.setOnClickListener {
+            binding.drawerLayout.openDrawer(binding.barrita)
         }
 
-        binding.TagsButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.historial_container, historialEtiquetas()).addToBackStack(null)
-                .commit()
-        }
+        binding.barrita.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.etiquetas -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.historial_container, historialEtiquetas()).addToBackStack(null).commit()
 
-        binding.PapeleraButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.historial_container, historialPapelera()).addToBackStack(null)
-                .commit()
-        }
+                    true
+                }
+                R.id.favoritos -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.historial_container, historialFavoritos()).addToBackStack(null).commit()
 
-        binding.GuardadosButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.historial_container, historialFavoritos()).addToBackStack(null)
-                .commit()
+                    true
+                }
+                R.id.papelera -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.historial_container, historialPapelera()).addToBackStack(null).commit()
+
+                    true
+                }
+
+                else -> false
+            }
         }
     }
 }

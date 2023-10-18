@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group_historial" android:checkableBehavior="single">
+        <item
+            android:id="@+id/Mandados"
+            android:icon="@drawable/ic_calendar"
+            android:title="Mandados" />
+        <item
+            android:id="@+id/porPagar"
+            android:icon="@drawable/ic_star"
+            android:title="Por pagar" />
+        <item
+            android:id="@+id/addMonto"
+            android:icon="@drawable/ic_add"
+            android:title="Añadir Monto" />
+        <item
+            android:id="@+id/gastosList"
+            android:icon="@drawable/ic_list"
+            android:title="Lista de Egresos" />
+        <item
+            android:id="@+id/ingresosList"
+            android:icon="@drawable/ic_list"
+            android:title="Lista de Ingresos" />
+    </group>
+</menu>

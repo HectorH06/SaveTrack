@@ -44,7 +44,7 @@
                         android:hint="@string/ConceptoInteres"
                         android:maxWidth="100dp"
                         android:paddingStart="7dp"
-                        android:textColor="@color/G5"
+                        android:textColor="?attr/colorOnPrimary"
                         android:textSize="18sp" />
 
                     <TextView
@@ -53,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/ValorFinal"
                         android:textAlignment="center"
-                        android:textColor="@color/G5"
+                        android:textColor="?attr/colorOnPrimary"
                         android:textSize="18sp" />
 
                     <TextView
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/Fecha"
                         android:textAlignment="center"
-                        android:textColor="@color/G5"
+                        android:textColor="?attr/colorOnPrimary"
                         android:textSize="18sp" />
 
                     <TextView
@@ -72,7 +72,7 @@
                         android:hint="@string/Etiqueta"
                         android:paddingEnd="7dp"
                         android:layout_marginEnd="20dp"
-                        android:textColor="@color/G5"
+                        android:textColor="?attr/colorOnPrimary"
                         android:textSize="18sp" />
                 </TableRow>
 

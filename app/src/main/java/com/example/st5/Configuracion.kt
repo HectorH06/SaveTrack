@@ -138,6 +138,7 @@ class Configuracion : Fragment() {
                     binding.logout.setTextColor(resources.getColor(R.color.X0))
                     binding.by.setTextColor(resources.getColor(R.color.X0))
                     binding.email.setTextColor(resources.getColor(R.color.X0))
+                    binding.goback.setBackgroundResource(R.drawable.ic_back_dark)
                     lifecycleScope.launch{
                         updateTheme(requireContext(), 0)
                     }
@@ -152,6 +153,7 @@ class Configuracion : Fragment() {
                     binding.logout.setTextColor(resources.getColor(R.color.X4))
                     binding.by.setTextColor(resources.getColor(R.color.X4))
                     binding.email.setTextColor(resources.getColor(R.color.X4))
+                    binding.goback.setBackgroundResource(R.drawable.ic_back_light)
                     lifecycleScope.launch{
                         updateTheme(requireContext(), 1)
                     }

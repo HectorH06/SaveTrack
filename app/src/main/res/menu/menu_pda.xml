@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group_historial" android:checkableBehavior="single">
+        <item
+            android:id="@+id/deudas"
+            android:icon="@drawable/ic_finance"
+            android:title="Deudas" />
+    </group>
+</menu>

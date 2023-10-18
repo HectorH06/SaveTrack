@@ -1,69 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/perfil_background"/>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/ProfilePicture"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/layout_margin_default"
+        android:layout_marginTop="@dimen/layout_margin_default"
+        android:layout_marginBottom="@dimen/layout_margin_default"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/UserDataLayout"
         android:background="@drawable/picshape"
         android:contentDescription="@string/FotoPerfil"
         app:srcCompat="@drawable/ic_person"
         android:elevation="15dp"/>
 
     <ImageButton
-        android:id="@+id/Config"
+        android:id="@+id/Options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="@dimen/layout_margin_default"
+        android:layout_marginEnd="@dimen/layout_margin_default"
         android:backgroundTint="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_settings"
-        android:contentDescription="@string/configuracion"/>
+        app:srcCompat="@drawable/ic_list"
+        android:contentDescription="@string/opciones"/>
+
 
     <Button
         android:id="@+id/BalanceTV"
-        android:layout_width="148dp"
-        android:layout_height="148dp"
-        android:padding="16dp"
-        android:backgroundTint="?attr/colorSecondary"
-        android:background="@drawable/ic_hexagon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:background="@drawable/ic_circle"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textColor="?attr/colorPrimary"
+        android:contentDescription="@string/dias_ahorrando"
+        app:layout_constraintTop_toBottomOf="@id/UserDataLayout"
+        app:layout_constraintBottom_toTopOf="@id/grupos"
+        app:layout_constraintStart_toEndOf="@id/grupos"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:textColor="?attr/colorOnSecondary"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/dias_ahorrando" />
+        android:layout_marginTop="-64dp"
+        android:layout_marginEnd="@dimen/layout_margin_default"
+        android:layout_marginStart="@dimen/layout_margin_default"
+        android:layout_marginBottom="-64dp" />
 
     <LinearLayout
         android:id="@+id/UserDataLayout"
-        android:layout_width="match_parent"
-        android:layout_height="216dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginStart="@dimen/layout_margin_default"
+        android:layout_marginTop="@dimen/layout_margin_default"
+        android:layout_marginBottom="@dimen/layout_margin_default"
         app:layout_constraintBottom_toTopOf="@+id/grupos"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/DaysSavingButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ProfilePicture"
-        android:background="@drawable/b1table"
+        app:layout_constraintWidth_percent="0.55"
         android:elevation="15dp">
 
         <TextView
@@ -111,45 +133,25 @@
             android:textColorHint="?attr/colorSecondary" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/EditProfileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:translationZ="200dp"
-        app:srcCompat="@drawable/ic_edit"
-        android:layout_marginTop="60dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintTop_toTopOf="@id/UserDataLayout"
-        app:layout_constraintStart_toEndOf="@+id/UserDataLayout"
-        app:tint="?attr/colorOnPrimary" />
-
-    <ImageView
-        android:id="@+id/EditProfileButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:translationZ="200dp"
-        app:srcCompat="@drawable/ic_edit"
-        android:layout_marginTop="120dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintTop_toTopOf="@id/UserDataLayout"
-        app:layout_constraintStart_toEndOf="@+id/UserDataLayout"
-        app:tint="?attr/colorOnPrimary" />
-
     <TableLayout
         android:id="@+id/grupos"
-        android:layout_width="180dp"
-        android:layout_height="240dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="18dp"
-        android:layout_marginBottom="18dp"
-        android:layout_marginEnd="18dp"
+        app:layout_constraintEnd_toEndOf="@id/UserDataLayout"
+        app:layout_constraintTop_toBottomOf="@id/UserDataLayout"
+        android:layout_marginStart="@dimen/layout_margin_default"
+        android:layout_marginBottom="@dimen/layout_margin_default"
+        app:layout_constraintWidth_percent="0.55"
         android:stretchColumns="0,1,2">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/displayGrupos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="@+id/grupos"
             app:layout_constraintTop_toBottomOf="@+id/grupos" />
@@ -157,15 +159,44 @@
 
     <Button
         android:id="@+id/DaysSavingButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/b1table"
         android:contentDescription="@string/balance"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
-        app:layout_constraintTop_toBottomOf="@id/Config"
+        android:textAlignment="textEnd"
+        android:paddingEnd="8dp"
+        android:paddingStart="40dp"
+        app:layout_constraintTop_toBottomOf="@id/ProfilePicture"
         app:layout_constraintBottom_toTopOf="@id/UserDataLayout"
+        app:layout_constraintStart_toEndOf="@id/UserDataLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginTop="-32dp"
+        android:layout_marginEnd="@dimen/layout_margin_default"
+        android:layout_marginStart="@dimen/layout_margin_default"
+        android:layout_marginBottom="-32dp"/>
+
+    <ImageButton
+        android:id="@+id/ahorrando"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparent"
+        android:layout_marginStart="-12dp"
+        app:layout_constraintStart_toStartOf="@id/DaysSavingButton"
+        app:layout_constraintTop_toTopOf="@id/DaysSavingButton"
+        app:layout_constraintBottom_toBottomOf="@id/DaysSavingButton"
+        app:srcCompat="@drawable/ic_noahorrando"
+        android:contentDescription="@string/configuracion"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/barrita"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/header_perfil"
+        app:menu="@menu/menu_perfil" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

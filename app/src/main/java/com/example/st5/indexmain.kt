@@ -429,22 +429,50 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
         }
 
-        binding.Calendario.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.index_container, indexPorPagar()).addToBackStack(null).commit()
+        binding.Options.setOnClickListener {
+            binding.drawerLayout.openDrawer(binding.barrita)
         }
 
-        binding.Mandados.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.index_container, indexmandados()).addToBackStack(null).commit()
-        }
+        binding.barrita.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.Mandados -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.index_container, indexmandados()).addToBackStack(null).commit()
 
-        binding.ConfigButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.index_container, Configuracion()).addToBackStack(null).commit()
+                    true
+                }
+                R.id.porPagar -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.index_container, indexPorPagar()).addToBackStack(null).commit()
+
+                    true
+                }
+                R.id.addMonto -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.index_container, indexadd()).addToBackStack(null).commit()
+
+                    true
+                }
+                R.id.gastosList -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.index_container, indexGastosList()).addToBackStack(null).commit()
+
+                    true
+                }
+                R.id.ingresosList -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.index_container, indexIngresosList()).addToBackStack(null).commit()
+
+                    true
+                }
+
+                else -> false
+            }
         }
 
         binding.PieChart.setOnChartValueSelectedListener(pieChartOnChartValueSelectedListener())
@@ -514,18 +542,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.index_container, addWithSwitchOff).addToBackStack(null).commit()
         }
-
-        binding.ConfigButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.index_container, Configuracion()).addToBackStack(null).commit()
-        }
-
-        /*
-                val progressBar = binding.GraficoPastel
-                val progressDrawable = progressBar.indeterminateDrawable as AnimationDrawable
-                progressDrawable.start()
-        */
     }
 
     @SuppressLint("SetTextI18n")

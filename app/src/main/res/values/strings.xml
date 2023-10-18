@@ -183,6 +183,11 @@
     <string name="Valor2">Valor 2</string>
     <string name="calcular">Calcular</string>
     <string name="graficar">Graficar</string>
+    <string name="historial">Historial</string>
+    <string name="index">Index</string>
+    <string name="pda">Planes de Ahorro</string>
+    <string name="finanzas">Finanzas</string>
+    <string name="opciones">Opciones</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

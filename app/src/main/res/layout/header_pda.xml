@@ -1,0 +1,28 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="192dp"
+    android:background="?attr/colorOnPrimary"
+    android:gravity="bottom"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="32dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="start"
+        android:contentDescription="@string/pda"
+        android:background="@drawable/ic_savingplans"
+        android:backgroundTint="?attr/colorPrimary" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pda"
+        android:textSize="24sp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?attr/colorPrimary"/>
+</LinearLayout>

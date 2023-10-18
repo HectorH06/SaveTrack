@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group_perfil" android:checkableBehavior="single">
+        <item
+            android:id="@+id/perfilEdit"
+            android:icon="@drawable/ic_edit"
+            android:title="Editar Perfil" />
+        <item
+            android:id="@+id/grupos"
+            android:icon="@drawable/ic_grupos"
+            android:title="Grupos" />
+    </group>
+
+    <group android:id="@+id/group_config" android:checkableBehavior="single">
+        <item
+            android:id="@+id/configuracion"
+            android:icon="@drawable/ic_settings"
+            android:title="Configuración" />
+    </group>
+</menu>

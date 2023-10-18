@@ -93,120 +93,142 @@ class perfilmain : Fragment() {
             grupos = gruposGet()
             if (grupos.isNotEmpty()) {binding.displayGrupos.adapter = GruposDisplayAdapter(grupos)}
         }
-        suspend fun bajarfoto(link: String) {
-            withContext(Dispatchers.IO) {
-                binding.ProfilePicture.load(link) {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_person)
-                    transformations(CircleCropTransformation())
-                    scale(Scale.FILL)
+
+        binding.Options.setOnClickListener {
+            binding.drawerLayout.openDrawer(binding.barrita)
+        }
+
+        binding.barrita.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.perfilEdit -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.perfil_container, perfileditar()).addToBackStack(null).commit()
+
+                    true
                 }
+                R.id.grupos -> {
+                    val intent = Intent(activity, GruposActivity::class.java)
+                    intent.putExtra("isDarkMode", isDarkMode)
+                    startActivity(intent)
+
+                    true
+                }
+                R.id.configuracion -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.perfil_container, Configuracion()).addToBackStack(null).commit()
+
+                    true
+                }
+
+                else -> false
             }
-        }
-
-        binding.EditProfileButton.setOnClickListener {
-            val edit = perfileditar()
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.perfil_container, edit).addToBackStack(null).commit()
-        }
-
-        binding.EditProfileButton2.setOnClickListener {
-            val edit = perfileditar()
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.perfil_container, edit).addToBackStack(null).commit()
-        }
-
-        binding.Config.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.perfil_container, Configuracion()).addToBackStack(null).commit()
         }
 
         binding.BalanceTV.setOnClickListener {
-            val intent = Intent(activity, GruposActivity::class.java)
-            intent.putExtra("isDarkMode", isDarkMode)
-            startActivity(intent)
+            val intent = Intent(activity, Index::class.java)
+            intent.putExtra("isDarkMode", !isDarkMode)
+            intent.putExtra("currentView", 3)
         }
 
-        suspend fun mostrarDatos() {
-            withContext(Dispatchers.IO) {
-                val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
-                val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
-
-                val totalIngresos = ingresosGastosDao.checkSummaryI()
-                val totalGastos = ingresosGastosDao.checkSummaryG()
-                val totalisimo = totalIngresos - totalGastos
-                val decimalFormat = DecimalFormat("#.##")
-                val balance = "${decimalFormat.format(totalisimo)}$"
-                val nombre = usuarioDao.checkName()
-                val edad = usuarioDao.checkAge()
-                val lachamba = usuarioDao.checkChamba()
-                val foto = usuarioDao.checkFoto()
-                val diasaho = usuarioDao.checkDiasaho()
-                usuarioDao.updateBalance(usuarioDao.checkId(), totalisimo)
-
-                var chamba = ""
-                val c = String.format("%06d", lachamba).toCharArray()
-                if (c[0] == '1') {
-                    chamba += "asalariado, "
-                }
-                if (c[1] == '2') {
-                    chamba += "vendedor, "
-                }
-                if (c[2] == '3') {
-                    chamba += "pensionado, "
-                }
-                if (c[3] == '4') {
-                    chamba += "becado, "
-                }
-                if (c[4] == '5') {
-                    chamba += "mantenido, "
-                }
-                if (c[5] == '6') {
-                    chamba += "inversionista, "
-                }
-
-                if (chamba.isNotEmpty()) {
-                    chamba = chamba.dropLast(2)
-                    chamba = chamba.replaceFirstChar { it.uppercaseChar() }
-                }
-
-                Log.v("Name", nombre)
-                Log.v("Age", edad.toString())
-                Log.v("Código de Chamba", lachamba.toString())
-                Log.v("Descripción de Chamba", chamba)
-                Log.v("Foto ", foto)
-                Log.v("Diasaho", diasaho.toString())
-                Log.v("Balance", balance)
-
-                binding.UsernameTV.text = nombre
-                binding.AgeTV.text = buildString {
-                    append(edad.toString())
-                    append(" años")
-                }
-                binding.OcupationTV.text = buildString {
-                    append(chamba) // HACER EL CONVERTIDOR SEGÚN EL ÁRBOL ESE
-                }
-                binding.DaysSavingButton.text = buildString {
-                    append("¡")
-                    append(diasaho.toString())
-                    append(" días ahorrando!")
-                }
-                binding.BalanceTV.text = buildString {
-                    append("Balance: ")
-                    append(balance)
-                }
-
-                val linkfoto = "http://savetrack.com.mx/images/$nombre.jpg"
-                lifecycleScope.launch {
-                    bajarfoto(linkfoto)
-                }
-            }
-        }
         lifecycleScope.launch {
             mostrarDatos()
+        }
+    }
+
+    private suspend fun bajarfoto(link: String) {
+        withContext(Dispatchers.IO) {
+            binding.ProfilePicture.load(link) {
+                crossfade(true)
+                placeholder(R.drawable.ic_person)
+                transformations(CircleCropTransformation())
+                scale(Scale.FILL)
+            }
+        }
+    }
+    private suspend fun mostrarDatos() {
+        withContext(Dispatchers.IO) {
+            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
+            val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
+
+            val totalIngresos = ingresosGastosDao.checkSummaryI()
+            val totalGastos = ingresosGastosDao.checkSummaryG()
+            val totalisimo = totalIngresos - totalGastos
+            val decimalFormat = DecimalFormat("#.##")
+            val balance = "${decimalFormat.format(totalisimo)}$"
+            val nombre = usuarioDao.checkName()
+            val edad = usuarioDao.checkAge()
+            val lachamba = usuarioDao.checkChamba()
+            val foto = usuarioDao.checkFoto()
+            val diasaho = usuarioDao.checkDiasaho()
+            usuarioDao.updateBalance(usuarioDao.checkId(), totalisimo)
+
+            var chamba = ""
+            val c = String.format("%06d", lachamba).toCharArray()
+            if (c[0] == '1') {
+                chamba += "asalariado, "
+            }
+            if (c[1] == '2') {
+                chamba += "vendedor, "
+            }
+            if (c[2] == '3') {
+                chamba += "pensionado, "
+            }
+            if (c[3] == '4') {
+                chamba += "becado, "
+            }
+            if (c[4] == '5') {
+                chamba += "mantenido, "
+            }
+            if (c[5] == '6') {
+                chamba += "inversionista, "
+            }
+
+            if (chamba.isNotEmpty()) {
+                chamba = chamba.dropLast(2)
+                chamba = chamba.replaceFirstChar { it.uppercaseChar() }
+            }
+
+            Log.v("Name", nombre)
+            Log.v("Age", edad.toString())
+            Log.v("Código de Chamba", lachamba.toString())
+            Log.v("Descripción de Chamba", chamba)
+            Log.v("Foto ", foto)
+            Log.v("Diasaho", diasaho.toString())
+            Log.v("Balance", balance)
+
+            binding.UsernameTV.text = nombre
+            binding.AgeTV.text = buildString {
+                append(edad.toString())
+                append(" años")
+            }
+            binding.OcupationTV.text = buildString {
+                append(chamba)
+            }
+            binding.DaysSavingButton.text = buildString {
+                append("¡")
+                append(diasaho.toString())
+                append(" días ahorrando!")
+            }
+            binding.BalanceTV.text = buildString {
+                append("Balance: ")
+                append(balance)
+            }
+            if (diasaho > 0) {
+                binding.ahorrando.setBackgroundResource(R.drawable.ic_ahorrando)
+            }
+            if (diasaho > 14) {
+                binding.ahorrando.setBackgroundResource(R.drawable.ic_ahorrando2)
+            }
+            if (diasaho > 60) {
+                binding.ahorrando.setBackgroundResource(R.drawable.ic_ahorrando3)
+            }
+
+            val linkfoto = "http://savetrack.com.mx/images/$nombre.jpg"
+            lifecycleScope.launch {
+                bajarfoto(linkfoto)
+            }
         }
     }
 
@@ -245,7 +267,7 @@ class perfilmain : Fragment() {
             })
             holder.itemView.setBackgroundColor(grupo.color)
             when (position){
-                3 -> {
+                minOf(grupos.size, 3) -> {
                     holder.nombreTextView.text = "Todos los grupos"
                     holder.tipoImage.setBackgroundResource(R.drawable.ic_list)
                     holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)

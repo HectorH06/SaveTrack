@@ -79,10 +79,36 @@ class finanzasmain : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.ConfigButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
+        binding.Options.setOnClickListener {
+            binding.drawerLayout.openDrawer(binding.barrita)
+        }
+
+        binding.barrita.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.conysug-> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.finanzas_container, finanzasConySug()).addToBackStack(null).commit()
+
+                    true
+                }
+                R.id.economia -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.finanzas_container, finanzasstatsahorro()).addToBackStack(null).commit()
+
+                    true
+                }
+                R.id.eventos -> {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                        .replace(R.id.finanzas_container, finanzasEventos()).addToBackStack(null).commit()
+
+                    true
+                }
+
+                else -> false
+            }
         }
 
         binding.FinanzasConsejosySugerencias.setOnClickListener {
@@ -184,11 +210,10 @@ class finanzasmain : Fragment() {
                 Log.v("PIC", adaptLink(pic))
                 lifecycleScope.launch {
                     bajarfoto(adaptLink(pic))
+                    binding.prodhint.text = titles[i]
+                    binding.afinity.text = "$fAfinity%"
+                    binding.saving.text = "$fSaving%"
                 }
-                binding.prodhint.text = titles[i]
-                binding.afinity.text = "$fAfinity%"
-                binding.saving.text = "$fSaving%"
-
                 Log.v(
                     "PRODUCT DATA",
                     "${ids[i]}, ${titles[i]}, ${prices[i]}, ${links[i]}, ${images[i]}"

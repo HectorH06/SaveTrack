@@ -241,7 +241,9 @@ class Alarma : BroadcastReceiver() {
             val perocuantosmontos = montoDao.getMaxMonto()
             val perocuantosmontosg = montoGrupoDao.getMaxMontoGrupo()
             val perocuantosgrupos = gruposDao.getMaxGrupo()
-            val perocuantaslabels = labelsDao.getMaxLabel()
+            val ids = labelsDao.getIdsButGroups()
+            val perocuantaslabels = ids.maxOrNull() ?: 0
+            val trueperocuantaslabels = labelsDao.getMaxLabel()
             val perocuantoseventos = eventosDao.getMaxEvento()
             val perocuantosconsejos = conySugDao.getMaxConsejo()
 
@@ -359,13 +361,13 @@ class Alarma : BroadcastReceiver() {
             // Tabla MontoGrupo
             for (idmonto in 0..perocuantosmontosg) {
                 if (montoGrupoDao.getIdMonto(idmonto) != null && montoGrupoDao.getIdGrupo(idmonto) != null){
-                    Log.v("Current idmonto", idmonto.toString())
+                    Log.v("Current idmontog", idmonto.toString())
                     val viejoMontoGrupo = MontoGrupo(
                         idmonto = montoGrupoDao.getIdMonto(idmonto),
                         idgrupo = montoGrupoDao.getIdGrupo(idmonto),
                         iduser = montoGrupoDao.getIdUser(idmonto),
                     )
-                    Log.v("Current label $idmonto", viejoMontoGrupo.toString())
+                    Log.v("Current montog $idmonto", viejoMontoGrupo.toString())
                     val jsonObjectMontoGrupo = JSONObject()
                     jsonObjectMontoGrupo.put("idmonto", viejoMontoGrupo.idmonto)
                     jsonObjectMontoGrupo.put("idgrupo", viejoMontoGrupo.idgrupo)
@@ -394,7 +396,7 @@ class Alarma : BroadcastReceiver() {
                         color = gruposDao.getColor(Id),
                         enlace = gruposDao.getEnlace(Id)
                     )
-                    Log.v("Current label $Id", viejoGrupo.toString())
+                    Log.v("Current grupo $Id", viejoGrupo.toString())
                     val jsonObjectGrupos = JSONObject()
                     jsonObjectGrupos.put("Id", viejoGrupo.Id)
                     jsonObjectGrupos.put("name", viejoGrupo.nameg)
@@ -415,8 +417,8 @@ class Alarma : BroadcastReceiver() {
             }
 
             // Tabla Labels
-            for (idlabel in 1..perocuantaslabels) {
-                Log.v("Current idmonto", idlabel.toString())
+            for (idlabel in 1..perocuantaslabels.toInt()) {
+                Log.v("Current idlabel", idlabel.toString())
                 if (labelsDao.getPlabel(idlabel) != null) {
                     val viejaLabel = Labels(
                         idlabel = labelsDao.getIdLabel(idlabel),
@@ -424,7 +426,29 @@ class Alarma : BroadcastReceiver() {
                         color = labelsDao.getColor(idlabel),
                         estado = labelsDao.getEstado(idlabel)
                     )
-                    Log.v("Current monto $idlabel", viejaLabel.toString())
+                    Log.v("Current label $idlabel", viejaLabel.toString())
+                    val jsonObjectLabels = JSONObject()
+                    jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
+                    jsonObjectLabels.put("plabel", viejaLabel.plabel)
+                    jsonObjectLabels.put("color", viejaLabel.color)
+                    jsonObjectLabels.put("estado", viejaLabel.estado)
+
+                    jsonArrayLabels.put(jsonObjectLabels)
+
+                    Log.v("Current object", jsonObjectLabels.toString())
+                    Log.v("Current array", jsonArrayLabels.toString())
+                }
+            }
+            for (idlabel in 8001..trueperocuantaslabels) {
+                Log.v("Current idlabel", idlabel.toString())
+                if (labelsDao.getPlabel(idlabel) != null) {
+                    val viejaLabel = Labels(
+                        idlabel = labelsDao.getIdLabel(idlabel),
+                        plabel = labelsDao.getPlabel(idlabel),
+                        color = labelsDao.getColor(idlabel),
+                        estado = labelsDao.getEstado(idlabel)
+                    )
+                    Log.v("Current label $idlabel", viejaLabel.toString())
                     val jsonObjectLabels = JSONObject()
                     jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
                     jsonObjectLabels.put("plabel", viejaLabel.plabel)
@@ -495,8 +519,6 @@ class Alarma : BroadcastReceiver() {
 
                     Log.v("Current object", jsonObjectCon.toString())
                     Log.v("Current array", jsonArrayConySug.toString())
-                } else {
-                    Log.v("Current consejo $idcon", "VACÍO")
                 }
             }
 

@@ -165,7 +165,7 @@ class CalendarHistorial @JvmOverloads constructor(
     private suspend fun getMontos(): List<Monto> {
         withContext(Dispatchers.IO) {
             val montosDao = Stlite.getInstance(context).getMontoDao()
-            montos = montosDao.getAllMontos()
+            montos = montosDao.getAllGastos()
         }
         return montos
     }
@@ -285,8 +285,6 @@ class CalendarHistorial @JvmOverloads constructor(
                     7 -> 46
                     else -> 100
                 }
-
-                Log.v("SEARCHING COUNT", "$day, $dow, $current")
 
                 if ((monto.fecha == day || monto.fecha == current) && monto.adddate <= current && monto.enddate!! >= current) {
                     count++

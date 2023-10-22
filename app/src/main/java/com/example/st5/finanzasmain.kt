@@ -211,8 +211,8 @@ class finanzasmain : Fragment() {
                 lifecycleScope.launch {
                     bajarfoto(adaptLink(pic))
                     binding.prodhint.text = titles[i]
-                    binding.afinity.text = "$fAfinity%"
-                    binding.saving.text = "$fSaving%"
+                    binding.afinity.text = "Afinidad: $fAfinity%"
+                    binding.saving.text = "Ahorro: $fSaving%"
                 }
                 Log.v(
                     "PRODUCT DATA",

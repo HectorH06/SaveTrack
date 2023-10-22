@@ -8,6 +8,8 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.PorterDuff
 import android.icu.text.DecimalFormat
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
@@ -47,8 +49,6 @@ import java.util.*
 class indexmain : Fragment(), OnChartValueSelectedListener {
     private lateinit var binding: FragmentIndexmainBinding
     private val colorsI: MutableList<Int> = mutableListOf()
-    private val colorsGDraw: MutableList<Int> = mutableListOf()
-    private val colorsIDraw: MutableList<Int> = mutableListOf()
 
     private val textI: MutableList<String> = mutableListOf()
     private val numI: MutableList<Float?> = mutableListOf()
@@ -136,24 +136,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             colorsI.add(ContextCompat.getColor(requireContext(), R.color.V14))
             colorsI.add(ContextCompat.getColor(requireContext(), R.color.V7))
             colorsI.add(ContextCompat.getColor(requireContext(), R.color.V8))
-
-            colorsGDraw.add(R.drawable.tty3)
-            colorsGDraw.add(R.drawable.ttb2)
-            colorsGDraw.add(R.drawable.ttg2)
-            colorsGDraw.add(R.drawable.ttb0)
-            colorsGDraw.add(R.drawable.tto1)
-            colorsGDraw.add(R.drawable.ttr1)
-            colorsGDraw.add(R.drawable.ttp1)
-            colorsGDraw.add(R.drawable.ttr0)
-
-            colorsIDraw.add(R.drawable.ttg4)
-            colorsIDraw.add(R.drawable.ttb4)
-            colorsIDraw.add(R.drawable.ttr2)
-            colorsIDraw.add(R.drawable.tto4)
-            colorsIDraw.add(R.drawable.tty2)
-            colorsIDraw.add(R.drawable.ttp2)
-            colorsIDraw.add(R.drawable.ttp1)
-            colorsIDraw.add(R.drawable.ttr0)
 
             textI.add("Salarios")
             textI.add("Ventas")
@@ -294,7 +276,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             binding.PieChart.data = data
 
             binding.PieChart.centerText = "${truncateDouble(totalIngresos)}$ - ${truncateDouble(totalGastos)}$ = ${truncateDouble(totalisimo)}$"
-            binding.PieChart.setCenterTextSize(24f)
+            binding.PieChart.setCenterTextSize(20f)
             binding.PieChart.setCenterTextColor(R.color.white)
             binding.PieChart.description.isEnabled = false
             binding.PieChart.legend.isEnabled = false
@@ -387,7 +369,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             binding.PieChart.data = data
 
             binding.PieChart.centerText = "${truncateDouble(totalIngresos)}$ - ${truncateDouble(totalGastos)}$ = ${truncateDouble(totalisimo)}$"
-            binding.PieChart.setCenterTextSize(24f)
+            binding.PieChart.setCenterTextSize(20f)
             binding.PieChart.setCenterTextColor(R.color.white)
             binding.PieChart.description.isEnabled = false
             binding.PieChart.legend.isEnabled = false
@@ -542,6 +524,7 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.index_container, addWithSwitchOff).addToBackStack(null).commit()
         }
+        binding.MedidorDeAhorroButton.rotation = -90f
     }
 
     @SuppressLint("SetTextI18n")
@@ -619,7 +602,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 lista = indexGastosList()
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1200, Easing.EaseInOutQuad)
-                binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.ttg)
+                binding.MedidorDeAhorroButton.indeterminateTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.progressTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.indeterminateTintList = ColorStateList.valueOf(resources.getColor(R.color.R1))
+                binding.MedidorDeAhorroButton.progressBackgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.R1))
                 binding.searchforlabel.text = null
                 binding.searchforlabel.hint = "Gastos"
             }
@@ -629,7 +615,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
                 lista = indexIngresosList()
                 binding.PieChart.performClick()
                 binding.PieChart.animateY(1200, Easing.EaseInOutQuad)
-                binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.tti)
+                binding.MedidorDeAhorroButton.indeterminateTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.progressTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.indeterminateTintList = ColorStateList.valueOf(resources.getColor(R.color.G2))
+                binding.MedidorDeAhorroButton.progressBackgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.G2))
                 binding.searchforlabel.text = null
                 binding.searchforlabel.hint = "Ingresos"
             }
@@ -652,13 +641,21 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             chart.highlightValue(h)
 
             lista = if (!switchVal) {
-                binding.MedidorDeAhorroButton.setBackgroundResource(colorsGDraw[h.x.toInt()])
+                binding.MedidorDeAhorroButton.indeterminateTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.progressTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.indeterminateTintList = ColorStateList.valueOf(mutableColores[h.x.toInt()])
+                binding.MedidorDeAhorroButton.progressTintList = ColorStateList.valueOf(mutableColores[h.x.toInt()])
+                binding.MedidorDeAhorroButton.progress = numG[h.x.toInt()]?.toInt() ?: 0
                 binding.Medidor.text = numG[h.x.toInt()].toString() + "%"
                 binding.searchforlabel.text = mutableEtiquetas[h.x.toInt()]
                 val iglinstance = indexGastosList.labelSearch(h.x.toInt())
                 iglinstance
             } else {
-                binding.MedidorDeAhorroButton.setBackgroundResource(colorsIDraw[h.x.toInt()])
+                binding.MedidorDeAhorroButton.indeterminateTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.progressTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.indeterminateTintList = ColorStateList.valueOf(colorsI[h.x.toInt()])
+                binding.MedidorDeAhorroButton.progressTintList = ColorStateList.valueOf(colorsI[h.x.toInt()])
+                binding.MedidorDeAhorroButton.progress = numI[h.x.toInt()]?.toInt() ?: 0
                 binding.Medidor.text = numI[h.x.toInt()].toString() + "%"
                 binding.searchforlabel.text = textI[h.x.toInt()]
                 val iilinstance = indexIngresosList.labelSearch(h.x.toInt())
@@ -669,12 +666,18 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         override fun onNothingSelected() {
             Log.i("PieChart", "nothing selected")
             lista = if (!switchVal) {
-                binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.ttg)
+                binding.MedidorDeAhorroButton.indeterminateTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.progressTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.indeterminateTintList = ColorStateList.valueOf(resources.getColor(R.color.R1))
+                binding.MedidorDeAhorroButton.progressBackgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.R1))
                 binding.searchforlabel.text = null
                 binding.searchforlabel.hint = "Gastos"
                 indexGastosList()
             } else {
-                binding.MedidorDeAhorroButton.setBackgroundResource(R.drawable.tti)
+                binding.MedidorDeAhorroButton.indeterminateTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.progressTintMode = PorterDuff.Mode.SRC_IN
+                binding.MedidorDeAhorroButton.indeterminateTintList = ColorStateList.valueOf(resources.getColor(R.color.G2))
+                binding.MedidorDeAhorroButton.progressBackgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.G2))
                 binding.searchforlabel.text = null
                 binding.searchforlabel.hint = "Ingresos"
                 indexIngresosList()

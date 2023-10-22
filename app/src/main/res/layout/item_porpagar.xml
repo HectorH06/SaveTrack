@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/porpagar"
-    android:layout_width="60dp"
+    android:layout_width="match_parent"
     android:background="@drawable/p1miditem"
     android:layout_height="wrap_content">
 
@@ -17,9 +17,9 @@
         android:hint="@string/deuda"
         android:textColor="?attr/colorOnSecondary"
         android:textColorHint="?attr/colorSecondary"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.45"/>
 
     <TextView
         android:id="@+id/pValor"
@@ -32,14 +32,15 @@
         android:maxLines="7"
         android:textColor="?attr/colorOnSecondary"
         android:textColorHint="?attr/colorSecondary"
-        app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pNombre" />
+        app:layout_constraintTop_toBottomOf="@+id/pNombre"
+        app:layout_constraintWidth_percent="0.45"/>
 
     <TextView
         android:id="@+id/pFecha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="2dp"
@@ -47,46 +48,52 @@
         android:textColor="?attr/colorOnSecondary"
         android:textColorHint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pValor" />
+        app:layout_constraintTop_toBottomOf="@+id/pValor"
+        app:layout_constraintWidth_percent="0.45"
+        app:layout_constraintHeight_percent=".60"/>
 
     <Button
         android:id="@+id/editP"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/ic_edit"
         android:backgroundTint="?attr/colorOnSecondary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pFecha" />
+        app:layout_constraintStart_toEndOf="@id/pNombre"
+        app:layout_constraintEnd_toStartOf="@id/checkP"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp" />
 
     <Button
         android:id="@+id/checkP"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/ic_confirm"
         android:backgroundTint="?attr/colorOnSecondary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editP" />
+        app:layout_constraintStart_toEndOf="@id/editP"
+        app:layout_constraintEnd_toStartOf="@id/delayP"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp" />
 
     <Button
         android:id="@+id/delayP"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/ic_delay"
         android:backgroundTint="?attr/colorOnSecondary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/checkP" />
+        app:layout_constraintStart_toEndOf="@id/checkP"
+        app:layout_constraintEnd_toStartOf="@id/skipP"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp" />
 
     <Button
         android:id="@+id/skipP"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/ic_cancel"
         android:backgroundTint="?attr/colorOnSecondary"
+        app:layout_constraintStart_toEndOf="@id/delayP"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/delayP" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

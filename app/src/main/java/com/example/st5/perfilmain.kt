@@ -5,6 +5,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
@@ -216,13 +217,13 @@ class perfilmain : Fragment() {
                 append(balance)
             }
             if (diasaho > 0) {
-                binding.ahorrando.setBackgroundResource(R.drawable.ic_ahorrando)
+                binding.ahorrando.setColorFilter(resources.getColor(R.color.O2), PorterDuff.Mode.SRC_IN)
             }
             if (diasaho > 14) {
-                binding.ahorrando.setBackgroundResource(R.drawable.ic_ahorrando2)
+                binding.ahorrando.setColorFilter(resources.getColor(R.color.B2), PorterDuff.Mode.SRC_IN)
             }
             if (diasaho > 60) {
-                binding.ahorrando.setBackgroundResource(R.drawable.ic_ahorrando3)
+                binding.ahorrando.setColorFilter(resources.getColor(R.color.P2), PorterDuff.Mode.SRC_IN)
             }
 
             val linkfoto = "http://savetrack.com.mx/images/$nombre.jpg"

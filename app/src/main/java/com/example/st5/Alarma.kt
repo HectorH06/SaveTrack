@@ -121,25 +121,23 @@ class Alarma : BroadcastReceiver() {
             Log.i("todayyyy", today.toString())
             Log.i("prevvvvv", prev.toString())
 
-            if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta() && assetsDao.getNotif() != 0) {
-                usuarioDao.updateDiasaho(usuarioDao.checkId(), 0L)
-                notificationHelper.sendNotification(
-                    "General",
-                    R.drawable.logo1,
-                    "No tienes lana we",
-                    "Tienes ${decoder.format(usuarioDao.checkBalance())} pesos",
-                    0,
-                    0L,
-                    0
-                )
-            } else {
-                usuarioDao.updateDiasaho(usuarioDao.checkId(), usuarioDao.checkDiasaho() + 1L)
-            }
-
-
             val montos = montoDao.getMontoXFecha(today, dom, dow, 100, addd)
 
             if (prev < today) {
+                if (ingresoGastoDao.checkSummaryI() - ingresoGastoDao.checkSummaryG() < usuarioDao.checkMeta() && assetsDao.getNotif() != 0) {
+                    usuarioDao.updateDiasaho(usuarioDao.checkId(), 0L)
+                    notificationHelper.sendNotification(
+                        "General",
+                        R.drawable.logo1,
+                        "No tienes lana we",
+                        "Tienes ${decoder.format(usuarioDao.checkBalance())} pesos",
+                        0,
+                        0L,
+                        0
+                    )
+                } else {
+                    usuarioDao.updateDiasaho(usuarioDao.checkId(), usuarioDao.checkDiasaho() + 1L)
+                }
                 for (monto in montos) {
                     if (monto.cooldown == 0) {
                         val totalIngresos = ingresoGastoDao.checkSummaryI()

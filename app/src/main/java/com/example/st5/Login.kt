@@ -76,7 +76,8 @@ class Login : Fragment() {
             val username = binding.editTextTextPersonName.text.toString()
             val password = binding.editTextTextPassword.text.toString()
 
-            if (username != "" && password != "") {
+            binding.perame.alpha = 1f
+            if (username != "" && password != "" && Decoder(requireContext()).hayNet()) {
                 val checkUserUrl = "$url?username=$username&password=$password"
                 Log.d("checkUserUrl", checkUserUrl)
                 /*
@@ -92,8 +93,9 @@ class Login : Fragment() {
                                 "Usuario y/o contraseña incorrectos",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            binding.perame.alpha = 0f
                         } else {
-                            // Usuario y contraseña correctos, redirigir a la actividad de perfil
+                            // Usuario y contraseña correctos, redirigir a la actividad del index
                             Log.v("username", username)
                             Log.v("password", password)
 
@@ -975,9 +977,7 @@ class Login : Fragment() {
                             Log.d("backReq", backReq.toString())
                             queue.add(backReq)
 
-                            Toast.makeText(
-                                requireContext(), "Bienvenido, $username", Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(requireContext(), "Bienvenido, $username", Toast.LENGTH_SHORT).show()
 
                             delay(3000)
                             val intent = Intent(activity, Index::class.java)

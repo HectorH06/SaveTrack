@@ -193,6 +193,7 @@ class Configuracion : Fragment() {
 
         binding.cerrarsesion.setOnClickListener {
             val decoder = Decoder(requireContext())
+            binding.perame.alpha = 1f
             if (decoder.hayNet()) {
                 suspend fun cerrarSesion() {
                     val queue = Volley.newRequestQueue(requireContext())
@@ -721,6 +722,7 @@ class Configuracion : Fragment() {
                 startActivity(intent)
             } else {
                 Toast.makeText(requireContext(), "No hay acceso a internet", Toast.LENGTH_SHORT).show()
+                binding.perame.alpha = 0f
             }
         }
     }

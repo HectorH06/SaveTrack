@@ -15,11 +15,11 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ImageButton
                 android:id="@+id/goback"
@@ -63,9 +63,9 @@
                 android:paddingTop="5dp"
                 android:paddingEnd="6dp"
                 android:textAlignment="textStart"
+                android:textSize="24sp"
                 android:textColor="?attr/colorOnPrimary"
                 android:textColorHint="?attr/colorSecondary"
-                android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@id/ValorField"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.468"
@@ -82,16 +82,15 @@
                 android:layout_marginEnd="40dp"
                 android:autofillHints=""
                 android:background="@drawable/p1midcell"
-                android:buttonTint="@color/X0"
                 android:elevation="15dp"
                 android:hint="@string/Valor"
                 android:inputType="numberDecimal"
                 android:paddingStart="6dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="6dp"
+                android:textSize="24sp"
                 android:textColor="?attr/colorOnPrimary"
                 android:textColorHint="?attr/colorSecondary"
-                android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@+id/LabelField"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.468"
@@ -123,33 +122,79 @@
             </RelativeLayout>
 
             <Spinner
+                android:alpha="0"
                 android:id="@+id/LabelField"
                 android:layout_width="match_parent"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="0dp"
-                android:background="@drawable/p1bottomcell"
                 android:elevation="15dp"
-                android:inputType="text"
                 android:paddingStart="6dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="6dp"
                 android:textSize="24sp"
                 android:textColor="?attr/colorOnPrimary"
                 android:textColorHint="?attr/colorSecondary"
-                android:theme="@style/SpinnerStyle"
                 app:layout_constraintBottom_toTopOf="@+id/invisibleContainer"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.468"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ValorField"
-                app:layout_constraintVertical_bias="0.892" />
+                app:layout_constraintTop_toBottomOf="@+id/ValorField" />
+
+            <TextView
+                android:id="@+id/LabelText"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="0dp"
+                android:hint="@string/seleccionar"
+                android:background="@drawable/p1bottomcell"
+                android:elevation="15dp"
+                android:paddingStart="6dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="6dp"
+                android:textSize="24sp"
+                android:translationZ="-10dp"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                app:layout_constraintBottom_toTopOf="@+id/invisibleContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ValorField" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/checkpordelante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:translationZ="100dp"
+                app:layout_constraintEnd_toEndOf="@id/LabelField"
+                app:layout_constraintTop_toBottomOf="@+id/ValorField">
+
+                <CheckBox
+                    android:id="@+id/yocreoquesi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/b1noncell"
+                    android:buttonTint="?attr/colorOnPrimary"
+                    android:elevation="15dp"
+                    android:hint="@string/esdeuda"
+                    android:paddingStart="6dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="6dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorOnPrimary"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TableLayout
                 android:id="@+id/invisibleContainer"
                 android:layout_width="match_parent"
-                android:layout_height="380dp"
+                android:layout_height="600dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:layout_marginBottom="100dp"
@@ -162,6 +207,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/LabelField"
                 app:layout_constraintVertical_bias="0.788">
 
+                <TextView
+                    android:id="@+id/FreqText"
+                    android:alpha="0"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="0dp"
+                    android:hint="@string/seleccionar"
+                    android:background="@drawable/p1bottomcell"
+                    android:elevation="15dp"
+                    android:paddingStart="6dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="6dp"
+                    android:textSize="24sp"
+                    android:translationY="-50dp"
+                    android:translationZ="-100dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorSecondary"
+                    app:layout_constraintBottom_toBottomOf="@id/FrecuenciaField"
+                    app:layout_constraintTop_toTopOf="@id/FrecuenciaField"
+                    app:layout_constraintEnd_toEndOf="@id/FrecuenciaField"
+                    app:layout_constraintStart_toStartOf="@id/FrecuenciaField" />
+
                 <Spinner
                     android:id="@+id/FrecuenciaField"
                     android:layout_width="match_parent"
@@ -169,17 +235,15 @@
                     android:alpha="0"
                     android:autofillHints=""
                     android:background="@drawable/p1bottomcell"
-                    android:buttonTint="@color/X0"
                     android:elevation="15dp"
                     android:paddingStart="6dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="6dp"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textColorHint="?attr/colorSecondary"
                     android:textSize="24sp"
-                    android:theme="@style/SpinnerStyle"
                     android:translationY="-50dp"
                     android:translationZ="-100dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorSecondary"
                     app:layout_constraintBottom_toTopOf="@+id/datedate"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.468"
@@ -203,21 +267,20 @@
                         android:layout_marginTop="0dp"
                         android:alpha="1"
                         android:background="@drawable/p1bottomcell"
-                        android:buttonTint="@color/X0"
                         android:calendarViewShown="false"
                         android:clickable="true"
                         android:datePickerMode="spinner"
                         android:elevation="15dp"
                         android:focusable="true"
                         android:hint="@string/Fecha"
-                        android:textColor="?attr/colorOnPrimary"
-                        android:textColorHint="?attr/colorSecondary"
                         android:inputType="text"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:theme="@style/calendario_add"
                         android:translationY="-50dp"
                         android:translationZ="-150dp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorSecondary"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -229,7 +292,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
                         android:alpha="1"
-                        android:buttonTint="@color/X0"
                         android:calendarViewShown="false"
                         android:clickable="true"
                         android:elevation="15dp"
@@ -251,24 +313,52 @@
                     android:alpha="1"
                     android:autofillHints=""
                     android:background="@drawable/p1midcell"
-                    android:buttonTint="@color/X0"
                     android:elevation="15dp"
                     android:hint="@string/Interes"
                     android:inputType="numberDecimal"
                     android:paddingStart="6dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="6dp"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textColorHint="?attr/colorSecondary"
                     android:textSize="24sp"
                     android:translationY="-50dp"
                     android:translationZ="-200dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorSecondary"
                     app:layout_constraintBottom_toTopOf="@id/InteresSeekbar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.468"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/datedate"
                     app:layout_constraintVertical_bias="0.734" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/interesPordelante"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:translationZ="100dp"
+                    app:layout_constraintEnd_toEndOf="@id/InteresField"
+                    app:layout_constraintTop_toTopOf="@+id/InteresField">
+
+                    <CheckBox
+                        android:id="@+id/interesCompuesto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/b1noncell"
+                        android:buttonTint="?attr/colorOnPrimary"
+                        android:elevation="15dp"
+                        android:alpha="1"
+                        android:hint="@string/escompuesto"
+                        android:paddingStart="6dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="6dp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textColorHint="?attr/colorOnPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <SeekBar
                     android:id="@+id/InteresSeekbar"
@@ -277,27 +367,51 @@
                     android:layout_marginTop="0dp"
                     android:alpha="1"
                     android:autofillHints=""
-                    android:background="@drawable/p1bottomcell"
+                    android:background="@drawable/p1midcell"
                     android:elevation="15dp"
                     android:hint="@string/Fecha"
                     android:inputType="numberDecimal"
-                    android:outlineAmbientShadowColor="@color/X5"
                     android:paddingStart="6dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="6dp"
-                    android:progressTint="@color/X2"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textColorHint="?attr/colorSecondary"
+                    android:progressTint="?attr/colorPrimaryVariant"
                     android:textSize="24sp"
-                    android:thumbTint="@color/X5"
+                    android:thumbTint="?attr/colorPrimary"
                     android:translationY="-50dp"
                     android:translationZ="-250dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/FechaFinalField"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.468"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/InteresField"
+                    app:layout_constraintTop_toBottomOf="@id/InteresField"
                     app:layout_constraintVertical_bias="0.734" />
+
+                <DatePicker
+                    android:id="@+id/FechaFinalField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:alpha="1"
+                    android:background="@drawable/p1bottomcell"
+                    android:calendarViewShown="false"
+                    android:clickable="true"
+                    android:datePickerMode="spinner"
+                    android:elevation="15dp"
+                    android:focusable="true"
+                    android:hint="@string/Fecha"
+                    android:inputType="text"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:theme="@style/calendario_add"
+                    android:translationY="-50dp"
+                    android:translationZ="-150dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorSecondary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/InteresSeekbar"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
             </TableLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -318,8 +432,6 @@
             android:contentDescription="@string/confirmar"
             app:layout_constraintBottom_toTopOf="@id/Cancel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintVertical_bias="0.767"
             app:srcCompat="@drawable/ic_confirm" />
 
         <ImageButton
@@ -332,8 +444,6 @@
             android:contentDescription="@string/Cancelar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintVertical_bias="0.949"
             app:srcCompat="@drawable/ic_cancel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

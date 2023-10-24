@@ -207,6 +207,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/LabelField"
                 app:layout_constraintVertical_bias="0.788">
 
+                <TextView
+                    android:id="@+id/FreqText"
+                    android:alpha="0"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="0dp"
+                    android:hint="@string/seleccionar"
+                    android:background="@drawable/p1bottomcell"
+                    android:elevation="15dp"
+                    android:paddingStart="6dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="6dp"
+                    android:textSize="24sp"
+                    android:translationY="-50dp"
+                    android:translationZ="-100dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textColorHint="?attr/colorSecondary"
+                    app:layout_constraintBottom_toBottomOf="@id/FrecuenciaField"
+                    app:layout_constraintTop_toTopOf="@id/FrecuenciaField"
+                    app:layout_constraintEnd_toEndOf="@id/FrecuenciaField"
+                    app:layout_constraintStart_toStartOf="@id/FrecuenciaField" />
+
                 <Spinner
                     android:id="@+id/FrecuenciaField"
                     android:layout_width="match_parent"

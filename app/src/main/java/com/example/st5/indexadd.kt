@@ -141,6 +141,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
         binding.FrecuenciaField.adapter = adapterF
         binding.FrecuenciaField.alpha = 0f
+        binding.FreqText.alpha = 0f
 
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -202,7 +203,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
         binding.yocreoquesi.setOnClickListener {
             if (binding.yocreoquesi.isChecked) {
-                displayFrecField() //Justificar la deuda y condiciones con intereses
+                displayFrecField()
                 displayInteresField()
                 displayFechaFinalField()
                 displayIC()
@@ -213,7 +214,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 hideIC()
             }
         }
-
 
         binding.WeekField.selectionMode = SingleSelectionMode.create()
         binding.WeekField.locale = Locale.getDefault()
@@ -388,7 +388,6 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
         }
 
         binding.Cancel.setOnClickListener {
@@ -513,9 +512,17 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun displayFrecField() {
         binding.FrecuenciaField.animate()
+            .alpha(0f)
+            .translationY(-50f)
+            .translationZ(200f)
+            .setDuration(300)
+            .setStartDelay(200)
+            .setListener(null)
+            .start()
+        binding.FreqText.animate()
             .alpha(1f)
             .translationY(0f)
-            .translationZ(0f)
+            .translationZ(-100f)
             .setDuration(300)
             .setStartDelay(200)
             .setListener(null)
@@ -535,6 +542,14 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setStartDelay(0)
             .setListener(null)
             .start()
+        binding.FreqText.animate()
+            .alpha(0f)
+            .translationY(-50f)
+            .translationZ(-10f)
+            .setDuration(200)
+            .setStartDelay(0)
+            .setListener(null)
+            .start()
         binding.LabelText.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("LABEL", label.toString())
     }
@@ -543,13 +558,13 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         hideWeekField()
         binding.FechaField.animate()
             .alpha(1f)
-            .translationY(0f)
+            .translationY(-50f)
             .translationZ(150f)
             .setDuration(300)
             .setStartDelay(200)
             .setListener(null)
             .start()
-        binding.FrecuenciaField.setBackgroundResource(R.drawable.p1midcell)
+        binding.FreqText.setBackgroundResource(R.drawable.p1midcell)
         Log.v("FECHA", fecha.toString())
     }
 
@@ -562,7 +577,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setStartDelay(0)
             .setListener(null)
             .start()
-        binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
+        binding.FreqText.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("FECHA", fecha.toString())
     }
 
@@ -570,7 +585,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         hideWeekField()
         binding.FechaFinalField.animate()
             .alpha(1f)
-            .translationY(0f)
+            .translationY(-50f)
             .translationZ(150f)
             .setDuration(300)
             .setStartDelay(200)
@@ -597,13 +612,13 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         hideFechaField()
         binding.WeekField.animate()
             .alpha(1f)
-            .translationY(0f)
+            .translationY(-50f)
             .translationZ(150f)
             .setDuration(300)
             .setStartDelay(200)
             .setListener(null)
             .start()
-        binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
+        binding.FreqText.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("DAY OF WEEK", fecha.toString())
     }
 
@@ -617,14 +632,14 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .setStartDelay(0)
             .setListener(null)
             .start()
-        binding.FrecuenciaField.setBackgroundResource(R.drawable.p1bottomcell)
+        binding.FreqText.setBackgroundResource(R.drawable.p1bottomcell)
         Log.v("DAY OF WEEK", fecha.toString())
     }
 
     private fun displayInteresField() {
         binding.InteresField.animate()
             .alpha(1f)
-            .translationY(0f)
+            .translationY(-50f)
             .translationZ(150f)
             .setDuration(300)
             .setStartDelay(200)
@@ -632,7 +647,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
             .start()
         binding.InteresSeekbar.animate()
             .alpha(1f)
-            .translationY(0f)
+            .translationY(-50f)
             .translationZ(150f)
             .setDuration(300)
             .setStartDelay(200)
@@ -667,7 +682,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private fun displayIC() {
         binding.interesCompuesto.animate()
             .alpha(1f)
-            .translationY(0f)
+            .translationY(-50f)
             .translationZ(150f)
             .setDuration(300)
             .setStartDelay(200)
@@ -704,6 +719,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         selectedfr = binding.FrecuenciaField.selectedItem?.toString()
 
         binding.LabelText.text = selectedLabel
+        binding.FreqText.text = selectedfr
         // region LABELS
         if (selectedLabel != null) {
             Log.v("ETIQUETA", selectedLabel.toString())

@@ -174,26 +174,16 @@ class CalendarHistorial @JvmOverloads constructor(
         withContext(Dispatchers.IO) {
             val labelsDao = Stlite.getInstance(context).getLabelsDao()
 
-            val ids = labelsDao.getIdsButGroups()
-            val max = ids.maxOrNull() ?: 0
-            val trueMax = labelsDao.getMaxLabel()
+            val ids = labelsDao.getIds()
+            val max = labelsDao.getMaxLabel()
 
-            for (i in 1..max.toInt()) {
+            for (i in 1..max) {
                 if (labelsDao.getPlabel(i) != "" && labelsDao.getPlabel(i) != null){
                     mutableIds.add(labelsDao.getIdLabel(i))
                     mutableEtiquetas.add(labelsDao.getPlabel(i))
                     mutableColores.add(labelsDao.getColor(i))
 
                     Log.v("leibels", "${labelsDao.getIdLabel(i)}, ${labelsDao.getPlabel(i)}, $i, $max")
-                }
-            }
-            if (trueMax > 8000) {
-                for (i in 8001..trueMax) {
-                    if (labelsDao.getPlabel(i) != ""){
-                        mutableIds.add(labelsDao.getIdLabel(i))
-                        mutableEtiquetas.add(labelsDao.getPlabel(i))
-                        mutableColores.add(labelsDao.getColor(i))
-                    }
                 }
             }
             Log.v("idl", "$mutableIds")

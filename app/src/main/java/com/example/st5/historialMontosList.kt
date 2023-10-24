@@ -107,11 +107,6 @@ class historialMontosList : Fragment() {
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.historial_container, back).addToBackStack(null).commit()
         }
-        binding.ConfigButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.index_container, Configuracion()).addToBackStack(null).commit()
-        }
 
         binding.HConcepto.setOnClickListener {
             lifecycleScope.launch {

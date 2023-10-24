@@ -3,14 +3,14 @@
         <item
             android:id="@+id/etiquetas"
             android:icon="@drawable/ic_etiqueta"
-            android:title="Favoritos" />
+            android:title="@string/etiquetas" />
         <item
             android:id="@+id/favoritos"
             android:icon="@drawable/ic_star"
-            android:title="Favoritos" />
+            android:title="@string/favoritos" />
         <item
             android:id="@+id/papelera"
             android:icon="@drawable/ic_trashcan"
-            android:title="Papelera" />
+            android:title="@string/papelera" />
     </group>
 </menu>

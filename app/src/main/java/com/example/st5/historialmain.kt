@@ -92,12 +92,12 @@ class historialmain : Fragment() {
 
         var fechaSeleccionada: String
 
-        binding.calendarPick.setOnClickListener {
-            val day = binding.calendarPick.dayOfMonth
+        binding.verMontos.setOnClickListener {
+            val day = binding.spinnerPick.dayOfMonth
             val fDay = String.format("%02d", day)
-            val month = binding.calendarPick.month + 1
+            val month = binding.spinnerPick.month + 1
             val fMonth = String.format("%02d", month)
-            val year = binding.calendarPick.year
+            val year = binding.spinnerPick.year
             fechaSeleccionada = "$year$fMonth$fDay"
             val fsi: Int = fechaSeleccionada.replace("-", "").toInt()
             Toast.makeText(requireContext(), "$fsi", Toast.LENGTH_SHORT).show()
@@ -108,30 +108,21 @@ class historialmain : Fragment() {
                 .replace(R.id.historial_container, montosF).addToBackStack(null).commit()
         }
 
+        val hoy = LocalDate.now()
+        val day = hoy.dayOfMonth
+        val month = hoy.monthValue - 1
+        val year = hoy.year
+        binding.spinnerPick.init(year, month, day)
+        { _, nYear, nMonth, _ ->
+            //val monthsPagerAdapter = HistorialPagerAdapter(requireContext(), isDarkMode, nDay)
+            //binding.calendarView.adapter = monthsPagerAdapter
+            binding.calendarView.currentItem = nMonth + (nYear - 1998) * 12
+        }
+
         binding.calendarView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageScrollStateChanged(state: Int) {}
-            override fun onPageSelected(position: Int) {
-                val startYear = LocalDate.now().year - 25
-                val year = position / 12 + startYear
-                val mesesito = when (position % 12) {
-                    0 -> "Enero"
-                    1 -> "Febrero"
-                    2 -> "Marzo"
-                    3 -> "Abril"
-                    4 -> "Mayo"
-                    5 -> "Junio"
-                    6 -> "Julio"
-                    7 -> "Agosto"
-                    8 -> "Septiembre"
-                    9 -> "Octubre"
-                    10 -> "Noviembre"
-                    11 -> "Diciembre"
-                    else -> "cualquier mes"
-                }
-
-
-            }
+            override fun onPageSelected(position: Int) {}
         })
 
         binding.Options.setOnClickListener {

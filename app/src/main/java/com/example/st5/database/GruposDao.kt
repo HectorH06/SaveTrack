@@ -38,7 +38,7 @@ interface GruposDao {
     @Query("SELECT color FROM grupos WHERE Id = :id")
     fun getColor(id: Int): Int
     @Query("SELECT enlace FROM grupos WHERE Id = :id")
-    fun getEnlace(id: Int): String
+    fun getEnlace(id: Int): Long
 
     @Query("SELECT * FROM grupos WHERE type != 2")
     fun getAllGrupos(): List<Grupos>

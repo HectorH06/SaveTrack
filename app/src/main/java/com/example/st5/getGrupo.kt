@@ -45,8 +45,9 @@ class getGrupo : AppCompatActivity() {
                         val desc: String = grupoJson.optString("descripcion")
                         val tipo: Int = grupoJson.optInt("tipo")
                         val color: Int = grupoJson.optInt("color")
+                        val enlace: Long = grupoJson.optLong("enlace")
 
-                        grupoAdd(nombre, desc, tipo, color, idadmin, idori, miembrosG)
+                        grupoAdd(nombre, desc, tipo, color, idadmin, idori, enlace, miembrosG)
                     } else {
                         Log.v("Current grupo", "VACÍO")
                     }
@@ -84,6 +85,7 @@ class getGrupo : AppCompatActivity() {
         color: Int,
         admin: Long,
         idori: Long,
+        enlace: Long,
         miembros: Array<Int>
     ) {
         withContext(Dispatchers.IO) {
@@ -105,10 +107,17 @@ class getGrupo : AppCompatActivity() {
                     admin = admin,
                     idori = idori,
                     color = color,
-                    enlace = ""
+                    enlace = enlace
                 )
                 gruposDao.insertGrupo(nuevoGrupo)
 
+                val nuevaLabel = Labels(
+                    plabel = nombre,
+                    color = color
+                )
+                labelsDao.insertLabel(nuevaLabel)
+
+                val idlabel = labelsDao.getMaxLabel().toLong()
                 val gId = gruposDao.getMaxGrupo().toLong()
                 val grupoUp = Grupos(
                     Id = gId,
@@ -118,16 +127,9 @@ class getGrupo : AppCompatActivity() {
                     admin = admin,
                     idori = idori,
                     color = color,
-                    enlace = ""
+                    enlace = idlabel
                 )
                 gruposDao.updateGrupo(grupoUp)
-
-                val nuevaLabel = Labels(
-                    idlabel = 8000 + gId,
-                    plabel = nombre,
-                    color = color
-                )
-                labelsDao.insertLabel(nuevaLabel)
 
                 val queue = Volley.newRequestQueue(this@getGrupo)
                 var url = "http://savetrack.com.mx/gruposMiembrosPut.php?"

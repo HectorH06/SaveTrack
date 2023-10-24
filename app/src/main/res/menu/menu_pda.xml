@@ -3,6 +3,6 @@
         <item
             android:id="@+id/deudas"
             android:icon="@drawable/ic_finance"
-            android:title="Deudas" />
+            android:title="@string/deudas" />
     </group>
 </menu>

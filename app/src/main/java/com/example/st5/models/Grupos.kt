@@ -31,7 +31,7 @@ data class Grupos(
     var color: Int,
 
     @ColumnInfo(name = "enlace")
-    var enlace: String,
+    var enlace: Long,
 ) : Parcelable {
-    constructor() : this(0L, "", "", 0, 0L, 0L, 0, "")
+    constructor() : this(0L, "", "", 0, 0L, 0L, 0, 0L)
 }

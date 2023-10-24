@@ -39,7 +39,7 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding: FragmentMontogrupoaddBinding
 
     private var frecuencia: Int = 0
-    private var label: Int = 8000
+    private var label: Int = 0
     private var fecha: Int = 0
     private var estado: Int = 0
     private var interes: Double = 0.0
@@ -108,6 +108,9 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
             }
 
             Log.i("MODO", isDarkMode.toString())
+
+            val idgrupo: Long? = arguments?.getLong(idv)
+            if (idgrupo != null) {getLabel(idgrupo)}
         }
         return binding.root
     }
@@ -239,8 +242,6 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.Confirm.setOnClickListener {
             val concepto = binding.ConceptoField.text.toString()
             val valorstr = binding.ValorField.text.toString()
-            val idgrupo: Long? = arguments?.getLong(idv)
-            if (idgrupo != null) {label += idgrupo.toInt()}
             var veces = 0L
 
             var interes = 0.0
@@ -517,6 +518,16 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
             val montos = montoDao.getMonto()
             Log.i("ALL MONTOS", montos.toString())
 
+        }
+    }
+
+    private suspend fun getLabel(
+        idlabel: Long
+    ) {
+        withContext(Dispatchers.IO) {
+            val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
+
+            label = gruposDao.getEnlace(idlabel.toInt()).toInt()
         }
     }
 

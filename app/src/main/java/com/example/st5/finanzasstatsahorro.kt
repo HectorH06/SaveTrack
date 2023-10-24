@@ -126,12 +126,6 @@ class finanzasstatsahorro : Fragment() {
             }
         }
 
-        binding.ConfigButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
-        }
-
         binding.RangoSeekbar.min = 4
         binding.RangoSeekbar.max = 6
         binding.RangoSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {

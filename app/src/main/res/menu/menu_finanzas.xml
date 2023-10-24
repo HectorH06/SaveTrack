@@ -11,6 +11,6 @@
         <item
             android:id="@+id/eventos"
             android:icon="@drawable/ic_calendar"
-            android:title="Eventos" />
+            android:title="@string/eventos" />
     </group>
 </menu>

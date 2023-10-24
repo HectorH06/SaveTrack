@@ -190,7 +190,9 @@ class finanzasmain : Fragment() {
                     queue.add(elproducto)
                 }
             } else {
-                binding.FinanzasItemImage.setBackgroundResource(R.drawable.ic_notfound)
+                lifecycleScope.launch {
+                    binding.FinanzasItemImage.setBackgroundResource(R.drawable.ic_notfound)
+                }
             }
 
             val query = Item.ItemsRepository.getAll()

@@ -239,9 +239,8 @@ class Alarma : BroadcastReceiver() {
             val perocuantosmontos = montoDao.getMaxMonto()
             val perocuantosmontosg = montoGrupoDao.getMaxMontoGrupo()
             val perocuantosgrupos = gruposDao.getMaxGrupo()
-            val ids = labelsDao.getIdsButGroups()
-            val perocuantaslabels = ids.maxOrNull() ?: 0
-            val trueperocuantaslabels = labelsDao.getMaxLabel()
+            val ids = labelsDao.getIds()
+            val perocuantaslabels = labelsDao.getMaxLabel()
             val perocuantoseventos = eventosDao.getMaxEvento()
             val perocuantosconsejos = conySugDao.getMaxConsejo()
 
@@ -415,29 +414,7 @@ class Alarma : BroadcastReceiver() {
             }
 
             // Tabla Labels
-            for (idlabel in 1..perocuantaslabels.toInt()) {
-                Log.v("Current idlabel", idlabel.toString())
-                if (labelsDao.getPlabel(idlabel) != null) {
-                    val viejaLabel = Labels(
-                        idlabel = labelsDao.getIdLabel(idlabel),
-                        plabel = labelsDao.getPlabel(idlabel),
-                        color = labelsDao.getColor(idlabel),
-                        estado = labelsDao.getEstado(idlabel)
-                    )
-                    Log.v("Current label $idlabel", viejaLabel.toString())
-                    val jsonObjectLabels = JSONObject()
-                    jsonObjectLabels.put("idlabel", viejaLabel.idlabel)
-                    jsonObjectLabels.put("plabel", viejaLabel.plabel)
-                    jsonObjectLabels.put("color", viejaLabel.color)
-                    jsonObjectLabels.put("estado", viejaLabel.estado)
-
-                    jsonArrayLabels.put(jsonObjectLabels)
-
-                    Log.v("Current object", jsonObjectLabels.toString())
-                    Log.v("Current array", jsonArrayLabels.toString())
-                }
-            }
-            for (idlabel in 8001..trueperocuantaslabels) {
+            for (idlabel in 1..perocuantaslabels) {
                 Log.v("Current idlabel", idlabel.toString())
                 if (labelsDao.getPlabel(idlabel) != null) {
                     val viejaLabel = Labels(

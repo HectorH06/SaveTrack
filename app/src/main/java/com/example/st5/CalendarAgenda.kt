@@ -119,7 +119,8 @@ class CalendarAgenda @JvmOverloads constructor(
                         if (dayOfMonth in 1..calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
                             tv.text = dayOfMonth.toString()
                             val fDay = String.format("%02d", dayOfMonth)
-                            val cMonth = (sectionNumber + 2) % 12
+                            var cMonth = (sectionNumber + 2) % 12
+                            if (cMonth == 0) {cMonth = 12}
                             val fMonth = String.format("%02d", cMonth)
                             val current = "$year$fMonth$fDay".toInt()
                             Log.v("CURRENT RECYCLER", "$current")
@@ -174,26 +175,17 @@ class CalendarAgenda @JvmOverloads constructor(
         withContext(Dispatchers.IO) {
             val labelsDao = Stlite.getInstance(context).getLabelsDao()
 
-            val ids = labelsDao.getIdsButGroups()
-            val max = ids.maxOrNull() ?: 0
-            val trueMax = labelsDao.getMaxLabel()
+            val ids = labelsDao.getIds()
+            val max = labelsDao.getMaxLabel()
 
-            for (i in 1..max.toInt()) {
+            for (i in 1..max) {
                 if (labelsDao.getPlabel(i) != ""){
                     mutableIds.add(labelsDao.getIdLabel(i))
                     mutableEtiquetas.add(labelsDao.getPlabel(i))
                     mutableColores.add(labelsDao.getColor(i))
                 }
             }
-            if (trueMax > 8000) {
-                for (i in 8001..trueMax) {
-                    if (labelsDao.getPlabel(i) != ""){
-                        mutableIds.add(labelsDao.getIdLabel(i))
-                        mutableEtiquetas.add(labelsDao.getPlabel(i))
-                        mutableColores.add(labelsDao.getColor(i))
-                    }
-                }
-            }
+
             Log.v("idl", "$mutableIds")
             Log.v("plabel", "$mutableEtiquetas")
             Log.v("color", "$mutableColores")
@@ -239,7 +231,8 @@ class CalendarAgenda @JvmOverloads constructor(
                 val day = tempo.get(Calendar.DAY_OF_MONTH)
                 val month = tempo.get(Calendar.MONTH)
                 val fDay = String.format("%02d", day)
-                val fMonth = String.format("%02d", month)
+                var fMonth = String.format("%02d", month)
+                if (fMonth == "00") {fMonth = "12"}
                 val searchMonth = "5$fMonth$fDay".toInt()
 
                 evento.fecha == day || evento.fecha == searchMonth || evento.fecha == current
@@ -267,7 +260,8 @@ class CalendarAgenda @JvmOverloads constructor(
                 val day = tempo.get(Calendar.DAY_OF_MONTH)
                 val month = tempo.get(Calendar.MONTH)
                 val fDay = String.format("%02d", day)
-                val fMonth = String.format("%02d", month)
+                var fMonth = String.format("%02d", month)
+                if (fMonth == "00") {fMonth = "12"}
                 val searchMonth = "5$fMonth$fDay".toInt()
                 Log.v("SEARCHING COUNT", "$day, $searchMonth, $current")
 

@@ -3,17 +3,17 @@
         <item
             android:id="@+id/perfilEdit"
             android:icon="@drawable/ic_edit"
-            android:title="Editar Perfil" />
+            android:title="@string/editar_perfil" />
         <item
             android:id="@+id/grupos"
             android:icon="@drawable/ic_grupos"
-            android:title="Grupos" />
+            android:title="@string/Grupos" />
     </group>
 
     <group android:id="@+id/group_config" android:checkableBehavior="single">
         <item
             android:id="@+id/configuracion"
             android:icon="@drawable/ic_settings"
-            android:title="Configuración" />
+            android:title="@string/configuracion" />
     </group>
 </menu>

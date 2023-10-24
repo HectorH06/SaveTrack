@@ -130,12 +130,6 @@ class finanzasEventosAdd : Fragment(), AdapterView.OnItemSelectedListener {
         binding.LabelField.onItemSelectedListener = this
 
         binding.FrecuenciaField.onItemSelectedListener = this
-        
-        binding.ConfigButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.finanzas_container, Configuracion()).addToBackStack(null).commit()
-        }
 
         binding.goback.setOnClickListener {
             parentFragmentManager.beginTransaction()

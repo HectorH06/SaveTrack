@@ -99,7 +99,7 @@
     <string name="balance">Balance</string>
     <string name="starting">Starting</string>
     <string name="medidor_de_ahorro">Medidor de Ahorro</string>
-    <string name="configuracion">Configuracion</string>
+    <string name="configuracion">Configuración</string>
     <string name="nuevo_ingreso">Nuevo Ingreso</string>
     <string name="nuevo_gasto">Nuevo Gasto</string>
     <string name="Concepto">Concepto</string>
@@ -188,6 +188,13 @@
     <string name="pda">Planes de Ahorro</string>
     <string name="finanzas">Finanzas</string>
     <string name="opciones">Opciones</string>
+    <string name="mandados">Mandados</string>
+    <string name="por_pagar">Por pagar</string>
+    <string name="a_adir_monto">Añadir Monto</string>
+    <string name="lista_de_egresos">Lista de Egresos</string>
+    <string name="lista_de_ingresos">Lista de Ingresos</string>
+    <string name="deudas">Deudas</string>
+    <string name="editar_perfil">Editar Perfil</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

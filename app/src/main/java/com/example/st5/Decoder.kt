@@ -110,7 +110,7 @@ class Decoder (context: Context) {
 
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
                 var month = calendar.get(Calendar.MONTH)
-                if (calendar.get(Calendar.DAY_OF_MONTH) > calendarToday.get(Calendar.DAY_OF_MONTH)) month++
+                month++
                 val mes = when (month) {
                     1 -> "Enero"
                     2 -> "Febrero"

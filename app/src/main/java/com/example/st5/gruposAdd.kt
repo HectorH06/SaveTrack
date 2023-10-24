@@ -204,10 +204,17 @@ class gruposAdd : Fragment() {
                 admin = iduser.toLong(),
                 idori = 0,
                 color = color,
-                enlace = ""
+                enlace = 0
             )
             gruposDao.insertGrupo(nuevoGrupo)
 
+            val nuevaLabel = Labels(
+                plabel = nombre,
+                color = color
+            )
+            labelsDao.insertLabel(nuevaLabel)
+
+            val idlabel = labelsDao.getMaxLabel().toLong()
             val gId = gruposDao.getMaxGrupo().toLong()
             val grupoUp = Grupos(
                 Id = gId,
@@ -217,16 +224,9 @@ class gruposAdd : Fragment() {
                 admin = iduser.toLong(),
                 idori = gId,
                 color = color,
-                enlace = ""
+                enlace = idlabel
             )
             gruposDao.updateGrupo(grupoUp)
-
-            val nuevaLabel = Labels(
-                idlabel = 8000 + gId,
-                plabel = nombre,
-                color = color
-            )
-            labelsDao.insertLabel(nuevaLabel)
 
             val queue = Volley.newRequestQueue(requireContext())
             var url = "http://savetrack.com.mx/grupoPost.php?"

@@ -46,6 +46,7 @@ class grupoEdit : Fragment() {
     private var idori: Long = 0
     private var admin: Long = 0
     private var iduser: Long = 0
+    private var enlace: Long = 0
     private var ngrupo: String = ""
 
     private lateinit var binding: FragmentEditgrupoBinding
@@ -174,6 +175,7 @@ class grupoEdit : Fragment() {
                 admin = gruposDao.getAdmin(idg.toInt())
                 iduser = usuarioDao.checkId().toLong()
                 ngrupo = gruposDao.getNameG(idg.toInt())
+                enlace = gruposDao.getEnlace(idg.toInt())
             }
         }
     }
@@ -197,9 +199,9 @@ class grupoEdit : Fragment() {
                 )
                 gruposDao.updateGrupo(muertoGrupo)
 
-                val plabel = labelsDao.getPlabel(8000 + idg.toInt())
+                val plabel = labelsDao.getPlabel(idg.toInt())
                 val muertaLabel = Labels(
-                    idlabel = 8000 + idg,
+                    idlabel = enlace,
                     plabel = plabel,
                     color = color,
                     estado = 1
@@ -374,7 +376,7 @@ class grupoEdit : Fragment() {
                     admin = admin,
                     idori = gruposDao.getIdori(id.toInt()),
                     color = color,
-                    enlace = ""
+                    enlace = enlace
                 )
 
                 val queue = Volley.newRequestQueue(requireContext())

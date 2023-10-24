@@ -193,10 +193,11 @@ class grupoMembersList : Fragment() {
                 )
                 gruposDao.updateGrupo(muertoGrupo)
 
-                val plabel = labelsDao.getPlabel(8000 + idg.toInt())
-                val color = labelsDao.getColor(8000 + idg.toInt())
+                val plabel = labelsDao.getPlabel(idg.toInt())
+                val color = labelsDao.getColor(idg.toInt())
+                val enlace = gruposDao.getEnlace(idg.toInt())
                 val muertaLabel = Labels(
-                    idlabel = 8000 + idg,
+                    idlabel = enlace,
                     plabel = plabel,
                     color = color,
                     estado = 1

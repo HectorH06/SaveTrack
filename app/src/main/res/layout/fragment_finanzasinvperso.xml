@@ -12,18 +12,6 @@
         android:contentDescription="@string/wallpaper"
         android:theme="@style/perfil_background" />
 
-    <ImageButton
-        android:id="@+id/ConfigButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/transparent"
-        android:contentDescription="@string/configuracion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_settings" />
-
     <TextView
         android:id="@+id/bar"
         android:layout_width="wrap_content"

@@ -764,7 +764,7 @@ class Login : Fragment() {
                                                                     val admin: Long = jsonObject5.getLong("admin")
                                                                     val idori: Long = jsonObject5.getLong("idori")
                                                                     val color: Int = jsonObject5.optInt("color")
-                                                                    val enlace: String = jsonObject5.getString("enlace")
+                                                                    val enlace: Long = jsonObject5.getLong("enlace")
 
                                                                     val nuevosGrupos = Grupos(
                                                                         Id = idgru,

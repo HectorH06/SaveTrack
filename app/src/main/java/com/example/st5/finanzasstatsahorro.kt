@@ -100,14 +100,19 @@ class finanzasstatsahorro : Fragment() {
 
             Log.i("MODO", isDarkMode.toString())
 
-            getDivisas()
-            getDollar()
-            getAhorros()
-            delay(3000)
-            binding.perame.alpha = 0f
-            Log.v("AHORROXDIA", ahorrosMap.toString())
-            Log.v("DIVISAS", currencyData.toString())
-            binding.displaycharts.adapter = ChartAdapter()
+            val decoder = Decoder(requireContext())
+            if (decoder.hayNet()) {
+                getDivisas()
+                getDollar()
+                getAhorros()
+                delay(3000)
+                binding.perame.alpha = 0f
+                Log.v("AHORROXDIA", ahorrosMap.toString())
+                Log.v("DIVISAS", currencyData.toString())
+                binding.displaycharts.adapter = ChartAdapter()
+            } else {
+                Toast.makeText(requireContext(), "No hay acceso a internet", Toast.LENGTH_SHORT).show()
+            }
         }
         return binding.root
     }

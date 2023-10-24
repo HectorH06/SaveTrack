@@ -68,7 +68,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     private var notifActive = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupAlarm()
+        val decoder = Decoder(requireContext())
+        if (decoder.hayNet()) {
+            setupAlarm()
+        }
         notificationHelper = notificationManager(requireContext())
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -375,7 +378,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         val addWithSwitchOff = indexadd.newInstance(false)
 
         lifecycleScope.launch {
-            procesarMontos()
+            val decoder = Decoder(requireContext())
+            if (decoder.hayNet()) {
+                procesarMontos()
+            }
 
             fastable = fastget()
             binding.displayCheck.adapter = MontoAdapter(fastable)

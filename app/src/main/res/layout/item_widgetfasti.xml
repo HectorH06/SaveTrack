@@ -3,7 +3,7 @@
     android:id="@+id/fastAddW"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fastshape"
+    android:background="@drawable/widgetshape"
     android:orientation="horizontal">
 
     <TextView
@@ -13,8 +13,8 @@
         android:layout_marginTop="8dp"
         android:hint="@string/veces"
         android:textAlignment="center"
-        android:textColor="?attr/colorOnSecondary"
-        android:textColorHint="?attr/colorSecondary" />
+        android:textColor="@color/X4"
+        android:textColorHint="@color/X4" />
 
     <Button
         android:id="@+id/fastConcepto"
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/venta"
         android:textAlignment="center"
-        android:textColor="?attr/colorOnSecondary"
-        android:textColorHint="?attr/colorSecondary" />
+        android:textColor="@color/X4"
+        android:textColorHint="@color/X4" />
 
     <TextView
         android:id="@+id/fastValor"
@@ -31,6 +31,6 @@
         android:layout_height="wrap_content"
         android:hint="@string/Valor"
         android:textAlignment="center"
-        android:textColor="?attr/colorOnSecondary"
-        android:textColorHint="?attr/colorSecondary" />
+        android:textColor="@color/X4"
+        android:textColorHint="@color/X4" />
 </LinearLayout>

@@ -13,7 +13,7 @@ class widgetProvider : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
-        if (intent.action == "ACTUALIZAR_WIDGET") {
+        if (intent.action == "android.appwidget.action.APPWIDGET_UPDATE") {
             montoIdToShow = intent.getLongExtra("IDM", -1)
             if (montoIdToShow != -1L) {
                 val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -41,16 +41,12 @@ class widgetProvider : AppWidgetProvider() {
         ) {
             val views = RemoteViews(context.packageName, R.layout.item_widgetfasti)
 
-            // Puedes agregar lógica para manejar acciones del widget aquí
-            // Por ejemplo, incrementar un contador cuando se hace clic en el botón
             val intent = widgetService.newIncrementIntent(context)
             views.setOnClickPendingIntent(R.id.fastAddW, intent)
 
-            // Actualiza el texto en el widget (en este caso, incrementa un contador)
             val currentCount = widgetService.getCount(context, appWidgetId)
             views.setTextViewText(R.id.fastVeces, currentCount.toString())
 
-            // Actualiza el widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }

@@ -144,7 +144,12 @@ class perfileditar : Fragment() {
         }
 
         binding.agregarfotobtn.setOnClickListener {
-            showFileChooser()
+            val decoder = Decoder(requireContext())
+            if (decoder.hayNet()) {
+                showFileChooser()
+            } else {
+                Toast.makeText(requireContext(), "No hay acceso a internet", Toast.LENGTH_SHORT).show()
+            }
         }
 
 

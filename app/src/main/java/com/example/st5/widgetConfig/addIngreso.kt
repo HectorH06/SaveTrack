@@ -166,7 +166,7 @@ class addIngreso : Fragment() {
             }
             holder.addM.setOnClickListener {
                 val intent = Intent(context, widgetProvider::class.java)
-                intent.action = "ACTUALIZAR_WIDGET"
+                intent.action = "android.appwidget.action.APPWIDGET_UPDATE"
                 intent.putExtra("IDM", monto.idmonto)
 
                 val pendingIntent = PendingIntent.getBroadcast(requireContext(), 10000 + monto.idmonto.toInt(), intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
@@ -177,6 +177,10 @@ class addIngreso : Fragment() {
                 val appWidgetManager = AppWidgetManager.getInstance(requireContext())
                 val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), widgetProvider::class.java))
                 appWidgetManager.updateAppWidget(appWidgetIds, views)
+
+                Log.v("Widget creado", monto.concepto)
+
+                requireActivity().finish()
             }
             if (position == ingresos.size - 1){
                 holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)

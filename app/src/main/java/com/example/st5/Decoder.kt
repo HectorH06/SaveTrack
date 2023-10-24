@@ -1,8 +1,13 @@
 package com.example.st5
 
 import android.content.Context
+import android.content.Context.CONNECTIVITY_SERVICE
 import android.icu.text.DecimalFormat
 import android.icu.text.SimpleDateFormat
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
+import android.os.Build
 import com.example.st5.database.Stlite
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -182,5 +187,24 @@ class Decoder (context: Context) {
         }
 
         return datedate
+    }
+
+    fun hayNet(): Boolean {
+        val connectivityManager = cntxt.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+
+                else -> false
+            }
+        } else {
+            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+            return networkInfo?.isConnected == true
+        }
     }
 }

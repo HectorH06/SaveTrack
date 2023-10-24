@@ -8,7 +8,7 @@ import android.content.Intent
 
 class widgetService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent?.action == ACTION_INCREMENT) {
+        if (intent?.action == "android.appwidget.action.APPWIDGET_UPDATE") {
             val appWidgetManager = AppWidgetManager.getInstance(this)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(
                 ComponentName(this, widgetProvider::class.java)
@@ -36,18 +36,12 @@ class widgetService : Service() {
         }
 
         fun getCount(context: Context, appWidgetId: Int): Int {
-            // Implementa la lógica para obtener el contador (por ejemplo, desde SharedPreferences)
-            // Aquí se muestra un ejemplo simple
-            val prefs = context.getSharedPreferences("MyWidgetPrefs", Context.MODE_PRIVATE)
-            return prefs.getInt("count_$appWidgetId", 0)
+
+            return 0
         }
 
         fun incrementCount(context: Context, appWidgetId: Int) {
-            // Implementa la lógica para incrementar el contador (por ejemplo, en SharedPreferences)
-            // Aquí se muestra un ejemplo simple
-            val prefs = context.getSharedPreferences("MyWidgetPrefs", Context.MODE_PRIVATE)
-            val currentCount = getCount(context, appWidgetId)
-            prefs.edit().putInt("count_$appWidgetId", currentCount + 1).apply()
+
         }
     }
 }

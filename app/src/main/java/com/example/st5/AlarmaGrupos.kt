@@ -18,8 +18,9 @@ class AlarmaGrupos : BroadcastReceiver() {
     private lateinit var notificationHelper: notificationManager
     private lateinit var decoder: Decoder
     override fun onReceive(context: Context?, intent: Intent?) {
+        decoder = (context?.let { Decoder(it) } ?: return)
         runBlocking {
-            if (context != null) {
+            if (context != null && decoder.hayNet()) {
                 procesarGrupos(context)
             }
         }

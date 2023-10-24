@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -71,7 +72,10 @@ class finanzasmain : Fragment() {
 
             Log.i("MODO", isDarkMode.toString())
 
-            mostrarProductos()
+            val decoder = Decoder(requireContext())
+            if (decoder.hayNet()) {
+                mostrarProductos()
+            }
         }
         return binding.root
     }
@@ -93,9 +97,14 @@ class finanzasmain : Fragment() {
                     true
                 }
                 R.id.economia -> {
-                    parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                        .replace(R.id.finanzas_container, finanzasstatsahorro()).addToBackStack(null).commit()
+                    val decoder = Decoder(requireContext())
+                    if (decoder.hayNet()) {
+                        parentFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                            .replace(R.id.finanzas_container, finanzasstatsahorro()).addToBackStack(null).commit()
+                    } else {
+                        Toast.makeText(requireContext(), "No hay acceso a internet", Toast.LENGTH_SHORT).show()
+                    }
 
                     true
                 }
@@ -118,9 +127,14 @@ class finanzasmain : Fragment() {
         }
 
         binding.Economia.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                .replace(R.id.finanzas_container, finanzasstatsahorro()).addToBackStack(null).commit()
+            val decoder = Decoder(requireContext())
+            if (decoder.hayNet()) {
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                    .replace(R.id.finanzas_container, finanzasstatsahorro()).addToBackStack(null).commit()
+            } else {
+                Toast.makeText(requireContext(), "No hay acceso a internet", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.FinanzasCalendar.setOnClickListener {

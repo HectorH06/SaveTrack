@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -75,7 +76,12 @@ class perfilmain : Fragment() {
             }
 
             Log.i("MODO", isDarkMode.toString())
-            procesarGrupos(requireContext())
+            val decoder = Decoder(requireContext())
+            if (decoder.hayNet()) {
+                procesarGrupos(requireContext())
+            } else {
+                Toast.makeText(requireContext(), "No hay acceso a internet", Toast.LENGTH_SHORT).show()
+            }
         }
         return binding.root
     }
@@ -109,9 +115,14 @@ class perfilmain : Fragment() {
                     true
                 }
                 R.id.grupos -> {
-                    val intent = Intent(activity, GruposActivity::class.java)
-                    intent.putExtra("isDarkMode", isDarkMode)
-                    startActivity(intent)
+                    val decoder = Decoder(requireContext())
+                    if (decoder.hayNet()) {
+                        val intent = Intent(activity, GruposActivity::class.java)
+                        intent.putExtra("isDarkMode", isDarkMode)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(requireContext(), "No hay acceso a internet", Toast.LENGTH_SHORT).show()
+                    }
 
                     true
                 }

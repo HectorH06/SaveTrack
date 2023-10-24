@@ -91,4 +91,5 @@ dependencies {
     implementation 'ca.antonious:materialdaypicker:0.7.3'
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
     implementation 'com.github.kenglxn.QRGen:javase:3.0.1'
+    implementation "com.google.assistant.appactions:widgets:0.0.1"
 }

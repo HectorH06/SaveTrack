@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -70,8 +71,13 @@ class gruposList : Fragment(){
             }
             Log.i("MODO", isDarkMode.toString())
 
-            grupos = getGrupos()
-            binding.displayGrupos.adapter = GrupoAdapter(grupos)
+            val decoder = Decoder(requireContext())
+            if (decoder.hayNet()) {
+                grupos = getGrupos()
+                binding.displayGrupos.adapter = GrupoAdapter(grupos)
+            } else {
+                Toast.makeText(requireContext(), "No hay acceso a internet", Toast.LENGTH_SHORT).show()
+            }
         }
         return binding.root
     }

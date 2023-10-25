@@ -67,17 +67,7 @@ class Olvido : Fragment() {
 
         suspend fun correoo(strEmail: String, strUsername: String){
             withContext(Dispatchers.IO){
-                val props = Properties()
-                props["mail.smtp.auth"] = "true"
-                props["mail.smtp.starttls.enable"] = "true"
-                props["mail.smtp.host"] = "smtp.ionos.mx"
-                props["mail.smtp.port"] = "587"
-
-                val session = Session.getInstance(props, object : Authenticator() {
-                    override fun getPasswordAuthentication(): PasswordAuthentication {
-                        return PasswordAuthentication("pingenerator@savetrack.com.mx", "c#zeWjRbk42uZG#")
-                    }
-                })
+                val session = OlvidoAux().session()
 
                 try {
                     val message = MimeMessage(session)

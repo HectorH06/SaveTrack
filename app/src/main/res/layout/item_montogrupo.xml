@@ -10,68 +10,56 @@
 
     <TextView
         android:id="@+id/IConcepto"
-        android:layout_width="64dp"
-        android:layout_height="wrap_content"
-        android:minHeight="35dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:hint="@string/Concepto"
         android:paddingStart="7dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_weight="4" />
 
     <TextView
         android:id="@+id/IValor"
-        android:layout_width="50dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="35dp"
         android:hint="@string/Valor"
-        android:textAlignment="textEnd"
-        android:paddingStart="15dp"
+        android:textAlignment="center"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_weight="3" />
 
     <TextView
         android:id="@+id/IFecha"
-        android:layout_width="64dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/Fecha"
-        android:textAlignment="textEnd"
-        android:paddingStart="15dp"
+        android:textAlignment="center"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_weight="4" />
 
     <TextView
         android:id="@+id/IEtiqueta"
-        android:layout_width="72dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/Etiqueta"
-        android:layout_marginStart="15dp"
-        android:textAlignment="textEnd"
+        android:textAlignment="center"
         android:paddingEnd="7dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_weight="4" />
 
     <Button
-        android:id="@+id/payButton"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:background="@drawable/ic_confirm"
-        android:backgroundTint="?attr/colorOnPrimary" />
-
-    <Button
-        android:id="@+id/editMonto"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:background="@drawable/ic_edit"
-        android:backgroundTint="?attr/colorOnPrimary" />
-
-    <Button
-        android:id="@+id/deleteMonto"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:background="@drawable/ic_delete"
-        android:backgroundTint="?attr/colorOnPrimary"/>
+        android:id="@+id/itemOptions"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="7dp"
+        android:background="@drawable/ic_list"
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:layout_weight="1" />
 </TableRow>

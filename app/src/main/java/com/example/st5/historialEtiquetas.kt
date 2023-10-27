@@ -5,11 +5,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -138,24 +137,20 @@ class historialEtiquetas : Fragment() {
             itemView: View,
             val nombreTextView: TextView,
             val colorImageView: ImageView,
-            val updateL: Button,
-            val deleteL: Button
+            val optionsM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LabelsViewHolder {
-            val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_label, parent, false)
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_label, parent, false)
             val nombreTextView = itemView.findViewById<TextView>(R.id.LNombre)
             val colorImageView = itemView.findViewById<ImageView>(R.id.LColor)
-            val updateL = itemView.findViewById<Button>(R.id.editLabel)
-            val deleteL = itemView.findViewById<Button>(R.id.deleteLabel)
+            val optionsM = itemView.findViewById<Button>(R.id.itemOptions)
             return LabelsViewHolder(
                 itemView,
                 nombreTextView,
                 colorImageView,
-                updateL,
-                deleteL
+                optionsM
             )
         }
 
@@ -165,33 +160,51 @@ class historialEtiquetas : Fragment() {
             holder.nombreTextView.text = labels.plabel
             holder.colorImageView.setBackgroundColor(labels.color)
             val upup = historialUpdate.sendLabel(labels.idlabel, labels.plabel, labels.color)
-            holder.updateL.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.historial_container, upup).addToBackStack(null).commit()
-            }
-            holder.deleteL.setOnClickListener {
-                val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres eliminar la etiqueta ${labels.plabel}? Esta acción no se puede deshacer")
-                    .setPositiveButton("Guardar") { dialog, _ ->
 
-                        Log.v("Id de la etiqueta actualizada", labels.idlabel.toString())
-                        Log.v("Plabel", labels.plabel)
-                        Log.v("Color", labels.color.toString())
-                        lifecycleScope.launch {
-                            labeldelete(labels.idlabel, labels.plabel, labels.color)
+            holder.optionsM.setOnClickListener {
+                val popupMenu = PopupMenu(requireContext(), holder.optionsM, Gravity.END)
+                val inflater = popupMenu.menuInflater
+                inflater.inflate(R.menu.options_item_label, popupMenu.menu)
+
+                popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                    when (item.itemId) {
+                        R.id.action_editLabel -> {
+                            parentFragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                .replace(R.id.historial_container, upup).addToBackStack(null).commit()
+
+                            true
                         }
-                        dialog.dismiss()
-                        parentFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.historial_container, historialmain()).addToBackStack(null).commit()
-                    }
-                    .setNegativeButton("Cancelar") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
+                        R.id.action_deleteLabel -> {
+                            val confirmDialog = AlertDialog.Builder(requireContext())
+                                .setTitle("¿Seguro que quieres eliminar la etiqueta ${labels.plabel}? Esta acción no se puede deshacer")
+                                .setPositiveButton("Guardar") { dialog, _ ->
 
-                confirmDialog.show()
+                                    Log.v("Id de la etiqueta actualizada", labels.idlabel.toString())
+                                    Log.v("Plabel", labels.plabel)
+                                    Log.v("Color", labels.color.toString())
+                                    lifecycleScope.launch {
+                                        labeldelete(labels.idlabel, labels.plabel, labels.color)
+                                    }
+                                    dialog.dismiss()
+                                    parentFragmentManager.beginTransaction()
+                                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                        .replace(R.id.historial_container, historialmain()).addToBackStack(null).commit()
+                                }
+                                .setNegativeButton("Cancelar") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                .create()
+
+                            confirmDialog.show()
+
+                            true
+                        }
+                        else -> false
+                    }
+                }
+
+                popupMenu.show()
             }
             if (position == labelsp.size - 1){
                 holder.itemView.setBackgroundResource(R.drawable.y1bottomcell)

@@ -10,172 +10,190 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/wallpaper"
-        android:theme="@style/finanzas_background"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        <ImageView
+            android:id="@+id/background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/wallpaper"
+            android:theme="@style/finanzas_background"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
-    <ImageButton
-        android:id="@+id/Options"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_list"
-        android:contentDescription="@string/opciones"/>
+        <TextView
+            android:id="@+id/bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/finanzas"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/Options"
+            app:layout_constraintBottom_toBottomOf="@id/Options" />
 
-    <TextView
-        android:id="@+id/prodhint"
-        android:layout_width="0dp"
-        android:maxWidth="164dp"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="?attr/colorOnPrimary"
-        app:layout_constraintStart_toStartOf="@id/FinanzasItemImage"
-        app:layout_constraintEnd_toEndOf="@id/FinanzasItemImage"
-        app:layout_constraintBottom_toTopOf="@id/FinanzasItemImage"/>
-    <TextView
-        android:id="@+id/afinity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="4dp"
-        android:textColor="?attr/colorOnPrimary"
-        app:layout_constraintTop_toTopOf="@id/FinanzasItemImage"
-        app:layout_constraintStart_toEndOf="@id/FinanzasItemImage" />
-    <TextView
-        android:id="@+id/saving"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginStart="4dp"
-        android:textColor="?attr/colorOnPrimary"
-        app:layout_constraintTop_toBottomOf="@id/afinity"
-        app:layout_constraintStart_toEndOf="@id/FinanzasItemImage"/>
+        <ImageButton
+            android:id="@+id/Options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/transparent"
+            android:contentDescription="@string/opciones"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_list" />
 
-    <ImageView
-        android:id="@+id/FinanzasItemImage"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/layout_margin_default"
-        android:layout_marginEnd="@dimen/layout_margin_default"
-        android:layout_marginTop="@dimen/layout_margin_default"
-        android:layout_marginBottom="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/NoVerMERCALIBRE"
-        app:layout_constraintEnd_toStartOf="@id/FinanzasCalendar"
-        app:layout_constraintTop_toBottomOf="@id/FinanzasConsejosySugerencias"
-        android:contentDescription="@string/vermas"
-        app:layout_constraintWidth_percent="0.40"
-        app:layout_constraintHeight_percent="0.25"/>
-    <ImageButton
-        android:id="@+id/VerMasMERCALIBRE"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/confshape"
-        app:layout_constraintTop_toBottomOf="@id/FinanzasItemImage"
-        app:layout_constraintStart_toStartOf="@id/FinanzasItemImage"
-        android:padding="16dp"
-        app:srcCompat="@drawable/ic_add"
-        app:tint="@color/G1"
-        android:contentDescription="@string/vermas" />
-    <ImageButton
-        android:id="@+id/VerMenosMERCALIBRE"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/skipshape"
-        app:layout_constraintTop_toBottomOf="@id/FinanzasItemImage"
-        app:layout_constraintStart_toEndOf="@id/VerMasMERCALIBRE"
-        app:srcCompat="@drawable/ic_remove"
-        app:tint="@color/O1"
-        android:contentDescription="@string/vermenos" />
-    <ImageButton
-        android:id="@+id/NoVerMERCALIBRE"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/cancshape"
-        app:layout_constraintTop_toBottomOf="@id/FinanzasItemImage"
-        app:layout_constraintStart_toEndOf="@id/VerMenosMERCALIBRE"
-        app:srcCompat="@drawable/ic_cancel"
-        app:tint="@color/R1"
-        android:contentDescription="@string/nover" />
+        <TextView
+            android:id="@+id/prodhint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxWidth="164dp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/FinanzasItemImage"
+            app:layout_constraintEnd_toEndOf="@id/FinanzasItemImage"
+            app:layout_constraintStart_toStartOf="@id/FinanzasItemImage" />
 
-    <TextView
-        android:id="@+id/FinanzasConsejosySugerencias"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_margin="@dimen/layout_margin_default"
-        android:text="@string/consejos_y_sugerencias"
-        android:background="@drawable/ic_circle"
-        android:backgroundTint="?attr/colorOnPrimary"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="18sp"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Options"
-        app:layout_constraintEnd_toStartOf="@id/Economia"
-        app:layout_constraintBottom_toTopOf="@id/FinanzasItemImage"
-        app:layout_constraintWidth_percent="0.40"
-        app:layout_constraintHeight_percent="0.25" />
+        <TextView
+            android:id="@+id/afinity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/FinanzasItemImage"
+            app:layout_constraintTop_toTopOf="@id/FinanzasItemImage" />
 
-    <TextView
-        android:id="@+id/FinanzasCalendar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/layout_margin_default"
-        android:text="@string/eventos"
-        android:background="@drawable/ic_calendar"
-        android:backgroundTint="?attr/colorOnPrimary"
-        android:textColor="?attr/colorOnPrimary"
-        android:textSize="20sp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/FinanzasItemImage"
-        app:layout_constraintTop_toBottomOf="@id/Economia"
-        app:layout_constraintWidth_percent="0.30"
-        app:layout_constraintHeight_percent="0.15" />
+        <TextView
+            android:id="@+id/saving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/FinanzasItemImage"
+            app:layout_constraintTop_toBottomOf="@id/afinity" />
 
-    <ImageView
-        android:id="@+id/Economia"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/layout_margin_default"
-        android:translationZ="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Options"
-        app:layout_constraintBottom_toTopOf="@id/FinanzasCalendar"
-        app:layout_constraintStart_toEndOf="@id/FinanzasConsejosySugerencias"
-        android:background="@drawable/ic_charts"
-        android:contentDescription="@string/economia"
-        app:layout_constraintWidth_percent="0.45"
-        app:layout_constraintHeight_percent="0.25" />
-    <TextView
-        android:id="@+id/EconomiaTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-18dp"
-        android:text="@string/economia"
-        android:textColor="?attr/colorOnPrimary"
-        android:textSize="20sp"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/Economia"
-        app:layout_constraintStart_toStartOf="@id/Economia"
-        app:layout_constraintEnd_toEndOf="@id/Economia"/>
+        <ImageView
+            android:id="@+id/FinanzasItemImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/layout_margin_default"
+            android:layout_marginTop="@dimen/layout_margin_default"
+            android:layout_marginEnd="@dimen/layout_margin_default"
+            android:layout_marginBottom="64dp"
+            android:contentDescription="@string/vermas"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/NoVerMERCALIBRE"
+            app:layout_constraintEnd_toStartOf="@id/FinanzasCalendar"
+            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/FinanzasConsejosySugerencias"
+            app:layout_constraintWidth_percent="0.40" />
+
+        <ImageButton
+            android:id="@+id/VerMasMERCALIBRE"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/confshape"
+            android:contentDescription="@string/vermas"
+            android:padding="16dp"
+            app:layout_constraintStart_toStartOf="@id/FinanzasItemImage"
+            app:layout_constraintTop_toBottomOf="@id/FinanzasItemImage"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@color/G1" />
+
+        <ImageButton
+            android:id="@+id/VerMenosMERCALIBRE"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/skipshape"
+            android:contentDescription="@string/vermenos"
+            app:layout_constraintStart_toEndOf="@id/VerMasMERCALIBRE"
+            app:layout_constraintTop_toBottomOf="@id/FinanzasItemImage"
+            app:srcCompat="@drawable/ic_remove"
+            app:tint="@color/O1" />
+
+        <ImageButton
+            android:id="@+id/NoVerMERCALIBRE"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/cancshape"
+            android:contentDescription="@string/nover"
+            app:layout_constraintStart_toEndOf="@id/VerMenosMERCALIBRE"
+            app:layout_constraintTop_toBottomOf="@id/FinanzasItemImage"
+            app:srcCompat="@drawable/ic_cancel"
+            app:tint="@color/R1" />
+
+        <TextView
+            android:id="@+id/FinanzasConsejosySugerencias"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_margin="@dimen/layout_margin_default"
+            android:background="@drawable/ic_circle"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:gravity="center"
+            android:text="@string/consejos_y_sugerencias"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/FinanzasItemImage"
+            app:layout_constraintEnd_toStartOf="@id/Economia"
+            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Options"
+            app:layout_constraintWidth_percent="0.40" />
+
+        <TextView
+            android:id="@+id/FinanzasCalendar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/layout_margin_default"
+            android:background="@drawable/ic_calendar"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:gravity="center"
+            android:text="@string/eventos"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintStart_toEndOf="@id/FinanzasItemImage"
+            app:layout_constraintTop_toBottomOf="@id/Economia"
+            app:layout_constraintWidth_percent="0.30" />
+
+        <ImageView
+            android:id="@+id/Economia"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/layout_margin_default"
+            android:background="@drawable/ic_charts"
+            android:contentDescription="@string/economia"
+            android:translationZ="100dp"
+            app:layout_constraintBottom_toTopOf="@id/FinanzasCalendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintStart_toEndOf="@id/FinanzasConsejosySugerencias"
+            app:layout_constraintTop_toBottomOf="@id/Options"
+            app:layout_constraintWidth_percent="0.45" />
+
+        <TextView
+            android:id="@+id/EconomiaTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-18dp"
+            android:gravity="center"
+            android:text="@string/economia"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/Economia"
+            app:layout_constraintStart_toStartOf="@id/Economia"
+            app:layout_constraintTop_toBottomOf="@id/Economia" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

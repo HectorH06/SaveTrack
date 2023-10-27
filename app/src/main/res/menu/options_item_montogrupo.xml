@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_payMonto"
+        android:title="@string/pagar"
+        android:icon="@drawable/ic_finalcheck"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_editMonto"
+        android:title="@string/editar"
+        android:icon="@drawable/ic_edit"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_deleteMonto"
+        android:title="@string/eliminar"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="ifRoom" />
+</menu>

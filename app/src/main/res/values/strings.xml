@@ -195,6 +195,10 @@
     <string name="lista_de_ingresos">Lista de Ingresos</string>
     <string name="deudas">Deudas</string>
     <string name="editar_perfil">Editar Perfil</string>
+    <string name="inicio">Inicio</string>
+    <string name="liquidar">Liquidar</string>
+    <string name="restaurar">Restaurar</string>
+    <string name="pagar">Pagar</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

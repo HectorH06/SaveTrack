@@ -39,41 +39,42 @@
 
                     <TextView
                         android:id="@+id/HConcepto"
-                        android:layout_width="80dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/ConceptoInteres"
-                        android:maxWidth="100dp"
                         android:paddingStart="7dp"
                         android:textColor="?attr/colorOnPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_weight="4" />
 
                     <TextView
                         android:id="@+id/HValor"
-                        android:layout_width="65dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/ValorFinal"
                         android:textAlignment="center"
                         android:textColor="?attr/colorOnPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_weight="3" />
 
                     <TextView
                         android:id="@+id/HVeces"
-                        android:layout_width="65dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/Fecha"
                         android:textAlignment="center"
                         android:textColor="?attr/colorOnPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_weight="4" />
 
                     <TextView
                         android:id="@+id/HEtiqueta"
-                        android:layout_width="50dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/Etiqueta"
-                        android:paddingEnd="7dp"
-                        android:layout_marginEnd="20dp"
                         android:textColor="?attr/colorOnPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_weight="4" />
                 </TableRow>
 
                 <androidx.recyclerview.widget.RecyclerView

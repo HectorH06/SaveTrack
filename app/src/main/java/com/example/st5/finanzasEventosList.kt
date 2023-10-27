@@ -5,10 +5,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -167,8 +166,7 @@ class finanzasEventosList : Fragment() {
             val nombreTextView: TextView,
             val fechaTextView: TextView,
             val etiquetaTextView: TextView,
-            val updateM: Button,
-            val deleteM: Button
+            val optionsM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventosViewHolder {
@@ -176,18 +174,15 @@ class finanzasEventosList : Fragment() {
             val nombreTextView = itemView.findViewById<TextView>(R.id.ENombre)
             val fechaTextView = itemView.findViewById<TextView>(R.id.EFecha)
             val etiquetaTextView = itemView.findViewById<TextView>(R.id.EEtiqueta)
-            val updateM = itemView.findViewById<Button>(R.id.editEvento)
-            val deleteM = itemView.findViewById<Button>(R.id.deleteEvento)
+            val optionsM = itemView.findViewById<Button>(R.id.itemOptions)
             return EventosViewHolder(
                 itemView,
                 nombreTextView,
                 fechaTextView,
                 etiquetaTextView,
-                updateM,
-                deleteM
+                optionsM
             )
         }
-
 
         override fun onBindViewHolder(holder: EventosViewHolder, position: Int) {
             val evento = eventos[position]
@@ -198,35 +193,52 @@ class finanzasEventosList : Fragment() {
                 holder.etiquetaTextView.text = decoder.label(evento.etiqueta)
             }
             val upup = finanzasEventosUpdate.sendEvento(evento.idevento)
-            holder.updateM.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.finanzas_container, upup).addToBackStack(null).commit()
-            }
-            holder.deleteM.setOnClickListener {
-                val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres eliminar el evento ${evento.nombre}?")
-                    .setPositiveButton("Eliminar") { dialog, _ ->
-                        lifecycleScope.launch {
-                            eventoDelete(evento.idevento)
-                        }
-                        dialog.dismiss()
-                        parentFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null)
-                            .commit()
-                    }
-                    .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss()
-                    }
-                    .create()
 
-                confirmDialog.show()
+            holder.optionsM.setOnClickListener {
+                val popupMenu = PopupMenu(requireContext(), holder.optionsM, Gravity.END)
+                val inflater = popupMenu.menuInflater
+                inflater.inflate(R.menu.options_item_label, popupMenu.menu)
+
+                popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                    when (item.itemId) {
+                        R.id.action_editLabel -> {
+                            parentFragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                .replace(R.id.finanzas_container, upup).addToBackStack(null).commit()
+
+                            true
+                        }
+                        R.id.action_deleteLabel -> {
+                            val confirmDialog = AlertDialog.Builder(requireContext())
+                                .setTitle("¿Seguro que quieres eliminar el evento ${evento.nombre}?")
+                                .setPositiveButton("Eliminar") { dialog, _ ->
+                                    lifecycleScope.launch {
+                                        eventoDelete(evento.idevento)
+                                    }
+                                    dialog.dismiss()
+                                    parentFragmentManager.beginTransaction()
+                                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                        .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null)
+                                        .commit()
+                                }
+                                .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss()
+                                }
+                                .create()
+
+                            confirmDialog.show()
+
+                            true
+                        }
+                        else -> false
+                    }
+                }
+
+                popupMenu.show()
             }
             if (position == eventos.size - 1) {
                 holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)
             }
         }
-
 
         override fun getItemCount(): Int {
             Log.v("size de eventossss", eventos.size.toString())

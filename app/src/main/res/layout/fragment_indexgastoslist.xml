@@ -39,7 +39,7 @@
 
                     <TextView
                         android:id="@+id/HConcepto"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/Concepto"
                         android:maxWidth="100dp"
@@ -47,31 +47,34 @@
                         android:textColor="?attr/colorOnPrimary"
                         android:textColorHint="?attr/colorOnPrimary"
                         android:textSize="18sp"
-                        tools:ignore="RtlSymmetry" />
+                        tools:ignore="RtlSymmetry"
+                        android:layout_weight="4"/>
 
                     <TextView
                         android:id="@+id/HValor"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/Valor"
                         android:textAlignment="center"
                         android:textColor="?attr/colorOnPrimary"
                         android:textColorHint="?attr/colorOnPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_weight="3"/>
 
                     <TextView
                         android:id="@+id/HFecha"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/Fecha"
                         android:textAlignment="textEnd"
                         android:textColor="?attr/colorOnPrimary"
                         android:textColorHint="?attr/colorOnPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_weight="4"/>
 
                     <TextView
                         android:id="@+id/HEtiqueta"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/Etiqueta"
                         android:paddingEnd="7dp"
@@ -79,7 +82,8 @@
                         android:textColor="?attr/colorOnPrimary"
                         android:textColorHint="?attr/colorOnPrimary"
                         android:textSize="18sp"
-                        tools:ignore="RtlSymmetry" />
+                        tools:ignore="RtlSymmetry"
+                        android:layout_weight="4"/>
 
                 </TableRow>
 

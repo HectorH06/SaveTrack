@@ -5,10 +5,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -423,9 +422,7 @@ class montosGrupo : Fragment() {
             val valorTextView: TextView,
             val fechaTextView: TextView,
             val etiquetaTextView: TextView,
-            val payMG: Button,
-            val updateM: Button,
-            val deleteM: Button
+            val optionsM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
@@ -434,18 +431,14 @@ class montosGrupo : Fragment() {
             val valorTextView = itemView.findViewById<TextView>(R.id.IValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.IFecha)
             val etiquetaTextView = itemView.findViewById<TextView>(R.id.IEtiqueta)
-            val payMG = itemView.findViewById<Button>(R.id.payButton)
-            val updateM = itemView.findViewById<Button>(R.id.editMonto)
-            val deleteM = itemView.findViewById<Button>(R.id.deleteMonto)
+            val optionsM = itemView.findViewById<Button>(R.id.itemOptions)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
                 valorTextView,
                 fechaTextView,
                 etiquetaTextView,
-                payMG,
-                updateM,
-                deleteM
+                optionsM
             )
         }
 
@@ -468,72 +461,93 @@ class montosGrupo : Fragment() {
                     grupoView.sendGrupo(it)
                 }
             }
-            holder.updateM.setOnClickListener {
-                if (upup != null) {
-                    parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.GruposContainer, upup).addToBackStack(null).commit()
-                }
-            }
-            holder.deleteM.setOnClickListener {
-                if (monto.estado == 3 || monto.estado == 4 || monto.estado == 8 || monto.estado == 9 || tempstat == 8) {
-                    val confirmDialog = AlertDialog.Builder(requireContext())
-                        .setTitle("El monto ${monto.concepto} no se puede eliminar porque está marcado como favorito")
-                        .setPositiveButton("Aceptar") { dialog, _ ->
-                            dialog.dismiss()
+
+            holder.optionsM.setOnClickListener {
+                val popupMenu = PopupMenu(requireContext(), holder.optionsM, Gravity.END)
+                val inflater = popupMenu.menuInflater
+                inflater.inflate(R.menu.options_item_montogrupo, popupMenu.menu)
+
+                popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                    when (item.itemId) {
+                        R.id.action_payMonto -> {
+
+
+                            true
                         }
-                        .create()
-
-                    confirmDialog.show()
-                } else {
-                    val confirmDialog = AlertDialog.Builder(requireContext())
-                        .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
-                        .setPositiveButton("Eliminar") { dialog, _ ->
-
-                            Log.v("Id del monto actualizado", monto.idmonto.toString())
-                            Log.v("Concepto", monto.concepto)
-                            Log.v("Valor", monto.valor.toString())
-                            Log.v("Fecha", monto.fecha.toString())
-                            Log.v("Frecuencia", monto.frecuencia.toString())
-                            Log.v("Etiqueta", monto.etiqueta.toString())
-                            Log.v("Interes", monto.interes.toString())
-                            Log.v("Veces", monto.veces.toString())
-                            lifecycleScope.launch {
-                                montoPapelera(
-                                    monto.idmonto,
-                                    monto.concepto,
-                                    monto.valor,
-                                    monto.fecha,
-                                    monto.frecuencia,
-                                    monto.etiqueta,
-                                    monto.interes,
-                                    monto.veces,
-                                    monto.estado,
-                                    monto.adddate
-                                )
-                            }
-                            dialog.dismiss()
-                            val verGrupo = idgrupo?.let { it1 -> grupoSearch(it1) }
-                            if (verGrupo != null) {
+                        R.id.action_editMonto -> {
+                            if (upup != null) {
                                 parentFragmentManager.beginTransaction()
                                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                                    .replace(R.id.GruposContainer, verGrupo).addToBackStack(null)
-                                    .commit()
+                                    .replace(R.id.GruposContainer, upup).addToBackStack(null).commit()
                             }
-                        }
-                        .setNegativeButton("Cancelar") { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        .create()
 
-                    confirmDialog.show()
+                            true
+                        }
+                        R.id.action_deleteMonto -> {
+                            if (monto.estado == 3 || monto.estado == 4 || monto.estado == 8 || monto.estado == 9 || tempstat == 8) {
+                                val confirmDialog = AlertDialog.Builder(requireContext())
+                                    .setTitle("El monto ${monto.concepto} no se puede eliminar porque está marcado como favorito")
+                                    .setPositiveButton("Aceptar") { dialog, _ ->
+                                        dialog.dismiss()
+                                    }
+                                    .create()
+
+                                confirmDialog.show()
+                            } else {
+                                val confirmDialog = AlertDialog.Builder(requireContext())
+                                    .setTitle("¿Seguro que quieres enviar el monto ${monto.concepto} a la papelera?")
+                                    .setPositiveButton("Eliminar") { dialog, _ ->
+
+                                        Log.v("Id del monto actualizado", monto.idmonto.toString())
+                                        Log.v("Concepto", monto.concepto)
+                                        Log.v("Valor", monto.valor.toString())
+                                        Log.v("Fecha", monto.fecha.toString())
+                                        Log.v("Frecuencia", monto.frecuencia.toString())
+                                        Log.v("Etiqueta", monto.etiqueta.toString())
+                                        Log.v("Interes", monto.interes.toString())
+                                        Log.v("Veces", monto.veces.toString())
+                                        lifecycleScope.launch {
+                                            montoPapelera(
+                                                monto.idmonto,
+                                                monto.concepto,
+                                                monto.valor,
+                                                monto.fecha,
+                                                monto.frecuencia,
+                                                monto.etiqueta,
+                                                monto.interes,
+                                                monto.veces,
+                                                monto.estado,
+                                                monto.adddate
+                                            )
+                                        }
+                                        dialog.dismiss()
+                                        val verGrupo = idgrupo?.let { it1 -> grupoSearch(it1) }
+                                        if (verGrupo != null) {
+                                            parentFragmentManager.beginTransaction()
+                                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                                .replace(R.id.GruposContainer, verGrupo).addToBackStack(null)
+                                                .commit()
+                                        }
+                                    }
+                                    .setNegativeButton("Cancelar") { dialog, _ ->
+                                        dialog.dismiss()
+                                    }
+                                    .create()
+
+                                confirmDialog.show()
+                            }
+
+                            true
+                        }
+                        else -> false
+                    }
                 }
+                popupMenu.show()
             }
             if (position == montos.size - 1){
                 holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)
             }
         }
-
 
         override fun getItemCount(): Int {
             Log.v("size de montossss", montos.size.toString())

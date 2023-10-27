@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/index"
+        android:text="@string/inicio"
         android:textSize="24sp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?attr/colorPrimary"/>

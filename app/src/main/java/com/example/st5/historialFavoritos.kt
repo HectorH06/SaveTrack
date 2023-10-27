@@ -4,10 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -236,8 +235,7 @@ class historialFavoritos : Fragment() {
             val valorTextView: TextView,
             val fechaTextView: TextView,
             val etiquetaTextView: TextView,
-            val favM: Button,
-            val updateM: Button
+            val optionsM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
@@ -248,16 +246,14 @@ class historialFavoritos : Fragment() {
             val valorTextView = itemView.findViewById<TextView>(R.id.FValor)
             val fechaTextView = itemView.findViewById<TextView>(R.id.FFecha)
             val etiquetaTextView = itemView.findViewById<TextView>(R.id.FEtiqueta)
-            val favM = itemView.findViewById<Button>(R.id.favMonto)
-            val updateM = itemView.findViewById<Button>(R.id.editMonto)
+            val optionsM = itemView.findViewById<Button>(R.id.itemOptions)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
                 valorTextView,
                 fechaTextView,
                 etiquetaTextView,
-                favM,
-                updateM
+                optionsM
             )
         }
 
@@ -272,48 +268,62 @@ class historialFavoritos : Fragment() {
             lifecycleScope.launch {
                 holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
             }
+
             if (monto.estado == 0 || monto.estado == 1 || monto.estado == 5 || monto.estado == 6){
-                holder.favM.setBackgroundResource(R.drawable.ic_notstar)
                 tempstat = 5
             }
             if (monto.estado == 3 || monto.estado == 4 || monto.estado == 8 || monto.estado == 9){
-                holder.favM.setBackgroundResource(R.drawable.ic_star)
                 tempstat = 8
             }
-            holder.favM.setOnClickListener {
-                if (tempstat == 5){
-                    holder.favM.setBackgroundResource(R.drawable.ic_star)
-                    tempstat = 8
+
+            holder.optionsM.setOnClickListener {
+                val popupMenu = PopupMenu(requireContext(), holder.optionsM, Gravity.END)
+                val inflater = popupMenu.menuInflater
+                inflater.inflate(R.menu.options_item_fav, popupMenu.menu)
+
+                popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                    when (item.itemId) {
+                        R.id.action_favMonto -> {
+                            if (tempstat == 5){
+                                tempstat = 8
+                            }
+                            if (tempstat == 8){
+                                tempstat = 5
+                            }
+                            lifecycleScope.launch {
+                                montoFavorito(
+                                    monto.idmonto,
+                                    monto.concepto,
+                                    monto.valor,
+                                    monto.fecha,
+                                    monto.frecuencia,
+                                    monto.etiqueta,
+                                    monto.interes,
+                                    monto.veces,
+                                    monto.estado,
+                                    monto.adddate,
+                                    monto.enddate,
+                                    monto.cooldown
+                                )
+                            }
+                            parentFragmentManager.beginTransaction()
+                                .replace(R.id.historial_container, historialFavoritos()).addToBackStack(null)
+                                .commit()
+
+                            true
+                        }
+                        R.id.action_editMonto -> {
+                            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+                            parentFragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                .replace(R.id.historial_container, upup).addToBackStack(null).commit()
+
+                            true
+                        }
+                        else -> false
+                    }
                 }
-                if (tempstat == 8){
-                    holder.favM.setBackgroundResource(R.drawable.ic_notstar)
-                    tempstat = 5
-                }
-                lifecycleScope.launch {
-                    montoFavorito(
-                        monto.idmonto,
-                        monto.concepto,
-                        monto.valor,
-                        monto.fecha,
-                        monto.frecuencia,
-                        monto.etiqueta,
-                        monto.interes,
-                        monto.veces,
-                        monto.estado,
-                        monto.adddate,
-                        monto.enddate,
-                        monto.cooldown
-                    )
-                }
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.historial_container, historialFavoritos()).addToBackStack(null)
-                    .commit()
-            }
-            val upup = indexmontoupdate.sendMonto(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
-            holder.updateM.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                    .replace(R.id.historial_container, upup).addToBackStack(null).commit()
+                popupMenu.show()
             }
             if (position == montosp.size - 1){
                 holder.itemView.setBackgroundResource(R.drawable.y1bottomcell)

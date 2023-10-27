@@ -5,10 +5,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -285,28 +284,24 @@ class historialPapelera : Fragment() {
             val valorTextView: TextView,
             val vecesTextView: TextView,
             val etiquetaTextView: TextView,
-            val zM: Button,
-            val deleteM: Button
+            val optionsM: Button
         ) : RecyclerView.ViewHolder(itemView)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MontoViewHolder {
-            val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_papelera, parent, false)
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_papelera, parent, false)
             val conceptoTextView = itemView.findViewById<TextView>(R.id.PConcepto)
             val valorTextView = itemView.findViewById<TextView>(R.id.PValor)
             val vecesTextView = itemView.findViewById<TextView>(R.id.PVeces)
             val etiquetaTextView = itemView.findViewById<TextView>(R.id.PEtiqueta)
-            val zM = itemView.findViewById<Button>(R.id.getbackMonto)
-            val deleteM = itemView.findViewById<Button>(R.id.killMonto)
+            val optionsM = itemView.findViewById<Button>(R.id.itemOptions)
             return MontoViewHolder(
                 itemView,
                 conceptoTextView,
                 valorTextView,
                 vecesTextView,
                 etiquetaTextView,
-                zM,
-                deleteM
+                optionsM
             )
         }
 
@@ -320,61 +315,79 @@ class historialPapelera : Fragment() {
             lifecycleScope.launch {
                 holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
             }
-            holder.zM.setOnClickListener {
-                val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres recuperar el monto ${monto.concepto}?")
-                    .setPositiveButton("Recuperar") { dialog, _ ->
 
-                        Log.v("Id del monto actualizado", monto.idmonto.toString())
-                        Log.v("Concepto", monto.concepto)
-                        Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha.toString())
-                        Log.v("Frecuencia", monto.frecuencia.toString())
-                        Log.v("Etiqueta", monto.etiqueta.toString())
-                        Log.v("Interes", monto.interes.toString())
-                        Log.v("Veces", monto.veces.toString())
-                        lifecycleScope.launch {
-                            montoback(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.estado, monto.adddate)
+            holder.optionsM.setOnClickListener {
+                val popupMenu = PopupMenu(requireContext(), holder.optionsM, Gravity.END)
+                val inflater = popupMenu.menuInflater
+                inflater.inflate(R.menu.options_item_papelera, popupMenu.menu)
+
+                popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                    when (item.itemId) {
+                        R.id.action_getBackMonto -> {
+                            val confirmDialog = AlertDialog.Builder(requireContext())
+                                .setTitle("¿Seguro que quieres recuperar el monto ${monto.concepto}?")
+                                .setPositiveButton("Recuperar") { dialog, _ ->
+
+                                    Log.v("Id del monto actualizado", monto.idmonto.toString())
+                                    Log.v("Concepto", monto.concepto)
+                                    Log.v("Valor", monto.valor.toString())
+                                    Log.v("Fecha", monto.fecha.toString())
+                                    Log.v("Frecuencia", monto.frecuencia.toString())
+                                    Log.v("Etiqueta", monto.etiqueta.toString())
+                                    Log.v("Interes", monto.interes.toString())
+                                    Log.v("Veces", monto.veces.toString())
+                                    lifecycleScope.launch {
+                                        montoback(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.estado, monto.adddate)
+                                    }
+                                    dialog.dismiss()
+                                    parentFragmentManager.beginTransaction()
+                                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                        .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                                }
+                                .setNegativeButton("Cancelar") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                .create()
+
+                            confirmDialog.show()
+
+                            true
                         }
-                        dialog.dismiss()
-                        parentFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
-                    }
-                    .setNegativeButton("Cancelar") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
+                        R.id.action_killMonto -> {
+                            val confirmDialog = AlertDialog.Builder(requireContext())
+                                .setTitle("¿Seguro que quieres eliminar el monto ${monto.concepto}? Esta acción no se puede deshacer")
+                                .setPositiveButton("Guardar") { dialog, _ ->
 
-                confirmDialog.show()
-            }
-            holder.deleteM.setOnClickListener {
-                val confirmDialog = AlertDialog.Builder(requireContext())
-                    .setTitle("¿Seguro que quieres eliminar el monto ${monto.concepto}? Esta acción no se puede deshacer")
-                    .setPositiveButton("Guardar") { dialog, _ ->
+                                    Log.v("Id del monto actualizado", monto.idmonto.toString())
+                                    Log.v("Concepto", monto.concepto)
+                                    Log.v("Valor", monto.valor.toString())
+                                    Log.v("Fecha", monto.fecha.toString())
+                                    Log.v("Frecuencia", monto.frecuencia.toString())
+                                    Log.v("Etiqueta", monto.etiqueta.toString())
+                                    Log.v("Interes", monto.interes.toString())
+                                    Log.v("Veces", monto.veces.toString())
+                                    lifecycleScope.launch {
+                                        montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+                                    }
+                                    dialog.dismiss()
+                                    parentFragmentManager.beginTransaction()
+                                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                        .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                                }
+                                .setNegativeButton("Cancelar") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                .create()
 
-                        Log.v("Id del monto actualizado", monto.idmonto.toString())
-                        Log.v("Concepto", monto.concepto)
-                        Log.v("Valor", monto.valor.toString())
-                        Log.v("Fecha", monto.fecha.toString())
-                        Log.v("Frecuencia", monto.frecuencia.toString())
-                        Log.v("Etiqueta", monto.etiqueta.toString())
-                        Log.v("Interes", monto.interes.toString())
-                        Log.v("Veces", monto.veces.toString())
-                        lifecycleScope.launch {
-                            montodelete(monto.idmonto, monto.concepto, monto.valor, monto.fecha, monto.frecuencia, monto.etiqueta, monto.interes, monto.veces, monto.adddate)
+                            confirmDialog.show()
+
+                            true
                         }
-                        dialog.dismiss()
-                        parentFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                            .replace(R.id.index_container, indexmain()).addToBackStack(null).commit()
+                        else -> false
                     }
-                    .setNegativeButton("Cancelar") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
+                }
 
-                confirmDialog.show()
+                popupMenu.show()
             }
             if (position == montosp.size - 1){
                 holder.itemView.setBackgroundResource(R.drawable.y1bottomcell)

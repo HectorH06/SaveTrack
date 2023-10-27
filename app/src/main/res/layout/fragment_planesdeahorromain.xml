@@ -29,7 +29,19 @@
         app:srcCompat="@drawable/ic_list"
         android:contentDescription="@string/opciones" />
 
-    <Button
+        <TextView
+            android:id="@+id/bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/pda"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/Options"
+            app:layout_constraintBottom_toBottomOf="@id/Options" />
+
+        <Button
         android:id="@+id/PACurrencyButton"
         android:layout_width="100dp"
         android:layout_height="80dp"

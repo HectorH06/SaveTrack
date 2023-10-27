@@ -39,22 +39,23 @@
 
                     <TextView
                         android:id="@+id/HNombre"
-                        android:layout_width="80dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/Nombre"
-                        android:maxWidth="100dp"
+                        android:text="@string/Nombre"
                         android:paddingStart="7dp"
-                        android:textColor="@color/Y5"
-                        android:textSize="18sp" />
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="18sp"
+                        android:layout_weight="4" />
 
                     <TextView
                         android:id="@+id/HColor"
-                        android:layout_width="65dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/color"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/Y5"
-                        android:textSize="18sp" />
+                        android:text="@string/color"
+                        android:textAlignment="center"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="18sp"
+                        android:layout_weight="3" />
                 </TableRow>
 
                 <androidx.recyclerview.widget.RecyclerView

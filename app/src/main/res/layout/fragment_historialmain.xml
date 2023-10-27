@@ -16,17 +16,29 @@
             android:contentDescription="@string/wallpaper"
             android:theme="@style/historial_background" />
 
+        <TextView
+            android:id="@+id/bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/historial"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/Options"
+            app:layout_constraintBottom_toBottomOf="@id/Options" />
+
         <DatePicker
             android:id="@+id/spinnerPick"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/layout_margin_default"
+            android:layout_height="160dp"
+
             android:layout_marginStart="@dimen/layout_margin_default"
             android:theme="@style/historial"
             android:datePickerMode="spinner"
             android:calendarViewShown="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/bar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/calendarContainer"

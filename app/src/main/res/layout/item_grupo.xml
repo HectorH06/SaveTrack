@@ -10,43 +10,42 @@
 
     <TextView
         android:id="@+id/GNombre"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:minHeight="35dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:hint="@string/Concepto"
         android:paddingStart="7dp"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_weight="4" />
 
     <TextView
         android:id="@+id/GTipo"
-        android:layout_width="90dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="35dp"
-        android:hint="@string/Valor"
-        android:textAlignment="textStart"
-        android:paddingStart="15dp"
+        android:hint="@string/Tipo"
+        android:textAlignment="center"
         android:textColor="?attr/colorOnPrimary"
         android:textColorHint="?attr/colorSecondary"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_weight="3" />
 
     <ImageView
         android:id="@+id/GColor"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="32dp"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
         android:background="@drawable/ic_circle"
-        android:minHeight="35dp"
         android:textSize="18sp"
-        android:contentDescription="@string/color" />
+        android:contentDescription="@string/color"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/viewGrupo"
-        android:layout_marginStart="32dp"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:paddingEnd="7dp"
         android:background="@drawable/ic_watch"
-        android:backgroundTint="?attr/colorOnPrimary" />
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:layout_weight="1" />
 </TableRow>

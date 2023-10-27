@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
-        <vector android:height="45dp" android:tint="@color/N0"
+        <vector android:height="45dp" android:tint="?attr/colorOnPrimary"
             android:viewportHeight="24" android:viewportWidth="24"
             android:width="45dp">
             <path android:fillColor="@android:color/white" android:pathData="M12.16,3l-0.32,0l-2.63,5.25l5.58,0z"/>
@@ -12,7 +12,7 @@
         </vector>
     </item>
     <item>
-        <vector android:height="45dp" android:tint="@color/N5"
+        <vector android:height="45dp" android:tint="?attr/colorPrimaryVariant"
             android:viewportHeight="24" android:viewportWidth="24"
             android:width="45dp">
             <path android:fillColor="@android:color/white" android:pathData="M12.16,3l-0.32,0l-2.63,5.25l5.58,0z"/>

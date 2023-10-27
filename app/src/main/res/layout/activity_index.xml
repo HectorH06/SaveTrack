@@ -7,19 +7,19 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/ViewContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="79dp"
-        app:layout_constraintBottom_toTopOf="@id/tabs"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent=".93"/>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/n1bar"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-    </com.google.android.material.tabs.TabLayout>
+        app:menu="@menu/bar_index"
+        app:layout_constraintHeight_percent=".07"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

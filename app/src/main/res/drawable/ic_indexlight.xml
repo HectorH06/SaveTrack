@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
-        <vector android:height="45dp" android:tint="@color/N5"
+        <vector android:height="45dp" android:tint="@color/N0"
             android:viewportHeight="24" android:viewportWidth="24"
             android:width="45dp">
             <path android:fillColor="@android:color/white" android:pathData="M10,20v-6h4v6h5v-8h3L12,3 2,12h3v8z"/>
         </vector>
     </item>
     <item>
-        <vector android:height="45dp" android:tint="@color/N0"
+        <vector android:height="45dp" android:tint="@color/N1"
             android:viewportHeight="24" android:viewportWidth="24"
             android:width="45dp">
             <path android:fillColor="@android:color/white" android:pathData="M10,20v-6h4v6h5v-8h3L12,3 2,12h3v8z"/>

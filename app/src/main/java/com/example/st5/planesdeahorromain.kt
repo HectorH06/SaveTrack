@@ -163,11 +163,8 @@ class planesdeahorromain : Fragment() {
                 append("Balance: ")
                 append(balance)
             }
-            binding.PASaldoActual.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.fromleft, R.anim.toright)
-                    .replace(R.id.pda_container, pdaDeudasList()).addToBackStack(null).commit()
-            }
+            binding.PASaldoActual.outlineAmbientShadowColor = resources.getColor(R.color.X0)
+            binding.PASaldoActual.outlineSpotShadowColor = resources.getColor(R.color.X0)
         }
     }
     private suspend fun montoFavorito(

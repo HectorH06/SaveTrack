@@ -38,6 +38,7 @@ class Index : AppCompatActivity() {
 
         binding.bottomBar.itemIconTintList = ColorStateList.valueOf(colorOnPrimary)
         binding.bottomBar.itemTextColor = ColorStateList.valueOf(colorPrimaryVariant)
+        binding.bottomBar.outlineAmbientShadowColor = colorOnPrimary
 
         typedArray.recycle()
 

@@ -27,6 +27,7 @@ class indexmandados : Fragment() {
     private lateinit var binding: FragmentIndexmandadosBinding
 
     private lateinit var fastable: List<Monto>
+    private var mutableColores: MutableList<Int> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +76,7 @@ class indexmandados : Fragment() {
             Log.i("MODO", isDarkMode.toString())
 
             fastable = fastget()
+            getLabels()
             binding.checkList.adapter = MontoAdapter(fastable)
             binding.totalG.text = totalGastos()
 
@@ -88,6 +90,21 @@ class indexmandados : Fragment() {
             }
         }
         return binding.root
+    }
+
+    private suspend fun getLabels() {
+        withContext(Dispatchers.IO) {
+            val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
+
+            val max = labelsDao.getMaxLabel()
+
+            for (i in 1..max) {
+                if (labelsDao.getPlabel(i) != ""){
+                    mutableColores.add(labelsDao.getColor(i))
+                }
+            }
+            Log.v("color", "$mutableColores")
+        }
     }
 
     private suspend fun totalGastos(): String {
@@ -164,8 +181,9 @@ class indexmandados : Fragment() {
             val decoder = Decoder(requireContext())
 
             if (monto.delay >= 1) holder.itemView.setBackgroundResource(R.drawable.fastshapedelayed)
-
             if (monto.delay >= 3) holder.itemView.setBackgroundResource(R.drawable.fastshapeurgent)
+            holder.itemView.outlineAmbientShadowColor = mutableColores[monto.delay]
+            holder.itemView.outlineSpotShadowColor = mutableColores[monto.delay]
 
             holder.itemView.setOnClickListener {
                 lifecycleScope.launch {

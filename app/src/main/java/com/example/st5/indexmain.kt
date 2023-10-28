@@ -1013,6 +1013,10 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             if (position == 0 && montos.size - 1 == 0){
                 holder.itemView.setBackgroundResource(R.drawable.p1onlyitem)
             }
+            holder.itemView.setBackgroundColor(mutableColores[monto.etiqueta])
+            if ((monto.estado ?: return) >= 5 && (monto.estado ?: return) <= 9) {
+                holder.itemView.setBackgroundColor(resources.getColor(R.color.R0))
+            }
         }
 
         override fun getItemCount(): Int {

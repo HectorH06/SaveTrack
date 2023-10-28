@@ -40,7 +40,9 @@
         android:background="@drawable/picshape"
         android:contentDescription="@string/FotoPerfil"
         app:srcCompat="@drawable/ic_person"
-        android:elevation="15dp"/>
+        android:elevation="15dp"
+        android:outlineAmbientShadowColor="@color/X2"
+        android:outlineSpotShadowColor="@color/X2" />
 
     <ImageButton
         android:id="@+id/Options"
@@ -71,7 +73,9 @@
         android:layout_marginTop="-64dp"
         android:layout_marginEnd="@dimen/layout_margin_default"
         android:layout_marginStart="@dimen/layout_margin_default"
-        android:layout_marginBottom="-64dp" />
+        android:layout_marginBottom="-64dp"
+        android:outlineAmbientShadowColor="@color/X2"
+        android:outlineSpotShadowColor="@color/X2" />
 
     <LinearLayout
         android:id="@+id/UserDataLayout"

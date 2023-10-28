@@ -289,7 +289,7 @@ interface MontoDao {
 
 
     // region GET GASTOS POR FECHA ESPECÍFICA
-    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din")
+    @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din ORDER BY estado DESC")
     fun getGXFecha(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
     @Query("SELECT * FROM monto WHERE etiqueta < 10000 AND (((estado = 0 OR estado = 3 OR estado = 5 OR estado = 8) AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai)) OR delay >= 1) AND enddate >= :din AND adddate <= :din ORDER BY concepto ASC")

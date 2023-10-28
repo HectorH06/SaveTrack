@@ -29,10 +29,8 @@
                 android:layout_marginTop="16dp"
                 android:background="@color/transparent"
                 android:contentDescription="@string/goback"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.218"
                 app:srcCompat="@drawable/ic_back"
                 app:tint="?attr/colorOnPrimary" />
 
@@ -72,6 +70,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/goback"
                 app:layout_constraintVertical_bias="0.625" />
+
+            <ImageButton
+                android:id="@+id/conceptIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@color/transparent"
+                android:contentDescription="@string/Concepto"
+                app:layout_constraintEnd_toStartOf="@id/ConceptoField"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ConceptoField"
+                app:layout_constraintBottom_toBottomOf="@id/ConceptoField"
+                app:srcCompat="@drawable/ic_edit"
+                app:tint="?attr/colorOnPrimary" />
 
             <EditText
                 android:id="@+id/ValorField"
@@ -140,6 +151,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ValorField" />
+
+            <ImageButton
+                android:id="@+id/labelIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@color/transparent"
+                android:contentDescription="@string/Concepto"
+                app:layout_constraintEnd_toStartOf="@id/LabelField"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/LabelField"
+                app:layout_constraintBottom_toBottomOf="@id/LabelField"
+                app:srcCompat="@drawable/ic_etiqueta"
+                app:tint="?attr/colorOnPrimary" />
 
             <TextView
                 android:id="@+id/LabelText"
@@ -419,7 +443,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchor="@+id/scrollView2"
+        app:layout_anchor="@+id/background"
         app:layout_anchorGravity="center">
 
         <ImageButton

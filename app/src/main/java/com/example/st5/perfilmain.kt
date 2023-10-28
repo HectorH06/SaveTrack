@@ -140,8 +140,9 @@ class perfilmain : Fragment() {
 
         binding.BalanceTV.setOnClickListener {
             val intent = Intent(activity, Index::class.java)
-            intent.putExtra("isDarkMode", !isDarkMode)
+            intent.putExtra("isDarkMode", isDarkMode)
             intent.putExtra("currentView", 3)
+            startActivity(intent)
         }
 
         lifecycleScope.launch {
@@ -157,6 +158,8 @@ class perfilmain : Fragment() {
                 transformations(CircleCropTransformation())
                 scale(Scale.FILL)
             }
+            binding.ProfilePicture.outlineAmbientShadowColor = resources.getColor(R.color.X0)
+            binding.ProfilePicture.outlineSpotShadowColor = resources.getColor(R.color.X0)
         }
     }
     private suspend fun mostrarDatos() {
@@ -227,6 +230,8 @@ class perfilmain : Fragment() {
                 append("Balance: ")
                 append(balance)
             }
+            binding.BalanceTV.outlineAmbientShadowColor = resources.getColor(R.color.X0)
+            binding.BalanceTV.outlineSpotShadowColor = resources.getColor(R.color.X0)
             if (diasaho > 0) {
                 binding.ahorrando.setColorFilter(resources.getColor(R.color.O2), PorterDuff.Mode.SRC_IN)
             }

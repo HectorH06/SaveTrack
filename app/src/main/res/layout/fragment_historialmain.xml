@@ -32,7 +32,6 @@
             android:id="@+id/spinnerPick"
             android:layout_width="wrap_content"
             android:layout_height="160dp"
-
             android:layout_marginStart="@dimen/layout_margin_default"
             android:theme="@style/historial"
             android:datePickerMode="spinner"
@@ -66,6 +65,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_list" />
+
+        <ImageButton
+            android:id="@+id/Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin_default"
+            android:backgroundTint="@color/transparent"
+            android:contentDescription="@string/etiquetas"
+            app:layout_constraintStart_toStartOf="@id/Options"
+            app:layout_constraintEnd_toEndOf="@id/Options"
+            app:layout_constraintTop_toBottomOf="@id/Options"
+            app:srcCompat="@drawable/ic_filter" />
+
+        <Spinner
+            android:id="@+id/SpinnerFilter"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/etiquetas"
+            android:alpha="0"
+            app:layout_constraintStart_toStartOf="@id/Filter"
+            app:layout_constraintEnd_toEndOf="@id/Filter"
+            app:layout_constraintTop_toTopOf="@id/Filter"
+            app:layout_constraintBottom_toBottomOf="@id/Filter" />
 
         <ImageButton
             android:id="@+id/verMontos"

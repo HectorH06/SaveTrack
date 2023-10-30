@@ -27,15 +27,28 @@ class historialMontosList : Fragment() {
     private lateinit var binding: FragmentHistorialmontoslistBinding
 
     private lateinit var montosf: List<Monto>
+    private var label = 0
 
     companion object {
         private const val fecha = "fechar"
+        private const val etiqueta = "etiquetar"
         fun fechaSearch(fech: Int): historialMontosList {
             val fragment = historialMontosList()
             val args = Bundle()
             Log.i("fech", fech.toString())
 
             args.putInt(fecha, fech)
+            fragment.arguments = args
+            return fragment
+        }
+        fun fechaSearch(fech: Int, etiquet: Int): historialMontosList {
+            val fragment = historialMontosList()
+            val args = Bundle()
+            Log.i("fech", fech.toString())
+            Log.i("etiquet", etiquet.toString())
+
+            args.putInt(fecha, fech)
+            args.putInt(etiqueta, etiquet)
             fragment.arguments = args
             return fragment
         }
@@ -49,10 +62,12 @@ class historialMontosList : Fragment() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     val prev = indexmain()
-                    parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.index_container, prev)
-                        .addToBackStack(null).commit()
+                    lifecycleScope.launch {
+                        parentFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                            .replace(R.id.index_container, prev)
+                            .addToBackStack(null).commit()
+                    }
                 }
             })
     }
@@ -87,6 +102,14 @@ class historialMontosList : Fragment() {
 
             Log.i("MODO", isDarkMode.toString())
 
+            val etiq = if (arguments?.getInt(etiqueta) != null){
+                arguments?.getInt(etiqueta)
+            } else {
+                0
+            }
+            if (etiq != null) {label = etiq}
+            Log.v("etiqueta a buscar", label.toString())
+
             montosf = montosget()
             binding.displayMontos.adapter = MontoAdapter(montosf)
         }
@@ -102,9 +125,11 @@ class historialMontosList : Fragment() {
         val back = historialmain()
 
         binding.goback.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                .replace(R.id.historial_container, back).addToBackStack(null).commit()
+            lifecycleScope.launch {
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.historial_container, back).addToBackStack(null).commit()
+            }
         }
 
         binding.HConcepto.setOnClickListener {
@@ -193,8 +218,15 @@ class historialMontosList : Fragment() {
 
             binding.bar.text = "Montos del $semanita $dom de $mesesito del $yyy"
 
+            Log.v("labelll", "$label")
             montosf = if (datedate != null) {
-                montoDao.getMontoXFecha(datedate, dom, dow, 100, datedate)
+                if (label != 0) {
+                    Log.v("con etiquetona", "")
+                    montoDao.getMontoXFecha(datedate, dom, dow, 100, datedate, label)
+                } else {
+                    Log.v("sin etiquetona", "")
+                    montoDao.getMontoXFecha(datedate, dom, dow, 100, datedate)
+                }
             } else {
                 montoDao.getMontoXFecha()
             }
@@ -232,7 +264,11 @@ class historialMontosList : Fragment() {
             Log.i("DOW", dow.toString())
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaAlfabetica(datedate, dom, dow, 100, datedate)
+                if (label != 0) {
+                    montoDao.getMontoXFechaAlfabetica(datedate, dom, dow, 100, datedate, label)
+                } else {
+                    montoDao.getMontoXFechaAlfabetica(datedate, dom, dow, 100, datedate)
+                }
             } else {
                 montoDao.getMontoXFechaAlfabetica()
             }
@@ -270,7 +306,11 @@ class historialMontosList : Fragment() {
             Log.i("DOW", dow.toString())
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaValuados(datedate, dom, dow, 100, datedate)
+                if (label != 0) {
+                    montoDao.getMontoXFechaValuados(datedate, dom, dow, 100, datedate, label)
+                } else {
+                    montoDao.getMontoXFechaValuados(datedate, dom, dow, 100, datedate)
+                }
             } else {
                 montoDao.getMontoXFechaValuados()
             }
@@ -308,7 +348,11 @@ class historialMontosList : Fragment() {
             Log.i("DOW", dow.toString())
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaVeces(datedate, dom, dow, 100, datedate)
+                if (label != 0) {
+                    montoDao.getMontoXFechaVeces(datedate, dom, dow, 100, datedate, label)
+                } else {
+                    montoDao.getMontoXFechaVeces(datedate, dom, dow, 100, datedate)
+                }
             } else {
                 montoDao.getMontoXFechaVeces()
             }
@@ -346,7 +390,11 @@ class historialMontosList : Fragment() {
             Log.i("DOW", dow.toString())
 
             montosf = if (datedate != null) {
-                montoDao.getMontoXFechaEtiquetados(datedate, dom, dow, 100, datedate)
+                if (label != 0) {
+                    montoDao.getMontoXFechaEtiquetados(datedate, dom, dow, 100, datedate, label)
+                } else {
+                    montoDao.getMontoXFechaEtiquetados(datedate, dom, dow, 100, datedate)
+                }
             } else {
                 montoDao.getMontoXFechaEtiquetados()
             }
@@ -613,7 +661,6 @@ class historialMontosList : Fragment() {
                 popupMenu.show()
             }
         }
-
 
         override fun getItemCount(): Int {
             Log.v("size de montossss", montos.size.toString())

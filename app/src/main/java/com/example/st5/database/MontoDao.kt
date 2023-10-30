@@ -219,6 +219,27 @@ interface MontoDao {
     @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) ORDER BY veces ASC")
     fun getMontoXFechaVeces(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int): List<Monto>
 
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND etiqueta = :label")
+    fun getMontoXFecha(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int, label: Int): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND etiqueta = :label ORDER BY concepto ASC")
+    fun getMontoXFechaAlfabetica(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int, label: Int): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND etiqueta = :label ORDER BY valor ASC")
+    fun getMontoXFechaValuados(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int, label: Int): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND etiqueta = :label ORDER BY frecuencia ASC")
+    fun getMontoXFechaFrecuentes(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int, label: Int): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND etiqueta = :label ORDER BY etiqueta ASC")
+    fun getMontoXFechaEtiquetados(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int, label: Int): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND etiqueta = :label ORDER BY interes ASC")
+    fun getMontoXFechaInteres(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int, label: Int): List<Monto>
+
+    @Query("SELECT * FROM monto WHERE adddate <= :din AND enddate >= :din AND (fecha = :fecha OR fecha = :dom OR fecha = :dow OR fecha = :dai) AND etiqueta = :label ORDER BY veces ASC")
+    fun getMontoXFechaVeces(fecha: Int, dom: Int, dow: Int, dai: Int, din: Int, label: Int): List<Monto>
+
     @Query("SELECT * FROM monto")
     fun getMontoXFecha(): List<Monto>
 

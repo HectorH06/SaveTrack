@@ -1,9 +1,9 @@
 package com.example.st5.widgetConfig
 
+import android.app.Activity.RESULT_OK
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.RemoteViews
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -33,20 +34,9 @@ class addIngreso : Fragment() {
 
     private lateinit var ingresos: List<Monto>
 
+    private lateinit var preview: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            val isDarkMode = isDarkModeEnabled(requireContext())
-
-            if (isDarkMode) {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index2)
-            } else {
-                binding.background.setBackgroundResource(R.drawable.gradient_background_index)
-            }
-
-            Log.i("MODO", isDarkMode.toString())
-        }
 
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
@@ -56,19 +46,6 @@ class addIngreso : Fragment() {
                     startActivity(intent)
                 }
             })
-    }
-
-    private suspend fun isDarkModeEnabled(context: Context): Boolean {
-        var komodo: Boolean
-
-        withContext(Dispatchers.IO) {
-            val assetsDao = Stlite.getInstance(context).getAssetsDao()
-
-            val mode = assetsDao.getTheme()
-            komodo = mode != 0
-        }
-
-        return komodo
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -177,6 +154,9 @@ class addIngreso : Fragment() {
                 val appWidgetManager = AppWidgetManager.getInstance(requireContext())
                 val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), widgetProvider::class.java))
                 appWidgetManager.updateAppWidget(appWidgetIds, views)
+
+                val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds)
+                requireActivity().setResult(RESULT_OK, resultValue)
 
                 Log.v("Widget creado", monto.concepto)
 

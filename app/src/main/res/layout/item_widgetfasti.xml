@@ -4,33 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/widgetshape"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/fastVeces"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="@string/veces"
+        android:text="@string/veces"
         android:textAlignment="center"
         android:textColor="@color/X4"
-        android:textColorHint="@color/X4" />
+        android:textColorHint="@color/X4"
+        android:layout_weight="3"/>
 
-    <Button
+    <TextView
         android:id="@+id/fastConcepto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/venta"
+        android:text="@string/venta"
         android:textAlignment="center"
         android:textColor="@color/X4"
-        android:textColorHint="@color/X4" />
+        android:textColorHint="@color/X4"
+        android:layout_weight="4"/>
 
     <TextView
         android:id="@+id/fastValor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/Valor"
+        android:text="@string/Valor"
         android:textAlignment="center"
         android:textColor="@color/X4"
-        android:textColorHint="@color/X4" />
+        android:textColorHint="@color/X4"
+        android:layout_weight="3"/>
 </LinearLayout>

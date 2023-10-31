@@ -73,7 +73,12 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="activityAddIngreso"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
         <receiver
             android:name=".widgetProvider"
             android:label="WidgetAddI"

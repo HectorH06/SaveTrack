@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/wallpaper"
-        android:theme="@style/index_background" />
+        android:background="@drawable/gradient_background_index" />
 
     <ScrollView
         android:id="@+id/scrollView2"

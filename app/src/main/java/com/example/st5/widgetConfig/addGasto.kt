@@ -22,16 +22,16 @@ import com.example.st5.Decoder
 import com.example.st5.Index
 import com.example.st5.R
 import com.example.st5.database.Stlite
-import com.example.st5.databinding.WidgetAddingresoBinding
+import com.example.st5.databinding.WidgetAddgastoBinding
 import com.example.st5.models.Monto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class addIngreso : Fragment() {
-    lateinit var binding: WidgetAddingresoBinding
+class addGasto : Fragment() {
+    lateinit var binding: WidgetAddgastoBinding
 
-    private lateinit var ingresos: List<Monto>
+    private lateinit var gastos: List<Monto>
 
     private lateinit var preview: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +49,10 @@ class addIngreso : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = WidgetAddingresoBinding.inflate(inflater, container, false)
+        binding = WidgetAddgastoBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
             montosget()
-            binding.displayIngresos.adapter = MontoAdapter(ingresos)
+            binding.displayGastos.adapter = MontoAdapter(gastos)
         }
         return binding.root
     }
@@ -60,43 +60,43 @@ class addIngreso : Fragment() {
     private suspend fun montosget() {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            ingresos = montoDao.getIngresos()
+            gastos = montoDao.getGastos()
         }
     }
 
     private suspend fun montosgetOrdered(filter: String): List<Monto> {
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            montoDao.getIngresosOrdered(filter)
-            Log.i("ALL MONTOS", ingresos.toString())
+            montoDao.getGastosOrdered(filter)
+            Log.i("ALL MONTOS", gastos.toString())
         }
-        return ingresos
+        return gastos
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.HConcepto.setOnClickListener {
             lifecycleScope.launch {
-                ingresos = montosgetOrdered("concepto")
-                binding.displayIngresos.adapter = MontoAdapter(ingresos)
+                gastos = montosgetOrdered("concepto")
+                binding.displayGastos.adapter = MontoAdapter(gastos)
             }
         }
         binding.HValor.setOnClickListener {
             lifecycleScope.launch {
-                ingresos = montosgetOrdered("valor")
-                binding.displayIngresos.adapter = MontoAdapter(ingresos)
+                gastos = montosgetOrdered("valor")
+                binding.displayGastos.adapter = MontoAdapter(gastos)
             }
         }
         binding.HVeces.setOnClickListener {
             lifecycleScope.launch {
-                ingresos = montosgetOrdered("fecha")
-                binding.displayIngresos.adapter = MontoAdapter(ingresos)
+                gastos = montosgetOrdered("fecha")
+                binding.displayGastos.adapter = MontoAdapter(gastos)
             }
         }
         binding.HEtiqueta.setOnClickListener {
             lifecycleScope.launch {
-                ingresos = montosgetOrdered("etiqueta")
-                binding.displayIngresos.adapter = MontoAdapter(ingresos)
+                gastos = montosgetOrdered("etiqueta")
+                binding.displayGastos.adapter = MontoAdapter(gastos)
             }
         }
     }
@@ -141,7 +141,7 @@ class addIngreso : Fragment() {
                 holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
             }
             holder.addM.setOnClickListener {
-                val intent = Intent(context, widgetProviderIngreso::class.java)
+                val intent = Intent(context, widgetProviderGasto::class.java)
                 intent.action = "android.appwidget.action.APPWIDGET_UPDATE"
                 intent.putExtra("IDM", monto.idmonto)
 
@@ -152,7 +152,7 @@ class addIngreso : Fragment() {
                 views.setOnClickPendingIntent(R.id.fastConcepto, pendingIntent)
 
                 val appWidgetManager = AppWidgetManager.getInstance(requireContext())
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), widgetProviderIngreso::class.java))
+                val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), widgetProviderGasto::class.java))
                 appWidgetManager.updateAppWidget(appWidgetIds, views)
 
                 val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds)
@@ -162,7 +162,7 @@ class addIngreso : Fragment() {
 
                 requireActivity().finish()
             }
-            if (position == ingresos.size - 1){
+            if (position == gastos.size - 1){
                 holder.itemView.setBackgroundResource(R.drawable.p1bottomcell)
             }
         }

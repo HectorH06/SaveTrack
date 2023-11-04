@@ -2,9 +2,9 @@
     android:minWidth="40dp"
     android:minHeight="40dp"
     android:updatePeriodMillis="86400000"
-    android:previewImage="@drawable/logo1"
-    android:initialLayout="@layout/item_widgetfasti"
-    android:configure="com.example.st5.widgetConfig.activityAddIngreso"
+    android:previewImage="@drawable/ic_widgeti"
+    android:initialLayout="@layout/item_widgetfast"
+    android:configure="com.example.st5.widgetConfig.activityWidgetIngreso"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
 </appwidget-provider>

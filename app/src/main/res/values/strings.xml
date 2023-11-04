@@ -160,7 +160,6 @@
     <string name="evento">Evento</string>
     <string name="eventos">Eventos</string>
     <string name="updatee">Actualizar Evento</string>
-    <string name="addingresoswidget">Añadir widget de ingreso</string>
     <string name="elegir">Elegir</string>
     <string name="descripcion">Descripción</string>
     <string name="logout">Cerrar Sesión</string>
@@ -199,6 +198,8 @@
     <string name="liquidar">Liquidar</string>
     <string name="restaurar">Restaurar</string>
     <string name="pagar">Pagar</string>
+    <string name="addingresoswidget">Añadir widget de ingreso</string>
+    <string name="addgastoswidget">Añadir widget de gasto</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

@@ -7,7 +7,7 @@ import androidx.fragment.app.replace
 import com.example.st5.R
 import com.example.st5.databinding.WidgetContainerBinding
 
-class activityAddIngreso : AppCompatActivity() {
+class activityWidgetIngreso : AppCompatActivity() {
     lateinit var binding: WidgetContainerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,8 +17,6 @@ class activityAddIngreso : AppCompatActivity() {
             replace<addIngreso>(R.id.FragContainer, "addIngreso")
             setReorderingAllowed(true)
             addToBackStack(null)
-
-            val fragment: addIngreso? = supportFragmentManager.findFragmentByTag("addIngreso") as addIngreso?
         }
     }
 }

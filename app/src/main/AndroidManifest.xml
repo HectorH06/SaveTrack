@@ -68,10 +68,11 @@
         <receiver android:name=".itemDelay" />
         <receiver android:name=".itemSkip" />
 
+
         <activity
-            android:name=".widgetConfig.activityAddIngreso"
+            android:name=".widgetConfig.activityWidgetIngreso"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="activityAddIngreso"
+            android:label="activityAddWidget"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
@@ -80,23 +81,75 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".widgetProvider"
-            android:label="WidgetAddI"
+            android:name=".widgetConfig.widgetProviderIngreso"
+            android:label="Ingreso"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_info" />
+                android:resource="@xml/widget_info_ingreso" />
         </receiver>
-
         <service
-            android:name=".widgetService"
+            android:name=".widgetConfig.widgetServiceIngreso"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".widgetConfig.activityWidgetGasto"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="activityAddWidget"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+        <receiver
+            android:name=".widgetConfig.widgetProviderGasto"
+            android:label="Gasto"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_gasto" />
+        </receiver>
+        <service
+            android:name=".widgetConfig.widgetServiceGasto"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".widgetConfig.activityWidgetRedirect"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="activityAddWidget"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+        <receiver
+            android:name=".widgetConfig.widgetProviderRedirect"
+            android:label="Añadir Monto"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_new" />
+        </receiver>
     </application>
 </manifest>

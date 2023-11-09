@@ -2,7 +2,6 @@ package com.example.st5.widgetConfig
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -21,15 +20,13 @@ class widgetServiceGasto : LifecycleService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_INCREMENT) {
             val montoId = getMontoId(intent)
+            val widgetId = getWidgetId(intent)
             Log.v("widget IDM", "$montoId")
             val appWidgetManager = AppWidgetManager.getInstance(this)
-            val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                ComponentName(this, widgetProviderGasto::class.java)
-            )
-            for (appWidgetId in appWidgetIds) {
-                incrementCount(this, appWidgetId, montoId)
-                widgetProviderGasto.updateAppWidget(this, appWidgetManager, appWidgetId, montoId)
-            }
+
+            incrementCount(this, widgetId)
+            Log.v("widget service increment", "$widgetId")
+            widgetProviderGasto.updateAppWidget(this, appWidgetManager, widgetId, montoId)
         }
 
         return super.onStartCommand(intent, flags, startId)
@@ -38,10 +35,11 @@ class widgetServiceGasto : LifecycleService() {
     companion object {
         private const val ACTION_INCREMENT = "com.example.st5.INCREMENT"
 
-        fun newIncrementIntent(context: Context, montoId: Long): PendingIntent {
+        fun newIncrementIntent(context: Context, widgetId: Int, montoId: Long): PendingIntent {
             val intent = Intent(context, widgetServiceGasto::class.java)
             intent.action = ACTION_INCREMENT
             intent.putExtra("MONTO_ID", montoId)
+            intent.putExtra("WIDGET_ID", widgetId)
             Log.v("widget IDM", "$montoId")
             return PendingIntent.getService(
                 context,
@@ -52,29 +50,29 @@ class widgetServiceGasto : LifecycleService() {
         }
 
         fun getVeces(context: Context, appWidgetId: Int, montoId: Long): Int {
-            var veces = 0L
+            var veces = -1L
             CoroutineScope(Dispatchers.IO).launch {
                 withContext(Dispatchers.IO) {
                     val montoDao = Stlite.getInstance(context).getMontoDao()
                     veces = montoDao.getVeces(montoId.toInt()) + 1
                 }
             }
-            sleep(300)
+            while (veces == -1L) sleep(10)
             return veces.toInt()
         }
         fun getConcepto(context: Context, appWidgetId: Int, montoId: Long): String {
-            var concepto = "Concepto"
+            var concepto = ""
             CoroutineScope(Dispatchers.IO).launch {
                 withContext(Dispatchers.IO) {
                     val montoDao = Stlite.getInstance(context).getMontoDao()
                     concepto = montoDao.getConcepto(montoId.toInt())
                 }
             }
-            sleep(300)
+            while (concepto == "") sleep(10)
             return concepto
         }
         fun getValor(context: Context, appWidgetId: Int, montoId: Long): String {
-            var valor = 0.0
+            var valor = -1.111
             val decoder = Decoder(context)
             CoroutineScope(Dispatchers.IO).launch {
                 withContext(Dispatchers.IO) {
@@ -82,14 +80,18 @@ class widgetServiceGasto : LifecycleService() {
                     valor = montoDao.getValor(montoId.toInt())
                 }
             }
-            sleep(300)
+            while (valor == -1.111) sleep(10)
             return "$" + decoder.format(valor)
         }
 
-        fun incrementCount(context: Context, appWidgetId: Int, montoId: Long) {
+        fun incrementCount(context: Context, appWidgetId: Int) {
             CoroutineScope(Dispatchers.IO).launch {
                 withContext(Dispatchers.IO) {
-                    if (montoId != null && montoId != -1L) {
+                    val widgetsDao = Stlite.getInstance(context).getWidgetsDao()
+                    val montoId = widgetsDao.getIdMontoDeWidget(appWidgetId)
+                    Log.v("widget montoId", "$montoId")
+
+                    if (montoId != null && montoId != -0L && montoId != -1L) {
                         val montoDao = Stlite.getInstance(context).getMontoDao()
                         val usuarioDao = Stlite.getInstance(context).getUsuarioDao()
                         val ingresoGastoDao = Stlite.getInstance(context).getIngresosGastosDao()
@@ -158,6 +160,10 @@ class widgetServiceGasto : LifecycleService() {
         private fun getMontoId(intent: Intent): Long {
             Log.v("widget IDM", "${intent.getLongExtra("MONTO_ID", -1)}")
             return intent.getLongExtra("MONTO_ID", -1)
+        }
+        private fun getWidgetId(intent: Intent): Int {
+            Log.v("widget IDW", "${intent.getLongExtra("WIDGET_ID", -1)}")
+            return intent.getIntExtra("WIDGET_ID", -1)
         }
     }
 }

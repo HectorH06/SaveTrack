@@ -2,25 +2,49 @@ package com.example.st5.widgetConfig
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
 import com.example.st5.R
+import com.example.st5.database.Stlite
+import com.example.st5.models.Widgets
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class widgetProviderIngreso : AppWidgetProvider() {
     private var montoIdToShow: Long = -1
+    private var widgetId: Int = -1
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
         if (intent.action == "android.appwidget.action.APPWIDGET_UPDATE") {
             montoIdToShow = intent.getLongExtra("IDM", -1)
-            if (montoIdToShow != -1L) {
+            widgetId = intent.getIntExtra("IDW", -1)
+            if (montoIdToShow != -1L && widgetId != -1) {
                 val appWidgetManager = AppWidgetManager.getInstance(context)
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, widgetProviderIngreso::class.java))
-                onUpdate(context, appWidgetManager, appWidgetIds)
+                CoroutineScope(Dispatchers.IO).launch {
+                    withContext(Dispatchers.IO) {
+                        val widgetsDao = Stlite.getInstance(context).getWidgetsDao()
+                        val nuevoWidget = Widgets(
+                            idwidget = widgetId,
+                            idmonto = montoIdToShow
+                        )
+
+                        if (!widgetsDao.getAllWidgetIds().contains(nuevoWidget.idwidget)) {
+                            widgetsDao.insertWidget(nuevoWidget)
+                        }
+
+                        val allWidgets = widgetsDao.getAllWidgets()
+                        Log.v("widget ALL", "$allWidgets")
+
+                        val appWidgetIdArray: IntArray = intArrayOf(widgetId)
+                        onUpdate(context, appWidgetManager, appWidgetIdArray)
+                    }
+                }
             }
         }
     }
@@ -31,7 +55,15 @@ class widgetProviderIngreso : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId, montoIdToShow)
+            Log.v("widget id at update", "$appWidgetId")
+            CoroutineScope(Dispatchers.IO).launch {
+                withContext(Dispatchers.IO) {
+                    val widgetsDao = Stlite.getInstance(context).getWidgetsDao()
+                    val idMonto = widgetsDao.getIdMontoDeWidget(appWidgetId)
+
+                    updateAppWidget(context, appWidgetManager, appWidgetId, idMonto)
+                }
+            }
         }
     }
 
@@ -44,10 +76,10 @@ class widgetProviderIngreso : AppWidgetProvider() {
         ) {
             val views = RemoteViews(context.packageName, R.layout.item_widgetfast)
             Log.v("widget Id", "$appWidgetId")
-            val intent = widgetServiceIngreso.newIncrementIntent(context, montoId)
+            val intent = widgetServiceIngreso.newIncrementIntent(context, appWidgetId, montoId)
             views.setOnClickPendingIntent(R.id.fastAddW, intent)
 
-            widgetServiceIngreso.incrementCount(context, appWidgetId, montoId)
+            widgetServiceIngreso.incrementCount(context, appWidgetId)
 
             val veces = widgetServiceIngreso.getVeces(context, appWidgetId, montoId)
             val concepto = widgetServiceIngreso.getConcepto(context, appWidgetId, montoId)

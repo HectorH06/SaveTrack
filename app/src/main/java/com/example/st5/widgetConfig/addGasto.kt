@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.RemoteViews
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -32,8 +31,6 @@ class addGasto : Fragment() {
     lateinit var binding: WidgetAddgastoBinding
 
     private lateinit var gastos: List<Monto>
-
-    private lateinit var preview: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -141,9 +138,14 @@ class addGasto : Fragment() {
                 holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
             }
             holder.addM.setOnClickListener {
+                val appWidgetManager = AppWidgetManager.getInstance(requireContext())
+                val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), widgetProviderGasto::class.java))
+                val idw = appWidgetIds.last()
+                Log.v("IDW", "$idw")
                 val intent = Intent(context, widgetProviderGasto::class.java)
                 intent.action = "android.appwidget.action.APPWIDGET_UPDATE"
                 intent.putExtra("IDM", monto.idmonto)
+                intent.putExtra("IDW", idw)
 
                 val wId = 10000 + monto.idmonto.toInt()
                 val pendingIntent = PendingIntent.getBroadcast(requireContext(), wId, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
@@ -151,8 +153,6 @@ class addGasto : Fragment() {
                 val views = RemoteViews("com.example.st5", R.layout.item_widgetfast)
                 views.setOnClickPendingIntent(R.id.fastConcepto, pendingIntent)
 
-                val appWidgetManager = AppWidgetManager.getInstance(requireContext())
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(requireContext(), widgetProviderGasto::class.java))
                 appWidgetManager.updateAppWidget(appWidgetIds, views)
 
                 val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds)

@@ -17,7 +17,7 @@ class activityWidgetRedirect : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val intent = Intent(this, widgetProviderIngreso::class.java)
+        val intent = Intent(this, widgetProviderRedirect::class.java)
         intent.action = "android.appwidget.action.APPWIDGET_UPDATE"
 
         val pendingIntent = PendingIntent.getBroadcast(this, 30000, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)

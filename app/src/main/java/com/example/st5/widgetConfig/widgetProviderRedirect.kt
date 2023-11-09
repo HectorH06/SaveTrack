@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.RemoteViews
 import com.example.st5.Index
 import com.example.st5.R
@@ -20,6 +21,7 @@ class widgetProviderRedirect : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
+        Log.v("onReceive", "onReceive")
         if (intent.action == "android.appwidget.action.APPWIDGET_UPDATE") {
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(
@@ -39,6 +41,7 @@ class widgetProviderRedirect : AppWidgetProvider() {
     ) {
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
+            Log.v("onUpdate", "onUpdate")
         }
     }
 
@@ -62,11 +65,12 @@ class widgetProviderRedirect : AppWidgetProvider() {
             intent.putExtra("isDarkMode", komodo)
             intent.putExtra("currentView", 2)
             intent.putExtra("fragToGo", 4)
-            val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingIntent = PendingIntent.getActivity(context, 30000, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
             val views = RemoteViews("com.example.st5", R.layout.item_widgetredirect)
             views.setOnClickPendingIntent(R.id.fastAddM, pendingIntent)
 
+            Log.v("Añadir monto", "Intent")
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }

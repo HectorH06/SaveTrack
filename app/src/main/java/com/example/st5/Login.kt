@@ -141,6 +141,7 @@ class Login : Fragment() {
                                                             val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
                                                             val eventosDao = Stlite.getInstance(requireContext()).getEventosDao()
                                                             val conySugDao = Stlite.getInstance(requireContext()).getConySugDao()
+                                                            val widgetsDao = Stlite.getInstance(requireContext()).getWidgetsDao()
 
                                                             val nuevoUsuario = Usuario(
                                                                 iduser = id,
@@ -259,6 +260,7 @@ class Login : Fragment() {
                                                             labelsDao.clean()
                                                             eventosDao.clean()
                                                             conySugDao.clean()
+                                                            widgetsDao.clean()
 
                                                             usuarioDao.insertUsuario(nuevoUsuario)
                                                             ingresosGastosDao.insertIngresosGastos(nuevosIG)

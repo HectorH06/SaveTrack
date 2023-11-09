@@ -208,6 +208,7 @@ class Configuracion : Fragment() {
                         val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
                         val eventosDao = Stlite.getInstance(requireContext()).getEventosDao()
                         val conySugDao = Stlite.getInstance(requireContext()).getConySugDao()
+                        val widgetsDao = Stlite.getInstance(requireContext()).getWidgetsDao()
 
                         val perocuantosmontos = montoDao.getMaxMonto()
                         val perocuantosmontosg = montoGrupoDao.getMaxMontoGrupo()
@@ -707,6 +708,7 @@ class Configuracion : Fragment() {
                         montoGrupoDao.clean()
                         gruposDao.clean()
                         labelsDao.clean()
+                        widgetsDao.clean()
 
                         val selectedafter = usuarioDao.getUserData()
                         Log.v(

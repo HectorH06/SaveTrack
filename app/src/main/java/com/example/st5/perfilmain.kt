@@ -158,8 +158,6 @@ class perfilmain : Fragment() {
                 transformations(CircleCropTransformation())
                 scale(Scale.FILL)
             }
-            binding.ProfilePicture.outlineAmbientShadowColor = resources.getColor(R.color.X0)
-            binding.ProfilePicture.outlineSpotShadowColor = resources.getColor(R.color.X0)
         }
     }
     private suspend fun mostrarDatos() {
@@ -214,10 +212,17 @@ class perfilmain : Fragment() {
             Log.v("Balance", balance)
 
             binding.UsernameTV.text = nombre
-            binding.AgeTV.text = buildString {
-                append(edad.toString())
-                append(" años")
+            if (edad != 0) {
+                binding.AgeTV.text = buildString {
+                    append(edad.toString())
+                    append(" años")
+                }
+            } else {
+                binding.AgeTV.text = buildString {
+                    append("Edad sin registrar")
+                }
             }
+
             binding.OcupationTV.text = buildString {
                 append(chamba)
             }
@@ -243,6 +248,7 @@ class perfilmain : Fragment() {
             }
 
             val linkfoto = "http://savetrack.com.mx/images/$nombre.jpg"
+            Log.v("Link foto", linkfoto)
             lifecycleScope.launch {
                 bajarfoto(linkfoto)
             }

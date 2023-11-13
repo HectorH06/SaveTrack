@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -29,8 +31,13 @@ import java.nio.charset.Charset
 import java.time.LocalDate
 import java.util.*
 
-class Login : Fragment() {
+class Login : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding: FragmentLoginBinding
+
+    private var mutableNombres: MutableList<String> = mutableListOf()
+    private var mutableIds: MutableList<Long> = mutableListOf()
+
+    private var selectedLabel = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -48,7 +55,43 @@ class Login : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+        lifecycleScope.launch {
+            getUsersCache()
+
+            val arrayUsers = mutableNombres
+            val adapterG = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                arrayUsers
+            )
+            adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            binding.SpinnerUsers.adapter = adapterG
+            binding.SpinnerUsers.onItemSelectedListener = this@Login
+        }
+
         return binding.root
+    }
+
+    private suspend fun getUsersCache() {
+        withContext(Dispatchers.IO) {
+            val usersCacheDao = Stlite.getInstance(requireContext()).getUserCacheDao()
+
+            val max = usersCacheDao.getMaxId()
+
+
+            mutableIds.add(0)
+            mutableNombres.add("Seleccionar")
+            for (i in 1..max) {
+                if (usersCacheDao.getNombreUserCache(i.toLong()) != null){
+                    mutableIds.add(usersCacheDao.getIdUserCache(i.toLong()))
+                    mutableNombres.add(usersCacheDao.getNombreUserCache(i.toLong()))
+                }
+            }
+            Log.v("idu", "$mutableIds")
+            Log.v("nombres", "$mutableNombres")
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -142,6 +185,7 @@ class Login : Fragment() {
                                                             val eventosDao = Stlite.getInstance(requireContext()).getEventosDao()
                                                             val conySugDao = Stlite.getInstance(requireContext()).getConySugDao()
                                                             val widgetsDao = Stlite.getInstance(requireContext()).getWidgetsDao()
+                                                            val userCacheDao = Stlite.getInstance(requireContext()).getUserCacheDao()
 
                                                             val nuevoUsuario = Usuario(
                                                                 iduser = id,
@@ -279,6 +323,15 @@ class Login : Fragment() {
                                                                 }
                                                             }
                                                             assetsDao.insertAsset(defaultAssets)
+
+                                                            val userCache = UserCache(
+                                                                iduser = nuevoUsuario.iduser,
+                                                                nombre = nuevoUsuario.nombre
+                                                            )
+
+                                                            if (userCacheDao.getNombreUserCache(nuevoUsuario.iduser) != nuevoUsuario.nombre) {
+                                                                userCacheDao.insertUserCache(userCache)
+                                                            }
 
                                                             val selected = usuarioDao.getUserData()
                                                             Log.v("SELECTED USERS", selected.toString())
@@ -730,7 +783,7 @@ class Login : Fragment() {
                                                             Log.v("jsonArray4", jsonArray4.toString())
                                                             for (i in 0 until jsonArray4.length()) {
                                                                 val jsonObject4 = jsonArray4.getJSONObject(i)
-                                                                if (jsonObject4.getLong("idmonto") != null) {
+                                                                if (jsonObject4.getLong("idmonto") != null && jsonObject4.getLong("idmonto") != 0L) {
                                                                     val idmontog: Long = jsonObject4.getLong("idmonto")
                                                                     val idg: Long = jsonObject4.getLong("idgrupo")
                                                                     val idusemg: Long = jsonObject4.getLong("iduser")
@@ -912,6 +965,7 @@ class Login : Fragment() {
                                                             }
 
                                                             val assetsDao = Stlite.getInstance(requireContext()).getAssetsDao()
+                                                            val userCacheDao = Stlite.getInstance(requireContext()).getUserCacheDao()
 
                                                             val nuevoUsuario = Usuario(
                                                                 iduser = idu,
@@ -932,6 +986,10 @@ class Login : Fragment() {
                                                                 theme = tema,
                                                                 lastprocess = lastprocess
                                                             )
+                                                            val userCache = UserCache(
+                                                                iduser = nuevoUsuario.iduser,
+                                                                nombre = nuevoUsuario.nombre
+                                                            )
 
                                                             usuarioDao.clean()
                                                             ingresosGastosDao.clean()
@@ -941,9 +999,10 @@ class Login : Fragment() {
 
                                                             usuarioDao.insertUsuario(nuevoUsuario)
                                                             ingresosGastosDao.insertIngresosGastos(nuevosIG)
-                                                            //montoGrupoDao.insertMontoG(nuevoMontoGrupo)
-                                                            //gruposDao.insertGrupo(nuevoGrupo)
                                                             assetsDao.insertAsset(defaultAssets)
+                                                            if (userCacheDao.getNombreUserCache(nuevoUsuario.iduser) != nuevoUsuario.nombre) {
+                                                                userCacheDao.insertUserCache(userCache)
+                                                            }
 
                                                             val selected = usuarioDao.getUserData()
                                                             Log.v("SELECTED USERS", selected.toString())
@@ -1001,4 +1060,23 @@ class Login : Fragment() {
             }
         }
     }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        val nombre = binding.SpinnerUsers.selectedItem?.toString()
+
+        if (nombre != null) {
+            Log.v("ETIQUETA SELECCIONADA", nombre.toString())
+        }
+
+        for (i in 0 until mutableNombres.size) {
+            if (nombre == mutableNombres[i] && nombre != "Seleccionar") {
+                lifecycleScope.launch {
+                    selectedLabel = mutableIds[i].toInt()
+                    binding.editTextTextPersonName.setText(mutableNombres[i])
+                }
+            }
+        }
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) { selectedLabel = 0 }
 }

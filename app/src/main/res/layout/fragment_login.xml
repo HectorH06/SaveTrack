@@ -90,6 +90,29 @@
         app:layout_constraintTop_toBottomOf="@+id/textview_IniSes"
         app:layout_constraintVertical_bias="0.806" />
 
+    <ImageButton
+        android:id="@+id/UserCache"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparent"
+        android:contentDescription="@string/usuarios"
+        app:layout_constraintEnd_toEndOf="@id/editTextTextPersonName"
+        app:layout_constraintTop_toTopOf="@id/editTextTextPersonName"
+        app:layout_constraintBottom_toBottomOf="@id/editTextTextPersonName"
+        app:srcCompat="@drawable/ic_person"
+        app:tint="@color/X0" />
+
+    <Spinner
+        android:id="@+id/SpinnerUsers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/usuarios"
+        android:alpha="0"
+        app:layout_constraintStart_toStartOf="@id/UserCache"
+        app:layout_constraintEnd_toEndOf="@id/UserCache"
+        app:layout_constraintTop_toTopOf="@id/UserCache"
+        app:layout_constraintBottom_toBottomOf="@id/UserCache" />
+
     <Button
         android:id="@+id/buttonSinCuenta"
         android:layout_width="wrap_content"

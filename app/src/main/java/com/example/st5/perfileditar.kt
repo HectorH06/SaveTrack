@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import coil.clear
 import coil.load
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
@@ -106,13 +107,18 @@ class perfileditar : Fragment() {
             val confirmDialog = AlertDialog.Builder(requireContext())
                 .setTitle("¿Seguro que quieres guardar cambios?")
                 .setPositiveButton("Guardar") { dialog, _ ->
-                    lifecycleScope.launch {
-                        guardarCambios()
+                    if (binding.AgeeditperfTV.text.isNotEmpty() && binding.GoaleditperfTV.text.isNotEmpty()) {
+                        lifecycleScope.launch {
+                            guardarCambios()
+                        }
+                        dialog.dismiss()
+                        parentFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                            .replace(R.id.perfil_container, back).addToBackStack(null).commit()
+                    } else {
+                        dialog.dismiss()
+                        Toast.makeText(requireContext(), "No puede haber campos vacíos", Toast.LENGTH_SHORT).show()
                     }
-                    dialog.dismiss()
-                    parentFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.perfil_container, back).addToBackStack(null).commit()
                 }
                 .setNegativeButton("Cancelar") { dialog, _ ->
                     dialog.dismiss()
@@ -271,6 +277,7 @@ class perfileditar : Fragment() {
                     delay(10000)
                 }
             } else {
+                binding.agregarfotobtn.clear()
                 Toast.makeText(requireContext(), "La imagen es demasiado grande, intente con una más pequeña", Toast.LENGTH_SHORT).show()
             }
 
@@ -326,8 +333,17 @@ class perfileditar : Fragment() {
             Log.v("Chamba", chamba.toString())
 
             binding.UsernameeditperfTV.text = nombre
-            binding.AgeeditperfTV.setText(edad.toString())
-            binding.GoaleditperfTV.setText(meta.toString())
+            if (edad != 0) {
+                binding.AgeeditperfTV.setText(edad.toString())
+            } else {
+                binding.AgeeditperfTV.hint = "Edad"
+            }
+
+            if (meta != 0.0) {
+                binding.GoaleditperfTV.setText(meta.toString())
+            } else {
+                binding.GoaleditperfTV.hint = "Meta de ahorro"
+            }
 
             val linkfoto = "http://savetrack.com.mx/images/$nombre.jpg"
             lifecycleScope.launch {
@@ -388,8 +404,12 @@ class perfileditar : Fragment() {
 
             val nuevaChamba = cFinal.toLong()
 
-            val edadlong = nuevaEdad.toLong()
-            if (edadlong <= 5 || edadlong >= 121) {
+            val edadlong = if (nuevaEdad.isNotEmpty()) {
+                nuevaEdad.toLong()
+            } else {
+                0
+            }
+            if (edadlong <= 5 || edadlong >= 121 || nuevaEdad == "") {
                 edadchanged = false
                 withContext(Dispatchers.Default) {
                     Looper.prepare()
@@ -400,13 +420,13 @@ class perfileditar : Fragment() {
             } else {
                 ok = 1
             }
-            val metadouble = nuevaMeta.toDouble()
-            if (metadouble <= 0.0) {
+            val metadouble = if (nuevaMeta.isNotEmpty()) {
+                nuevaMeta.toDouble()
+            } else {
+                0.0
+            }
+            if (metadouble <= 0.0 || nuevaMeta == "") {
                 metachanged = false
-                withContext(Dispatchers.Default) {
-                    Looper.prepare()
-                    Toast.makeText(requireContext(), "Ánimo, la meta ingresada no es válida", Toast.LENGTH_SHORT).show()
-                }
                 ok = 0
                 Dispatchers.Default.cancel()
             } else {

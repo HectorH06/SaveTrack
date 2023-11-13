@@ -40,10 +40,7 @@
         app:layout_constraintEnd_toEndOf="@id/UserDataLayout"
         android:background="@drawable/picshape"
         android:contentDescription="@string/FotoPerfil"
-        app:srcCompat="@drawable/ic_person"
-        android:elevation="15dp"
-        android:outlineAmbientShadowColor="@color/X2"
-        android:outlineSpotShadowColor="@color/X2" />
+        app:srcCompat="@drawable/ic_person" />
 
     <ImageButton
         android:id="@+id/Options"

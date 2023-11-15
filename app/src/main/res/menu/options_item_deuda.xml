@@ -7,6 +7,11 @@
         android:icon="@drawable/ic_notstar"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_verMonto"
+        android:title="@string/verdetalles"
+        android:icon="@drawable/ic_watch"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_liquidateMonto"
         android:title="@string/liquidar"
         android:icon="@drawable/ic_finalcheck"

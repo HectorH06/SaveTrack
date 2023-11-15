@@ -35,10 +35,10 @@ class pdaDeudasList : Fragment() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    val prev = indexmain()
+                    val prev = planesdeahorromain()
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                        .replace(R.id.index_container, prev)
+                        .replace(R.id.pda_container, prev)
                         .addToBackStack(null).commit()
                 }
             })
@@ -434,6 +434,29 @@ class pdaDeudasList : Fragment() {
 
                             true
                         }
+                        R.id.action_verMonto -> {
+                            val upup = monto.valorfinal?.let { it1 ->
+                                indexmontoupdate.sendMonto(
+                                    monto.idmonto,
+                                    monto.concepto,
+                                    it1,
+                                    monto.fecha,
+                                    monto.frecuencia,
+                                    monto.etiqueta,
+                                    monto.interes,
+                                    monto.veces,
+                                    monto.adddate
+                                )
+                            }
+
+                            if (upup != null) {
+                                parentFragmentManager.beginTransaction()
+                                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                    .replace(R.id.pda_container, upup).addToBackStack(null).commit()
+                            }
+
+                            true
+                        }
                         R.id.action_liquidateMonto -> {
                             lifecycleScope.launch {
                                 liq(
@@ -456,21 +479,25 @@ class pdaDeudasList : Fragment() {
                             true
                         }
                         R.id.action_editMonto -> {
-                            val upup = indexmontoupdate.sendMonto(
-                                monto.idmonto,
-                                monto.concepto,
-                                monto.valor,
-                                monto.fecha,
-                                monto.frecuencia,
-                                monto.etiqueta,
-                                monto.interes,
-                                monto.veces,
-                                monto.adddate
-                            )
+                            val upup = monto.valorfinal?.let { it1 ->
+                                indexmontoupdate.sendMonto(
+                                    monto.idmonto,
+                                    monto.concepto,
+                                    it1,
+                                    monto.fecha,
+                                    monto.frecuencia,
+                                    monto.etiqueta,
+                                    monto.interes,
+                                    monto.veces,
+                                    monto.adddate
+                                )
+                            }
 
-                            parentFragmentManager.beginTransaction()
-                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                                .replace(R.id.pda_container, upup).addToBackStack(null).commit()
+                            if (upup != null) {
+                                parentFragmentManager.beginTransaction()
+                                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                    .replace(R.id.pda_container, upup).addToBackStack(null).commit()
+                            }
 
                             true
                         }

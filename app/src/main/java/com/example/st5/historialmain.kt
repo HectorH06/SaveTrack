@@ -87,6 +87,7 @@ class historialmain : Fragment(), AdapterView.OnItemSelectedListener {
             val monthsPagerAdapter = HistorialPagerAdapter(requireContext(), isDarkMode, day)
             val viewPager: ViewPager = binding.calendarView
             viewPager.adapter = monthsPagerAdapter
+            viewPager.offscreenPageLimit = 1
 
             viewPager.currentItem = month + (year - startYear) * 12
 

@@ -116,6 +116,10 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                         .replace(R.id.index_container, prev)
                         .addToBackStack(null).commit()
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                        .replace(R.id.pda_container, planesdeahorromain())
+                        .addToBackStack(null).commit()
                 }
             })
     }
@@ -202,6 +206,9 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                 .replace(R.id.index_container, back).addToBackStack(null).commit()
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                .replace(R.id.pda_container, planesdeahorromain()).addToBackStack(null).commit()
         }
 
         binding.updownSwitch.setCheckedChangeListener {
@@ -429,6 +436,9 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                         parentFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                             .replace(R.id.index_container, back).addToBackStack(null).commit()
+                        parentFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                            .replace(R.id.pda_container, planesdeahorromain()).addToBackStack(null).commit()
                     }
                     .setNegativeButton("Cancelar") { dialog, _ ->
                         dialog.dismiss()
@@ -454,6 +464,9 @@ class indexmontoupdate : Fragment(), AdapterView.OnItemSelectedListener {
                     parentFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fromright, R.anim.toleft)
                         .replace(R.id.index_container, back).addToBackStack(null).commit()
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                        .replace(R.id.pda_container, planesdeahorromain()).addToBackStack(null).commit()
                 }
                 .setNegativeButton("Cancelar") { dialog, _ ->
                     dialog.dismiss()

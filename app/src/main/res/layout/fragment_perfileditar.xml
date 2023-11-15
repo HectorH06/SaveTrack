@@ -80,6 +80,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/agregarfotobtn" />
 
+            <TextView
+                android:id="@+id/usernameHint"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:elevation="15dp"
+                android:hint="@string/Nombre"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:textAlignment="textEnd"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="@id/UsernameeditperfTV"
+                app:layout_constraintBottom_toBottomOf="@id/UsernameeditperfTV"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/UsernameeditperfTV" />
+
             <EditText
                 android:id="@+id/AgeeditperfTV"
                 android:layout_width="match_parent"
@@ -93,12 +110,29 @@
                 android:paddingStart="6dp"
                 android:paddingEnd="6dp"
                 android:textColor="?attr/colorOnPrimary"
-                android:textColorHint="?attr/colorSecondary"
+                android:textColorHint="@color/N3"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@id/GoaleditperfTV"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/UsernameeditperfTV" />
+
+            <TextView
+                android:id="@+id/ageHint"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:elevation="15dp"
+                android:hint="@string/Edad"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:textAlignment="textEnd"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="@id/AgeeditperfTV"
+                app:layout_constraintBottom_toBottomOf="@id/AgeeditperfTV"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/AgeeditperfTV" />
 
             <EditText
                 android:id="@+id/GoaleditperfTV"
@@ -113,12 +147,46 @@
                 android:paddingStart="6dp"
                 android:paddingEnd="6dp"
                 android:textColor="?attr/colorOnPrimary"
-                android:textColorHint="?attr/colorSecondary"
+                android:textColorHint="@color/N3"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@id/chamba1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/AgeeditperfTV" />
+
+            <TextView
+                android:id="@+id/goalHint"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:elevation="15dp"
+                android:hint="@string/metadeahorro"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:textAlignment="textEnd"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="@id/GoaleditperfTV"
+                app:layout_constraintBottom_toBottomOf="@id/GoaleditperfTV"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/GoaleditperfTV" />
+
+            <TextView
+                android:id="@+id/chambaHint"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:elevation="15dp"
+                android:hint="@string/TipoChamba"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:textAlignment="textEnd"
+                android:textColor="?attr/colorOnPrimary"
+                android:textColorHint="?attr/colorSecondary"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="@id/chamba1"
+                app:layout_constraintBottom_toBottomOf="@id/chamba1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/chamba1" />
 
             <CheckBox
                 android:id="@+id/chamba1"

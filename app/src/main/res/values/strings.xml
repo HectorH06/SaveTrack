@@ -201,6 +201,8 @@
     <string name="addingresoswidget">Añadir widget de ingreso</string>
     <string name="addgastoswidget">Añadir widget de gasto</string>
     <string name="usuarios">Usuarios</string>
+    <string name="metadeahorro">Meta de Ahorro</string>
+    <string name="verdetalles">Ver Detalles</string>
 
     <!-- Spinners -->
     <string-array name="etiquetaoptions">

@@ -52,6 +52,7 @@ class Index : AppCompatActivity() {
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, isDarkMode, currentView, currentFrag)
         val viewPager: ViewPager = binding.ViewContainer
         viewPager.adapter = sectionsPagerAdapter
+        viewPager.offscreenPageLimit = 5
 
         val bottomNavigationView: BottomNavigationView = binding.bottomBar
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->

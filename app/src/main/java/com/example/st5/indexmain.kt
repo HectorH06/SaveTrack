@@ -70,7 +70,11 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
         super.onCreate(savedInstanceState)
         val decoder = Decoder(requireContext())
         if (decoder.hayNet()) {
-            setupAlarm()
+            lifecycleScope.launch {
+                setupColors()
+                delay(10000)
+                setupAlarm()
+            }
         }
         notificationHelper = notificationManager(requireContext())
 
@@ -181,7 +185,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
 
     //region PIECHARTS
     private suspend fun setupPieChartG(range: Long) {
-        setupColors()
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
@@ -277,7 +280,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
     }
 
     private suspend fun setupPieChartI(range: Long) {
-        setupColors()
         withContext(Dispatchers.IO) {
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
             val ingresosGastosDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
@@ -1013,7 +1015,11 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             if (position == 0 && montos.size - 1 == 0){
                 holder.itemView.setBackgroundResource(R.drawable.p1onlyitem)
             }
-            holder.itemView.setBackgroundColor(mutableColores[monto.etiqueta])
+            var colorin = 0x000000
+            for (i in mutableColores.indices) {
+                if (mutableIds[i] == monto.etiqueta.toLong()) colorin = mutableColores[i]
+            }
+            holder.itemView.setBackgroundColor(colorin)
             if ((monto.estado ?: return) >= 5 && (monto.estado ?: return) <= 9) {
                 holder.itemView.setBackgroundColor(resources.getColor(R.color.R0))
             }

@@ -423,6 +423,15 @@ class indexGastosList : Fragment() {
 
                             true
                         }
+                        R.id.action_verMonto -> {
+                            val ver = verMonto.sendMonto(monto.idmonto)
+
+                            parentFragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                .replace(R.id.index_container, ver).addToBackStack(null).commit()
+
+                            true
+                        }
                         R.id.action_editMonto -> {
                             val upup = indexmontoupdate.sendMonto(
                                 monto.idmonto,

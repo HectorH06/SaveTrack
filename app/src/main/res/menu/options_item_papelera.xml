@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_verMonto"
+        android:title="@string/verdetalles"
+        android:icon="@drawable/ic_watch"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_getBackMonto"
         android:title="@string/restaurar"
         android:icon="@drawable/ic_getback"

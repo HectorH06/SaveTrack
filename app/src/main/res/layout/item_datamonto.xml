@@ -1,0 +1,36 @@
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cabezaingresos"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/y1midcell"
+    android:orientation="horizontal"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/DNombre"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:minHeight="35dp"
+        android:hint="@string/Nombre"
+        android:paddingStart="7dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        android:textSize="16sp"
+        android:layout_weight="2"/>
+
+    <TextView
+        android:id="@+id/DValor"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:minHeight="35dp"
+        android:hint="@string/Nombre"
+        android:paddingStart="7dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorSecondary"
+        android:textSize="16sp"
+        android:layout_weight="3"/>
+</TableRow>

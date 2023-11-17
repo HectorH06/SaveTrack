@@ -1058,6 +1058,7 @@ class Login : Fragment(), AdapterView.OnItemSelectedListener {
                     requireContext(), "Los campos no pueden estar vacíos", Toast.LENGTH_SHORT
                 ).show()
             }
+            binding.perame.alpha = 0f
         }
     }
 

@@ -435,25 +435,11 @@ class pdaDeudasList : Fragment() {
                             true
                         }
                         R.id.action_verMonto -> {
-                            val upup = monto.valorfinal?.let { it1 ->
-                                indexmontoupdate.sendMonto(
-                                    monto.idmonto,
-                                    monto.concepto,
-                                    it1,
-                                    monto.fecha,
-                                    monto.frecuencia,
-                                    monto.etiqueta,
-                                    monto.interes,
-                                    monto.veces,
-                                    monto.adddate
-                                )
-                            }
+                            val ver = verMonto.sendMonto(monto.idmonto)
 
-                            if (upup != null) {
-                                parentFragmentManager.beginTransaction()
-                                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
-                                    .replace(R.id.pda_container, upup).addToBackStack(null).commit()
-                            }
+                            parentFragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                                .replace(R.id.pda_container, ver).addToBackStack(null).commit()
 
                             true
                         }

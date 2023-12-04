@@ -254,7 +254,7 @@ class finanzasmain : Fragment() {
 
                 binding.NoVerMERCALIBRE.setOnClickListener {
                     lifecycleScope.launch {
-                        Item.ItemsRepository.remove(ids[i])
+                        Item.ItemsRepository.clean()
                         delay(500)
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.finanzas_container, finanzasmain()).addToBackStack(null)
@@ -324,6 +324,10 @@ class finanzasmain : Fragment() {
             fun remove(itemId: String) = data.remove(itemId)
 
             fun getAll() = data.values.toList()
+
+            fun clean() {
+                data.clear()
+            }
         }
     }
 }

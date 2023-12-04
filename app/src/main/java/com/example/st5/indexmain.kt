@@ -271,8 +271,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val data = PieData(dataSet)
             binding.PieChart.data = data
 
-            binding.PieChart.centerText = "${truncateDouble(totalIngresos)}$ - ${truncateDouble(totalGastos)}$ = ${truncateDouble(totalisimo)}$"
-            binding.PieChart.setCenterTextSize(20f)
+            binding.PieChart.centerText = "$${truncateDouble(totalIngresos)} - $${truncateDouble(totalGastos)} = $${truncateDouble(totalisimo)}"
+            binding.PieChart.setCenterTextSize(18f)
             binding.PieChart.setCenterTextColor(R.color.white)
             binding.PieChart.description.isEnabled = false
             binding.PieChart.legend.isEnabled = false
@@ -363,8 +363,8 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             val data = PieData(dataSet)
             binding.PieChart.data = data
 
-            binding.PieChart.centerText = "${truncateDouble(totalIngresos)}$ - ${truncateDouble(totalGastos)}$ = ${truncateDouble(totalisimo)}$"
-            binding.PieChart.setCenterTextSize(20f)
+            binding.PieChart.centerText = "$${truncateDouble(totalIngresos)} - $${truncateDouble(totalGastos)} = $${truncateDouble(totalisimo)}"
+            binding.PieChart.setCenterTextSize(18f)
             binding.PieChart.setCenterTextColor(R.color.white)
             binding.PieChart.description.isEnabled = false
             binding.PieChart.legend.isEnabled = false
@@ -406,6 +406,12 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.index_container, lista).addToBackStack(null).commit()
+        }
+
+        binding.redirect.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fromleft, R.anim.toright)
+                .replace(R.id.index_container, indexIngresosList()).addToBackStack(null).commit()
         }
 
         binding.Options.setOnClickListener {

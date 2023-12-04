@@ -131,20 +131,7 @@ class grupoMontoAdd : Fragment(), AdapterView.OnItemSelectedListener {
             R.array.frecuenciaoptions,
             android.R.layout.simple_spinner_item
         )
-        val adapterI = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.tipooptions,
-            android.R.layout.simple_spinner_item
-        )
-        val arrayEtiquetas = mutableEtiquetas
-        val adapterG = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            arrayEtiquetas
-        )
         adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        adapterG.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        adapterI.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         binding.FrecuenciaField.adapter = adapterF
 

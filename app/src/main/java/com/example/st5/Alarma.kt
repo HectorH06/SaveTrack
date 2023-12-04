@@ -62,7 +62,7 @@ class Alarma : BroadcastReceiver() {
                 "General",
                 R.drawable.logo1,
                 "El dólar subió",
-                "Subió $dif ($percent)",
+                "Subió $$dif ($percent%)",
                 0,
                 0,
                 0
@@ -73,7 +73,7 @@ class Alarma : BroadcastReceiver() {
                 "General",
                 R.drawable.logo1,
                 "El dólar bajó",
-                "Bajó $dif ($percent%)",
+                "Bajó $$dif ($percent%)",
                 0,
                 0,
                 0

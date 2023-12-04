@@ -386,6 +386,13 @@ class pdaDeudasList : Fragment() {
             var tempstat = 5
             val decoder = Decoder(requireContext())
 
+            holder.itemView.setOnClickListener {
+                val ver = verMonto.sendMonto(monto.idmonto)
+
+                parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fromright, R.anim.toleft)
+                    .replace(R.id.pda_container, ver).addToBackStack(null).commit()
+            }
             holder.conceptoTextView.text = monto.concepto
             holder.interesTextView.text = monto.interes.toString()
             holder.valorTextView.text = truncateDouble(monto.valor).toString()

@@ -102,7 +102,7 @@
             android:padding="16dp"
             app:layout_constraintStart_toStartOf="@id/FinanzasItemImage"
             app:layout_constraintTop_toBottomOf="@id/FinanzasItemImage"
-            app:srcCompat="@drawable/ic_add"
+            app:srcCompat="@drawable/ic_watch"
             app:tint="@color/G1" />
 
         <ImageButton
@@ -115,7 +115,7 @@
             android:contentDescription="@string/vermenos"
             app:layout_constraintStart_toEndOf="@id/VerMasMERCALIBRE"
             app:layout_constraintTop_toBottomOf="@id/FinanzasItemImage"
-            app:srcCompat="@drawable/ic_remove"
+            app:srcCompat="@drawable/ic_next"
             app:tint="@color/O1" />
 
         <ImageButton

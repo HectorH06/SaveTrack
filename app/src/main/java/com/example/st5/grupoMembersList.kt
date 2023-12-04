@@ -165,6 +165,53 @@ class grupoMembersList : Fragment() {
 
                     Log.v("idori", group.idori.toString())
                     Log.v("admin", group.admin.toString())
+                    val jsonArr = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/montosgrupoMultiget?localid=${group.idori}&admin=${group.admin}").readText()) }
+                    Log.v("jsonArr", jsonArr.toString())
+                    for (i in 0 until jsonArr.length()) {
+                        val jsonObj = jsonArr.getJSONObject(i)
+                        if (jsonObj.getLong("idmglocal") != null) {
+                            val idmonto: Long = jsonObj.getLong("idmglocal")
+                            val iduse: Long = jsonObj.getLong("idusuario")
+                            val concepto: String = jsonObj.optString("concepto")
+                            val valor: Double = jsonObj.optDouble("valor")
+                            val valorfinal: Double = jsonObj.optDouble("valorfinal")
+                            val fecha: Int = jsonObj.optInt("fecha")
+                            val frecuencia: Int = jsonObj.optInt("frecuencia")
+                            val etiqueta: Int = jsonObj.optInt("etiqueta")
+                            val interes: Double = jsonObj.optDouble("interes")
+                            val tipointeres: Int = jsonObj.optInt("tipointeres")
+                            val veces: Long = jsonObj.optLong("veces")
+                            val estado: Int = jsonObj.optInt("estado")
+                            val adddate: Int = jsonObj.optInt("adddate")
+                            val enddate: Int = jsonObj.optInt("enddate")
+                            val cooldown: Int = jsonObj.optInt("cooldown")
+                            val delay: Int = jsonObj.optInt("delay")
+                            val sequence: String = jsonObj.optString("sequence")
+
+                            val nuevoMonto = Monto(
+                                idmonto = idmonto,
+                                iduser = iduse,
+                                concepto = concepto,
+                                valor = valor,
+                                valorfinal = valorfinal,
+                                fecha = fecha,
+                                frecuencia = frecuencia,
+                                etiqueta = 8000 + group.Id.toInt(),
+                                interes = interes,
+                                tipointeres = tipointeres,
+                                veces = veces,
+                                estado = estado,
+                                adddate = adddate,
+                                enddate = enddate,
+                                cooldown = cooldown,
+                                delay = delay,
+                                sequence = sequence
+                            )
+                            Log.v("Current monto $i", nuevoMonto.toString())
+
+                            montos.add(nuevoMonto)
+                        }
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("NetworkError", "Error during network call", e)
@@ -348,14 +395,15 @@ class grupoMembersList : Fragment() {
 
         override fun onBindViewHolder(holder: MiembroViewHolder, position: Int) {
             val miembro = miembros[position]
+            val montosDeMiembro = montos.filter { it.iduser == miembro.iduser }.map { it.valor }.toMutableList()
             val idgrupo: Long? = arguments?.getLong(grupo)
             holder.nombreTextView.text = miembro.nombre
             if (group.admin == miembro.iduser){
                 holder.adminIcon.alpha = 1f
             }
             // TODO: hacer que se hagan las sumatorias respectivas de los montos y su cantidad para cada miembro
-            //holder.montosTextView.text = montosDeMiembro.size.toString()
-            //holder.aporteTextView.text = montosDeMiembro.sum().toString()
+            holder.montosTextView.text = montosDeMiembro.size.toString()
+            holder.aporteTextView.text = montosDeMiembro.sum().toString()
             if (iduser == group.admin && iduser != miembro.iduser) {
                 holder.kickButton.alpha = 1f
                 holder.kickButton.translationZ = 400f

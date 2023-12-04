@@ -61,6 +61,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/redirect"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:translationZ="200dp"
+            app:layout_constraintTop_toTopOf="@id/PieChart"
+            app:layout_constraintBottom_toBottomOf="@id/PieChart"
+            app:layout_constraintStart_toStartOf="@id/PieChart"
+            app:layout_constraintEnd_toEndOf="@id/PieChart" />
+
         <RelativeLayout
             android:id="@+id/switchpordelante"
             android:layout_width="wrap_content"

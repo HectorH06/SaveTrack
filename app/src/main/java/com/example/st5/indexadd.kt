@@ -33,6 +33,7 @@ import java.util.*
 class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding: FragmentIndexaddBinding
 
+    private var esGasto: Boolean = false
     private var label: Int = 0
     private var frecuencia: Int = 0
     private var fecha: Int = 0
@@ -155,11 +156,13 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                     binding.ValorField.hint = "Ingreso"
                     binding.LabelField.adapter = adapterI
                     binding.yocreoquesi.text = "Préstamo"
+                    esGasto = false
                 }
                 IconSwitch.Checked.RIGHT -> {
                     binding.ValorField.hint = "Gasto"
                     binding.LabelField.adapter = adapterG
                     binding.yocreoquesi.text = "Deuda"
+                    esGasto = true
                 }
                 else -> {}
             }
@@ -483,8 +486,31 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
         withContext(Dispatchers.IO) {
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
             val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
+            val ingresoGastoDao = Stlite.getInstance(requireContext()).getIngresosGastosDao()
 
             val iduser = usuarioDao.checkId().toLong()
+
+            var vec = veces
+            if (fecha <= adddate && frecuencia == 0) {
+                vec = 1
+
+                if (esGasto) {
+                    val totalGastos = ingresoGastoDao.checkSummaryG()
+
+                    ingresoGastoDao.updateSummaryG(
+                        iduser.toInt(),
+                        totalGastos + valor
+                    )
+                } else {
+                    val totalIngresos = ingresoGastoDao.checkSummaryI()
+
+                    ingresoGastoDao.updateSummaryI(
+                        iduser.toInt(),
+                        totalIngresos + valor
+                    )
+                }
+
+            }
 
             val nuevoMonto = Monto(
                 iduser = iduser,
@@ -496,7 +522,7 @@ class indexadd : Fragment(), AdapterView.OnItemSelectedListener {
                 etiqueta = etiqueta,
                 interes = interes,
                 tipointeres = tipointeres,
-                veces = veces,
+                veces = vec,
                 estado = estado,
                 adddate = adddate,
                 enddate = enddate,

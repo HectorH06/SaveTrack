@@ -164,7 +164,7 @@
             android:contentDescription="@string/configuracion"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_settings" />
+            app:srcCompat="@drawable/ic_edit" />
 
         <TextView
             android:id="@+id/bar"

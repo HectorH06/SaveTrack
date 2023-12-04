@@ -84,7 +84,7 @@ class grupoEdit : Fragment() {
     private suspend fun isDarkModeEnabled(context: Context): Boolean {
         var komodo: Boolean
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             val assetsDao = Stlite.getInstance(context).getAssetsDao()
 
             val mode = assetsDao.getTheme()
@@ -114,8 +114,10 @@ class grupoEdit : Fragment() {
 
             getGrupo()
             try {
-                val jsonObjectG = withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=$idori&admin=$admin").readText()) }
-                val miembrosJSON = withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=$idori&admin=$admin").readText()) }
+                val jsonObjectG =
+                    withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=$idori&admin=$admin").readText()) }
+                val miembrosJSON =
+                    withContext(Dispatchers.IO) { JSONArray(URL("http://savetrack.com.mx/gruposMiembrosGet.php?localid=$idori&admin=$admin").readText()) }
                 val miembrosG = Array(miembrosJSON.length()) { miembrosJSON.getInt(it) }
                 //val idgglobal: Long = jsonObjectG.getLong("idgrupoglobal")
                 //val idglocal: String = jsonObjectG.getString("idgrupolocal")
@@ -127,7 +129,8 @@ class grupoEdit : Fragment() {
                 color = jsonObjectG.optInt("color")
                 val created: String = jsonObjectG.optString("created")
                 val createdString = "Creado el $created"
-                val adminName = withContext(Dispatchers.IO) { URL("http://savetrack.com.mx/usernameget.php?id=$admin").readText() }
+                val adminName =
+                    withContext(Dispatchers.IO) { URL("http://savetrack.com.mx/usernameget.php?id=$admin").readText() }
 
                 if (!miembrosG.contains(iduser.toInt())) {
                     parentFragmentManager.beginTransaction()
@@ -164,7 +167,7 @@ class grupoEdit : Fragment() {
         binding.ColorField.setBackgroundColor(color)
     }
 
-    private suspend fun getGrupo () {
+    private suspend fun getGrupo() {
         withContext(Dispatchers.IO) {
             val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
             val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
@@ -180,7 +183,7 @@ class grupoEdit : Fragment() {
         }
     }
 
-    private suspend fun deleteGrupo () {
+    private suspend fun deleteGrupo() {
         withContext(Dispatchers.IO) {
             val gruposDao = Stlite.getInstance(requireContext()).getGruposDao()
             val labelsDao = Stlite.getInstance(requireContext()).getLabelsDao()
@@ -306,21 +309,28 @@ class grupoEdit : Fragment() {
         }
 
         binding.Share.setOnClickListener {
-            val linkToShare = "http://savetrack.com.mx/joingroup.php?zxcd125s5d765e7wqa87sdftgh=$idori&mnhjkmnbg1yhb3vdrtgvc98swe=$admin"
+            val linkToShare =
+                "http://savetrack.com.mx/joingroup.php?zxcd125s5d765e7wqa87sdftgh=$idori&mnhjkmnbg1yhb3vdrtgvc98swe=$admin"
 
             val bitmap: Bitmap = generateQRCode(linkToShare)
 
             val whatsappIntent = Intent(Intent.ACTION_SEND)
             whatsappIntent.type = "image/jpeg"
             whatsappIntent.setPackage("com.whatsapp")
-            whatsappIntent.putExtra(Intent.EXTRA_TEXT, "¡Únete a mi grupo de SaveTrack: $linkToShare!")
+            whatsappIntent.putExtra(
+                Intent.EXTRA_TEXT,
+                "¡Únete a mi grupo de SaveTrack: $linkToShare!"
+            )
             whatsappIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(requireContext(), bitmap))
 
             val gmailIntent = Intent(Intent.ACTION_SEND)
             gmailIntent.type = "image/jpeg"
             gmailIntent.setPackage("com.google.android.gm")
             gmailIntent.putExtra(Intent.EXTRA_SUBJECT, "¡Únete a mi grupo de SaveTrack!")
-            gmailIntent.putExtra(Intent.EXTRA_TEXT, "¡Haz click en el enlace para unirte: $linkToShare!")
+            gmailIntent.putExtra(
+                Intent.EXTRA_TEXT,
+                "¡Haz click en el enlace para unirte: $linkToShare!"
+            )
             gmailIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(requireContext(), bitmap))
 
             val chooserIntent = Intent.createChooser(gmailIntent, "Compartir a través de:")
@@ -380,53 +390,59 @@ class grupoEdit : Fragment() {
                 )
 
                 val queue = Volley.newRequestQueue(requireContext())
-                val grupoJson = withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=${viejoGrupo.idori}&admin=$admin").readText()) }
+                val grupoJson =
+                    withContext(Dispatchers.IO) { JSONObject(URL("http://savetrack.com.mx/grupoGet.php?localid=${viejoGrupo.idori}&admin=$admin").readText()) }
 
                 if (grupoJson.getLong("idgrupoglobal") != null) {
-                    val idori: Long = grupoJson.getLong("idgrupolocal")
-                    val idadmin: Long = grupoJson.getLong("idadmin")
-                    val tipo: Int = grupoJson.optInt("tipo")
+                    lifecycleScope.launch {
+                        val idori: Long = grupoJson.getLong("idgrupolocal")
+                        val idadmin: Long = grupoJson.getLong("idadmin")
+                        val tipo: Int = grupoJson.optInt("tipo")
 
-                    var url = "http://savetrack.com.mx/grupoUpdate.php?"
+                        var url = "http://savetrack.com.mx/grupoUpdate.php?"
 
-                    val nombre = binding.NombreField.text
-                    val desc = binding.DescripcionField.text
-                    val dialog = AmbilWarnaDialog(
-                        requireContext(),
-                        color,
-                        false,
-                        object : AmbilWarnaDialog.OnAmbilWarnaListener {
-                            override fun onOk(dialog: AmbilWarnaDialog, colorin: Int) {
-                                color = colorin
-                                binding.ColorField.setBackgroundColor(color)
-                            }
+                        val nombre = binding.NombreField.text
+                        val desc = binding.DescripcionField.text
 
-                            override fun onCancel(dialog: AmbilWarnaDialog) {
-                                Toast.makeText(requireContext(), "cancel", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    )
-                    dialog.show()
-                    val requestBody = "localid=$idori&admin=$idadmin&nameg=$nombre&type=$tipo&desc=$desc&color=$color"
-                    url += requestBody
-                    val stringReq: StringRequest =
-                        object : StringRequest(
-                            Method.PUT, url,
-                            Response.Listener { response ->
-                                val strResp2 = response.toString()
-                                Log.d("API", strResp2)
+                        val dialog = AmbilWarnaDialog(
+                            requireContext(),
+                            color,
+                            false,
+                            object : AmbilWarnaDialog.OnAmbilWarnaListener {
+                                override fun onOk(dialog: AmbilWarnaDialog, colorin: Int) {
+                                    color = colorin
+                                    binding.ColorField.setBackgroundColor(color)
+                                }
 
-                            },
-                            Response.ErrorListener { error ->
-                                Log.d("API", "error => $error")
+                                override fun onCancel(dialog: AmbilWarnaDialog) {
+                                    Toast.makeText(requireContext(), "cancel", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
                             }
-                        ) {
-                            override fun getBody(): ByteArray {
-                                return requestBody.toByteArray(Charset.defaultCharset())
+                        )
+                        
+                        val requestBody =
+                            "localid=$idori&admin=$idadmin&nameg=$nombre&type=$tipo&desc=$desc&color=$color"
+                        url += requestBody
+                        val stringReq: StringRequest =
+                            object : StringRequest(
+                                Method.PUT, url,
+                                Response.Listener { response ->
+                                    val strResp2 = response.toString()
+                                    Log.d("API", strResp2)
+
+                                },
+                                Response.ErrorListener { error ->
+                                    Log.d("API", "error => $error")
+                                }
+                            ) {
+                                override fun getBody(): ByteArray {
+                                    return requestBody.toByteArray(Charset.defaultCharset())
+                                }
                             }
-                        }
-                    Log.e("stringReq", stringReq.toString())
-                    queue.add(stringReq)
+                        Log.e("stringReq", stringReq.toString())
+                        queue.add(stringReq)
+                    }
                 } else {
                     Log.v("Current monto", "VACÍO")
                 }
@@ -471,13 +487,14 @@ class grupoEdit : Fragment() {
         try {
             val bitMatrix: BitMatrix =
                 multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 500, 500)
-            return Bitmap.createBitmap(bitMatrix.width, bitMatrix.height, Bitmap.Config.RGB_565).apply {
-                for (x in 0 until bitMatrix.width) {
-                    for (y in 0 until bitMatrix.height) {
-                        setPixel(x, y, if (bitMatrix[x, y]) color else antiColor(color))
+            return Bitmap.createBitmap(bitMatrix.width, bitMatrix.height, Bitmap.Config.RGB_565)
+                .apply {
+                    for (x in 0 until bitMatrix.width) {
+                        for (y in 0 until bitMatrix.height) {
+                            setPixel(x, y, if (bitMatrix[x, y]) color else antiColor(color))
+                        }
                     }
                 }
-            }
         } catch (e: WriterException) {
             e.printStackTrace()
             throw RuntimeException("Error al generar el código QR", e)
@@ -487,12 +504,16 @@ class grupoEdit : Fragment() {
     private fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "steqr", null)
+        val path =
+            MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "steqr", null)
         return Uri.parse(path)
     }
 
     private fun antiColor(colorDado: Int): Int {
-        val luminancia = (0.299 * Color.red(colorDado) + 0.587 * Color.green(colorDado) + 0.114 * Color.blue(colorDado)) / 255.0
+        val luminancia =
+            (0.299 * Color.red(colorDado) + 0.587 * Color.green(colorDado) + 0.114 * Color.blue(
+                colorDado
+            )) / 255.0
 
         val luminanciaFondo = if (luminancia > 0.5) {
             luminancia - 0.5

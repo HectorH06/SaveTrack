@@ -143,7 +143,7 @@ class finanzasConySug : Fragment(){
 
             holder.accept.setOnClickListener {
                 lifecycleScope.launch {
-                    //acceptedOrRejected(consejo.idcon, 2)
+                    acceptedOrRejected(consejo.idcon, 2)
                     val intent = Intent(activity, Index::class.java)
                     var goTo = when (consejo.idcon) {
                         in 0..99 -> 0
@@ -178,7 +178,7 @@ class finanzasConySug : Fragment(){
             }
             holder.ignore.setOnClickListener {
                 lifecycleScope.launch {
-                    //acceptedOrRejected(consejo.idcon, 3)
+                    acceptedOrRejected(consejo.idcon, 3)
                     goodbye(holder.itemView)
                 }
             }

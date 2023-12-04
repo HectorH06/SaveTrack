@@ -187,7 +187,11 @@ class montosGrupo : Fragment() {
                 Log.e("NetworkError", "Error during network call", e)
             }
             binding.displayGastos.adapter = MontoAdapter(montos)
-            binding.totalG.text = "$" + decoder.format(0.0).toString()
+            var total = 0.0
+            for (monto in montos) {
+                total += monto.valor
+            }
+            binding.totalG.text = "$" + decoder.format(total).toString()
         }
         return binding.root
     }
@@ -352,68 +356,6 @@ class montosGrupo : Fragment() {
         }
     }
 
-    private suspend fun montoFavorito(
-        idmonto: Long,
-        concepto: String,
-        valor: Double,
-        fecha: Int?,
-        frecuencia: Int?,
-        etiqueta: Int,
-        interes: Double?,
-        veces: Long?,
-        estado: Int?,
-        adddate: Int
-    ) {
-        withContext(Dispatchers.IO) {
-            val usuarioDao = Stlite.getInstance(requireContext()).getUsuarioDao()
-            val montoDao = Stlite.getInstance(requireContext()).getMontoDao()
-            val status = when (estado) {
-                0 -> 3
-                1 -> 4
-                5 -> 8
-                6 -> 9
-
-                3 -> 0
-                4 -> 1
-                8 -> 5
-                9 -> 6
-
-                else -> 3
-            }
-            val enddate = montoDao.getEnded(idmonto.toInt())
-            val valorfinal = montoDao.getValorFinal(idmonto.toInt())
-            val tipointeres = montoDao.getTipoInteres(idmonto.toInt())
-            val delay = montoDao.getDelay(idmonto.toInt())
-            val sequence = montoDao.getSequence(idmonto.toInt())
-            val cooldown = montoDao.getCooldown(idmonto.toInt())
-            val iduser = usuarioDao.checkId().toLong()
-            val viejoMonto = Monto(
-                idmonto = idmonto,
-                iduser = iduser,
-                concepto = concepto,
-                valor = valor,
-                valorfinal = valorfinal,
-                fecha = fecha,
-                frecuencia = frecuencia,
-                etiqueta = etiqueta,
-                interes = interes,
-                tipointeres = tipointeres,
-                veces = veces,
-                estado = status,
-                adddate = adddate,
-                enddate = enddate,
-                cooldown = cooldown,
-                delay = delay,
-                sequence = sequence
-            )
-
-            montoDao.updateMonto(viejoMonto)
-            val montos = montoDao.getMonto()
-            Log.i("ALL MONTOS", montos.toString())
-
-        }
-    }
-
     private inner class MontoAdapter(private val montos: List<Monto>) :
         RecyclerView.Adapter<MontoAdapter.MontoViewHolder>() {
         inner class MontoViewHolder(
@@ -469,12 +411,8 @@ class montosGrupo : Fragment() {
 
                 popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                     when (item.itemId) {
-                        R.id.action_payMonto -> {
-
-
-                            true
-                        }
                         R.id.action_editMonto -> {
+
                             if (upup != null) {
                                 parentFragmentManager.beginTransaction()
                                     .setCustomAnimations(R.anim.fromright, R.anim.toleft)

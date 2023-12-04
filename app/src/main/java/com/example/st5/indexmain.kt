@@ -406,7 +406,6 @@ class indexmain : Fragment(), OnChartValueSelectedListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fromleft, R.anim.toright)
                 .replace(R.id.index_container, lista).addToBackStack(null).commit()
-
         }
 
         binding.Options.setOnClickListener {

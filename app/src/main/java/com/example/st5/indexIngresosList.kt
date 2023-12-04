@@ -420,7 +420,16 @@ class indexIngresosList : Fragment() {
             val decoder = Decoder(requireContext())
             holder.conceptoTextView.text = monto.concepto
             holder.valorTextView.text = decoder.format(monto.valor).toString()
-            holder.fechaTextView.text = monto.fecha?.let { decoder.date(it) }
+            when (monto.etiqueta) {
+                10001, 10003, 10004, 10005 -> {
+                    holder.fechaTextView.text = monto.fecha?.let { decoder.date(it) }
+                }
+                10002, 10006, 10007 -> {
+                    val texto = "No aplica"
+                    holder.fechaTextView.text = texto
+                }
+            }
+
             lifecycleScope.launch {
                 holder.etiquetaTextView.text = decoder.label(monto.etiqueta)
             }

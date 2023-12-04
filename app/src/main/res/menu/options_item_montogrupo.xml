@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_payMonto"
-        android:title="@string/pagar"
-        android:icon="@drawable/ic_finalcheck"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_editMonto"
         android:title="@string/editar"
         android:icon="@drawable/ic_edit"
